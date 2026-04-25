@@ -1,0 +1,910 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>INF.02 Study Hub</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+:root{color-scheme:light;--bg:#f7f8fb;--card:#fff;--text:#1a1d24;--muted:#5a6473;--border:#e3e6ec;--accent:#2f6ef0;--accent2:#1e4ec0;--good:#1f9d55;--bad:#c92e2e;--warn:#d97706;--shadow:0 1px 2px rgba(0,0,0,.04),0 4px 12px rgba(0,0,0,.05)}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+body{display:flex;min-height:100vh}
+nav{width:200px;background:var(--card);border-right:1px solid var(--border);padding:16px 0;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto}
+nav h1{font-size:14px;margin:0 16px 16px;color:var(--accent2);letter-spacing:.5px}
+nav h1 small{display:block;font-weight:400;color:var(--muted);font-size:11px;letter-spacing:0;margin-top:2px}
+nav button{display:flex;align-items:center;gap:8px;width:100%;text-align:left;background:none;border:0;padding:10px 16px;cursor:pointer;color:var(--text);font:inherit;border-left:3px solid transparent}
+nav button:hover{background:#f1f4f9}
+nav button.active{background:#eef3fc;border-left-color:var(--accent);color:var(--accent2);font-weight:600}
+nav button .ico{width:18px;text-align:center;font-size:14px}
+nav .footer{position:absolute;bottom:0;left:0;right:0;padding:12px 16px;border-top:1px solid var(--border);font-size:11px;color:var(--muted);background:var(--card)}
+main{flex:1;padding:24px 32px;max-width:1100px;margin:0 auto;width:100%}
+.card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:20px;margin-bottom:16px;box-shadow:var(--shadow)}
+.row{display:flex;gap:16px;flex-wrap:wrap}
+.row>.card{flex:1;min-width:240px;margin-bottom:0}
+h2{margin:0 0 12px;font-size:18px}
+h3{margin:0 0 8px;font-size:14px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;font-weight:600}
+.btn{display:inline-flex;align-items:center;gap:6px;background:var(--accent);color:#fff;border:0;border-radius:6px;padding:8px 14px;font:inherit;font-weight:500;cursor:pointer;transition:background .15s}
+.btn:hover{background:var(--accent2)}
+.btn.ghost{background:transparent;color:var(--accent);border:1px solid var(--border)}
+.btn.ghost:hover{background:#f1f4f9}
+.btn.danger{background:var(--bad)}
+.btn.success{background:var(--good)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.bigstat{font-size:32px;font-weight:700;color:var(--accent2);line-height:1}
+.bigstat small{font-size:13px;font-weight:400;color:var(--muted);display:block;margin-top:4px}
+.bar{height:8px;background:#eef0f5;border-radius:99px;overflow:hidden;margin:6px 0}
+.bar>span{display:block;height:100%;background:linear-gradient(90deg,var(--accent),#5b8def);border-radius:99px;transition:width .4s}
+.area-row{display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid #f0f2f6}
+.area-row:last-child{border-bottom:0}
+.area-row .name{flex:1;font-weight:500}
+.area-row .count{color:var(--muted);font-size:12px;min-width:80px;text-align:right}
+.chip{display:inline-block;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:600;background:#eef3fc;color:var(--accent2)}
+.chip.B{background:#fef3c7;color:#92400e}
+.chip.O{background:#dbeafe;color:#1e40af}
+.chip.N{background:#dcfce7;color:#166534}
+.chip.P{background:#fce7f3;color:#9d174d}
+.chip.D{background:#fee2e2;color:#991b1b}
+.q-card{background:#fff;border:1px solid var(--border);border-radius:8px;padding:20px;margin-bottom:12px}
+.q-card .q-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;font-size:12px;color:var(--muted)}
+.q-card .q-text{font-size:15px;margin-bottom:14px;line-height:1.5}
+.q-card .opt{display:block;padding:10px 14px;border:1px solid var(--border);border-radius:6px;margin-bottom:6px;cursor:pointer;transition:all .12s;background:#fafbfd}
+.q-card .opt:hover{border-color:var(--accent);background:#f1f4f9}
+.q-card .opt.selected{border-color:var(--accent);background:#eef3fc}
+.q-card .opt.correct{border-color:var(--good);background:#dcfce7;color:#14532d}
+.q-card .opt.wrong{border-color:var(--bad);background:#fee2e2;color:#7f1d1d}
+.q-card .opt.disabled{cursor:default}
+.q-card .explanation{margin-top:14px;padding:12px;background:#f8fafd;border-left:3px solid var(--accent);border-radius:4px;font-size:13px;color:#37424f}
+.timer{position:fixed;top:16px;right:24px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 14px;font-weight:600;font-variant-numeric:tabular-nums;box-shadow:var(--shadow);z-index:100}
+.timer.warn{color:var(--warn);border-color:var(--warn)}
+.timer.crit{color:var(--bad);border-color:var(--bad);animation:pulse 1s infinite}
+@keyframes pulse{50%{background:#fee2e2}}
+.kbd{display:inline-block;padding:1px 5px;background:#f1f4f9;border:1px solid var(--border);border-radius:3px;font:11px Menlo,monospace}
+.subnet-grid{display:grid;grid-template-columns:auto 1fr;gap:8px 12px;align-items:center;font-size:13px}
+.subnet-grid label{color:var(--muted);font-weight:500}
+.subnet-grid input,.subnet-grid select{padding:6px 8px;border:1px solid var(--border);border-radius:4px;font:inherit}
+.subnet-out{background:#f8fafd;border-radius:6px;padding:12px;margin-top:12px;font:13px Menlo,monospace}
+.subnet-out .row{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px dashed #e3e6ec;flex-wrap:nowrap;gap:0}
+.subnet-out .row:last-child{border:0}
+.subnet-out .row b{color:var(--accent2)}
+.tabbar{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:16px}
+.tabbar button{background:none;border:0;padding:10px 14px;cursor:pointer;font:inherit;color:var(--muted);border-bottom:2px solid transparent;font-weight:500}
+.tabbar button.active{color:var(--accent2);border-bottom-color:var(--accent)}
+.empty{padding:40px;text-align:center;color:var(--muted)}
+.flag{display:inline-block;padding:2px 6px;border-radius:3px;font-size:11px;font-weight:600;margin-left:6px}
+.flag.box1{background:#fee2e2;color:#991b1b}
+.flag.box2{background:#fef3c7;color:#92400e}
+.flag.box3{background:#dbeafe;color:#1e40af}
+.flag.box4{background:#dcfce7;color:#166534}
+.flag.box5{background:#e0e7ff;color:#3730a3}
+.weekplan{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-top:8px}
+.weekplan .w{background:#f8fafd;border:1px solid var(--border);border-radius:6px;padding:10px;font-size:12px;text-align:center}
+.weekplan .w.now{background:#eef3fc;border-color:var(--accent)}
+.weekplan .w b{display:block;color:var(--accent2);font-size:11px}
+.toolbar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;align-items:center}
+.toolbar .spacer{flex:1}
+select.areafilter{padding:6px 10px;border:1px solid var(--border);border-radius:6px;font:inherit;background:#fff}
+.note{font-size:12px;color:var(--muted);margin-top:8px}
+@media(max-width:780px){
+  body{flex-direction:column}
+  nav{width:100%;height:auto;position:relative;display:flex;flex-wrap:wrap;padding:8px}
+  nav h1{width:100%;margin:0 8px 8px}
+  nav button{width:auto;padding:6px 10px;border-left:0;border-bottom:2px solid transparent;font-size:12px}
+  nav button.active{border-left:0;border-bottom-color:var(--accent)}
+  nav .footer{position:relative;width:100%;border-top:0}
+  main{padding:16px}
+  .timer{top:8px;right:8px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <h1>INF.02 Study Hub<small>Technik informatyk · sesja lato 2026</small></h1>
+  <button class="active" data-view="dash"><span class="ico">📊</span> Dashboard</button>
+  <button data-view="quiz"><span class="ico">📝</span> Quiz egzaminacyjny</button>
+  <button data-view="srs"><span class="ico">🔁</span> Fiszki SR</button>
+  <button data-view="topics"><span class="ico">📚</span> Nauka tematyczna</button>
+  <button data-view="practice"><span class="ico">🛠️</span> Symulator praktyczny</button>
+  <button data-view="settings"><span class="ico">⚙️</span> Postępy / Eksport</button>
+  <div class="footer">
+    Egzamin: 02-11.06 (teoria), 12-18.06 (praktyka) 2026.<br>
+    Próg: teoria 50% · praktyka 75%.
+  </div>
+</nav>
+
+<main id="app"></main>
+<div class="timer" id="timer" style="display:none"></div>
+
+<script>
+// =============== STATE ===============
+const STORAGE_KEY="inf02_progress_v1";
+const EXAM_DATE=new Date("2026-06-12T08:00:00");
+let state={
+  version:1,
+  answered:{},        // qid -> {correct:bool, ts:number, attempts:number}
+  srs:{},             // qid -> {box:1-5, due:ts}
+  stats:{quizzes:[]}, // [{score,total,date,duration}]
+  startedAt:Date.now()
+};
+
+function loadState(){
+  try{const s=localStorage.getItem(STORAGE_KEY);if(s){const p=JSON.parse(s);Object.assign(state,p)}}catch(e){console.warn("Load failed",e)}
+}
+function saveState(){
+  try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}catch(e){console.warn("Save failed",e)}
+}
+loadState();
+
+// =============== QUESTION BANK ===============
+// Areas: B=Budowa komputera, O=Systemy operacyjne, N=Sieci, P=Peryferia/sprzęt sieciowy, D=Diagnostyka
+const AREAS={B:"Budowa komputera",O:"Systemy operacyjne",N:"Sieci komputerowe",P:"Peryferia i sprzęt sieciowy",D:"Diagnostyka"};
+const QUESTIONS=[
+// --- BUDOWA KOMPUTERA (B) ---
+{id:1,a:"B",q:"Który parametr procesora określa liczbę cykli zegarowych w jednej sekundzie?",o:["Częstotliwość taktowania","Pojemność pamięci cache","Liczba rdzeni","TDP"],c:0,e:"Częstotliwość taktowania (Hz/MHz/GHz) to liczba cykli zegarowych na sekundę. TDP to moc cieplna."},
+{id:2,a:"B",q:"Pamięć RAM typu DDR4 charakteryzuje się napięciem zasilania:",o:["1,2 V","1,35 V","1,5 V","1,8 V"],c:0,e:"DDR4 pracuje przy napięciu 1,2 V. DDR3 — 1,5 V (niskonapięciowe DDR3L — 1,35 V)."},
+{id:3,a:"B",q:"Który z wymienionych typów pamięci masowej zapewni najwyższą szybkość transferu danych?",o:["HDD 7200 RPM SATA","SSD SATA","SSD M.2 NVMe","Pendrive USB 3.0"],c:2,e:"SSD M.2 NVMe wykorzystuje magistralę PCIe (do ~7000 MB/s w PCIe 4.0). SATA jest ograniczone do ~600 MB/s."},
+{id:4,a:"B",q:"Złącze ATX 24-pin służy do zasilania:",o:["Karty graficznej","Płyty głównej","Procesora","Dysku twardego"],c:1,e:"24-pin ATX to główne zasilanie płyty głównej. CPU ma osobne 4/8-pin EPS, GPU — 6/8-pin PCIe."},
+{id:5,a:"B",q:"Standard złącza PCI Express x16 jest stosowany głównie do podłączenia:",o:["Karty graficznej","Karty dźwiękowej","Dysku SSD SATA","Karty Wi-Fi"],c:0,e:"PCIe x16 daje najwyższą przepustowość — używany do GPU. Inne karty zwykle x1/x4."},
+{id:6,a:"B",q:"Procesor Intel Core i5-12400 obsługuje gniazdo:",o:["LGA 1151","LGA 1200","LGA 1700","AM4"],c:2,e:"Procesory Intel 12. generacji (Alder Lake) używają gniazda LGA 1700."},
+{id:7,a:"B",q:"BIOS/UEFI to:",o:["System operacyjny","Oprogramowanie układowe płyty głównej","Sterownik karty graficznej","Aplikacja diagnostyczna"],c:1,e:"BIOS/UEFI to firmware (oprogramowanie układowe) płyty głównej, inicjalizujące sprzęt podczas POST."},
+{id:8,a:"B",q:"Maksymalna teoretyczna prędkość interfejsu USB 3.2 Gen 2x2 wynosi:",o:["5 Gb/s","10 Gb/s","20 Gb/s","40 Gb/s"],c:2,e:"USB 3.2 Gen 2x2 = 20 Gb/s. Gen 1 = 5, Gen 2 = 10. USB4 = 40 Gb/s."},
+{id:9,a:"B",q:"Pamięć cache L1 procesora charakteryzuje się tym, że:",o:["Jest największą i najwolniejszą","Jest najmniejszą i najszybszą","Jest współdzielona przez wszystkie rdzenie","Znajduje się poza CPU"],c:1,e:"L1 to najszybsza i najmniejsza pamięć cache, prywatna dla każdego rdzenia. L3 zwykle współdzielona."},
+{id:10,a:"B",q:"Standard RAID 1 polega na:",o:["Łączeniu dysków w jeden duży","Lustrzanym kopiowaniu danych","Dzieleniu danych na bloki z parzystością","Zastosowaniu jednego dysku z kopią zapasową w chmurze"],c:1,e:"RAID 1 = mirroring, te same dane na 2 dyskach. RAID 0 = striping, RAID 5 = paritybity."},
+{id:11,a:"B",q:"Magistrala SATA III ma teoretyczną przepustowość:",o:["1,5 Gb/s","3 Gb/s","6 Gb/s","12 Gb/s"],c:2,e:"SATA III = 6 Gb/s (~600 MB/s). SATA I = 1,5, SATA II = 3."},
+{id:12,a:"B",q:"Który element płyty głównej odpowiada za komunikację CPU z RAM i PCIe?",o:["Mostek południowy","Mostek północny / kontroler IMC","Chip BIOS","Bateria CMOS"],c:1,e:"W nowoczesnych CPU kontroler pamięci (IMC) jest zintegrowany w procesorze; klasycznie to mostek północny."},
+{id:13,a:"B",q:"Format płyty głównej Mini-ITX ma wymiary:",o:["170 × 170 mm","244 × 244 mm","305 × 244 mm","305 × 330 mm"],c:0,e:"Mini-ITX = 170×170 mm. micro-ATX = 244×244, ATX = 305×244, E-ATX = 305×330."},
+{id:14,a:"B",q:"Pamięć ROM w komputerze:",o:["Jest kasowana po wyłączeniu zasilania","Służy do przechowywania danych programów uruchomionych","Przechowuje firmware (BIOS/UEFI) — nieulotna","Pełni rolę pamięci podręcznej"],c:2,e:"ROM = Read-Only Memory, nieulotna, przechowuje firmware. RAM jest ulotna."},
+{id:15,a:"B",q:"Standard zasilacza 80 PLUS Gold gwarantuje sprawność co najmniej:",o:["80%","85%","87% przy 50% obciążenia","94%"],c:2,e:"80 PLUS Gold ≥ 87% przy 50% obciążenia (ATX). Bronze 85%, Platinum 90%, Titanium 92%."},
+{id:16,a:"B",q:"Złącze M.2 obsługuje dyski SSD w trybie:",o:["Tylko SATA","Tylko NVMe","SATA i NVMe (zależnie od klucza)","Tylko PATA"],c:2,e:"Złącze M.2 obsługuje oba protokoły — kluczowanie B/M decyduje o trybie."},
+{id:17,a:"B",q:"Pamięć ECC (Error Correcting Code):",o:["Jest szybsza od pamięci non-ECC","Wykrywa i koryguje błędy bitowe","Występuje tylko w dyskach SSD","Jest tańsza od standardowej"],c:1,e:"ECC dodaje dodatkowy bit parzystości; wykrywa i koryguje pojedyncze błędy bitowe (SEC-DED). Stosowana w serwerach."},
+{id:18,a:"B",q:"Funkcja Hyper-Threading w procesorach Intel polega na:",o:["Zwiększeniu częstotliwości","Wykonywaniu 2 wątków na 1 rdzeniu fizycznym","Łączeniu 2 procesorów","Zmniejszeniu zużycia energii"],c:1,e:"HT pozwala na obsługę 2 wątków logicznych przez 1 rdzeń fizyczny — równolegle wykorzystuje jednostki wykonawcze."},
+{id:19,a:"B",q:"Karta graficzna z 8 GB GDDR6 i interfejsem PCIe 4.0 x16 wykorzystuje:",o:["Pamięć współdzieloną z RAM","Dedykowaną pamięć graficzną","Pamięć cache CPU","Dysk SSD jako VRAM"],c:1,e:"Karta z dedykowaną VRAM ma własną pamięć GDDR. Pamięć współdzielona to integrowane GPU."},
+{id:20,a:"B",q:"Który parametr opisuje pojemność maksymalną RAM obsługiwaną przez płytę główną?",o:["Liczba slotów × maks. pojemność modułu","TDP procesora","Częstotliwość FSB","Moc zasilacza"],c:0,e:"Np. 4 sloty × 32 GB = max 128 GB. Określone w specyfikacji płyty (zależy od chipsetu i CPU)."},
+{id:21,a:"B",q:"DisplayPort 1.4 obsługuje rozdzielczość:",o:["1080p przy 60 Hz","4K przy 120 Hz","Maks. 720p","Tylko obraz analogowy"],c:1,e:"DP 1.4 obsługuje 4K@120Hz lub 8K@60Hz z DSC. HDMI 2.0 — 4K@60Hz."},
+{id:22,a:"B",q:"Który chipset Intel pozwala na podkręcanie procesora 'K'?",o:["H610","B660","Z690","H670"],c:2,e:"Tylko chipsety serii Z (Z690, Z790) wspierają OC procesora i pamięci."},
+{id:23,a:"B",q:"Procesor 64-bitowy może adresować teoretycznie:",o:["4 GB pamięci","16 GB pamięci","256 TB pamięci","16 EB pamięci"],c:3,e:"2^64 = 16 EB teoretycznie. W praktyce ograniczone przez chipset/CPU (np. 256 TB w x86-64)."},
+{id:24,a:"B",q:"Bateria CR2032 na płycie głównej zasila:",o:["Procesor","Pamięć CMOS (ustawienia BIOS, zegar RTC)","Wentylator","Dysk SSD"],c:1,e:"Bateria CR2032 podtrzymuje CMOS — pamięć ustawień BIOS i zegar RTC, gdy komputer jest odłączony od prądu."},
+{id:25,a:"B",q:"Wymiana pasty termoprzewodzącej powinna być wykonywana:",o:["Co tydzień","Tylko przy montażu nowego chłodzenia","Co kilka lat lub przy podwyższonych temperaturach","Nigdy"],c:2,e:"Pasta z czasem wysycha; zaleca się wymianę co 3-5 lat lub przy zauważalnym wzroście temperatur."},
+{id:26,a:"B",q:"Karta dźwiękowa PCIe 5.1 obsługuje:",o:["2 głośniki","4 głośniki","6 głośników (2 przód, 2 tył, centralny, subwoofer)","8 głośników"],c:2,e:"5.1 = 5 głośników + subwoofer (.1). 7.1 = 7 + sub."},
+{id:27,a:"B",q:"Funkcja TPM 2.0 jest wymagana do:",o:["Instalacji Windows 11","Bootowania z USB","Pracy w sieci","Działania karty graficznej"],c:0,e:"Windows 11 wymaga TPM 2.0 (sprzętowy moduł kryptograficzny) jako warunek minimalny."},
+{id:28,a:"B",q:"Złącze EPS 8-pin zasila:",o:["Kartę graficzną","Procesor (linia 12 V CPU)","Wentylatory","Dysk SATA"],c:1,e:"EPS 8-pin (4+4) to dedykowane zasilanie procesora. PCIe 6+2-pin to GPU."},
+{id:29,a:"B",q:"Standard pamięci DDR5 oferuje względem DDR4:",o:["Mniejszą przepustowość","Wyższe napięcie 1,5 V","Wyższe częstotliwości i mniejsze napięcie 1,1 V","Brak kompatybilności wstecznej z DDR3"],c:2,e:"DDR5: 1,1 V, częstotliwości 4800+ MT/s, on-die ECC, dwa niezależne kanały 32-bit na moduł."},
+{id:30,a:"B",q:"Aby zwiększyć wydajność dysku w komputerze stacjonarnym, najtańszą opcją jest:",o:["Wymiana procesora","Zamiana HDD na SSD","Zwiększenie RAM","Wymiana zasilacza"],c:1,e:"Zamiana HDD→SSD daje największy zysk w odczuwalnej szybkości za niewielkie pieniądze."},
+
+// --- SYSTEMY OPERACYJNE (O) ---
+{id:31,a:"O",q:"Polecenie Linux 'chmod 755 plik' nadaje uprawnienia:",o:["rwxrwxrwx","rwxr-xr-x","rw-r--r--","r--r--r--"],c:1,e:"7=rwx (właściciel), 5=r-x (grupa, inni). 7-5-5 = rwxr-xr-x."},
+{id:32,a:"O",q:"Które polecenie Windows wyświetla konfigurację interfejsów sieciowych?",o:["ifconfig","ipconfig","netstat","route print"],c:1,e:"Windows: ipconfig. Linux/macOS: ifconfig lub ip addr. Netstat pokazuje połączenia."},
+{id:33,a:"O",q:"System plików NTFS obsługuje pojedynczy plik o maks. rozmiarze:",o:["4 GB","32 GB","16 TB","16 EB teoretycznie"],c:3,e:"Teoretyczne ograniczenie NTFS to 16 EB. FAT32 ograniczone do 4 GB."},
+{id:34,a:"O",q:"Polecenie Linux 'ls -la' wyświetla:",o:["Tylko nazwy plików","Pliki ukryte ze szczegółami","Procesy","Drzewo katalogów"],c:1,e:"-l = format długi, -a = uwzględnia pliki ukryte (zaczynające się od kropki)."},
+{id:35,a:"O",q:"Plik /etc/passwd w systemie Linux zawiera:",o:["Hasła użytkowników","Listę użytkowników i ich UID/GID/powłokę","Konfigurację sieci","Dziennik logowań"],c:1,e:"Hasła są w /etc/shadow (zaszyfrowane). /etc/passwd zawiera meta-informacje o kontach."},
+{id:36,a:"O",q:"Polecenie Windows do zarządzania użytkownikami z linii poleceń:",o:["useradd","net user","passwd","chuser"],c:1,e:"net user [nazwa] [hasło] /add — tworzy konto. Linux używa useradd/passwd."},
+{id:37,a:"O",q:"Punkt montowania w Linuxie to:",o:["Litera dysku","Katalog do którego podłączony jest system plików","Plik konfiguracyjny","Sterownik dysku"],c:1,e:"W Linuxie nie ma liter dysków; systemy plików montuje się w katalogach (np. /mnt, /media)."},
+{id:38,a:"O",q:"Polecenie 'tasklist' w Windows odpowiada poleceniu Linux:",o:["ls","ps","cat","grep"],c:1,e:"ps (process status) wyświetla działające procesy. ls — pliki, cat — wyświetla zawartość."},
+{id:39,a:"O",q:"GPO (Group Policy Object) w Windows służy do:",o:["Zarządzania politykami grup użytkowników/komputerów","Tworzenia grup roboczych","Konfiguracji firewalla","Backup'u rejestru"],c:0,e:"GPO pozwala administratorom zdalnie zarządzać konfiguracją Windows w domenie AD."},
+{id:40,a:"O",q:"Polecenie 'sudo' w Linuxie umożliwia:",o:["Wyłączenie systemu","Uruchomienie polecenia z uprawnieniami innego użytkownika (zwykle root)","Tworzenie użytkowników","Restart sieci"],c:1,e:"sudo (substitute user do) — tymczasowe podniesienie uprawnień, zwykle do root."},
+{id:41,a:"O",q:"Plik wymiany (swap) w Linuxie:",o:["Przechowuje pliki tymczasowe użytkownika","Działa jako rozszerzenie pamięci RAM","Jest kopią zapasową systemu","Zawiera logi systemowe"],c:1,e:"Swap to przestrzeń na dysku używana, gdy zabraknie RAM. Może być partycją lub plikiem."},
+{id:42,a:"O",q:"Aby wyświetlić tablicę partycji dysku w Linuxie, użyjesz:",o:["fdisk -l","ls /dev","ps aux","cat /etc/fstab"],c:0,e:"fdisk -l (jako root) listuje partycje. Alternatywnie lsblk lub parted -l."},
+{id:43,a:"O",q:"PowerShell jest:",o:["Tylko shellem CLI","Powłoką oraz językiem skryptowym opartym na .NET","Aplikacją graficzną","Systemem plików"],c:1,e:"PowerShell to nowoczesna powłoka i język skryptowy w Windows; oparty na obiektach .NET."},
+{id:44,a:"O",q:"Polecenie 'grep -i hello plik.txt':",o:["Zastępuje 'hello' w pliku","Wyszukuje 'hello' ignorując wielkość liter","Liczy linie","Sortuje plik"],c:1,e:"grep szuka wzorca; -i = ignore case. -v = invert, -c = count, -r = recursive."},
+{id:45,a:"O",q:"Rejestr Windows zawiera klucz HKEY_LOCAL_MACHINE, który przechowuje:",o:["Ustawienia bieżącego użytkownika","Globalne ustawienia systemu i sprzętu","Pliki tymczasowe","Sterowniki drukarek"],c:1,e:"HKLM = ustawienia systemowe (sprzęt, oprogramowanie globalnie). HKCU = bieżący użytkownik."},
+{id:46,a:"O",q:"Aby zmienić właściciela pliku w Linuxie, używamy:",o:["chmod","chown","chgrp","chattr"],c:1,e:"chown user:group plik — zmienia właściciela. chmod — uprawnienia, chgrp — grupę."},
+{id:47,a:"O",q:"Polecenie 'dd' w Linuxie służy do:",o:["Wyświetlania daty","Kopiowania danych blok po bloku (np. obraz dysku)","Wyświetlania procesów","Konfiguracji DNS"],c:1,e:"dd kopiuje surowe dane między urządzeniami/plikami. Często do tworzenia obrazów dysków."},
+{id:48,a:"O",q:"System plików ext4 jest typowy dla:",o:["Windows","macOS","Linux","DOS"],c:2,e:"ext4 to domyślny system plików w wielu dystrybucjach Linux. Windows: NTFS, macOS: APFS."},
+{id:49,a:"O",q:"Aby zaktualizować system Debian/Ubuntu, używamy:",o:["yum update","apt update && apt upgrade","pacman -Syu","dnf upgrade"],c:1,e:"Debian/Ubuntu używają APT. Yum/DNF — RHEL/Fedora, pacman — Arch."},
+{id:50,a:"O",q:"Plik /etc/fstab w Linuxie:",o:["Definiuje systemy plików montowane przy starcie","Zawiera hasła","Konfiguruje firewall","Listuje użytkowników"],c:0,e:"fstab = file systems table — opisuje partycje i punkty montowania automatycznie ładowane przy boot."},
+{id:51,a:"O",q:"Aby uruchomić Wiersz polecenia jako administrator w Windows, należy:",o:["Wpisać 'admin' w cmd","Kliknąć PPM → Uruchom jako administrator","Zmienić hasło","Zalogować się ponownie"],c:1,e:"PPM na cmd/PowerShell → 'Uruchom jako administrator'. UAC poprosi o zgodę."},
+{id:52,a:"O",q:"Polecenie 'top' w Linuxie pokazuje:",o:["Najnowsze pliki","Procesy w czasie rzeczywistym","Najszybsze interfejsy","Wersję jądra"],c:1,e:"top — interaktywny monitor procesów (CPU, RAM, PID). htop — wersja przyjaźniejsza."},
+{id:53,a:"O",q:"Konsola odzyskiwania Windows (WinRE) umożliwia m.in.:",o:["Granie w gry","Naprawę startu, przywrócenie systemu, dostęp do wiersza polecenia","Edycję wideo","Wyświetlanie wiadomości"],c:1,e:"WinRE = środowisko odzyskiwania: Startup Repair, System Restore, CMD, Reset PC."},
+{id:54,a:"O",q:"Aby przekierować stdout polecenia do pliku w bash:",o:["polecenie | plik","polecenie > plik","polecenie < plik","polecenie & plik"],c:1,e:"> nadpisuje, >> dopisuje, | przekierowuje do innej komendy, < kieruje plik na stdin."},
+{id:55,a:"O",q:"Komenda 'sfc /scannow' w Windows:",o:["Skanuje sieć","Sprawdza i naprawia pliki systemowe","Uruchamia ponownie system","Tworzy backup"],c:1,e:"System File Checker — skanuje integralność plików systemowych Windows i przywraca uszkodzone z cache."},
+{id:56,a:"O",q:"systemctl w Linuxie służy do:",o:["Zarządzania usługami i jednostkami systemd","Edycji plików","Przeglądania internetu","Tworzenia użytkowników"],c:0,e:"systemctl start/stop/enable/disable [nazwa].service — zarządza usługami w systemd."},
+{id:57,a:"O",q:"Wirtualna pamięć w systemie operacyjnym:",o:["Jest osobną kartą rozszerzeń","Łączy RAM i część dysku w wspólną przestrzeń adresową","Występuje tylko w sieciach","To kopia BIOS"],c:1,e:"Mechanizm pamięci wirtualnej pozwala procesom korzystać z większej przestrzeni niż fizyczny RAM dzięki swap/pagefile."},
+{id:58,a:"O",q:"W Windows do zarządzania dyskami z GUI używamy:",o:["diskmgmt.msc","gpedit.msc","services.msc","devmgmt.msc"],c:0,e:"diskmgmt.msc — Zarządzanie dyskami. services.msc — usługi, devmgmt.msc — Menedżer urządzeń."},
+{id:59,a:"O",q:"Skrót Ctrl+Alt+T w wielu dystrybucjach Linux otwiera:",o:["Menedżer plików","Terminal","Edytor","Przeglądarkę"],c:1,e:"W wielu środowiskach (Ubuntu/GNOME) Ctrl+Alt+T uruchamia okno terminala."},
+{id:60,a:"O",q:"Polecenie 'ping' wykorzystuje protokół:",o:["TCP","UDP","ICMP","ARP"],c:2,e:"Ping wysyła pakiety ICMP Echo Request i czeka na Echo Reply."},
+{id:61,a:"O",q:"Plik z rozszerzeniem .iso to:",o:["Skompresowany dokument","Obraz dysku optycznego/instalatora","Plik graficzny","Dokument tekstowy"],c:1,e:"ISO 9660 — standard obrazów płyt CD/DVD. Często używany do dystrybucji systemów operacyjnych."},
+{id:62,a:"O",q:"Aby utworzyć link symboliczny w Linuxie:",o:["ln source link","cp source link","mv source link","mkdir link"],c:0,e:"ln -s source link — symbolic link. ln bez -s — hard link."},
+{id:63,a:"O",q:"Tryb awaryjny (Safe Mode) w Windows uruchamia system:",o:["Z pełną grafiką","Z minimalnym zestawem sterowników","Bez RAM","Bez procesora"],c:1,e:"Safe Mode ładuje tylko niezbędne sterowniki — pomocny przy diagnostyce konfliktów/malware."},
+{id:64,a:"O",q:"Polecenie 'whoami' w Linuxie/Windows wyświetla:",o:["Wersję systemu","Bieżącego zalogowanego użytkownika","Listę procesów","Adres IP"],c:1,e:"whoami zwraca login bieżącego użytkownika (UID w Linuxie, NAZWA w Windows)."},
+{id:65,a:"O",q:"Repozytorium pakietów w Linuxie to:",o:["Folder z plikami użytkownika","Serwer/lokalizacja udostępniająca pakiety oprogramowania","Backup systemu","Sterownik karty sieciowej"],c:1,e:"Repozytoria APT/YUM/Pacman zawierają paczki .deb/.rpm/.pkg do instalacji przez menedżer pakietów."},
+
+// --- SIECI KOMPUTEROWE (N) ---
+{id:66,a:"N",q:"Maska podsieci /24 odpowiada zapisowi dziesiętnemu:",o:["255.255.0.0","255.255.255.0","255.255.255.128","255.255.255.255"],c:1,e:"/24 = 24 jedynki = 11111111.11111111.11111111.00000000 = 255.255.255.0."},
+{id:67,a:"N",q:"Adres IP 192.168.5.165 z maską /26 należy do podsieci:",o:["192.168.5.0/26","192.168.5.64/26","192.168.5.128/26","192.168.5.192/26"],c:2,e:"/26 → bloki po 64 adresy. 165 mieści się w 128-191, więc podsieć to 192.168.5.128."},
+{id:68,a:"N",q:"Aby z sieci 192.168.1.0/24 utworzyć 8 podsieci, należy zastosować maskę:",o:["/25","/26","/27","/28"],c:2,e:"8 = 2^3 → trzy dodatkowe bity → /24+3 = /27 (255.255.255.224, po 32 adresy)."},
+{id:69,a:"N",q:"Adres broadcast w sieci 192.168.0.0/24 to:",o:["192.168.0.0","192.168.0.1","192.168.0.254","192.168.0.255"],c:3,e:"Broadcast = ostatni adres w podsieci. Dla /24 (256 adresów) = .255."},
+{id:70,a:"N",q:"Liczba dostępnych adresów hostów w sieci /28 wynosi:",o:["6","14","30","62"],c:1,e:"/28 = 16 adresów - 2 (sieć + broadcast) = 14 hostów."},
+{id:71,a:"N",q:"Protokół DHCP odpowiada za:",o:["Tłumaczenie nazw na IP","Automatyczne przydzielanie adresów IP","Routing","Szyfrowanie ruchu"],c:1,e:"DHCP (Dynamic Host Configuration Protocol) automatyzuje przydział IP, maski, bramy, DNS klientom."},
+{id:72,a:"N",q:"Protokół DNS działa zazwyczaj na porcie:",o:["21","53","80","443"],c:1,e:"DNS = port 53 (UDP/TCP). 21 = FTP, 80 = HTTP, 443 = HTTPS."},
+{id:73,a:"N",q:"W modelu OSI warstwa 3 to:",o:["Łącza danych","Sieciowa","Transportowa","Aplikacji"],c:1,e:"OSI: 1-fizyczna, 2-łącza danych, 3-sieciowa (IP), 4-transportowa (TCP/UDP), 5-sesji, 6-prezentacji, 7-aplikacji."},
+{id:74,a:"N",q:"Adres MAC ma długość:",o:["32 bity","48 bitów","64 bity","128 bitów"],c:1,e:"MAC = 48 bitów (6 oktetów), zwykle zapisywany jako 00:1A:2B:3C:4D:5E."},
+{id:75,a:"N",q:"Kabel skrętki Cat 6 obsługuje przepustowość do:",o:["100 Mb/s","1 Gb/s","10 Gb/s na 55 m","40 Gb/s"],c:2,e:"Cat 6 = 1 Gb/s na 100 m, 10 Gb/s do ok. 55 m. Cat 6a = 10 Gb/s na 100 m."},
+{id:76,a:"N",q:"Adres IPv6 ma długość:",o:["32 bity","64 bity","128 bitów","256 bitów"],c:2,e:"IPv6 = 128 bitów = 8 grup po 16 bitów (np. 2001:db8::1)."},
+{id:77,a:"N",q:"NAT (Network Address Translation) służy do:",o:["Szyfrowania","Tłumaczenia adresów IP (zwykle prywatnych na publiczne)","Routingu wewnętrznego","Filtrowania pakietów"],c:1,e:"NAT pozwala wielu urządzeniom z prywatnymi IP komunikować się przez jeden publiczny."},
+{id:78,a:"N",q:"Topologia gwiazdy charakteryzuje się tym, że:",o:["Wszystkie urządzenia połączone są w pętli","Każde urządzenie połączone jest do centralnego węzła (switcha)","Połączenie liniowe","Każdy z każdym"],c:1,e:"Gwiazda = wszystkie hosty łączą się do switcha/huba. Awaria centrum = awaria sieci."},
+{id:79,a:"N",q:"Standard IEEE 802.11ac działa na pasmach:",o:["Tylko 2,4 GHz","Tylko 5 GHz","2,4 i 5 GHz","6 GHz"],c:1,e:"802.11ac (Wi-Fi 5) działa wyłącznie na 5 GHz. 802.11ax (Wi-Fi 6) — 2,4/5/6 GHz."},
+{id:80,a:"N",q:"Polecenie 'tracert' w Windows służy do:",o:["Sprawdzenia ścieżki pakietów do celu","Skanowania portów","Konfiguracji DNS","Mapowania dysków sieciowych"],c:0,e:"tracert/traceroute pokazuje kolejne routery (hopki) na trasie do hosta docelowego."},
+{id:81,a:"N",q:"Adres 169.254.x.x to adres:",o:["Publiczny","Lokalny APIPA (gdy DHCP nie działa)","Multicast","Loopback"],c:1,e:"APIPA = Automatic Private IP Addressing — host nadaje sobie adres z 169.254.0.0/16, gdy nie otrzyma IP z DHCP."},
+{id:82,a:"N",q:"Switch działa na warstwie:",o:["1 (fizyczna)","2 (łącza danych)","3 (sieciowa)","7 (aplikacji)"],c:1,e:"Switch L2 podejmuje decyzje na podstawie MAC. Router — L3 (IP). Switch L3 łączy oba."},
+{id:83,a:"N",q:"VLAN to:",o:["Wirtualna sieć LAN, segregacja ruchu na switchu","Sieć rozległa","Protokół szyfrowania","Adres bramy"],c:0,e:"VLAN (802.1Q) dzieli switch logicznie na osobne segmenty broadcast, niezależne od fizycznych portów."},
+{id:84,a:"N",q:"Protokół TCP zapewnia:",o:["Komunikację bezpołączeniową","Komunikację połączeniową z potwierdzaniem","Brak nadawcy","Tylko broadcast"],c:1,e:"TCP — handshake, kolejność, retransmisje. UDP — bez potwierdzeń, szybszy."},
+{id:85,a:"N",q:"Brama domyślna (default gateway) to:",o:["Adres serwera DNS","Adres routera dla pakietów spoza lokalnej sieci","Adres broadcast","Adres serwera plików"],c:1,e:"Gdy host wysyła pakiet poza lokalną podsieć, kieruje go do bramy domyślnej."},
+{id:86,a:"N",q:"Sieć 10.0.0.0/8 to adresacja:",o:["Publiczna","Prywatna (klasa A)","Multicast","Loopback"],c:1,e:"Pula prywatna (RFC 1918): 10/8, 172.16-31/12, 192.168/16. Loopback = 127.0.0.0/8."},
+{id:87,a:"N",q:"Maska 255.255.255.252 odpowiada prefiksowi:",o:["/28","/29","/30","/31"],c:2,e:"/30 = 30 jedynek = 255.255.255.252 → 4 adresy, 2 hosty (klasyczne łącza P2P)."},
+{id:88,a:"N",q:"Protokół ARP służy do:",o:["Tłumaczenia IP → MAC w sieci lokalnej","Tłumaczenia nazw → IP","Routingu","Szyfrowania"],c:0,e:"ARP (Address Resolution Protocol) — mapuje adresy IP na MAC w warstwie 2."},
+{id:89,a:"N",q:"Klasa C adresów IP obejmuje sieci:",o:["1.0.0.0 - 126.255.255.255","128.0.0.0 - 191.255.255.255","192.0.0.0 - 223.255.255.255","224.0.0.0 - 239.255.255.255"],c:2,e:"Klasy: A: 1-126, B: 128-191, C: 192-223, D: 224-239 (multicast), E: 240-255."},
+{id:90,a:"N",q:"Standard PoE (Power over Ethernet) 802.3af dostarcza moc do:",o:["3 W","15,4 W","30 W","60 W"],c:1,e:"802.3af = ~15,4 W (PoE). 802.3at (PoE+) = 30 W. 802.3bt = 60-90 W."},
+{id:91,a:"N",q:"Aby z sieci /24 wydzielić 4 podsieci równe, używamy maski:",o:["/25","/26","/27","/28"],c:1,e:"4 = 2^2 → +2 bity → /26 (255.255.255.192, po 64 adresy)."},
+{id:92,a:"N",q:"Port 443 to standard dla:",o:["HTTP","HTTPS","FTP","SSH"],c:1,e:"HTTPS (HTTP over TLS) = 443. SSH = 22, HTTP = 80, FTP = 21."},
+{id:93,a:"N",q:"WPA2 stosuje algorytm szyfrowania:",o:["DES","RC4","AES (CCMP)","MD5"],c:2,e:"WPA2 = AES w trybie CCMP (obowiązkowo). WPA = TKIP. WEP = RC4 (przestarzałe, niezalecane)."},
+{id:94,a:"N",q:"Standard kabla światłowodowego SM (single-mode) charakteryzuje się:",o:["Większą odległością transmisji niż MM","Większą średnicą rdzenia","Krótszym zasięgiem","Wyższym tłumieniem"],c:0,e:"SM (rdzeń ~9 µm) — duże odległości (km), MM (50/62,5 µm) — krótsze, ale tańsze nadajniki."},
+{id:95,a:"N",q:"Adres pętli zwrotnej w IPv4 to:",o:["0.0.0.0","127.0.0.1","255.255.255.255","192.168.1.1"],c:1,e:"127.0.0.1 (localhost) — wskazuje na ten sam komputer. W IPv6 = ::1."},
+{id:96,a:"N",q:"VPN umożliwia:",o:["Tworzenie szyfrowanego tunelu przez sieć publiczną","Skanowanie portów","Tylko transmisję wideo","Tylko gier online"],c:0,e:"VPN (Virtual Private Network) tworzy zaszyfrowany tunel, np. dla zdalnej pracy."},
+{id:97,a:"N",q:"Komenda 'nslookup nazwa.pl' służy do:",o:["Sprawdzania pingu","Odpytania serwera DNS o rekordy domeny","Konfigurowania interfejsu","Routingu"],c:1,e:"nslookup pyta DNS o A/AAAA/MX/etc. dla podanej domeny. Linux ma też 'dig'."},
+{id:98,a:"N",q:"Protokół FTP w trybie pasywnym używa portów:",o:["20 do danych, 21 do kontroli","21 do kontroli, dynamiczne do danych (server →)","80 i 443","Tylko 21"],c:1,e:"FTP pasywne: kontrola na 21, dane na porcie wybranym przez serwer (>1023). Klient inicjuje połączenia."},
+{id:99,a:"N",q:"DMZ (Demilitarized Zone) w sieci to:",o:["Strefa pełnego zaufania","Strefa wystawiona dla usług publicznych, oddzielona od LAN","Sieć bezprzewodowa","Backup"],c:1,e:"DMZ to wydzielona podsieć dla serwerów dostępnych z internetu (np. www, mail), oddzielona zaporą od LAN."},
+{id:100,a:"N",q:"Maks. liczba hostów w sieci klasy /16 to:",o:["256","65 534","16 777 214","254"],c:1,e:"/16 = 65536 - 2 = 65534 hostów. Klasa B."},
+
+// --- PERYFERIA / SPRZĘT SIECIOWY (P) ---
+{id:101,a:"P",q:"Drukarka laserowa do utrwalenia tonera używa:",o:["Wody","Lasera","Wysokiej temperatury (zespół utrwalający - fuser)","Sprężonego powietrza"],c:2,e:"Toner topi się w fuserze (~180°C) i wnika w papier. Laser tylko naładowuje bęben."},
+{id:102,a:"P",q:"Drukarka atramentowa najczęściej zatyka się przez:",o:["Brak papieru","Wyschnięcie tuszu w dyszach głowicy","Niskie napięcie","Brak tonera"],c:1,e:"Tusz wodny szybko wysycha; brak druku → należy uruchomić cykl czyszczenia głowicy."},
+{id:103,a:"P",q:"Standard rozdzielczości drukarki wyrażany jest w:",o:["dpi (punktów na cal)","Hz","Mb/s","ppm"],c:0,e:"dpi = dots per inch — gęstość punktów. ppm = pages per minute (prędkość)."},
+{id:104,a:"P",q:"Skaner CCD różni się od CIS tym, że:",o:["Jest tańszy","Ma większą głębię ostrości","Działa tylko w czerni","Jest ręczny"],c:1,e:"CCD ma układ optyczny + soczewki — większa głębia, ale grubszy. CIS — kompaktowy, mniejsza głębia."},
+{id:105,a:"P",q:"Switch zarządzalny umożliwia:",o:["Tylko forwardowanie ramek","Konfigurację VLAN, QoS, port mirroring","Tylko routing","Druk sieciowy"],c:1,e:"Smart/zarządzalne switche oferują VLAN, port mirroring, QoS, link aggregation, SNMP, itp."},
+{id:106,a:"P",q:"Access Point (AP) działa jako:",o:["Konwerter sygnału przewodowego na bezprzewodowy","Drukarka","Skaner","Pamięć masowa"],c:0,e:"AP łączy sieć przewodową ze stacjami Wi-Fi. Może działać samodzielnie lub w trybie kontrolera."},
+{id:107,a:"P",q:"Router domowy zwykle pełni jednocześnie role:",o:["Tylko routera","Routera, switcha, AP, DHCP, NAT, firewall","Tylko switcha","Tylko AP"],c:1,e:"Tani router SOHO łączy w sobie kilka funkcji: trasowanie, lokalna sieć (switch), Wi-Fi, DHCP, NAT, prosta zapora."},
+{id:108,a:"P",q:"Drukarka 3D typu FDM tworzy obiekty przez:",o:["Cięcie laserem","Nakładanie warstw stopionego filamentu","Rzeźbienie ręczne","Druk atramentowy"],c:1,e:"FDM (Fused Deposition Modeling) — głowica wytłacza stopiony plastik (PLA, ABS) warstwowo."},
+{id:109,a:"P",q:"Multifunkcyjne urządzenie 4w1 łączy zwykle:",o:["Drukarkę, skaner, kserokopiarkę, fax","Tylko drukarkę i skaner","Komputer z monitorem","Router z modemem"],c:0,e:"Standardowy zestaw multifunkcji (MFP): druk, skan, kopia, fax. Niektóre modele bez fax = 3w1."},
+{id:110,a:"P",q:"Klawiatura mechaniczna w przeciwieństwie do membranowej:",o:["Jest cichsza","Każdy klawisz ma osobny przełącznik (switch)","Jest gumowa","Nie ma podświetlenia"],c:1,e:"Mechaniczne switche (Cherry MX, Gateron) — wytrzymalsze, lepsza taktylność, droższe niż membrana."},
+{id:111,a:"P",q:"Mysz optyczna używa:",o:["Kulki","Diody LED i czujnika obrazu","Mechaniki","Lasera medycznego"],c:1,e:"Optyczne myszy oświetlają powierzchnię diodą; sensor analizuje zmiany. Laserowe — laser zamiast LED."},
+{id:112,a:"P",q:"Standard HDMI 2.1 obsługuje rozdzielczość:",o:["1080p@60Hz","4K@60Hz","4K@120Hz, 8K@60Hz","Tylko 720p"],c:2,e:"HDMI 2.1 (48 Gb/s) wspiera 4K@120Hz, 8K@60Hz, VRR, eARC."},
+{id:113,a:"P",q:"Tablet graficzny komunikuje się z PC najczęściej przez:",o:["VGA","USB lub Bluetooth","HDMI","SATA"],c:1,e:"Tablety graficzne (Wacom, XP-Pen) łączą się przez USB lub bezprzewodowo (BT/dongle)."},
+{id:114,a:"P",q:"Kontroler RAID sprzętowy:",o:["Wymaga oprogramowania OS","Realizuje obliczenia parzystości w dedykowanym chipie","Działa tylko z SSD","Nie obsługuje RAID 5"],c:1,e:"RAID sprzętowy ma własny procesor i pamięć cache; nie obciąża CPU. Software RAID — przez OS (mdadm, Storage Spaces)."},
+{id:115,a:"P",q:"Dysk twardy zewnętrzny USB-C 3.2 Gen 2 osiąga max:",o:["100 MB/s","500 MB/s","1000 MB/s","5000 MB/s"],c:2,e:"USB 3.2 Gen 2 = 10 Gb/s = ~1000 MB/s teoretycznie. SSD wykorzysta to, HDD nie."},
+{id:116,a:"P",q:"UPS (Uninterruptible Power Supply) służy do:",o:["Zasilania awaryjnego po zaniku prądu","Filtrowania internetu","Tworzenia kopii zapasowych","Drukowania"],c:0,e:"UPS dostarcza energię z baterii (line-interactive/online), umożliwia bezpieczne zamknięcie lub kontynuację pracy."},
+{id:117,a:"P",q:"Patchpanel służy do:",o:["Łączenia kabli sieciowych w szafie krosowniczej","Drukowania","Skanowania","Routingu"],c:0,e:"Patchpanel agreguje przewody strukturalne; używa się keystone/kabli krosowych do switcha."},
+{id:118,a:"P",q:"Skaner kodów kreskowych komunikuje się zwykle przez:",o:["Tylko Bluetooth","USB (HID — emulacja klawiatury) lub COM","HDMI","VGA"],c:1,e:"Czytniki bardzo często emulują klawiaturę — wpisują zeskanowany kod tam, gdzie kursor."},
+{id:119,a:"P",q:"Modem ADSL używa do transmisji:",o:["Linii światłowodowej","Linii telefonicznej miedzianej","Sieci komórkowej","Wi-Fi"],c:1,e:"ADSL — Asymmetric Digital Subscriber Line, na klasycznej miedzianej parze. VDSL2 też miedź; FTTH — światłowód."},
+{id:120,a:"P",q:"Wkładka SFP+ obsługuje przepustowość:",o:["1 Gb/s","10 Gb/s","25 Gb/s","100 Gb/s"],c:1,e:"SFP = 1 Gb/s, SFP+ = 10 Gb/s, SFP28 = 25, QSFP+ = 40, QSFP28 = 100."},
+
+// --- DIAGNOSTYKA (D) ---
+{id:121,a:"D",q:"Sygnały dźwiękowe BIOS przy starcie informują o:",o:["Wersji systemu","Błędach POST (np. RAM, GPU)","Stanie baterii laptopa","Połączeniu z siecią"],c:1,e:"BIOS używa kodów beep (np. AMI, Award) sygnalizujących błędy diagnostyczne POST: 1 long 2 short = błąd GPU, itp."},
+{id:122,a:"D",q:"Komputer włącza się, wentylatory działają, ale brak obrazu. Najpierw sprawdź:",o:["System operacyjny","Pamięć RAM, kartę graficzną, kabel monitora","Drukarkę","Internet"],c:1,e:"Brak obrazu = problem warstwy sprzętowej: kabel monitora, RAM (re-seat, na pojedynczych modułach), GPU."},
+{id:123,a:"D",q:"Niebieski ekran (BSOD) w Windows oznacza:",o:["Brak prądu","Krytyczny błąd jądra systemu","Aktualizację","Tryb prezentacji"],c:1,e:"BSOD pokazuje kod błędu (np. PAGE_FAULT_IN_NONPAGED_AREA) — wskazuje na sterowniki, RAM lub uszkodzenie systemu."},
+{id:124,a:"D",q:"Aby przetestować pamięć RAM pod kątem błędów, użyjesz:",o:["chkdsk","memtest86","sfc","ping"],c:1,e:"memtest86/86+ to standard testowania RAM przez wielokrotny zapis/odczyt wzorców."},
+{id:125,a:"D",q:"Komenda 'chkdsk /f /r' w Windows:",o:["Defragmentuje dysk","Sprawdza i naprawia błędy systemu plików oraz sektory dysku","Tworzy obraz","Nic nie robi"],c:1,e:"/f = napraw błędy systemu plików, /r = lokalizuj złe sektory i odzyskuj informacje."},
+{id:126,a:"D",q:"Termiczne wyłączenie komputera (thermal shutdown) zwykle wskazuje na:",o:["Awarię zasilacza","Problem chłodzenia procesora (zatkany radiator, wyschnięta pasta)","Złą kartę sieciową","Wirus"],c:1,e:"CPU/GPU mają mechanizmy ochrony termicznej — wyłączenie chroni przed uszkodzeniem. Sprawdź wentylatory, pastę, kurz."},
+{id:127,a:"D",q:"Komputer co kilka minut sam się wyłącza. Najbardziej prawdopodobna przyczyna:",o:["Brak miejsca na dysku","Przegrzewanie się lub awaria zasilacza","Stary mikrofon","Niska wersja oprogramowania"],c:1,e:"Niespodziewane wyłączenia: temperatura (CPU/GPU/VRM) lub PSU (spadki napięcia). Sprawdź temperatury i PSU."},
+{id:128,a:"D",q:"SMART (Self-Monitoring) w dyskach służy do:",o:["Szyfrowania","Monitorowania kondycji i przewidywania awarii","Defragmentacji","Klonowania"],c:1,e:"SMART pokazuje atrybuty (Reallocated Sectors, Spin Retry, itp.) — narzędzia: smartctl, CrystalDiskInfo."},
+{id:129,a:"D",q:"Dioda LED na płycie głównej oznaczona 'CPU' świeci ciągle. Oznacza to:",o:["Problem z procesorem lub jego zasilaniem","Brak Wi-Fi","Problem z drukarką","Uszkodzony monitor"],c:0,e:"LED diagnostyczne (Q-LED) wskazują który komponent zawodzi w POST: CPU, DRAM, VGA, BOOT."},
+{id:130,a:"D",q:"Kabel sieciowy nie działa po przeniesieniu PC. Pierwszy krok:",o:["Wymienić zasilacz","Sprawdzić czy lampki LED na karcie sieciowej i switchu świecą","Reinstalować Windows","Wymienić CPU"],c:1,e:"Diody link/activity na NIC i switchu — najszybsza diagnostyka warstwy fizycznej."},
+{id:131,a:"D",q:"Tester kabli UTP wykrywa:",o:["Ciągłość żył i kolejność (T568A/B)","Ilość RAM","Wersję BIOS","Hasło sieci"],c:0,e:"Tester pokazuje przerwy, zwarcia, krzyżowanie żył (split pair) i schemat zarobienia końcówek."},
+{id:132,a:"D",q:"Komputer zatrzymuje się na ekranie 'No bootable device'. Sprawdź:",o:["Konto Windows","Kolejność boot w BIOS, podłączenie dysku, MBR/GPT","Klawiaturę","Drukarkę"],c:1,e:"Sprawdź czy dysk jest widoczny w BIOS, kolejność boot, integralność MBR/GPT, ewentualnie odbuduj bootloader."},
+{id:133,a:"D",q:"Narzędzie 'Event Viewer' (Podgląd zdarzeń) w Windows:",o:["Tworzy nowe zdarzenia","Pokazuje logi systemowe, aplikacji, zabezpieczeń","Konfiguruje sieć","Defragmentuje dysk"],c:1,e:"Event Viewer = eventvwr.msc. Logi: System, Application, Security — kluczowe przy diagnostyce błędów."},
+{id:134,a:"D",q:"Wadliwy moduł RAM w teście memtest objawia się:",o:["Brakiem dźwięku","Czerwonymi błędami z adresami","Wyższą wydajnością","Lepszą grafiką"],c:1,e:"Memtest pokazuje błędy z adresami pamięci (logical/physical). Wymień moduł lub przesuń do innego slotu, by zlokalizować."},
+{id:135,a:"D",q:"Bateria CMOS jest rozładowana. Objaw:",o:["Czas/data się resetują, BIOS gubi ustawienia","Brak Wi-Fi","Wyższe FPS","Drukarka działa wolniej"],c:0,e:"CR2032 podtrzymuje pamięć ustawień i RTC. Po rozładowaniu — reset BIOS po wyłączeniu z sieci."},
+{id:136,a:"D",q:"Polecenie 'ping 8.8.8.8' działa, ale 'ping google.com' nie. Problem dotyczy:",o:["Routingu","DNS","Karty sieciowej","Zasilania"],c:1,e:"Sieć działa (IP osiągalne), ale rozwiązywanie nazw nie — sprawdź konfigurację DNS w karcie sieciowej."},
+{id:137,a:"D",q:"Wąchający się zapach plastiku z komputera + brak obrazu = ",o:["Normalne","Możliwe spalenie elementu (zwykle PSU lub VRM) — natychmiast wyłącz","Aktualizacja","Brak tonera"],c:1,e:"Zapach spalonej elektroniki = uszkodzenie. Wyłącz, odłącz zasilanie, oględziny — wzdęte kondensatory, ślady."},
+{id:138,a:"D",q:"Drukarka drukuje 'puste' strony, choć tonera/tuszu jest dużo. Sprawdź:",o:["Wersję Windows","Sterownik, zatrzask kartridża, ewentualnie głowicę/uszczelkę","Sieć","Pamięć RAM"],c:1,e:"Atramentówka — czyszczenie głowicy. Laser — sprawdź zatrzask kartridża, korotron transferowy, uszkodzony bęben."},
+{id:139,a:"D",q:"Komputer nie reaguje na przycisk Power. Pierwszy krok:",o:["Wymień RAM","Sprawdź zasilanie (kabel, listwa, wyłącznik PSU, przycisk Reset)","Reinstaluj Windows","Wymień GPU"],c:1,e:"Brak reakcji = sprawdź najprostsze: kabel zasilający, wyłącznik PSU (z tyłu), próba zwarcia pinów PWR na płycie."},
+{id:140,a:"D",q:"Dysk SSD wykazuje 'Reallocated Sector Count' rosnący w SMART. Oznacza to:",o:["Dysk jest nowy","Zaczyna mieć złe komórki — rozważ wymianę","Lepsza wydajność","Aktualizacja firmware"],c:1,e:"Wzrost realokacji = pogorszenie kondycji nośnika. Backup, ewentualnie wymiana."},
+{id:141,a:"D",q:"Komputer nie łączy się z siecią Wi-Fi domową (inne urządzenia działają). Sprawdź:",o:["Tylko zasilanie","Tryb samolotowy, sterownik karty Wi-Fi, zapisane hasło","Procesor","Drukarkę"],c:1,e:"Skoro inne klienty działają — problem po stronie tego PC: tryb samolotowy, sterownik, profil Wi-Fi."},
+{id:142,a:"D",q:"Po aktualizacji systemu sterownik karty graficznej powoduje BSOD. Najszybsze rozwiązanie:",o:["Wymienić GPU","Tryb awaryjny → przywrócenie sterownika z DDU lub starszej wersji","Reinstalacja systemu","Wymiana RAM"],c:1,e:"Tryb awaryjny → DDU (Display Driver Uninstaller) → instalacja stabilnej wersji sterownika."},
+{id:143,a:"D",q:"Multimetr w trybie pomiaru napięcia DC służy do sprawdzenia:",o:["Napięć linii zasilacza (12V, 5V, 3.3V)","Sieci Wi-Fi","Temperatury CPU","Adresu IP"],c:0,e:"Multimetrem w DC mierzymy napięcia PSU na molexach/SATA — odchyłki >5% świadczą o problemach."},
+{id:144,a:"D",q:"Tonery i bębny laserowe są zużyte. Najczęstszy objaw:",o:["Zbyt szybki druk","Smużenie, jasne wydruki, powtarzające się ślady na stronie","Brak prądu","Niskie napięcie"],c:1,e:"Zużyte komponenty: smugi, bladość, powtarzające się punkty co obwód bębna (ok. 75 mm)."},
+{id:145,a:"D",q:"Dysk twardy klika niespotykanym dźwiękiem. Działanie:",o:["Kontynuuj pracę","Natychmiast wyłącz, zrób backup z innej maszyny — możliwa awaria głowicy","Defragmentuj","Format"],c:1,e:"Klik (head clicking) = mechaniczna awaria. Im dłużej pracuje — tym mniej szans na odzyskanie. Backup priorytetem."},
+{id:146,a:"D",q:"Komenda 'ipconfig /flushdns' w Windows:",o:["Resetuje hasło","Czyści cache DNS klienta","Restartuje sieć","Wyłącza interfejs"],c:1,e:"Po zmianach DNS lub problemach z rozwiązywaniem — czyszczenie cache DNS pomoże uniknąć nieaktualnych wpisów."},
+{id:147,a:"D",q:"Komputer wolno działa, dysk obciążony 100%. Sprawdź:",o:["Procesy w Menedżerze zadań, kondycję dysku (SMART), antywirus","Wymień zasilacz","Aktualizacja BIOS","Wymień klawiaturę"],c:0,e:"Dysk @ 100% = zwykle: skanowanie AV, indeksowanie, Windows Update, awaria HDD. Sprawdź źródło i SMART."},
+{id:148,a:"D",q:"Polecenie 'ping -t 192.168.1.1' w Windows:",o:["Wysyła jeden pakiet","Wysyła pakiety w pętli aż do przerwania (Ctrl+C)","Resetuje połączenie","Czyści cache"],c:1,e:"Flaga -t = ciągły ping. Przydatne do monitorowania stabilności połączenia."},
+{id:149,a:"D",q:"Karta graficzna ma artefakty graficzne (zniekształcenia, kolorowe piksele). Możliwa przyczyna:",o:["Awaria pamięci VRAM lub GPU, problemy z chłodzeniem, sterownik","Brak DNS","Wymiana klawiatury","Zła rozdzielczość ekranu"],c:0,e:"Artefakty = zwykle: przegrzewanie GPU/VRAM, awaria pamięci, niestabilny OC. Test FurMark, monitoring temp."},
+{id:150,a:"D",q:"Aby utworzyć obraz dysku do diagnostyki/backupu w Linuxie, użyjesz:",o:["dd if=/dev/sda of=/sciezka/obraz.img bs=4M","ls -la","ping","grep"],c:0,e:"dd kopiuje surowe dane sektor-po-sektorze. UWAGA na if/of (jak pomylisz — zniszczysz dysk!)."}
+];
+
+// =============== PROGRESS HELPERS ===============
+function dueSrs(){
+  const now=Date.now();
+  return Object.entries(state.srs).filter(([_,v])=>v.due<=now).map(([k])=>parseInt(k));
+}
+function progressByArea(){
+  const out={};
+  for(const a of Object.keys(AREAS)){
+    const inArea=QUESTIONS.filter(q=>q.a===a);
+    const answeredCorrect=inArea.filter(q=>state.answered[q.id]&&state.answered[q.id].correct).length;
+    out[a]={total:inArea.length,correct:answeredCorrect,pct:Math.round(answeredCorrect/inArea.length*100)};
+  }
+  return out;
+}
+function totalProgress(){
+  const total=QUESTIONS.length;
+  const correct=Object.values(state.answered).filter(x=>x.correct).length;
+  return {total,correct,pct:Math.round(correct/total*100)};
+}
+function daysToExam(){
+  const now=new Date();
+  return Math.ceil((EXAM_DATE-now)/(1000*60*60*24));
+}
+
+// =============== ROUTING ===============
+const VIEWS={};
+let currentView="dash",quizState=null,timerInterval=null;
+
+document.querySelectorAll("nav button[data-view]").forEach(b=>{
+  b.addEventListener("click",()=>render(b.dataset.view));
+});
+function render(view){
+  if(timerInterval&&view!=="quiz"){clearInterval(timerInterval);timerInterval=null;document.getElementById("timer").style.display="none";}
+  currentView=view;
+  document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("active",b.dataset.view===view));
+  const app=document.getElementById("app");
+  app.innerHTML="";
+  (VIEWS[view]||VIEWS.dash)(app);
+}
+
+// =============== DASHBOARD ===============
+VIEWS.dash=(app)=>{
+  const days=daysToExam();
+  const tot=totalProgress();
+  const dueQ=dueSrs();
+  const last5=state.stats.quizzes.slice(-5).reverse();
+  const areas=progressByArea();
+  const week=currentStudyWeek();
+  app.innerHTML=`
+    <div class="row">
+      <div class="card"><h3>Dni do egzaminu praktycznego</h3><div class="bigstat">${days>0?days:0}<small>${days>0?'12.06.2026':'Egzamin za nami'}</small></div></div>
+      <div class="card"><h3>Ogólny postęp</h3><div class="bigstat">${tot.pct}%<small>${tot.correct}/${tot.total} pytań poprawnie</small></div><div class="bar"><span style="width:${tot.pct}%"></span></div></div>
+      <div class="card"><h3>Fiszki na dziś</h3><div class="bigstat">${dueQ.length}<small>do powtórzenia</small></div>${dueQ.length?`<button class="btn" onclick="render('srs')">Rozpocznij</button>`:'<small style="color:var(--muted)">Brak zaległości — odpowiedz na pytania w quizach, by uruchomić SR.</small>'}</div>
+    </div>
+    <div class="card">
+      <h2>Plan 6-tygodniowy</h2>
+      <div class="weekplan">
+        ${["Tyg 1: Budowa","Tyg 2: Peryferia","Tyg 3: OS Windows","Tyg 4: OS Linux","Tyg 5: Sieci","Tyg 6: Mocki + powtórki"].map((t,i)=>`<div class="w ${i+1===week?'now':''}"><b>${i+1===week?'AKTUALNY':''}</b>${t}</div>`).join("")}
+      </div>
+      <div class="note">Tydzień obliczany od 6 tygodni przed datą egzaminu (12.06.2026).</div>
+    </div>
+    <div class="card">
+      <h2>Postęp po obszarach</h2>
+      ${Object.entries(areas).map(([k,v])=>`
+        <div class="area-row">
+          <span class="chip ${k}">${k}</span>
+          <div class="name">${AREAS[k]}<div class="bar"><span style="width:${v.pct}%"></span></div></div>
+          <div class="count">${v.correct}/${v.total} (${v.pct}%)</div>
+        </div>`).join("")}
+    </div>
+    <div class="card">
+      <h2>Ostatnie quizy</h2>
+      ${last5.length?`<table style="width:100%;border-collapse:collapse">
+        <tr style="text-align:left;color:var(--muted);font-size:12px;border-bottom:1px solid var(--border)"><th style="padding:6px 0">Data</th><th>Wynik</th><th>%</th><th>Czas</th></tr>
+        ${last5.map(q=>`<tr style="border-bottom:1px solid #f0f2f6"><td style="padding:6px 0">${new Date(q.date).toLocaleString("pl-PL")}</td><td>${q.score}/${q.total}</td><td><b style="color:${q.score/q.total>=.5?'var(--good)':'var(--bad)'}">${Math.round(q.score/q.total*100)}%</b></td><td>${Math.round(q.duration/60)} min</td></tr>`).join("")}
+      </table>`:'<div class="empty">Brak danych — rozpocznij quiz, aby zobaczyć statystyki.</div>'}
+    </div>
+    <div class="card">
+      <h3>Szybki start</h3>
+      <div class="toolbar">
+        <button class="btn" onclick="render('quiz')">📝 Quiz egzaminacyjny (40 pyt, 60 min)</button>
+        <button class="btn ghost" onclick="render('topics')">📚 Nauka tematyczna</button>
+        <button class="btn ghost" onclick="render('practice')">🛠️ Symulator praktyczny</button>
+      </div>
+    </div>
+  `;
+};
+
+function currentStudyWeek(){
+  const examStart=new Date(EXAM_DATE);
+  const planStart=new Date(examStart);planStart.setDate(planStart.getDate()-42);
+  const now=new Date();
+  const diff=now-planStart;
+  const w=Math.floor(diff/(7*24*60*60*1000))+1;
+  return Math.max(1,Math.min(6,w));
+}
+
+// =============== QUIZ MODE ===============
+VIEWS.quiz=(app)=>{
+  if(!quizState){
+    app.innerHTML=`
+      <div class="card"><h2>Quiz egzaminacyjny</h2>
+        <p>Symulacja egzaminu pisemnego INF.02:</p>
+        <ul>
+          <li>40 losowych pytań z całej puli (${QUESTIONS.length} dostępnych)</li>
+          <li>Czas: 60 minut (próg zdawalności: 50% = 20 pkt)</li>
+          <li>Po zakończeniu zobaczysz wyjaśnienia i błędne pytania trafią do fiszek SR</li>
+        </ul>
+        <div class="toolbar">
+          <button class="btn" onclick="startQuiz(40,3600)">▶ Rozpocznij egzamin (40 pyt × 60 min)</button>
+          <button class="btn ghost" onclick="startQuiz(20,1200)">⏱ Mini-test (20 pyt × 20 min)</button>
+          <button class="btn ghost" onclick="startQuiz(10,600)">⚡ Szybki test (10 pyt × 10 min)</button>
+        </div>
+      </div>`;
+    return;
+  }
+  renderQuizQuestion();
+};
+
+window.startQuiz=function(n,seconds){
+  const shuffled=[...QUESTIONS].sort(()=>Math.random()-0.5).slice(0,n);
+  quizState={questions:shuffled,answers:Array(n).fill(null),current:0,startTime:Date.now(),duration:seconds,total:n};
+  startTimer(seconds);
+  render("quiz");
+};
+
+function startTimer(seconds){
+  const t=document.getElementById("timer");
+  t.style.display="block";
+  function update(){
+    const left=quizState.duration-Math.floor((Date.now()-quizState.startTime)/1000);
+    if(left<=0){clearInterval(timerInterval);finishQuiz();return;}
+    const m=Math.floor(left/60),s=left%60;
+    t.textContent=`⏱ ${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+    t.className="timer"+(left<300?" crit":left<600?" warn":"");
+  }
+  update();
+  timerInterval=setInterval(update,1000);
+}
+
+function renderQuizQuestion(){
+  const app=document.getElementById("app");
+  const q=quizState.questions[quizState.current];
+  const userAns=quizState.answers[quizState.current];
+  app.innerHTML=`
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <h2 style="margin:0">Pytanie ${quizState.current+1} / ${quizState.total}</h2>
+        <button class="btn ghost" onclick="if(confirm('Przerwać quiz?')){quizState=null;clearInterval(timerInterval);document.getElementById('timer').style.display='none';render('quiz')}">✕ Przerwij</button>
+      </div>
+      <div class="bar" style="margin-top:12px"><span style="width:${(quizState.current+1)/quizState.total*100}%"></span></div>
+    </div>
+    <div class="q-card">
+      <div class="q-meta"><span class="chip ${q.a}">${AREAS[q.a]}</span><span>ID #${q.id}</span></div>
+      <div class="q-text">${q.q}</div>
+      ${q.o.map((opt,i)=>`<div class="opt ${userAns===i?'selected':''}" onclick="selectAnswer(${i})">${String.fromCharCode(65+i)}. ${opt}</div>`).join("")}
+    </div>
+    <div class="toolbar">
+      <button class="btn ghost" ${quizState.current===0?'disabled':''} onclick="navQuiz(-1)">← Poprzednie</button>
+      <div class="spacer"></div>
+      ${quizState.current<quizState.total-1?
+        `<button class="btn" onclick="navQuiz(1)">Następne →</button>`:
+        `<button class="btn success" onclick="finishQuiz()">✓ Zakończ i sprawdź wyniki</button>`}
+    </div>
+    <div class="note">Odpowiedzi: ${quizState.answers.filter(a=>a!==null).length} / ${quizState.total} · Czas startu: ${new Date(quizState.startTime).toLocaleTimeString("pl-PL")}</div>
+  `;
+}
+window.selectAnswer=function(i){quizState.answers[quizState.current]=i;renderQuizQuestion();};
+window.navQuiz=function(d){quizState.current+=d;renderQuizQuestion();};
+
+window.finishQuiz=function(){
+  clearInterval(timerInterval);
+  document.getElementById("timer").style.display="none";
+  const dur=Math.floor((Date.now()-quizState.startTime)/1000);
+  let score=0;
+  const wrongIds=[];
+  quizState.questions.forEach((q,i)=>{
+    const correct=quizState.answers[i]===q.c;
+    if(correct)score++;
+    else wrongIds.push(q.id);
+    state.answered[q.id]={correct,ts:Date.now(),attempts:(state.answered[q.id]?.attempts||0)+1};
+    // Update SRS: wrong → box1, correct → advance
+    const cur=state.srs[q.id];
+    if(correct){
+      const box=Math.min(5,(cur?.box||0)+1);
+      state.srs[q.id]={box,due:Date.now()+srsBoxToMs(box)};
+    } else {
+      state.srs[q.id]={box:1,due:Date.now()+srsBoxToMs(1)};
+    }
+  });
+  state.stats.quizzes.push({score,total:quizState.total,date:Date.now(),duration:dur});
+  saveState();
+  showQuizResults(score,dur,wrongIds);
+};
+
+function srsBoxToMs(box){
+  // Box 1: 10 min, Box 2: 1 day, Box 3: 3 days, Box 4: 7 days, Box 5: 21 days
+  return [10*60*1000,24*60*60*1000,3*24*60*60*1000,7*24*60*60*1000,21*24*60*60*1000][box-1];
+}
+
+function showQuizResults(score,dur,wrongIds){
+  const app=document.getElementById("app");
+  const pct=Math.round(score/quizState.total*100);
+  const passed=pct>=50;
+  const wrongQuestions=quizState.questions.map((q,i)=>({q,userAns:quizState.answers[i]})).filter(x=>x.userAns!==x.q.c);
+  app.innerHTML=`
+    <div class="card" style="text-align:center;padding:30px">
+      <div style="font-size:48px;margin-bottom:8px">${passed?'🎉':'📚'}</div>
+      <h2 style="margin:0">${passed?'Zaliczono!':'Poniżej progu — kontynuuj naukę'}</h2>
+      <div class="bigstat" style="font-size:64px;margin:20px 0;color:${passed?'var(--good)':'var(--bad)'}">${pct}%</div>
+      <div style="color:var(--muted)">${score} / ${quizState.total} poprawnie · czas: ${Math.floor(dur/60)} min ${dur%60}s</div>
+      <div class="note">Próg zdawalności pisemnego INF.02: 50%. ${wrongIds.length} pytań trafiło do kolejki SR.</div>
+      <div class="toolbar" style="justify-content:center;margin-top:16px">
+        <button class="btn" onclick="quizState=null;render('quiz')">Nowy quiz</button>
+        <button class="btn ghost" onclick="quizState=null;render('dash')">Dashboard</button>
+      </div>
+    </div>
+    ${wrongQuestions.length?`
+    <div class="card">
+      <h2>Pytania, w których popełniłeś błąd (${wrongQuestions.length})</h2>
+      ${wrongQuestions.map(({q,userAns})=>`
+        <div class="q-card">
+          <div class="q-meta"><span class="chip ${q.a}">${AREAS[q.a]}</span><span>ID #${q.id}</span></div>
+          <div class="q-text">${q.q}</div>
+          ${q.o.map((opt,i)=>`<div class="opt disabled ${i===q.c?'correct':i===userAns?'wrong':''}">${String.fromCharCode(65+i)}. ${opt}</div>`).join("")}
+          <div class="explanation"><b>Wyjaśnienie:</b> ${q.e}</div>
+        </div>`).join("")}
+    </div>`:`<div class="card empty">🎯 Wszystkie pytania poprawne!</div>`}
+  `;
+}
+
+// =============== SRS (FISZKI) ===============
+let srsState=null;
+VIEWS.srs=(app)=>{
+  if(!srsState){
+    const due=dueSrs();
+    if(due.length===0){
+      app.innerHTML=`
+        <div class="card"><h2>Fiszki SR (Spaced Repetition)</h2>
+        <p>Brak pytań w kolejce. Rozwiąż quiz lub dodaj pytania do nauki.</p>
+        <button class="btn" onclick="addAllToSrs()">+ Dodaj wszystkie pytania do SR</button>
+        <button class="btn ghost" onclick="render('quiz')">Lub zacznij od quizu</button>
+        </div>
+        ${renderSrsStats()}`;
+      return;
+    }
+    srsState={queue:[...due].sort(()=>Math.random()-0.5),current:0,results:{correct:0,wrong:0}};
+  }
+  if(srsState.current>=srsState.queue.length){
+    app.innerHTML=`
+      <div class="card" style="text-align:center;padding:30px">
+        <div style="font-size:48px">✓</div><h2>Sesja SR ukończona!</h2>
+        <div style="margin:16px 0">Poprawnie: <b style="color:var(--good)">${srsState.results.correct}</b> · Błędnie: <b style="color:var(--bad)">${srsState.results.wrong}</b></div>
+        <button class="btn" onclick="srsState=null;render('srs')">Nowa sesja</button>
+        <button class="btn ghost" onclick="srsState=null;render('dash')">Dashboard</button>
+      </div>${renderSrsStats()}`;
+    return;
+  }
+  const qid=srsState.queue[srsState.current];
+  const q=QUESTIONS.find(x=>x.id===qid);
+  const sBox=state.srs[qid]?.box||1;
+  app.innerHTML=`
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <h2 style="margin:0">Fiszka ${srsState.current+1} / ${srsState.queue.length}</h2>
+        <span class="flag box${sBox}">Box ${sBox}/5</span>
+      </div>
+      <div class="bar" style="margin-top:12px"><span style="width:${(srsState.current+1)/srsState.queue.length*100}%"></span></div>
+    </div>
+    <div class="q-card" id="srs-card">
+      <div class="q-meta"><span class="chip ${q.a}">${AREAS[q.a]}</span><span>ID #${q.id}</span></div>
+      <div class="q-text">${q.q}</div>
+      ${q.o.map((opt,i)=>`<div class="opt" onclick="srsAnswer(${i})">${String.fromCharCode(65+i)}. ${opt}</div>`).join("")}
+    </div>
+    <div class="note">Algorytm Leitnera: poprawna odpowiedź → wyższy box (rzadsze powtórki), błąd → box 1 (powrót).</div>
+  `;
+};
+
+window.srsAnswer=function(i){
+  const qid=srsState.queue[srsState.current];
+  const q=QUESTIONS.find(x=>x.id===qid);
+  const correct=i===q.c;
+  if(correct)srsState.results.correct++;else srsState.results.wrong++;
+  state.answered[qid]={correct,ts:Date.now(),attempts:(state.answered[qid]?.attempts||0)+1};
+  const cur=state.srs[qid];
+  if(correct){const box=Math.min(5,(cur?.box||1)+1);state.srs[qid]={box,due:Date.now()+srsBoxToMs(box)};}
+  else state.srs[qid]={box:1,due:Date.now()+srsBoxToMs(1)};
+  saveState();
+
+  // Show answer feedback briefly
+  const card=document.getElementById("srs-card");
+  if(card){
+    const opts=card.querySelectorAll(".opt");
+    opts.forEach((el,idx)=>{el.classList.add("disabled");if(idx===q.c)el.classList.add("correct");else if(idx===i)el.classList.add("wrong");});
+    const ex=document.createElement("div");ex.className="explanation";ex.innerHTML="<b>Wyjaśnienie:</b> "+q.e;
+    card.appendChild(ex);
+    const next=document.createElement("button");next.className="btn";next.textContent="Następne →";next.style.marginTop="12px";
+    next.onclick=()=>{srsState.current++;render("srs");};
+    card.appendChild(next);
+  }
+};
+
+window.addAllToSrs=function(){
+  const now=Date.now();
+  QUESTIONS.forEach(q=>{if(!state.srs[q.id])state.srs[q.id]={box:1,due:now};});
+  saveState();
+  srsState=null;render("srs");
+};
+
+function renderSrsStats(){
+  const buckets={1:0,2:0,3:0,4:0,5:0};
+  Object.values(state.srs).forEach(s=>{buckets[s.box]=(buckets[s.box]||0)+1;});
+  const total=Object.values(buckets).reduce((a,b)=>a+b,0);
+  if(total===0)return "";
+  return `<div class="card"><h2>Stan boxów Leitnera</h2>
+    ${[1,2,3,4,5].map(b=>`<div class="area-row">
+      <span class="flag box${b}">Box ${b}</span>
+      <div class="name">${["10 min","1 dzień","3 dni","7 dni","21 dni"][b-1]} interwału<div class="bar"><span style="width:${total?buckets[b]/total*100:0}%"></span></div></div>
+      <div class="count">${buckets[b]} pytań</div>
+    </div>`).join("")}
+  </div>`;
+}
+
+// =============== TOPICS (NAUKA TEMATYCZNA) ===============
+let topicFilter="ALL";
+VIEWS.topics=(app)=>{
+  const filtered=topicFilter==="ALL"?QUESTIONS:QUESTIONS.filter(q=>q.a===topicFilter);
+  app.innerHTML=`
+    <div class="card">
+      <h2>Nauka tematyczna</h2>
+      <div class="toolbar">
+        <span style="color:var(--muted)">Obszar:</span>
+        <select class="areafilter" onchange="topicFilter=this.value;render('topics')">
+          <option value="ALL"${topicFilter==="ALL"?" selected":""}>Wszystkie (${QUESTIONS.length})</option>
+          ${Object.entries(AREAS).map(([k,v])=>`<option value="${k}"${topicFilter===k?" selected":""}>${v} (${QUESTIONS.filter(q=>q.a===k).length})</option>`).join("")}
+        </select>
+        <div class="spacer"></div>
+        <button class="btn ghost" onclick="topicHideAnswers=!topicHideAnswers;render('topics')">${topicHideAnswers?"👁 Pokaż odpowiedzi":"🙈 Ukryj odpowiedzi"}</button>
+      </div>
+      <div class="note">Tryb nauki: pytania z wyjaśnieniami. ${topicHideAnswers?"Kliknij pytanie, aby zobaczyć odpowiedź.":""}</div>
+    </div>
+    ${filtered.map(q=>renderTopicQ(q)).join("")}
+  `;
+};
+let topicHideAnswers=false;
+function renderTopicQ(q){
+  const ans=state.answered[q.id];
+  return `<div class="q-card" id="tq-${q.id}" ${topicHideAnswers?`onclick="document.getElementById('te-${q.id}').style.display='block';this.onclick=null"`:""}>
+    <div class="q-meta">
+      <span class="chip ${q.a}">${AREAS[q.a]}</span>
+      <span>ID #${q.id}${ans?` · ostatnio: ${ans.correct?'✓':'✗'}`:""}</span>
+    </div>
+    <div class="q-text">${q.q}</div>
+    ${q.o.map((opt,i)=>`<div class="opt disabled ${(!topicHideAnswers||ans)&&i===q.c?'correct':''}">${String.fromCharCode(65+i)}. ${opt}</div>`).join("")}
+    <div class="explanation" id="te-${q.id}" style="display:${topicHideAnswers?'none':'block'}"><b>Odp: ${String.fromCharCode(65+q.c)}.</b> ${q.e}</div>
+  </div>`;
+}
+
+// =============== PRACTICE (SYMULATOR) ===============
+VIEWS.practice=(app)=>{
+  app.innerHTML=`
+    <div class="tabbar">
+      <button class="active" onclick="practiceTab(this,'subnet')">🌐 Kalkulator podsieci</button>
+      <button onclick="practiceTab(this,'subnetq')">🎯 Generator zadań IP</button>
+      <button onclick="practiceTab(this,'cmd')">⌨️ Polecenia CLI</button>
+    </div>
+    <div id="practice-content"></div>
+  `;
+  practiceTab(document.querySelector(".tabbar button.active"),"subnet");
+};
+window.practiceTab=function(btn,tab){
+  document.querySelectorAll(".tabbar button").forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
+  const c=document.getElementById("practice-content");
+  if(tab==="subnet")c.innerHTML=subnetCalcHtml();
+  else if(tab==="subnetq")c.innerHTML=subnetGenHtml();
+  else if(tab==="cmd")c.innerHTML=cmdQuizHtml();
+  if(tab==="subnet")setTimeout(updateSubnet,0);
+  if(tab==="subnetq")setTimeout(generateSubnetQ,0);
+  if(tab==="cmd")setTimeout(loadCmdQ,0);
+};
+
+function subnetCalcHtml(){
+  return `<div class="card"><h2>Kalkulator podsieci IPv4</h2>
+    <div class="subnet-grid">
+      <label>Adres IP:</label><input id="snip" value="192.168.1.0" oninput="updateSubnet()">
+      <label>Maska / CIDR:</label><input id="sncidr" value="24" type="number" min="0" max="32" oninput="updateSubnet()">
+    </div>
+    <div class="subnet-out" id="snout"></div>
+    <div class="note">Zmieniaj wartości, by zobaczyć wyniki na żywo. Maska może być w postaci /24 lub 255.255.255.0.</div>
+  </div>`;
+}
+window.updateSubnet=function(){
+  const ip=document.getElementById("snip").value.trim();
+  const cidrInp=document.getElementById("sncidr").value.trim();
+  let cidr=parseInt(cidrInp);
+  if(cidrInp.includes(".")){
+    // dot notation mask
+    const parts=cidrInp.split(".").map(Number);
+    cidr=parts.reduce((acc,o)=>acc+o.toString(2).split("1").length-1,0);
+  }
+  const out=document.getElementById("snout");
+  if(!validIp(ip)||isNaN(cidr)||cidr<0||cidr>32){out.innerHTML='<span style="color:var(--bad)">Nieprawidłowy adres lub CIDR</span>';return;}
+  const ipN=ipToNum(ip);
+  const maskN=cidr===0?0:(0xFFFFFFFF<<(32-cidr))>>>0;
+  const networkN=(ipN&maskN)>>>0;
+  const broadcastN=(networkN|(~maskN>>>0))>>>0;
+  const total=cidr===32?1:(cidr===31?2:Math.pow(2,32-cidr));
+  const usable=cidr>=31?total:total-2;
+  const firstHost=cidr>=31?networkN:networkN+1;
+  const lastHost=cidr>=31?broadcastN:broadcastN-1;
+  const cls=ipN<0x80000000?"A":ipN<0xC0000000?"B":ipN<0xE0000000?"C":ipN<0xF0000000?"D (multicast)":"E";
+  const priv=isPrivateIp(ipN);
+  out.innerHTML=`
+    <div class="row"><span>Adres sieci:</span><b>${numToIp(networkN)}/${cidr}</b></div>
+    <div class="row"><span>Maska podsieci:</span><b>${numToIp(maskN)}</b></div>
+    <div class="row"><span>Maska binarnie:</span><span style="font-size:11px">${maskToBin(maskN)}</span></div>
+    <div class="row"><span>Broadcast:</span><b>${numToIp(broadcastN)}</b></div>
+    <div class="row"><span>Pierwszy host:</span><b>${numToIp(firstHost)}</b></div>
+    <div class="row"><span>Ostatni host:</span><b>${numToIp(lastHost)}</b></div>
+    <div class="row"><span>Liczba adresów:</span><b>${total}</b></div>
+    <div class="row"><span>Liczba hostów:</span><b>${Math.max(0,usable)}</b></div>
+    <div class="row"><span>Klasa:</span><b>${cls}</b> ${priv?'<span class="chip">prywatny</span>':''}</div>
+  `;
+};
+function validIp(ip){const p=ip.split(".");if(p.length!==4)return false;return p.every(o=>/^\d+$/.test(o)&&+o>=0&&+o<=255);}
+function ipToNum(ip){return ip.split(".").reduce((a,o)=>(a<<8)+ +o,0)>>>0;}
+function numToIp(n){return [(n>>>24)&255,(n>>>16)&255,(n>>>8)&255,n&255].join(".");}
+function maskToBin(m){return [(m>>>24)&255,(m>>>16)&255,(m>>>8)&255,m&255].map(o=>o.toString(2).padStart(8,"0")).join(".");}
+function isPrivateIp(n){return (n>=0x0A000000&&n<=0x0AFFFFFF)||(n>=0xAC100000&&n<=0xAC1FFFFF)||(n>=0xC0A80000&&n<=0xC0A8FFFF);}
+
+function subnetGenHtml(){
+  return `<div class="card"><h2>Generator zadań IP</h2>
+    <div id="subq-area"></div>
+    <button class="btn" onclick="generateSubnetQ()" style="margin-top:12px">🔄 Nowe pytanie</button>
+  </div>`;
+}
+window.generateSubnetQ=function(){
+  const area=document.getElementById("subq-area");
+  const taskType=Math.floor(Math.random()*4);
+  const baseIPs=["192.168.1.0","10.0.0.0","172.16.0.0","192.168.5.0","10.10.10.0","172.20.0.0"];
+  const base=baseIPs[Math.floor(Math.random()*baseIPs.length)];
+  let q,answer,explanation;
+  if(taskType===0){
+    // Subnet from /24 to N subnets
+    const n=[2,4,8,16,32][Math.floor(Math.random()*5)];
+    const newCidr=24+Math.log2(n);
+    const mask=numToIp((0xFFFFFFFF<<(32-newCidr))>>>0);
+    q=`Sieć ${base}/24 należy podzielić na <b>${n} równych podsieci</b>. Jaką maskę zastosować?`;
+    answer=`/${newCidr} czyli ${mask}`;
+    explanation=`${n} podsieci = 2^${Math.log2(n)} → ${Math.log2(n)} dodatkowe bity → /24 + ${Math.log2(n)} = /${newCidr} = ${mask}`;
+  } else if(taskType===1){
+    // Hosts in /N
+    const cidr=20+Math.floor(Math.random()*10);
+    const hosts=cidr>=31?(cidr===31?2:1):Math.pow(2,32-cidr)-2;
+    q=`Ile hostów można zaadresować w sieci /${cidr}?`;
+    answer=`${hosts}`;
+    explanation=`/${cidr}: 2^(32-${cidr}) = ${Math.pow(2,32-cidr)} adresów - 2 (sieć i broadcast) = ${hosts} hostów.`;
+  } else if(taskType===2){
+    // Broadcast for IP/cidr
+    const cidr=24+Math.floor(Math.random()*5);
+    const ipN=ipToNum(base);
+    const maskN=(0xFFFFFFFF<<(32-cidr))>>>0;
+    const netN=(ipN&maskN)>>>0;
+    const bcastN=(netN|(~maskN>>>0))>>>0;
+    q=`Adres komputera: <b>${base}</b> z maską <b>/${cidr}</b>. Jaki jest adres rozgłoszeniowy (broadcast)?`;
+    answer=numToIp(bcastN);
+    explanation=`Maska /${cidr} → blok ${Math.pow(2,32-cidr)} adresów. Sieć: ${numToIp(netN)}, broadcast: ${numToIp(bcastN)} (ostatni adres w bloku).`;
+  } else {
+    // Network address
+    const cidr=20+Math.floor(Math.random()*10);
+    const offset=Math.floor(Math.random()*Math.min(254,Math.pow(2,32-cidr)));
+    const ipN=(ipToNum(base)+offset)>>>0;
+    const maskN=cidr===0?0:(0xFFFFFFFF<<(32-cidr))>>>0;
+    const netN=(ipN&maskN)>>>0;
+    q=`Adres komputera: <b>${numToIp(ipN)}</b> z maską <b>/${cidr}</b>. Jaki jest adres podsieci?`;
+    answer=numToIp(netN)+"/"+cidr;
+    explanation=`Adres sieci = IP AND maska. ${numToIp(ipN)} AND ${numToIp(maskN)} = ${numToIp(netN)}.`;
+  }
+  area.innerHTML=`<div class="q-text">${q}</div>
+    <input id="subq-input" placeholder="Twoja odpowiedź" style="padding:8px;border:1px solid var(--border);border-radius:4px;width:300px;font:inherit;font-family:Menlo,monospace">
+    <button class="btn" onclick="checkSubnetQ('${answer.replace(/'/g,"\\'")}','${explanation.replace(/'/g,"\\'")}')">Sprawdź</button>
+    <div id="subq-res" style="margin-top:12px"></div>`;
+};
+window.checkSubnetQ=function(answer,explanation){
+  const inp=document.getElementById("subq-input").value.trim();
+  const res=document.getElementById("subq-res");
+  const correct=normalizeAns(inp)===normalizeAns(answer);
+  res.innerHTML=`<div class="explanation" style="border-left-color:${correct?'var(--good)':'var(--bad)'}">
+    <b style="color:${correct?'var(--good)':'var(--bad)'}">${correct?'✓ Poprawnie':'✗ Niepoprawnie'}</b> ·
+    Prawidłowa odp: <b>${answer}</b><br>${explanation}
+  </div>`;
+};
+function normalizeAns(s){return s.toLowerCase().replace(/\s+/g,"").replace(/^\//,"");}
+
+const CMDQS=[
+  {q:"Wyświetla zawartość katalogu (Linux)",a:"ls",alts:["ls -la","dir"]},
+  {q:"Wyświetla konfigurację interfejsów sieciowych w Windows",a:"ipconfig",alts:["ipconfig /all"]},
+  {q:"Wyświetla działające procesy w Linuxie",a:"ps",alts:["ps aux","ps -ef","top"]},
+  {q:"Zmienia uprawnienia pliku w Linuxie",a:"chmod"},
+  {q:"Tłumaczy nazwę domenową na adres IP (Windows i Linux)",a:"nslookup",alts:["dig","host"]},
+  {q:"Sprawdza ścieżkę pakietów do hosta (Windows)",a:"tracert",alts:["pathping"]},
+  {q:"Sprawdza ścieżkę pakietów do hosta (Linux)",a:"traceroute",alts:["mtr"]},
+  {q:"Czyści cache DNS w Windows",a:"ipconfig /flushdns"},
+  {q:"Sprawdza i naprawia pliki systemowe Windows",a:"sfc /scannow"},
+  {q:"Sprawdza dysk pod kątem błędów (Windows, z naprawą)",a:"chkdsk /f /r"},
+  {q:"Wyświetla otwarte połączenia sieciowe i porty (Linux/Windows)",a:"netstat",alts:["netstat -an","ss -tunlp"]},
+  {q:"Tworzy katalog (Linux/Windows)",a:"mkdir"},
+  {q:"Kopiuje plik (Linux)",a:"cp"},
+  {q:"Przenosi/zmienia nazwę pliku (Linux)",a:"mv"},
+  {q:"Usuwa plik (Linux)",a:"rm"},
+  {q:"Edycja pliku w trybie tekstowym Linux",a:"nano",alts:["vi","vim"]},
+  {q:"Wyświetla ostatnie linie pliku (Linux)",a:"tail",alts:["tail -f"]},
+  {q:"Filtruje tekst po wzorcu (Linux)",a:"grep"},
+  {q:"Wyłącza komputer Windows natychmiast",a:"shutdown /s /t 0"},
+  {q:"Aktualizuje listę pakietów w Debian/Ubuntu",a:"apt update"},
+  {q:"Instaluje pakiet w Debian/Ubuntu",a:"apt install"},
+  {q:"Tworzy nowego użytkownika w Linuxie",a:"useradd",alts:["adduser"]},
+  {q:"Zmienia hasło użytkownika w Linuxie",a:"passwd"},
+  {q:"Wyświetla zalogowanego użytkownika",a:"whoami"},
+  {q:"Wyświetla wolne miejsce na dyskach (Linux)",a:"df",alts:["df -h"]},
+  {q:"Wyświetla zużycie miejsca przez katalog (Linux)",a:"du",alts:["du -sh"]}
+];
+function cmdQuizHtml(){
+  return `<div class="card"><h2>Quiz poleceń CLI</h2>
+    <div id="cmdq-area"></div>
+    <div class="toolbar"><button class="btn" onclick="loadCmdQ()">🔄 Następne pytanie</button></div>
+  </div>`;
+}
+let curCmdQ=null;
+window.loadCmdQ=function(){
+  curCmdQ=CMDQS[Math.floor(Math.random()*CMDQS.length)];
+  document.getElementById("cmdq-area").innerHTML=`
+    <div class="q-text">${curCmdQ.q}</div>
+    <input id="cmdq-inp" placeholder="np. ls" style="padding:8px;border:1px solid var(--border);border-radius:4px;width:300px;font:inherit;font-family:Menlo,monospace" onkeyup="if(event.key==='Enter')checkCmdQ()">
+    <button class="btn" onclick="checkCmdQ()">Sprawdź</button>
+    <div id="cmdq-res" style="margin-top:12px"></div>`;
+};
+window.checkCmdQ=function(){
+  const inp=document.getElementById("cmdq-inp").value.trim().toLowerCase();
+  const valid=[curCmdQ.a.toLowerCase(),...(curCmdQ.alts||[]).map(x=>x.toLowerCase())];
+  const correct=valid.some(v=>inp===v||inp.startsWith(v+" ")||v.startsWith(inp));
+  const matchedExact=valid.some(v=>inp===v);
+  document.getElementById("cmdq-res").innerHTML=`<div class="explanation" style="border-left-color:${matchedExact?'var(--good)':correct?'var(--warn)':'var(--bad)'}">
+    <b style="color:${matchedExact?'var(--good)':correct?'var(--warn)':'var(--bad)'}">${matchedExact?'✓ Poprawnie':correct?'≈ Częściowo':'✗ Niepoprawnie'}</b><br>
+    Prawidłowe odpowiedzi: <span class="kbd">${[curCmdQ.a,...(curCmdQ.alts||[])].join("</span> · <span class=\"kbd\">")}</span>
+  </div>`;
+};
+
+// =============== SETTINGS / EXPORT ===============
+VIEWS.settings=(app)=>{
+  const sz=new Blob([JSON.stringify(state)]).size;
+  app.innerHTML=`
+    <div class="card"><h2>Postępy / Eksport-Import</h2>
+    <p>Postępy są zapisywane lokalnie w przeglądarce. Aby zachować je między sesjami Cowork, regularnie eksportuj plik JSON.</p>
+    <div class="toolbar">
+      <button class="btn" onclick="exportProgress()">⬇ Eksportuj postępy do pliku</button>
+      <label class="btn ghost" style="cursor:pointer">⬆ Importuj plik JSON
+        <input type="file" accept=".json" style="display:none" onchange="importProgress(this)">
+      </label>
+      <button class="btn danger" onclick="if(confirm('Wyczyścić WSZYSTKIE postępy?')){state={version:1,answered:{},srs:{},stats:{quizzes:[]},startedAt:Date.now()};saveState();render('settings')}">🗑 Reset postępów</button>
+    </div>
+    <div class="note">Rozmiar danych: ${(sz/1024).toFixed(1)} KB · ${Object.keys(state.answered).length} pytań w historii · ${Object.keys(state.srs).length} w SR</div>
+    </div>
+    <div class="card"><h3>Stan szczegółowy</h3>
+      <table style="width:100%;border-collapse:collapse;font-size:13px">
+        <tr><td><b>Pytań w bazie</b></td><td>${QUESTIONS.length}</td></tr>
+        <tr><td><b>Pytań rozwiązanych</b></td><td>${Object.keys(state.answered).length}</td></tr>
+        <tr><td><b>Pytań w SR</b></td><td>${Object.keys(state.srs).length}</td></tr>
+        <tr><td><b>Quizów ukończonych</b></td><td>${state.stats.quizzes.length}</td></tr>
+        <tr><td><b>Średni wynik quizów</b></td><td>${state.stats.quizzes.length?Math.round(state.stats.quizzes.reduce((s,q)=>s+q.score/q.total*100,0)/state.stats.quizzes.length)+"%":"—"}</td></tr>
+      </table>
+    </div>
+    <div class="card"><h3>Jak zachować postępy między sesjami</h3>
+    <ol>
+      <li>Klikaj <b>Eksportuj postępy</b> co kilka dni — zapisz plik <code>inf02-progress.json</code> w folderze <code>~/projects/INF02/</code>.</li>
+      <li>Po otwarciu artifact w nowej sesji — kliknij <b>Importuj</b> i wybierz ten plik.</li>
+      <li>Postępy: błędne pytania, kolejka SR, statystyki quizów, plan tygodnia.</li>
+    </ol>
+    </div>
+  `;
+};
+window.exportProgress=function(){
+  const data=JSON.stringify(state,null,2);
+  const blob=new Blob([data],{type:"application/json"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url;a.download=`inf02-progress-${new Date().toISOString().slice(0,10)}.json`;
+  document.body.appendChild(a);a.click();a.remove();
+  URL.revokeObjectURL(url);
+};
+window.importProgress=function(inp){
+  const f=inp.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=()=>{
+    try{const p=JSON.parse(r.result);if(p.version!==1)throw new Error("Nieznana wersja");
+      state=Object.assign({version:1,answered:{},srs:{},stats:{quizzes:[]},startedAt:Date.now()},p);
+      saveState();alert("Zaimportowano postępy.");render("settings");
+    }catch(e){alert("Błąd importu: "+e.message);}
+  };
+  r.readAsText(f);
+};
+
+// =============== INIT ===============
+render("dash");
+</script>
+</body>
+</html>

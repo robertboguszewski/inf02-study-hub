@@ -1,0 +1,52 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.directory
+.Trash-*
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Node (jeśli ktoś dorobi build pipeline)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+.eslintcache
+
+# Logs
+logs/
+*.log
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.bak
+
+# Local progress exports (user data — nie commitować!)
+inf02-progress-*.json
+
+# Sesja Cowork (lokalne pliki robocze nie do publicznego repo)
+v2/qa-questions-report.md
+v2/questions-fixes.json
+
+# CKE arkusze (potencjalnie chronione prawami autorskimi — user dostarcza lokalnie)
+cke/
+*.pdf

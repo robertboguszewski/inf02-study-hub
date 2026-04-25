@@ -1,0 +1,1018 @@
+<!--
+  INF.02 Study Hub — v2 UX MODULES
+  ================================
+  Author: Agent C (UX/UI Engineer)
+  Pięć niezależnych, drop-in modułów do v2 live artifactu.
+  Każdy moduł = <style> + (opcjonalnie) <template> + <script>.
+  Wszystkie zmienne CSS pochodzą z v1 (--accent, --good, --bad, --bg, --card, --text, --muted, --border, --shadow, --warn).
+  Brak zewnętrznych zależności. Inicjalizacja świadoma (UX.module.init()) — bez side-effectów po prostym dołączeniu.
+
+  GLOBALNY NAMESPACE: window.UX = { onboarding, streak, achievements, mobile, fx }
+  Każdy moduł sam dba o swoją część window.state (po loadState() z v1).
+-->
+
+
+<!-- ============================================================ -->
+<!-- ============ MODULE 1: ONBOARDING (3-step wizard) ========== -->
+<!-- ============================================================ -->
+<style id="ux-onboarding-css">
+.ux-modal-overlay{
+  position:fixed;inset:0;background:rgba(15,20,30,.55);
+  display:flex;align-items:center;justify-content:center;
+  z-index:1000;padding:16px;
+  opacity:0;animation:ux-fade-in .25s cubic-bezier(.2,.8,.2,1) forwards;
+}
+.ux-modal-overlay.closing{animation:ux-fade-out .2s cubic-bezier(.4,0,1,1) forwards}
+@keyframes ux-fade-in{to{opacity:1}}
+@keyframes ux-fade-out{to{opacity:0}}
+.ux-modal{
+  background:var(--card);border-radius:12px;
+  width:100%;max-width:480px;padding:32px;
+  box-shadow:0 10px 40px rgba(0,0,0,.18),0 2px 8px rgba(0,0,0,.06);
+  transform:translateY(8px) scale(.98);
+  animation:ux-pop .35s cubic-bezier(.2,.8,.2,1) forwards;
+}
+@keyframes ux-pop{to{transform:translateY(0) scale(1)}}
+.ux-modal h2{margin:0 0 8px;font-size:22px;color:var(--text)}
+.ux-modal .ux-sub{color:var(--muted);font-size:13px;margin:0 0 24px}
+.ux-steps{display:flex;gap:6px;margin-bottom:24px}
+.ux-step-pill{flex:1;height:4px;border-radius:99px;background:#eef0f5;transition:background .25s}
+.ux-step-pill.active{background:var(--accent)}
+.ux-step-pill.done{background:var(--good)}
+.ux-radio{
+  display:flex;align-items:center;gap:12px;
+  padding:14px 16px;border:1px solid var(--border);border-radius:8px;
+  margin-bottom:8px;cursor:pointer;transition:all .15s cubic-bezier(.2,.8,.2,1);
+  min-height:56px;background:#fafbfd;
+}
+.ux-radio:hover{border-color:var(--accent);background:#f1f4f9}
+.ux-radio input{margin:0;accent-color:var(--accent);width:18px;height:18px}
+.ux-radio.checked{border-color:var(--accent);background:#eef3fc}
+.ux-radio .ux-r-title{font-weight:600;display:block;margin-bottom:2px}
+.ux-radio .ux-r-desc{color:var(--muted);font-size:12px}
+.ux-slider-wrap{padding:8px 0 4px}
+.ux-slider-val{
+  display:flex;justify-content:space-between;align-items:baseline;
+  margin-bottom:8px;
+}
+.ux-slider-val b{font-size:32px;color:var(--accent2);font-weight:700}
+.ux-slider-val span{color:var(--muted);font-size:12px}
+.ux-slider{
+  -webkit-appearance:none;appearance:none;width:100%;height:6px;
+  border-radius:99px;background:#eef0f5;outline:none;
+}
+.ux-slider::-webkit-slider-thumb{
+  -webkit-appearance:none;appearance:none;width:22px;height:22px;
+  border-radius:50%;background:var(--accent);cursor:pointer;
+  box-shadow:0 2px 6px rgba(47,110,240,.35);
+  transition:transform .15s;
+}
+.ux-slider::-webkit-slider-thumb:hover{transform:scale(1.15)}
+.ux-slider::-moz-range-thumb{
+  width:22px;height:22px;border-radius:50%;background:var(--accent);
+  cursor:pointer;border:0;box-shadow:0 2px 6px rgba(47,110,240,.35);
+}
+.ux-slider-marks{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:6px}
+.ux-modal .ux-actions{
+  display:flex;justify-content:space-between;gap:8px;margin-top:28px;
+}
+.ux-modal .ux-actions .btn{min-height:48px;padding:0 20px}
+.ux-diag-list{margin:8px 0 0;padding:0;list-style:none}
+.ux-diag-list li{
+  padding:8px 0;color:var(--muted);font-size:13px;
+  display:flex;align-items:center;gap:8px;
+}
+.ux-diag-list li::before{content:"✓";color:var(--good);font-weight:700}
+@media(max-width:780px){
+  .ux-modal{padding:24px 20px;border-radius:14px 14px 0 0;align-self:flex-end;max-width:100%}
+  .ux-modal-overlay{align-items:flex-end}
+  .ux-modal h2{font-size:20px}
+}
+</style>
+
+<template id="ux-onboarding-template">
+  <div class="ux-modal-overlay" id="ux-ob-overlay" role="dialog" aria-modal="true" aria-labelledby="ux-ob-title">
+    <div class="ux-modal">
+      <div class="ux-steps" aria-hidden="true">
+        <div class="ux-step-pill active" data-step="1"></div>
+        <div class="ux-step-pill" data-step="2"></div>
+        <div class="ux-step-pill" data-step="3"></div>
+      </div>
+
+      <!-- Step 1 -->
+      <section data-step-content="1">
+        <h2 id="ux-ob-title">Witaj! Jaki jest Twój cel?</h2>
+        <p class="ux-sub">Dostosujemy plan nauki pod Ciebie.</p>
+        <label class="ux-radio">
+          <input type="radio" name="ux-goal" value="exam" checked>
+          <span>
+            <span class="ux-r-title">Zdaję egzamin INF.02</span>
+            <span class="ux-r-desc">Sesja czerwiec 2026 — pełen plan dzień po dniu</span>
+          </span>
+        </label>
+        <label class="ux-radio">
+          <input type="radio" name="ux-goal" value="practice">
+          <span>
+            <span class="ux-r-title">Tylko ćwiczę</span>
+            <span class="ux-r-desc">Bez deadline'u, własne tempo</span>
+          </span>
+        </label>
+      </section>
+
+      <!-- Step 2 -->
+      <section data-step-content="2" hidden>
+        <h2>Ile minut dziennie?</h2>
+        <p class="ux-sub">Małymi krokami zajdziesz dalej niż maratonami raz w tygodniu.</p>
+        <div class="ux-slider-wrap">
+          <div class="ux-slider-val"><b id="ux-ob-min">20</b><span>minut / dzień</span></div>
+          <input type="range" min="5" max="60" step="5" value="20" class="ux-slider" id="ux-ob-slider">
+          <div class="ux-slider-marks"><span>5 min</span><span>30 min</span><span>60 min</span></div>
+        </div>
+      </section>
+
+      <!-- Step 3 -->
+      <section data-step-content="3" hidden>
+        <h2>Diagnoza — 7 pytań</h2>
+        <p class="ux-sub">Sprawdzimy z czego zacząć. Trwa około 3 minut.</p>
+        <ul class="ux-diag-list">
+          <li>Po jednym pytaniu z każdego obszaru (B, O, N, P, D)</li>
+          <li>Na podstawie wyników — rekomendacja startu</li>
+          <li>Wynik nie wpływa na statystyki</li>
+        </ul>
+      </section>
+
+      <div class="ux-actions">
+        <button class="btn ghost" id="ux-ob-back" hidden>Wstecz</button>
+        <span style="flex:1"></span>
+        <button class="btn ghost" id="ux-ob-skip">Pomiń</button>
+        <button class="btn" id="ux-ob-next">Dalej →</button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script id="ux-onboarding-js">
+(function(){
+  const M = (window.UX = window.UX || {});
+  M.onboarding = {
+    /**
+     * Pokaż wizard, jeśli nie ma profilu i brak odpowiedzi.
+     * Wywoływać po loadState() z v1.
+     */
+    maybeShow(){
+      if(!window.state) return;
+      const fresh = Object.keys(window.state.answered||{}).length === 0;
+      if(fresh && !window.state.profile){ this.show(); }
+    },
+    show(){
+      if(document.getElementById("ux-ob-overlay")) return;
+      const tpl = document.getElementById("ux-onboarding-template");
+      const node = tpl.content.cloneNode(true);
+      document.body.appendChild(node);
+      this._bind();
+    },
+    close(){
+      const ov = document.getElementById("ux-ob-overlay");
+      if(!ov) return;
+      ov.classList.add("closing");
+      setTimeout(()=>ov.remove(),200);
+    },
+    _state:{step:1,goal:"exam",dailyGoalMin:20},
+    _bind(){
+      const self=this;
+      // Radio click — ładnie zaznacz
+      document.querySelectorAll(".ux-radio input").forEach(r=>{
+        r.addEventListener("change",e=>{
+          self._state.goal = e.target.value;
+          document.querySelectorAll(".ux-radio").forEach(el=>{
+            el.classList.toggle("checked", el.querySelector("input").checked);
+          });
+        });
+        if(r.checked) r.closest(".ux-radio").classList.add("checked");
+      });
+      // Slider
+      const slider=document.getElementById("ux-ob-slider");
+      const out=document.getElementById("ux-ob-min");
+      slider.addEventListener("input",e=>{
+        self._state.dailyGoalMin = parseInt(e.target.value);
+        out.textContent = e.target.value;
+      });
+      // Buttons
+      document.getElementById("ux-ob-next").addEventListener("click",()=>self._next());
+      document.getElementById("ux-ob-back").addEventListener("click",()=>self._prev());
+      document.getElementById("ux-ob-skip").addEventListener("click",()=>self._finish(true));
+    },
+    _next(){
+      if(this._state.step < 3){
+        this._state.step++;
+        this._renderStep();
+      } else {
+        this._finish(false);
+      }
+    },
+    _prev(){
+      if(this._state.step > 1){ this._state.step--; this._renderStep(); }
+    },
+    _renderStep(){
+      const s=this._state.step;
+      document.querySelectorAll("[data-step-content]").forEach(el=>{
+        el.hidden = parseInt(el.dataset.stepContent) !== s;
+      });
+      document.querySelectorAll(".ux-step-pill").forEach(p=>{
+        const n=parseInt(p.dataset.step);
+        p.classList.toggle("active", n===s);
+        p.classList.toggle("done", n<s);
+      });
+      document.getElementById("ux-ob-back").hidden = s===1;
+      const next=document.getElementById("ux-ob-next");
+      next.textContent = s===3 ? "Rozpocznij diagnozę" : "Dalej →";
+    },
+    _finish(skipped){
+      window.state.profile = {
+        goal: skipped ? null : this._state.goal,
+        dailyGoalMin: skipped ? null : this._state.dailyGoalMin,
+        onboardedAt: Date.now(),
+        skipped: !!skipped
+      };
+      if(typeof window.saveState==="function") window.saveState();
+      this.close();
+      // Hook: jeśli user dotarł do step 3 — odpal diagnozę
+      if(!skipped && typeof window.startDiagnostic === "function"){
+        setTimeout(()=>window.startDiagnostic(),250);
+      } else if(typeof window.render==="function"){
+        setTimeout(()=>window.render("dash"),250);
+      }
+    }
+  };
+})();
+</script>
+
+
+<!-- ============================================================ -->
+<!-- ============ MODULE 2: STREAK COUNTER ====================== -->
+<!-- ============================================================ -->
+<style id="ux-streak-css">
+.ux-streak{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:6px 12px;border-radius:99px;
+  background:linear-gradient(135deg,#fff7ed,#fed7aa);
+  border:1px solid #fdba74;color:#9a3412;
+  font-weight:700;font-size:13px;cursor:pointer;
+  position:relative;user-select:none;
+  transition:transform .15s cubic-bezier(.2,.8,.2,1);
+  min-height:32px;
+}
+.ux-streak:hover{transform:translateY(-1px)}
+.ux-streak.cold{
+  background:#f1f4f9;border-color:var(--border);color:var(--muted);
+}
+.ux-streak .ux-fire{font-size:16px;line-height:1}
+.ux-streak.bumped .ux-fire{animation:ux-fire-bump .6s cubic-bezier(.2,.8,.2,1)}
+@keyframes ux-fire-bump{
+  0%{transform:scale(1)}
+  30%{transform:scale(1.4) rotate(-8deg)}
+  60%{transform:scale(1.15) rotate(6deg)}
+  100%{transform:scale(1)}
+}
+.ux-streak-tip{
+  position:absolute;top:calc(100% + 8px);right:0;
+  background:var(--card);border:1px solid var(--border);border-radius:10px;
+  padding:14px;box-shadow:var(--shadow);min-width:240px;z-index:200;
+  font-weight:400;color:var(--text);font-size:13px;
+  opacity:0;pointer-events:none;transform:translateY(-4px);
+  transition:opacity .2s,transform .2s;
+}
+.ux-streak-tip.open{opacity:1;pointer-events:auto;transform:translateY(0)}
+.ux-streak-tip h4{margin:0 0 6px;font-size:13px;color:var(--accent2)}
+.ux-streak-tip p{margin:0 0 10px;color:var(--muted);font-size:12px}
+.ux-streak-tip .btn{font-size:12px;padding:6px 10px;min-height:36px;width:100%;justify-content:center}
+.ux-streak-nav-wrap{padding:0 16px 8px}
+@media(max-width:780px){
+  .ux-streak-tip{right:auto;left:0}
+}
+</style>
+
+<script id="ux-streak-js">
+(function(){
+  const M = (window.UX = window.UX || {});
+  function todayKey(d=new Date()){
+    return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+  }
+  function yesterdayKey(){
+    const d=new Date(); d.setDate(d.getDate()-1); return todayKey(d);
+  }
+
+  M.streak = {
+    /** Inicjalizacja struktury w state. Idempotentne. */
+    ensure(){
+      if(!window.state) return;
+      if(!window.state.streak){
+        window.state.streak = {count:0,lastActiveDate:null,freezesAvailable:3};
+      }
+    },
+    /**
+     * Wywołać po KAŻDEJ aktywności (odpowiedź quiz/SRS/diagnostyka).
+     * Zwraca obiekt {bumped:bool, count:number, milestone:7|30|null}.
+     */
+    markActivity(){
+      this.ensure();
+      const s=window.state.streak;
+      const today=todayKey();
+      let result={bumped:false,count:s.count,milestone:null};
+      if(s.lastActiveDate === today){
+        // już aktywny — noop
+        return result;
+      }
+      if(s.lastActiveDate === yesterdayKey()){
+        s.count += 1;
+        result.bumped=true;
+      } else if(s.lastActiveDate === null){
+        s.count = 1;
+        result.bumped=true;
+      } else {
+        // przerwa — sprawdź freeze (auto-uzycie)
+        if(s.freezesAvailable > 0){
+          // Symulujemy freeze za każdy brakujący dzień (max 1 dzień luki = 1 freeze)
+          s.freezesAvailable -= 1;
+          s.count += 1;
+          result.bumped=true;
+        } else {
+          s.count = 1;
+          result.bumped=true;
+        }
+      }
+      s.lastActiveDate = today;
+      result.count = s.count;
+      if(s.count===7) result.milestone=7;
+      if(s.count===30) result.milestone=30;
+      if(typeof window.saveState==="function") window.saveState();
+      this.renderInNav();
+      // Hook do achievements + confetti
+      if(result.milestone && M.achievements){
+        if(result.milestone===7) M.achievements.unlock("streak_7");
+        if(result.milestone===30) M.achievements.unlock("streak_30");
+        if(M.fx && M.fx.confetti) M.fx.confetti();
+      }
+      return result;
+    },
+    useFreeze(){
+      this.ensure();
+      const s=window.state.streak;
+      if(s.freezesAvailable<=0) return false;
+      s.freezesAvailable--;
+      // Odśwież lastActiveDate na dziś jako "zamrożone"
+      s.lastActiveDate = todayKey();
+      if(typeof window.saveState==="function") window.saveState();
+      this.renderInNav();
+      return true;
+    },
+    /** Wstrzyknij badge w <nav>. Idempotentne. */
+    renderInNav(){
+      this.ensure();
+      const nav=document.querySelector("nav");
+      if(!nav) return;
+      let wrap=document.getElementById("ux-streak-nav-wrap");
+      if(!wrap){
+        wrap=document.createElement("div");
+        wrap.className="ux-streak-nav-wrap";
+        wrap.id="ux-streak-nav-wrap";
+        // Wstaw zaraz po <h1>
+        const h1=nav.querySelector("h1");
+        if(h1) h1.after(wrap); else nav.prepend(wrap);
+      }
+      const s=window.state.streak;
+      const cold = s.count===0 || (s.lastActiveDate!==todayKey() && s.lastActiveDate!==yesterdayKey());
+      wrap.innerHTML = `
+        <button class="ux-streak ${cold?'cold':''}" id="ux-streak-btn" aria-label="Codzienna seria: ${s.count} dni">
+          <span class="ux-fire">${cold?'❄️':'🔥'}</span>
+          <span>${s.count}</span>
+        </button>
+        <div class="ux-streak-tip" id="ux-streak-tip" role="tooltip">
+          <h4>Codzienna seria · ${s.count} ${s.count===1?'dzień':'dni'}</h4>
+          <p>Nie zrywaj łańcucha! Wystarczy 1 odpowiedź dziennie.<br>
+          Zamrożenia: <b>${s.freezesAvailable}</b> dostępne</p>
+          <button class="btn ghost" id="ux-streak-freeze" ${s.freezesAvailable<=0?'disabled':''}>
+            ❄️ Użyj zamrożenia (${s.freezesAvailable})
+          </button>
+        </div>
+      `;
+      const btn=document.getElementById("ux-streak-btn");
+      const tip=document.getElementById("ux-streak-tip");
+      btn.addEventListener("click",e=>{
+        e.stopPropagation();
+        tip.classList.toggle("open");
+      });
+      document.getElementById("ux-streak-freeze").addEventListener("click",e=>{
+        e.stopPropagation();
+        if(M.streak.useFreeze()){
+          tip.classList.remove("open");
+        }
+      });
+      document.addEventListener("click",e=>{
+        if(!wrap.contains(e.target)) tip.classList.remove("open");
+      });
+    },
+    /** Test helper — wymusza animację ognia */
+    bump(){
+      const btn=document.getElementById("ux-streak-btn");
+      if(!btn) return;
+      btn.classList.remove("bumped");
+      void btn.offsetWidth;
+      btn.classList.add("bumped");
+    }
+  };
+})();
+</script>
+
+
+<!-- ============================================================ -->
+<!-- ============ MODULE 3: ACHIEVEMENTS + TOAST ================ -->
+<!-- ============================================================ -->
+<style id="ux-ach-css">
+.ux-toast-stack{
+  position:fixed;bottom:24px;right:24px;z-index:1100;
+  display:flex;flex-direction:column;gap:8px;
+  pointer-events:none;
+}
+.ux-toast{
+  background:var(--card);border:1px solid var(--border);
+  border-left:4px solid var(--good);border-radius:10px;
+  padding:14px 16px;min-width:280px;max-width:340px;
+  box-shadow:0 8px 24px rgba(0,0,0,.12),0 2px 6px rgba(0,0,0,.06);
+  pointer-events:auto;
+  transform:translateX(120%);opacity:0;
+  animation:ux-toast-in .3s cubic-bezier(.2,.8,.2,1) forwards;
+}
+.ux-toast.out{animation:ux-toast-out .25s cubic-bezier(.4,0,1,1) forwards}
+@keyframes ux-toast-in{to{transform:translateX(0);opacity:1}}
+@keyframes ux-toast-out{to{transform:translateX(120%);opacity:0}}
+.ux-toast-head{display:flex;gap:10px;align-items:center;margin-bottom:6px}
+.ux-toast-ico{
+  font-size:24px;line-height:1;
+  filter:drop-shadow(0 2px 4px rgba(0,0,0,.15));
+}
+.ux-toast-title{font-weight:700;font-size:14px;color:var(--text);flex:1}
+.ux-toast-sub{font-size:12px;color:var(--muted);margin-bottom:8px}
+.ux-toast-bar{height:3px;background:#eef0f5;border-radius:99px;overflow:hidden}
+.ux-toast-bar>span{
+  display:block;height:100%;background:var(--good);width:100%;
+  transform-origin:right;
+  animation:ux-toast-bar 4s linear forwards;
+}
+@keyframes ux-toast-bar{to{transform:scaleX(0)}}
+
+.ux-ach-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:12px;
+}
+.ux-ach-card{
+  background:#fafbfd;border:1px solid var(--border);border-radius:8px;
+  padding:14px 10px;text-align:center;
+  transition:all .15s cubic-bezier(.2,.8,.2,1);
+  position:relative;overflow:hidden;
+}
+.ux-ach-card.locked{opacity:.4;filter:grayscale(.8)}
+.ux-ach-card.unlocked{
+  background:linear-gradient(135deg,#fffbeb,#fef3c7);
+  border-color:#fbbf24;
+}
+.ux-ach-card .ux-ach-ico{font-size:32px;margin-bottom:4px;line-height:1}
+.ux-ach-card .ux-ach-name{font-size:12px;font-weight:600;color:var(--text);line-height:1.3}
+.ux-ach-card .ux-ach-desc{font-size:10px;color:var(--muted);margin-top:2px}
+.ux-ach-card.unlocked::after{
+  content:"✓";position:absolute;top:6px;right:8px;
+  color:var(--good);font-weight:700;font-size:14px;
+}
+@media(max-width:780px){
+  .ux-ach-grid{grid-template-columns:repeat(3,1fr)}
+  .ux-toast-stack{left:16px;right:16px;bottom:84px}
+  .ux-toast{min-width:0;max-width:100%}
+}
+</style>
+
+<script id="ux-ach-js">
+(function(){
+  const M = (window.UX = window.UX || {});
+
+  const CATALOG = {
+    first_quiz:           {ico:"🎯",name:"Pierwszy quiz",desc:"Ukończ pierwszy quiz"},
+    streak_7:             {ico:"🔥",name:"Tydzień ognia",desc:"7 dni z rzędu"},
+    streak_30:            {ico:"💎",name:"Diament",desc:"30 dni z rzędu"},
+    area_mastered_B:      {ico:"🖥️",name:"Mistrz Budowy",desc:"100% w obszarze B"},
+    area_mastered_O:      {ico:"⚙️",name:"Mistrz OS",desc:"100% w obszarze O"},
+    area_mastered_N:      {ico:"🌐",name:"Mistrz Sieci",desc:"100% w obszarze N"},
+    area_mastered_P:      {ico:"🔌",name:"Mistrz Peryferii",desc:"100% w obszarze P"},
+    area_mastered_D:      {ico:"🔧",name:"Mistrz Diagnostyki",desc:"100% w obszarze D"},
+    quiz_perfect_40:      {ico:"💯",name:"Perfekcja",desc:"40/40 w pełnym quizie"},
+    quiz_passed_first_try:{ico:"🚀",name:"Za pierwszym razem",desc:"≥50% przy 1. próbie"},
+    subnetting_master:    {ico:"📡",name:"Subnetting Master",desc:"10 podsieci poprawnie"},
+    "100_questions_done": {ico:"🏆",name:"Setka",desc:"100 pytań rozwiązanych"}
+  };
+
+  M.achievements = {
+    catalog: CATALOG,
+    ensure(){
+      if(!window.state) return;
+      if(!window.state.achievements){
+        window.state.achievements = {}; // id -> {unlockedAt}
+      }
+    },
+    isUnlocked(id){
+      this.ensure();
+      return !!window.state.achievements[id];
+    },
+    /**
+     * Odblokuj achievement. Zwraca true tylko jeśli to nowe odblokowanie.
+     */
+    unlock(id){
+      this.ensure();
+      if(!CATALOG[id]) { console.warn("Unknown achievement",id); return false; }
+      if(window.state.achievements[id]) return false;
+      window.state.achievements[id] = {unlockedAt: Date.now()};
+      if(typeof window.saveState==="function") window.saveState();
+      this.toast(id);
+      // Confetti hook
+      if(M.fx && M.fx.confetti) M.fx.confetti();
+      return true;
+    },
+    toast(id){
+      const a = CATALOG[id]; if(!a) return;
+      let stack=document.getElementById("ux-toast-stack");
+      if(!stack){
+        stack=document.createElement("div");
+        stack.id="ux-toast-stack";
+        stack.className="ux-toast-stack";
+        document.body.appendChild(stack);
+      }
+      const el=document.createElement("div");
+      el.className="ux-toast";
+      el.innerHTML=`
+        <div class="ux-toast-head">
+          <span class="ux-toast-ico">🏆</span>
+          <span class="ux-toast-title">Odblokowane: ${a.name}</span>
+        </div>
+        <div class="ux-toast-sub">${a.ico} ${a.desc}</div>
+        <div class="ux-toast-bar"><span></span></div>
+      `;
+      stack.appendChild(el);
+      setTimeout(()=>{
+        el.classList.add("out");
+        setTimeout(()=>el.remove(),250);
+      },4000);
+    },
+    /**
+     * Sprawdź wszystkie warunki na podstawie state. Wywoływać po istotnych akcjach.
+     */
+    checkAll(){
+      if(!window.state) return;
+      const st=window.state;
+      const ans=Object.values(st.answered||{});
+      // first_quiz / 100_questions_done
+      if((st.stats?.quizzes||[]).length>=1) this.unlock("first_quiz");
+      if(ans.length>=100) this.unlock("100_questions_done");
+      // streaks
+      if(st.streak?.count>=7) this.unlock("streak_7");
+      if(st.streak?.count>=30) this.unlock("streak_30");
+      // area mastery — wymaga window.QUESTIONS i window.AREAS
+      if(window.QUESTIONS){
+        ["B","O","N","P","D"].forEach(area=>{
+          const inArea=window.QUESTIONS.filter(q=>q.a===area);
+          if(!inArea.length) return;
+          const ok=inArea.every(q=>st.answered?.[q.id]?.correct);
+          if(ok) this.unlock("area_mastered_"+area);
+        });
+      }
+      // quiz perfect / first try
+      (st.stats?.quizzes||[]).forEach(q=>{
+        if(q.total===40 && q.score===40) this.unlock("quiz_perfect_40");
+      });
+      const firstQuiz=(st.stats?.quizzes||[])[0];
+      if(firstQuiz && (firstQuiz.score/firstQuiz.total) >= 0.5){
+        this.unlock("quiz_passed_first_try");
+      }
+      // subnetting_master — z osobnego countera
+      if((st.subnettingOk||0)>=10) this.unlock("subnetting_master");
+    },
+    /** Renderuje siatkę 4×3 — np. w view 'achievements' lub w settings. */
+    renderGrid(targetEl){
+      this.ensure();
+      const st=window.state.achievements||{};
+      const html=Object.entries(CATALOG).map(([id,a])=>{
+        const u=!!st[id];
+        return `
+          <div class="ux-ach-card ${u?'unlocked':'locked'}" title="${a.desc}">
+            <div class="ux-ach-ico">${a.ico}</div>
+            <div class="ux-ach-name">${a.name}</div>
+            <div class="ux-ach-desc">${a.desc}</div>
+          </div>
+        `;
+      }).join("");
+      targetEl.innerHTML = `<div class="ux-ach-grid">${html}</div>`;
+    },
+    /** Liczba odblokowanych / total — przydatne do nagłówka. */
+    progress(){
+      this.ensure();
+      const total=Object.keys(CATALOG).length;
+      const done=Object.keys(window.state.achievements||{}).length;
+      return {done,total};
+    }
+  };
+})();
+</script>
+
+
+<!-- ============================================================ -->
+<!-- ============ MODULE 4: MOBILE BOTTOM-NAV + 44PX TARGETS ==== -->
+<!-- ============================================================ -->
+<style id="ux-mobile-css">
+/* Domyślnie — większe tap targets na całej apce (Material 48px > Apple 44px) */
+.btn{min-height:44px}
+.q-card .opt{padding:14px 16px;min-height:56px;display:flex;align-items:center}
+
+@media(max-width:780px){
+  .btn{min-height:48px;padding:10px 18px}
+  .q-card .opt{padding:14px 16px;min-height:56px}
+
+  /* Timer: sticky zamiast fixed (nie zachodzi na "Przerwij") */
+  .timer{
+    position:sticky !important;top:0 !important;right:auto !important;left:0;
+    width:100%;border-radius:0;border-left:0;border-right:0;border-top:0;
+    text-align:center;z-index:50;
+  }
+
+  /* Sidebar nav -> bottom-nav */
+  body{flex-direction:column;padding-bottom:72px}
+  nav{
+    position:fixed !important;bottom:0;left:0;right:0;top:auto !important;
+    width:100% !important;height:64px !important;
+    display:flex !important;justify-content:space-around;align-items:stretch;
+    padding:8px !important;
+    background:var(--card);
+    border-top:1px solid var(--border);border-right:0 !important;
+    box-shadow:0 -2px 12px rgba(0,0,0,.06);
+    z-index:90;flex-wrap:nowrap !important;
+  }
+  nav h1, nav .footer, nav .ux-streak-nav-wrap{display:none !important}
+  nav button{
+    flex:1;min-width:0;
+    display:flex !important;flex-direction:column;
+    align-items:center;justify-content:center;
+    gap:2px !important;padding:4px !important;
+    border-left:0 !important;border-bottom:0 !important;
+    font-size:10px !important;color:var(--muted);
+    min-height:48px;
+  }
+  nav button.active{
+    background:transparent !important;color:var(--accent2) !important;
+    border-bottom:0 !important;
+  }
+  nav button.active .ico{transform:translateY(-1px)}
+  nav button .ico{font-size:20px !important;width:auto !important}
+  nav button .ux-label{display:block;line-height:1}
+  /* Settings -> w "More" — chowamy w bottom-nav */
+  nav button[data-view="settings"]{display:none !important}
+  nav button[data-view="more"]{display:flex !important}
+}
+@media(min-width:781px){
+  nav button[data-view="more"]{display:none !important}
+}
+
+/* Drawer "More" z Settings + Achievements */
+.ux-more-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:1050;
+  display:none;align-items:flex-end;
+}
+.ux-more-overlay.open{display:flex;animation:ux-fade-in .2s forwards}
+.ux-more-sheet{
+  background:var(--card);width:100%;border-radius:14px 14px 0 0;
+  padding:20px;transform:translateY(100%);
+  animation:ux-sheet-up .3s cubic-bezier(.2,.8,.2,1) forwards;
+}
+@keyframes ux-sheet-up{to{transform:translateY(0)}}
+.ux-more-sheet h3{margin:0 0 12px}
+.ux-more-sheet button{
+  width:100%;background:none;border:0;border-bottom:1px solid var(--border);
+  text-align:left;padding:14px 4px;font:inherit;color:var(--text);
+  display:flex;gap:12px;align-items:center;min-height:48px;cursor:pointer;
+}
+.ux-more-sheet button:last-child{border-bottom:0}
+</style>
+
+<script id="ux-mobile-js">
+(function(){
+  const M = (window.UX = window.UX || {});
+
+  M.mobile = {
+    /**
+     * Wstrzykuje przycisk "More" do nav (widoczny tylko na mobile),
+     * dodaje labels pod ikony, zapewnia obsługę drawer'a.
+     */
+    init(){
+      const nav=document.querySelector("nav");
+      if(!nav) return;
+      // Dodaj labels pod ikony (jeśli jeszcze nie ma)
+      const labels={dash:"Panel",quiz:"Quiz",srs:"Fiszki",topics:"Tematy",practice:"Praktyka",settings:"Więcej",more:"Więcej"};
+      nav.querySelectorAll("button[data-view]").forEach(b=>{
+        if(!b.querySelector(".ux-label")){
+          const lbl=document.createElement("span");
+          lbl.className="ux-label";
+          lbl.textContent = labels[b.dataset.view] || b.textContent.trim();
+          b.appendChild(lbl);
+        }
+      });
+      // Dodaj "More" jeśli nie ma
+      if(!nav.querySelector('[data-view="more"]')){
+        const more=document.createElement("button");
+        more.dataset.view="more";
+        more.innerHTML=`<span class="ico">⋯</span><span class="ux-label">Więcej</span>`;
+        more.addEventListener("click",()=>this.openMore());
+        nav.appendChild(more);
+      }
+      // Drawer overlay
+      if(!document.getElementById("ux-more-overlay")){
+        const ov=document.createElement("div");
+        ov.id="ux-more-overlay";
+        ov.className="ux-more-overlay";
+        ov.innerHTML=`
+          <div class="ux-more-sheet" onclick="event.stopPropagation()">
+            <h3>Więcej</h3>
+            <button data-action="achievements">🏆 <span>Osiągnięcia</span></button>
+            <button data-action="settings">⚙️ <span>Postępy / Eksport</span></button>
+            <button data-action="onboarding">🎯 <span>Pokaż onboarding</span></button>
+          </div>
+        `;
+        ov.addEventListener("click",e=>{
+          if(e.target===ov) ov.classList.remove("open");
+        });
+        ov.querySelectorAll("button[data-action]").forEach(b=>{
+          b.addEventListener("click",()=>{
+            const act=b.dataset.action;
+            ov.classList.remove("open");
+            if(act==="settings" && typeof window.render==="function") window.render("settings");
+            if(act==="achievements" && typeof window.render==="function") window.render("achievements");
+            if(act==="onboarding" && M.onboarding) M.onboarding.show();
+          });
+        });
+        document.body.appendChild(ov);
+      }
+    },
+    openMore(){
+      const ov=document.getElementById("ux-more-overlay");
+      if(ov) ov.classList.add("open");
+    }
+  };
+})();
+</script>
+
+
+<!-- ============================================================ -->
+<!-- ============ MODULE 5: SATISFACTION LAYER (FX) ============= -->
+<!-- ============================================================ -->
+<style id="ux-fx-css">
+@keyframes ux-shake{
+  0%,100%{transform:translateX(0)}
+  20%{transform:translateX(-4px)}
+  40%{transform:translateX(4px)}
+  60%{transform:translateX(-3px)}
+  80%{transform:translateX(3px)}
+}
+.ux-shake{animation:ux-shake .3s cubic-bezier(.36,.07,.19,.97)}
+
+@keyframes ux-pulse-good{
+  0%{box-shadow:0 0 0 0 rgba(31,157,85,.45)}
+  100%{box-shadow:0 0 0 12px rgba(31,157,85,0)}
+}
+.ux-pulse-good{animation:ux-pulse-good .6s cubic-bezier(.2,.8,.2,1)}
+
+#ux-confetti-canvas{
+  position:fixed;inset:0;pointer-events:none;z-index:1200;
+}
+.ux-countup{
+  font-variant-numeric:tabular-nums;
+  display:inline-block;
+}
+</style>
+
+<script id="ux-fx-js">
+(function(){
+  const M = (window.UX = window.UX || {});
+  const easeOutCubic = t => 1 - Math.pow(1-t, 3);
+
+  M.fx = {
+    /**
+     * Confetti — czysty Canvas API. 50 cząsteczek, gravity, fadeout 2.5s.
+     * Kolory z CSS variables (accent + good).
+     */
+    confetti(opts={}){
+      const N = opts.count || 50;
+      const canvas = this._ensureCanvas();
+      const ctx = canvas.getContext("2d");
+      // Kolory z CSS (z fallbackiem)
+      const css = getComputedStyle(document.documentElement);
+      const accent = css.getPropertyValue("--accent").trim() || "#2f6ef0";
+      const good   = css.getPropertyValue("--good").trim()   || "#1f9d55";
+      const colors = [accent, good, "#fbbf24", "#ec4899", "#8b5cf6"];
+      const W=canvas.width, H=canvas.height;
+      const cx = opts.x ?? W/2, cy = opts.y ?? H/3;
+      const parts = [];
+      for(let i=0;i<N;i++){
+        const ang = Math.random()*Math.PI*2;
+        const speed = 4 + Math.random()*6;
+        parts.push({
+          x:cx, y:cy,
+          vx:Math.cos(ang)*speed,
+          vy:Math.sin(ang)*speed - 4,
+          size: 4+Math.random()*4,
+          color: colors[(Math.random()*colors.length)|0],
+          rot: Math.random()*Math.PI,
+          vr: (Math.random()-.5)*.3,
+          life: 0
+        });
+      }
+      const DURATION = 2500;
+      const t0 = performance.now();
+      const tick = (t)=>{
+        const dt = t - t0;
+        ctx.clearRect(0,0,W,H);
+        let alive=0;
+        parts.forEach(p=>{
+          p.vy += 0.22; // gravity
+          p.vx *= 0.99;
+          p.x += p.vx; p.y += p.vy;
+          p.rot += p.vr;
+          p.life = dt/DURATION;
+          if(p.life < 1){
+            alive++;
+            ctx.save();
+            ctx.globalAlpha = Math.max(0, 1 - p.life);
+            ctx.translate(p.x,p.y);
+            ctx.rotate(p.rot);
+            ctx.fillStyle = p.color;
+            ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size);
+            ctx.restore();
+          }
+        });
+        if(alive>0 && dt<DURATION){ requestAnimationFrame(tick); }
+        else { ctx.clearRect(0,0,W,H); }
+      };
+      requestAnimationFrame(tick);
+    },
+    _ensureCanvas(){
+      let c=document.getElementById("ux-confetti-canvas");
+      if(!c){
+        c=document.createElement("canvas");
+        c.id="ux-confetti-canvas";
+        document.body.appendChild(c);
+      }
+      const dpr=window.devicePixelRatio||1;
+      c.width = window.innerWidth*dpr;
+      c.height = window.innerHeight*dpr;
+      c.style.width = window.innerWidth+"px";
+      c.style.height = window.innerHeight+"px";
+      c.getContext("2d").scale(dpr,dpr);
+      // override po scale: width/height już ustawione, kontekst po scale liczy w CSS px
+      c.width = window.innerWidth;
+      c.height = window.innerHeight;
+      return c;
+    },
+
+    /**
+     * Animowany count-up. Element musi mieć tekst startowy (np. "0%").
+     * fx.countUp(el, {from:0, to:75, suffix:"%", duration:1200})
+     */
+    countUp(el, {from=0,to=100,suffix="",duration=1200,prefix=""}={}){
+      if(!el) return;
+      const t0=performance.now();
+      const tick=(t)=>{
+        const p=Math.min(1,(t-t0)/duration);
+        const v=from + (to-from)*easeOutCubic(p);
+        el.textContent = prefix + Math.round(v) + suffix;
+        if(p<1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    },
+
+    /** Haptic feedback — silently skipped jeśli brak supportu. */
+    hapticGood(){
+      try{ navigator.vibrate && navigator.vibrate(20); }catch(e){}
+    },
+    hapticBad(){
+      try{ navigator.vibrate && navigator.vibrate([40,30,40]); }catch(e){}
+    },
+
+    /** Mikroshake na DOM elemencie — bez side effectu po zakończeniu. */
+    shake(el){
+      if(!el) return;
+      el.classList.remove("ux-shake");
+      void el.offsetWidth; // reflow dla restartu animacji
+      el.classList.add("ux-shake");
+      setTimeout(()=>el.classList.remove("ux-shake"),350);
+    },
+    pulseGood(el){
+      if(!el) return;
+      el.classList.remove("ux-pulse-good");
+      void el.offsetWidth;
+      el.classList.add("ux-pulse-good");
+      setTimeout(()=>el.classList.remove("ux-pulse-good"),650);
+    },
+
+    /**
+     * Sugar: feedback po odpowiedzi. Wywołać z selectAnswer/srsAnswer.
+     * fx.answerFeedback(optEl, correct)
+     */
+    answerFeedback(el, correct){
+      if(correct){ this.hapticGood(); this.pulseGood(el); }
+      else       { this.hapticBad();  this.shake(el);    }
+    }
+  };
+
+  // Resize canvas — gdy istnieje
+  window.addEventListener("resize",()=>{
+    const c=document.getElementById("ux-confetti-canvas");
+    if(c){ c.width=window.innerWidth; c.height=window.innerHeight; }
+  });
+})();
+</script>
+
+
+<!--
+  ============================================================
+  KOMENTARZ INTEGRACYJNY — co podpiąć w v1, by moduły działały:
+  ============================================================
+
+  1) PO loadState() (linia ~136 w v1) — wstrzyknij init wszystkich modułów:
+
+       loadState();
+       // === UX v2 init ===
+       window.addEventListener("DOMContentLoaded",()=>{
+         UX.streak.ensure();        UX.streak.renderInNav();
+         UX.achievements.ensure();  UX.achievements.checkAll();
+         UX.mobile.init();
+         UX.onboarding.maybeShow();
+       });
+
+  2) W funkcji selectAnswer (linia ~470) — po zapisie odpowiedzi:
+
+       window.selectAnswer=function(i){
+         quizState.answers[quizState.current]=i;
+         renderQuizQuestion();
+         UX.streak.markActivity();        // <-- streak
+         // feedback wizualny dla wybranej opcji:
+         const opts=document.querySelectorAll(".q-card .opt");
+         const correct = QUESTIONS.find(q=>q.id===quizState.qids[quizState.current]).c === i;
+         UX.fx.answerFeedback(opts[i], correct);
+       };
+
+  3) W funkcji srsAnswer (linia ~581) — analogicznie:
+
+       window.srsAnswer=function(i){
+         // ... istniejąca logika ...
+         UX.streak.markActivity();
+         UX.achievements.checkAll();
+         const opts=document.querySelectorAll(".q-card .opt");
+         UX.fx.answerFeedback(opts[i], correct);
+       };
+
+  4) W finishQuiz (linia ~473) — po zapisaniu wyniku:
+
+       state.stats.quizzes.push({score,total,date,duration});
+       saveState();
+       UX.achievements.checkAll();
+       const pct = score/total;
+       if(pct >= 0.5) UX.fx.confetti();   // celebration
+
+     Na widoku wyników quizu — dla wyświetlanego procentu:
+       <span class="ux-countup" id="quiz-result-pct">0%</span>
+       UX.fx.countUp(document.getElementById("quiz-result-pct"),
+                    {from:0, to:Math.round(pct*100), suffix:"%", duration:1200});
+
+  5) W subnetting/practice — po poprawnym wyniku:
+       state.subnettingOk = (state.subnettingOk||0) + 1;
+       saveState();
+       UX.achievements.checkAll();
+
+  6) W render() (linia ~334) — dodaj nowy view 'achievements':
+       if(view==="achievements"){
+         app.innerHTML='<div class="card"><h2>Osiągnięcia</h2><div id="ach-grid"></div></div>';
+         UX.achievements.renderGrid(document.getElementById("ach-grid"));
+       }
+     Plus przycisk w nav (desktop):
+       <button data-view="achievements"><span class="ico">🏆</span> Osiągnięcia</button>
+
+  7) Onboarding hook do diagnozy: zdefiniować window.startDiagnostic = ()=>{...}
+     który losuje 7 pytań (po 1 z każdego z 5 obszarów + 2 dodatkowe) i pokazuje
+     je jako "soft" quiz (bez wpływu na statsy). Po zakończeniu — render('dash').
+
+  8) STATE EXTENSIONS (auto-tworzone przez moduły, ale warto dodać do
+     domyślnego state w v1 dla świeżych instalacji):
+       state.profile = null;                                   // {goal,dailyGoalMin,onboardedAt}
+       state.streak  = {count:0,lastActiveDate:null,freezesAvailable:3};
+       state.achievements = {};                                // id -> {unlockedAt}
+       state.subnettingOk = 0;
+
+  9) MOBILE — sprawdzić w v1, że timer ma id="timer" (ma) i .timer w CSS jest
+     fixed. Moduł 4 nadpisuje go na sticky wyłącznie pod 780px. Jeśli v2 zmieni
+     strukturę navigacji — zaktualizować selektor labels.
+
+  10) SAVESTATE — wszystkie moduły wywołują window.saveState() jeśli istnieje.
+      Zachować tę nazwę funkcji w v2 (lub aliasować).
+-->

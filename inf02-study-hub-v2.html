@@ -1,0 +1,2501 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>INF.02 Study Hub v2</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+:root{color-scheme:light;--bg:#f7f8fb;--card:#fff;--text:#1a1d24;--muted:#5a6473;--border:#e3e6ec;--accent:#2f6ef0;--accent2:#1e4ec0;--good:#1f9d55;--bad:#c92e2e;--warn:#d97706;--shadow:0 1px 2px rgba(0,0,0,.04),0 4px 12px rgba(0,0,0,.05)}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+body{display:flex;min-height:100vh}
+nav{width:200px;background:var(--card);border-right:1px solid var(--border);padding:16px 0;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto}
+nav h1{font-size:14px;margin:0 16px 16px;color:var(--accent2);letter-spacing:.5px}
+nav h1 small{display:block;font-weight:400;color:var(--muted);font-size:11px;letter-spacing:0;margin-top:2px}
+nav button{display:flex;align-items:center;gap:8px;width:100%;text-align:left;background:none;border:0;padding:10px 16px;cursor:pointer;color:var(--text);font:inherit;border-left:3px solid transparent}
+nav button:hover{background:#f1f4f9}
+nav button.active{background:#eef3fc;border-left-color:var(--accent);color:var(--accent2);font-weight:600}
+nav button .ico{width:18px;text-align:center;font-size:14px}
+nav .footer{position:absolute;bottom:0;left:0;right:0;padding:12px 16px;border-top:1px solid var(--border);font-size:11px;color:var(--muted);background:var(--card)}
+main{flex:1;padding:24px 32px;max-width:1100px;margin:0 auto;width:100%}
+.card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:20px;margin-bottom:16px;box-shadow:var(--shadow)}
+.row{display:flex;gap:16px;flex-wrap:wrap}
+.row>.card{flex:1;min-width:240px;margin-bottom:0}
+h2{margin:0 0 12px;font-size:18px}
+h3{margin:0 0 8px;font-size:14px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;font-weight:600}
+.btn{display:inline-flex;align-items:center;gap:6px;background:var(--accent);color:#fff;border:0;border-radius:6px;padding:8px 14px;font:inherit;font-weight:500;cursor:pointer;transition:background .15s}
+.btn:hover{background:var(--accent2)}
+.btn.ghost{background:transparent;color:var(--accent);border:1px solid var(--border)}
+.btn.ghost:hover{background:#f1f4f9}
+.btn.danger{background:var(--bad)}
+.btn.success{background:var(--good)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.bigstat{font-size:32px;font-weight:700;color:var(--accent2);line-height:1}
+.bigstat small{font-size:13px;font-weight:400;color:var(--muted);display:block;margin-top:4px}
+.bar{height:8px;background:#eef0f5;border-radius:99px;overflow:hidden;margin:6px 0}
+.bar>span{display:block;height:100%;background:linear-gradient(90deg,var(--accent),#5b8def);border-radius:99px;transition:width .4s}
+.area-row{display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid #f0f2f6}
+.area-row:last-child{border-bottom:0}
+.area-row .name{flex:1;font-weight:500}
+.area-row .count{color:var(--muted);font-size:12px;min-width:80px;text-align:right}
+.chip{display:inline-block;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:600;background:#eef3fc;color:var(--accent2)}
+.chip.B{background:#fef3c7;color:#92400e}
+.chip.O{background:#dbeafe;color:#1e40af}
+.chip.N{background:#dcfce7;color:#166534}
+.chip.P{background:#fce7f3;color:#9d174d}
+.chip.D{background:#fee2e2;color:#991b1b}
+.chip.L{background:#e0e7ff;color:#3730a3}
+.chip.W{background:#cffafe;color:#155e75}
+.chip.area6{background:#f3e8ff;color:#6b21a8}
+.chip.V{background:#fef9c3;color:#854d0e}
+.chip.Z{background:#fed7aa;color:#9a3412}
+.chip.R{background:#d1fae5;color:#065f46}
+.q-card{background:#fff;border:1px solid var(--border);border-radius:8px;padding:20px;margin-bottom:12px}
+.q-card .q-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;font-size:12px;color:var(--muted)}
+.q-card .q-text{font-size:15px;margin-bottom:14px;line-height:1.5}
+.q-card .opt{display:block;padding:10px 14px;border:1px solid var(--border);border-radius:6px;margin-bottom:6px;cursor:pointer;transition:all .12s;background:#fafbfd}
+.q-card .opt:hover{border-color:var(--accent);background:#f1f4f9}
+.q-card .opt.selected{border-color:var(--accent);background:#eef3fc}
+.q-card .opt.correct{border-color:var(--good);background:#dcfce7;color:#14532d}
+.q-card .opt.wrong{border-color:var(--bad);background:#fee2e2;color:#7f1d1d}
+.q-card .opt.disabled{cursor:default}
+.q-card .explanation{margin-top:14px;padding:12px;background:#f8fafd;border-left:3px solid var(--accent);border-radius:4px;font-size:13px;color:#37424f}
+.timer{position:fixed;top:16px;right:24px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 14px;font-weight:600;font-variant-numeric:tabular-nums;box-shadow:var(--shadow);z-index:100}
+.timer.warn{color:var(--warn);border-color:var(--warn)}
+.timer.crit{color:var(--bad);border-color:var(--bad);animation:pulse 1s infinite}
+@keyframes pulse{50%{background:#fee2e2}}
+.kbd{display:inline-block;padding:1px 5px;background:#f1f4f9;border:1px solid var(--border);border-radius:3px;font:11px Menlo,monospace}
+.subnet-grid{display:grid;grid-template-columns:auto 1fr;gap:8px 12px;align-items:center;font-size:13px}
+.subnet-grid label{color:var(--muted);font-weight:500}
+.subnet-grid input,.subnet-grid select{padding:6px 8px;border:1px solid var(--border);border-radius:4px;font:inherit}
+.subnet-out{background:#f8fafd;border-radius:6px;padding:12px;margin-top:12px;font:13px Menlo,monospace}
+.subnet-out .row{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px dashed #e3e6ec;flex-wrap:nowrap;gap:0}
+.subnet-out .row:last-child{border:0}
+.subnet-out .row b{color:var(--accent2)}
+.tabbar{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:16px}
+.tabbar button{background:none;border:0;padding:10px 14px;cursor:pointer;font:inherit;color:var(--muted);border-bottom:2px solid transparent;font-weight:500}
+.tabbar button.active{color:var(--accent2);border-bottom-color:var(--accent)}
+.empty{padding:40px;text-align:center;color:var(--muted)}
+.flag{display:inline-block;padding:2px 6px;border-radius:3px;font-size:11px;font-weight:600;margin-left:6px}
+.flag.box1{background:#fee2e2;color:#991b1b}
+.flag.box2{background:#fef3c7;color:#92400e}
+.flag.box3{background:#dbeafe;color:#1e40af}
+.flag.box4{background:#dcfce7;color:#166534}
+.flag.box5{background:#e0e7ff;color:#3730a3}
+.weekplan{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-top:8px}
+.weekplan .w{background:#f8fafd;border:1px solid var(--border);border-radius:6px;padding:10px;font-size:12px;text-align:center}
+.weekplan .w.now{background:#eef3fc;border-color:var(--accent)}
+.weekplan .w b{display:block;color:var(--accent2);font-size:11px}
+.toolbar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;align-items:center}
+.toolbar .spacer{flex:1}
+select.areafilter{padding:6px 10px;border:1px solid var(--border);border-radius:6px;font:inherit;background:#fff}
+.note{font-size:12px;color:var(--muted);margin-top:8px}
+@media(max-width:780px){
+  body{flex-direction:column}
+  nav{width:100%;height:auto;position:relative;display:flex;flex-wrap:wrap;padding:8px}
+  nav h1{width:100%;margin:0 8px 8px}
+  nav button{width:auto;padding:6px 10px;border-left:0;border-bottom:2px solid transparent;font-size:12px}
+  nav button.active{border-left:0;border-bottom-color:var(--accent)}
+  nav .footer{position:relative;width:100%;border-top:0}
+  main{padding:16px}
+  .timer{top:8px;right:8px}
+}
+
+/* ============ UX MODULES STYLES ============ */
+
+.ux-modal-overlay{
+  position:fixed;inset:0;background:rgba(15,20,30,.55);
+  display:flex;align-items:center;justify-content:center;
+  z-index:1000;padding:16px;
+  opacity:0;animation:ux-fade-in .25s cubic-bezier(.2,.8,.2,1) forwards;
+}
+.ux-modal-overlay.closing{animation:ux-fade-out .2s cubic-bezier(.4,0,1,1) forwards}
+@keyframes ux-fade-in{to{opacity:1}}
+@keyframes ux-fade-out{to{opacity:0}}
+.ux-modal{
+  background:var(--card);border-radius:12px;
+  width:100%;max-width:480px;padding:32px;
+  box-shadow:0 10px 40px rgba(0,0,0,.18),0 2px 8px rgba(0,0,0,.06);
+  transform:translateY(8px) scale(.98);
+  animation:ux-pop .35s cubic-bezier(.2,.8,.2,1) forwards;
+}
+@keyframes ux-pop{to{transform:translateY(0) scale(1)}}
+.ux-modal h2{margin:0 0 8px;font-size:22px;color:var(--text)}
+.ux-modal .ux-sub{color:var(--muted);font-size:13px;margin:0 0 24px}
+.ux-steps{display:flex;gap:6px;margin-bottom:24px}
+.ux-step-pill{flex:1;height:4px;border-radius:99px;background:#eef0f5;transition:background .25s}
+.ux-step-pill.active{background:var(--accent)}
+.ux-step-pill.done{background:var(--good)}
+.ux-radio{
+  display:flex;align-items:center;gap:12px;
+  padding:14px 16px;border:1px solid var(--border);border-radius:8px;
+  margin-bottom:8px;cursor:pointer;transition:all .15s cubic-bezier(.2,.8,.2,1);
+  min-height:56px;background:#fafbfd;
+}
+.ux-radio:hover{border-color:var(--accent);background:#f1f4f9}
+.ux-radio input{margin:0;accent-color:var(--accent);width:18px;height:18px}
+.ux-radio.checked{border-color:var(--accent);background:#eef3fc}
+.ux-radio .ux-r-title{font-weight:600;display:block;margin-bottom:2px}
+.ux-radio .ux-r-desc{color:var(--muted);font-size:12px}
+.ux-slider-wrap{padding:8px 0 4px}
+.ux-slider-val{
+  display:flex;justify-content:space-between;align-items:baseline;
+  margin-bottom:8px;
+}
+.ux-slider-val b{font-size:32px;color:var(--accent2);font-weight:700}
+.ux-slider-val span{color:var(--muted);font-size:12px}
+.ux-slider{
+  -webkit-appearance:none;appearance:none;width:100%;height:6px;
+  border-radius:99px;background:#eef0f5;outline:none;
+}
+.ux-slider::-webkit-slider-thumb{
+  -webkit-appearance:none;appearance:none;width:22px;height:22px;
+  border-radius:50%;background:var(--accent);cursor:pointer;
+  box-shadow:0 2px 6px rgba(47,110,240,.35);
+  transition:transform .15s;
+}
+.ux-slider::-webkit-slider-thumb:hover{transform:scale(1.15)}
+.ux-slider::-moz-range-thumb{
+  width:22px;height:22px;border-radius:50%;background:var(--accent);
+  cursor:pointer;border:0;box-shadow:0 2px 6px rgba(47,110,240,.35);
+}
+.ux-slider-marks{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:6px}
+.ux-modal .ux-actions{
+  display:flex;justify-content:space-between;gap:8px;margin-top:28px;
+}
+.ux-modal .ux-actions .btn{min-height:48px;padding:0 20px}
+.ux-diag-list{margin:8px 0 0;padding:0;list-style:none}
+.ux-diag-list li{
+  padding:8px 0;color:var(--muted);font-size:13px;
+  display:flex;align-items:center;gap:8px;
+}
+.ux-diag-list li::before{content:"✓";color:var(--good);font-weight:700}
+@media(max-width:780px){
+  .ux-modal{padding:24px 20px;border-radius:14px 14px 0 0;align-self:flex-end;max-width:100%}
+  .ux-modal-overlay{align-items:flex-end}
+  .ux-modal h2{font-size:20px}
+}
+
+
+.ux-streak{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:6px 12px;border-radius:99px;
+  background:linear-gradient(135deg,#fff7ed,#fed7aa);
+  border:1px solid #fdba74;color:#9a3412;
+  font-weight:700;font-size:13px;cursor:pointer;
+  position:relative;user-select:none;
+  transition:transform .15s cubic-bezier(.2,.8,.2,1);
+  min-height:32px;
+}
+.ux-streak:hover{transform:translateY(-1px)}
+.ux-streak.cold{
+  background:#f1f4f9;border-color:var(--border);color:var(--muted);
+}
+.ux-streak .ux-fire{font-size:16px;line-height:1}
+.ux-streak.bumped .ux-fire{animation:ux-fire-bump .6s cubic-bezier(.2,.8,.2,1)}
+@keyframes ux-fire-bump{
+  0%{transform:scale(1)}
+  30%{transform:scale(1.4) rotate(-8deg)}
+  60%{transform:scale(1.15) rotate(6deg)}
+  100%{transform:scale(1)}
+}
+.ux-streak-tip{
+  position:absolute;top:calc(100% + 8px);right:0;
+  background:var(--card);border:1px solid var(--border);border-radius:10px;
+  padding:14px;box-shadow:var(--shadow);min-width:240px;z-index:200;
+  font-weight:400;color:var(--text);font-size:13px;
+  opacity:0;pointer-events:none;transform:translateY(-4px);
+  transition:opacity .2s,transform .2s;
+}
+.ux-streak-tip.open{opacity:1;pointer-events:auto;transform:translateY(0)}
+.ux-streak-tip h4{margin:0 0 6px;font-size:13px;color:var(--accent2)}
+.ux-streak-tip p{margin:0 0 10px;color:var(--muted);font-size:12px}
+.ux-streak-tip .btn{font-size:12px;padding:6px 10px;min-height:36px;width:100%;justify-content:center}
+.ux-streak-nav-wrap{padding:0 16px 8px}
+@media(max-width:780px){
+  .ux-streak-tip{right:auto;left:0}
+}
+
+
+.ux-toast-stack{
+  position:fixed;bottom:24px;right:24px;z-index:1100;
+  display:flex;flex-direction:column;gap:8px;
+  pointer-events:none;
+}
+.ux-toast{
+  background:var(--card);border:1px solid var(--border);
+  border-left:4px solid var(--good);border-radius:10px;
+  padding:14px 16px;min-width:280px;max-width:340px;
+  box-shadow:0 8px 24px rgba(0,0,0,.12),0 2px 6px rgba(0,0,0,.06);
+  pointer-events:auto;
+  transform:translateX(120%);opacity:0;
+  animation:ux-toast-in .3s cubic-bezier(.2,.8,.2,1) forwards;
+}
+.ux-toast.out{animation:ux-toast-out .25s cubic-bezier(.4,0,1,1) forwards}
+@keyframes ux-toast-in{to{transform:translateX(0);opacity:1}}
+@keyframes ux-toast-out{to{transform:translateX(120%);opacity:0}}
+.ux-toast-head{display:flex;gap:10px;align-items:center;margin-bottom:6px}
+.ux-toast-ico{
+  font-size:24px;line-height:1;
+  filter:drop-shadow(0 2px 4px rgba(0,0,0,.15));
+}
+.ux-toast-title{font-weight:700;font-size:14px;color:var(--text);flex:1}
+.ux-toast-sub{font-size:12px;color:var(--muted);margin-bottom:8px}
+.ux-toast-bar{height:3px;background:#eef0f5;border-radius:99px;overflow:hidden}
+.ux-toast-bar>span{
+  display:block;height:100%;background:var(--good);width:100%;
+  transform-origin:right;
+  animation:ux-toast-bar 4s linear forwards;
+}
+@keyframes ux-toast-bar{to{transform:scaleX(0)}}
+
+.ux-ach-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:12px;
+}
+.ux-ach-card{
+  background:#fafbfd;border:1px solid var(--border);border-radius:8px;
+  padding:14px 10px;text-align:center;
+  transition:all .15s cubic-bezier(.2,.8,.2,1);
+  position:relative;overflow:hidden;
+}
+.ux-ach-card.locked{opacity:.4;filter:grayscale(.8)}
+.ux-ach-card.unlocked{
+  background:linear-gradient(135deg,#fffbeb,#fef3c7);
+  border-color:#fbbf24;
+}
+.ux-ach-card .ux-ach-ico{font-size:32px;margin-bottom:4px;line-height:1}
+.ux-ach-card .ux-ach-name{font-size:12px;font-weight:600;color:var(--text);line-height:1.3}
+.ux-ach-card .ux-ach-desc{font-size:10px;color:var(--muted);margin-top:2px}
+.ux-ach-card.unlocked::after{
+  content:"✓";position:absolute;top:6px;right:8px;
+  color:var(--good);font-weight:700;font-size:14px;
+}
+@media(max-width:780px){
+  .ux-ach-grid{grid-template-columns:repeat(3,1fr)}
+  .ux-toast-stack{left:16px;right:16px;bottom:84px}
+  .ux-toast{min-width:0;max-width:100%}
+}
+
+
+/* Domyślnie — większe tap targets na całej apce (Material 48px > Apple 44px) */
+.btn{min-height:44px}
+.q-card .opt{padding:14px 16px;min-height:56px;display:flex;align-items:center}
+
+@media(max-width:780px){
+  .btn{min-height:48px;padding:10px 18px}
+  .q-card .opt{padding:14px 16px;min-height:56px}
+
+  /* Timer: sticky zamiast fixed (nie zachodzi na "Przerwij") */
+  .timer{
+    position:sticky !important;top:0 !important;right:auto !important;left:0;
+    width:100%;border-radius:0;border-left:0;border-right:0;border-top:0;
+    text-align:center;z-index:50;
+  }
+
+  /* Sidebar nav -> bottom-nav */
+  body{flex-direction:column;padding-bottom:72px}
+  nav{
+    position:fixed !important;bottom:0;left:0;right:0;top:auto !important;
+    width:100% !important;height:64px !important;
+    display:flex !important;justify-content:space-around;align-items:stretch;
+    padding:8px !important;
+    background:var(--card);
+    border-top:1px solid var(--border);border-right:0 !important;
+    box-shadow:0 -2px 12px rgba(0,0,0,.06);
+    z-index:90;flex-wrap:nowrap !important;
+  }
+  nav h1, nav .footer, nav .ux-streak-nav-wrap{display:none !important}
+  nav button{
+    flex:1;min-width:0;
+    display:flex !important;flex-direction:column;
+    align-items:center;justify-content:center;
+    gap:2px !important;padding:4px !important;
+    border-left:0 !important;border-bottom:0 !important;
+    font-size:10px !important;color:var(--muted);
+    min-height:48px;
+  }
+  nav button.active{
+    background:transparent !important;color:var(--accent2) !important;
+    border-bottom:0 !important;
+  }
+  nav button.active .ico{transform:translateY(-1px)}
+  nav button .ico{font-size:20px !important;width:auto !important}
+  nav button .ux-label{display:block;line-height:1}
+  /* Settings -> w "More" — chowamy w bottom-nav */
+  nav button[data-view="settings"]{display:none !important}
+  nav button[data-view="more"]{display:flex !important}
+}
+@media(min-width:781px){
+  nav button[data-view="more"]{display:none !important}
+}
+
+/* Drawer "More" z Settings + Achievements */
+.ux-more-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:1050;
+  display:none;align-items:flex-end;
+}
+.ux-more-overlay.open{display:flex;animation:ux-fade-in .2s forwards}
+.ux-more-sheet{
+  background:var(--card);width:100%;border-radius:14px 14px 0 0;
+  padding:20px;transform:translateY(100%);
+  animation:ux-sheet-up .3s cubic-bezier(.2,.8,.2,1) forwards;
+}
+@keyframes ux-sheet-up{to{transform:translateY(0)}}
+.ux-more-sheet h3{margin:0 0 12px}
+.ux-more-sheet button{
+  width:100%;background:none;border:0;border-bottom:1px solid var(--border);
+  text-align:left;padding:14px 4px;font:inherit;color:var(--text);
+  display:flex;gap:12px;align-items:center;min-height:48px;cursor:pointer;
+}
+.ux-more-sheet button:last-child{border-bottom:0}
+
+
+@keyframes ux-shake{
+  0%,100%{transform:translateX(0)}
+  20%{transform:translateX(-4px)}
+  40%{transform:translateX(4px)}
+  60%{transform:translateX(-3px)}
+  80%{transform:translateX(3px)}
+}
+.ux-shake{animation:ux-shake .3s cubic-bezier(.36,.07,.19,.97)}
+
+@keyframes ux-pulse-good{
+  0%{box-shadow:0 0 0 0 rgba(31,157,85,.45)}
+  100%{box-shadow:0 0 0 12px rgba(31,157,85,0)}
+}
+.ux-pulse-good{animation:ux-pulse-good .6s cubic-bezier(.2,.8,.2,1)}
+
+#ux-confetti-canvas{
+  position:fixed;inset:0;pointer-events:none;z-index:1200;
+}
+.ux-countup{
+  font-variant-numeric:tabular-nums;
+  display:inline-block;
+}
+
+/* ============ END UX STYLES ============ */
+</style>
+</head>
+<body>
+
+<nav>
+  <h1>INF.02 Study Hub<small>v2 · 230 pytań · sesja lato 2026</small></h1>
+  <div id="ux-streak-host" style="margin:0 16px 12px;font-size:13px;color:var(--muted)"></div>
+  <button class="active" data-view="dash"><span class="ico">📊</span> Dashboard</button>
+  <button data-view="quiz"><span class="ico">📝</span> Quiz egzaminacyjny</button>
+  <button data-view="srs"><span class="ico">🔁</span> Fiszki SR</button>
+  <button data-view="topics"><span class="ico">📚</span> Nauka tematyczna</button>
+  <button data-view="practice"><span class="ico">🛠️</span> Symulator praktyczny</button>
+  <button data-view="diagnosis"><span class="ico">🎯</span> Diagnoza</button>
+  <button data-view="review"><span class="ico">📈</span> Naucz się słabych</button>
+  <button data-view="achievements"><span class="ico">🏆</span> Osiągnięcia</button>
+  <button data-view="settings"><span class="ico">⚙️</span> Postępy / Eksport</button>
+  <div class="footer">
+    Egzamin: 02-11.06 (teoria), 12-18.06 (praktyka) 2026.<br>
+    Próg: teoria 50% · praktyka 75%.<br>
+    <span style="color:var(--accent2);font-weight:600">v2.0</span> · adaptive · 11 obszarów
+  </div>
+</nav>
+
+<!-- UX TEMPLATES -->
+<template id="ux-onboarding-template">
+  <div class="ux-modal-overlay" id="ux-ob-overlay" role="dialog" aria-modal="true" aria-labelledby="ux-ob-title">
+    <div class="ux-modal">
+      <div class="ux-steps" aria-hidden="true">
+        <div class="ux-step-pill active" data-step="1"></div>
+        <div class="ux-step-pill" data-step="2"></div>
+        <div class="ux-step-pill" data-step="3"></div>
+      </div>
+
+      
+      <section data-step-content="1">
+        <h2 id="ux-ob-title">Witaj! Jaki jest Twój cel?</h2>
+        <p class="ux-sub">Dostosujemy plan nauki pod Ciebie.</p>
+        <label class="ux-radio">
+          <input type="radio" name="ux-goal" value="exam" checked>
+          <span>
+            <span class="ux-r-title">Zdaję egzamin INF.02</span>
+            <span class="ux-r-desc">Sesja czerwiec 2026 — pełen plan dzień po dniu</span>
+          </span>
+        </label>
+        <label class="ux-radio">
+          <input type="radio" name="ux-goal" value="practice">
+          <span>
+            <span class="ux-r-title">Tylko ćwiczę</span>
+            <span class="ux-r-desc">Bez deadline'u, własne tempo</span>
+          </span>
+        </label>
+      </section>
+
+      
+      <section data-step-content="2" hidden>
+        <h2>Ile minut dziennie?</h2>
+        <p class="ux-sub">Małymi krokami zajdziesz dalej niż maratonami raz w tygodniu.</p>
+        <div class="ux-slider-wrap">
+          <div class="ux-slider-val"><b id="ux-ob-min">20</b><span>minut / dzień</span></div>
+          <input type="range" min="5" max="60" step="5" value="20" class="ux-slider" id="ux-ob-slider">
+          <div class="ux-slider-marks"><span>5 min</span><span>30 min</span><span>60 min</span></div>
+        </div>
+      </section>
+
+      
+      <section data-step-content="3" hidden>
+        <h2>Diagnoza — 7 pytań</h2>
+        <p class="ux-sub">Sprawdzimy z czego zacząć. Trwa około 3 minut.</p>
+        <ul class="ux-diag-list">
+          <li>Po jednym pytaniu z każdego obszaru (B, O, N, P, D)</li>
+          <li>Na podstawie wyników — rekomendacja startu</li>
+          <li>Wynik nie wpływa na statystyki</li>
+        </ul>
+      </section>
+
+      <div class="ux-actions">
+        <button class="btn ghost" id="ux-ob-back" hidden>Wstecz</button>
+        <span style="flex:1"></span>
+        <button class="btn ghost" id="ux-ob-skip">Pomiń</button>
+        <button class="btn" id="ux-ob-next">Dalej →</button>
+      </div>
+    </div>
+  </div>
+</template>
+<!-- END UX TEMPLATES -->
+
+<main id="app"></main>
+<div class="timer" id="timer" style="display:none"></div>
+
+<script>
+// ============ ADAPTIVE ENGINE (Phase 1C) ============
+/* ============================================================================
+ * INF.02 Adaptive Learning Engine v2
+ * ----------------------------------------------------------------------------
+ * Vanilla JS, ES2017+, no external deps. Drop-in module for inf02-study-hub.
+ * Modules:
+ *   1) Diagnostic calibration       (selectDiagnosticQuestions)
+ *   2) Weak-area weighted selection (selectQuizQuestions)
+ *   3) SM-2 + 4-rating scheduler    (rateCard)            [Wozniak 1990]
+ *   4) Free recall + tolerant match (renderFillInQuestion, matchAnswer)
+ *   5) Worked-example fading        (renderWorkedExample) [Sweller 2006]
+ *   6) Knowledge model + dashboard  (updateKnowledge, getKnowledgeReport)
+ * ==========================================================================*/
+
+(function (global) {
+  'use strict';
+
+  // ---------------------------------------------------------------------------
+  // STATE — persisted via localStorage under a single key. Pure helpers below
+  // accept/return state to keep the algorithmic core testable.
+  // ---------------------------------------------------------------------------
+  const STORAGE_KEY = 'inf02_adaptive_state_v2';
+  const AREAS = ['B', 'O', 'D', 'S', 'U']; // Bezpieczeństwo, Okablowanie, Diagnostyka, Sieci, Usługi
+  const ALPHA = 0.7; // Bayesian smoothing for knowledge updates
+
+  const defaultState = () => ({
+    diagnosed: false,
+    knowledge: AREAS.reduce((acc, a) => (acc[a] = 0.5, acc), {}),
+    cards: {},          // id -> {ease, interval, reps, lapses, due, learningStep, area, successStreak}
+    history: [],        // {id, ts, correct, area}
+    workedExampleProgress: {}, // topic -> count of successful applications
+  });
+
+  function loadState() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return defaultState();
+      return Object.assign(defaultState(), JSON.parse(raw));
+    } catch (e) { return defaultState(); }
+  }
+
+  function saveState(state) {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  let state = loadState();
+// UX init (no-op if not loaded)
+if(window.UX){if(UX.streak&&UX.streak.init)UX.streak.init();if(UX.achievements&&UX.achievements.init)UX.achievements.init();if(UX.fx&&UX.fx.init)UX.fx.init();if(UX.onboarding&&UX.onboarding.maybeShow)UX.onboarding.maybeShow();}
+
+  // ---------------------------------------------------------------------------
+  // 1) DIAGNOSTIC CALIBRATION
+  // ---------------------------------------------------------------------------
+
+  /**
+   * Pick a calibration set: 1 easy + 1 medium + 1 hard per area (cap at 12).
+   * @param {Array<{id:string,area:string,difficulty:'easy'|'medium'|'hard'}>} pool
+   * @param {number} [maxQuestions=12]
+   * @returns {Array} ordered diagnostic question list
+   */
+  function selectDiagnosticQuestions(pool, maxQuestions = 12) {
+    const out = [];
+    AREAS.forEach(area => {
+      ['easy', 'medium', 'hard'].forEach(diff => {
+        const candidates = pool.filter(q => q.area === area && q.difficulty === diff);
+        if (candidates.length) {
+          out.push(candidates[Math.floor(Math.random() * candidates.length)]);
+        }
+      });
+    });
+    // Shuffle so user does not see "easy first" pattern (reduces ceiling artefacts)
+    for (let i = out.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [out[i], out[j]] = [out[j], out[i]];
+    }
+    return out.slice(0, maxQuestions);
+  }
+
+  /**
+   * Apply diagnostic results. Each area's prior knowledge becomes
+   * (correct / answered) capped to [0.1, 0.9] so SR has room to move.
+   * @param {Array<{area:string,correct:boolean}>} results
+   */
+  function markDiagnosisComplete(results) {
+    const tally = {};
+    results.forEach(r => {
+      tally[r.area] = tally[r.area] || { c: 0, n: 0 };
+      tally[r.area].n += 1;
+      if (r.correct) tally[r.area].c += 1;
+    });
+    AREAS.forEach(a => {
+      if (tally[a]) {
+        const p = tally[a].c / tally[a].n;
+        state.knowledge[a] = Math.max(0.1, Math.min(0.9, p));
+      }
+    });
+    state.diagnosed = true;
+    saveState(state);
+  }
+
+  // ---------------------------------------------------------------------------
+  // 2) WEAK-AREA WEIGHTED SELECTION
+  // ---------------------------------------------------------------------------
+
+  /**
+   * Weighted draw of n questions. 70% of slots use weight (1 - knowledge[area])^2
+   * (favour weak areas), 30% use a uniform draw (rehearse strong areas to prevent
+   * forgetting). Skips cards answered correctly 3+ times in last 7 days.
+   * @param {number} n
+   * @param {Array<{id:string,area:string}>} pool
+   * @returns {Array} selected questions
+   */
+  function selectQuizQuestions(n, pool) {
+    const weakSlots = Math.round(n * 0.7);
+    const strongSlots = n - weakSlots;
+    const filtered = pool.filter(q => !isRecentlyMastered(q.id));
+    if (!filtered.length) return [];
+
+    const weights = filtered.map(q => {
+      const k = state.knowledge[q.area] !== undefined ? state.knowledge[q.area] : 0.5;
+      return Math.pow(1 - k, 2) + 0.01; // floor to avoid 0 weight
+    });
+
+    const picked = [];
+    const seen = new Set();
+    for (let i = 0; i < weakSlots && picked.length < filtered.length; i++) {
+      const idx = weightedIndex(weights, seen);
+      if (idx >= 0) { picked.push(filtered[idx]); seen.add(idx); }
+    }
+    for (let i = 0; i < strongSlots && picked.length < filtered.length; i++) {
+      let idx;
+      do { idx = Math.floor(Math.random() * filtered.length); } while (seen.has(idx));
+      picked.push(filtered[idx]); seen.add(idx);
+    }
+    return picked;
+  }
+
+  function weightedIndex(weights, exclude) {
+    let total = 0;
+    for (let i = 0; i < weights.length; i++) if (!exclude.has(i)) total += weights[i];
+    if (total <= 0) return -1;
+    let r = Math.random() * total;
+    for (let i = 0; i < weights.length; i++) {
+      if (exclude.has(i)) continue;
+      r -= weights[i];
+      if (r <= 0) return i;
+    }
+    return -1;
+  }
+
+  function isRecentlyMastered(id) {
+    const weekAgo = Date.now() - 7 * 24 * 3600 * 1000;
+    const recent = state.history.filter(h => h.id === id && h.ts >= weekAgo);
+    const wins = recent.filter(h => h.correct).length;
+    return wins >= 3;
+  }
+
+  // ---------------------------------------------------------------------------
+  // 3) SM-2 WITH 4-RATING + GENTLE LAPSE
+  // ---------------------------------------------------------------------------
+  // Based on Wozniak 1990 (SuperMemo 2) with Anki-style 4-button mapping.
+  // Lapse handling softened per Ye 2023 (FSRS) — relapse multiplies interval by
+  // 0.2 instead of resetting to box 1, which preserves morale and partial recall.
+  // ---------------------------------------------------------------------------
+
+  const RATING = { AGAIN: 1, HARD: 2, GOOD: 3, EASY: 4 };
+  const LEARNING_STEPS_MIN = [1, 10, 60 * 24, 60 * 24 * 3]; // 1m, 10m, 1d, 3d
+
+  /**
+   * Apply a rating to a card; returns the updated card (does not mutate input).
+   * @param {object} card existing or undefined
+   * @param {number} rating 1..4
+   * @param {string} area area code (for knowledge update)
+   * @returns {object} new card state
+   */
+  function rateCard(card, rating, area) {
+    const now = Date.now();
+    const c = card ? Object.assign({}, card) : {
+      ease: 2.5, interval: 0, reps: 0, lapses: 0, due: now,
+      learningStep: 0, area: area, successStreak: 0,
+    };
+
+    // ----- Learning phase: graduate through 4 timed steps before SR proper.
+    if (c.reps < LEARNING_STEPS_MIN.length) {
+      if (rating === RATING.AGAIN) {
+        c.learningStep = 0;
+        c.due = now + LEARNING_STEPS_MIN[0] * 60 * 1000;
+        c.successStreak = 0;
+        return c;
+      }
+      const step = Math.min(c.reps + (rating === RATING.EASY ? 2 : 1), LEARNING_STEPS_MIN.length - 1);
+      c.reps = step + 1;
+      c.learningStep = step;
+      c.due = now + LEARNING_STEPS_MIN[step] * 60 * 1000;
+      c.interval = LEARNING_STEPS_MIN[step] / (60 * 24); // in days
+      c.successStreak += 1;
+      return c;
+    }
+
+    // ----- Review phase (Wozniak SM-2): ease modulated, then interval scaled.
+    if (rating === RATING.AGAIN) {
+      c.lapses += 1;
+      c.ease = Math.max(1.3, c.ease - 0.2);
+      // Soft lapse: keep 20% of prior interval (min 10 minutes) instead of reset.
+      const newIntervalDays = Math.max(0.007, c.interval * 0.2);
+      c.interval = newIntervalDays;
+      c.due = now + newIntervalDays * 24 * 3600 * 1000;
+      c.successStreak = 0;
+    } else {
+      const easeDelta = rating === RATING.HARD ? -0.15 : rating === RATING.EASY ? +0.15 : 0;
+      c.ease = Math.max(1.3, Math.min(3.0, c.ease + easeDelta));
+      const factor = rating === RATING.HARD ? 1.2
+                   : rating === RATING.GOOD ? c.ease
+                   : c.ease * 1.3; // Easy
+      const prev = c.interval > 0 ? c.interval : 1;
+      c.interval = Math.max(1, prev * factor);
+      c.due = now + c.interval * 24 * 3600 * 1000;
+      c.reps += 1;
+      c.successStreak += 1;
+    }
+    return c;
+  }
+
+  /**
+   * High-level wrapper: persist rating, update knowledge, log history.
+   * @param {string} id question id
+   * @param {string} area
+   * @param {number} rating 1..4
+   */
+  function recordAnswer(id, area, rating) {
+    const updated = rateCard(state.cards[id], rating, area);
+    state.cards[id] = updated;
+    const correct = rating !== RATING.AGAIN;
+    updateKnowledge(area, correct);
+    state.history.push({ id: id, ts: Date.now(), correct: correct, area: area });
+    if (state.history.length > 2000) state.history.splice(0, state.history.length - 2000);
+    saveState(state);
+    return updated;
+  }
+
+  // ---------------------------------------------------------------------------
+  // 4) FREE-RECALL FILL-IN + TOLERANT MATCHER
+  // ---------------------------------------------------------------------------
+
+  /**
+   * Normalise an answer for fuzzy comparison: lowercase, trim, strip Polish
+   * diacritics, collapse separators (commas/semicolons/spaces), drop hex
+   * leading zeros in IPv6 groups.
+   * @param {string} s
+   * @returns {string}
+   */
+  function normalizeAnswer(s) {
+    if (s == null) return '';
+    let out = String(s).toLowerCase().trim();
+    const map = { 'ą':'a','ć':'c','ę':'e','ł':'l','ń':'n','ó':'o','ś':'s','ź':'z','ż':'z' };
+    out = out.replace(/[ąćęłńóśźż]/g, ch => map[ch] || ch);
+    out = out.replace(/[\s,;]+/g, ''); // remove separators between octets/groups
+    // Collapse multiple :: in IPv6 to a single ::
+    out = out.replace(/:{3,}/g, '::');
+    return out;
+  }
+
+  /**
+   * Tolerant equality check between user input and accepted answers.
+   * @param {string} userInput
+   * @param {string|string[]} accepted single string or array of variants
+   * @returns {boolean}
+   */
+  function matchAnswer(userInput, accepted) {
+    const u = normalizeAnswer(userInput);
+    const variants = Array.isArray(accepted) ? accepted : [accepted];
+    return variants.some(v => normalizeAnswer(v) === u);
+  }
+
+  /**
+   * Render a fill-in question into a container element.
+   * @param {object} q {id, area, prompt, answer, hint?}
+   * @param {HTMLElement} container
+   * @param {(correct:boolean,rating:number)=>void} onResolve callback
+   */
+  function renderFillInQuestion(q, container, onResolve) {
+    container.innerHTML = '';
+    const wrap = document.createElement('div');
+    wrap.className = 'fillin-question';
+    wrap.innerHTML =
+      '<p class="prompt">' + escapeHtml(q.prompt) + '</p>' +
+      '<input type="text" class="fillin-input" autocomplete="off" spellcheck="false" />' +
+      '<button type="button" class="fillin-check">Sprawdź</button>' +
+      '<div class="fillin-feedback" aria-live="polite"></div>';
+    container.appendChild(wrap);
+    const input = wrap.querySelector('.fillin-input');
+    const btn = wrap.querySelector('.fillin-check');
+    const fb = wrap.querySelector('.fillin-feedback');
+
+    function submit() {
+      const ok = matchAnswer(input.value, q.answer);
+      fb.textContent = ok ? 'Dobrze!' : 'Poprawna odpowiedź: ' + (Array.isArray(q.answer) ? q.answer[0] : q.answer);
+      fb.className = 'fillin-feedback ' + (ok ? 'ok' : 'bad');
+      input.disabled = true; btn.disabled = true;
+      // Free recall is harder than recognition — map to GOOD/AGAIN only.
+      if (onResolve) onResolve(ok, ok ? RATING.GOOD : RATING.AGAIN);
+    }
+    btn.addEventListener('click', submit);
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') submit(); });
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, c => ({
+      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+    })[c]);
+  }
+
+  // ---------------------------------------------------------------------------
+  // 5) WORKED-EXAMPLE FADING (Sweller 2006: completion problems)
+  // ---------------------------------------------------------------------------
+
+  const WORKED_EXAMPLES = {
+    // Subnetting /26 example: how many host addresses, derive from binary AND.
+    'subnet_26': {
+      title: 'Ile adresów daje maska /26?',
+      steps: [
+        { label: 'Krok 1: zapisz długość hosta',
+          full: '32 - 26 = 6 bitów hosta',
+          scaffold: '32 - 26 = ? bitów hosta',
+          hint: 'Maska ma 26 jedynek; ile bitów zostaje?' },
+        { label: 'Krok 2: licz adresy',
+          full: '2^6 = 64 adresy w podsieci',
+          scaffold: '2^? = ___ adresy',
+          hint: 'Każdy bit hosta podwaja liczbę adresów.' },
+        { label: 'Krok 3: odejmij sieć i broadcast',
+          full: '64 - 2 = 62 adresy hostów użytecznych',
+          scaffold: '64 - ? = ___ hostów',
+          hint: 'Pierwszy adres = sieć, ostatni = broadcast.' },
+      ],
+      topic: 'subnetting',
+    },
+    // Worked example for /27 mask in dotted decimal via binary AND.
+    'mask_decimal_27': {
+      title: 'Maska dziesiętna dla /27',
+      steps: [
+        { label: 'Krok 1: pierwsze 24 bity',
+          full: '255.255.255.???',
+          scaffold: '255.255.255.???',
+          hint: 'Pierwsze 3 oktety to same jedynki.' },
+        { label: 'Krok 2: ostatni oktet binarnie',
+          full: '11100000 (3 jedynki, 5 zer)',
+          scaffold: '111????? — uzupełnij zera',
+          hint: '/27 = 24 + 3 jedynki w 4. oktecie.' },
+        { label: 'Krok 3: zamień na dziesiętne',
+          full: '128+64+32 = 224 → 255.255.255.224',
+          scaffold: '128+64+32 = ? → 255.255.255.???',
+          hint: 'Dodaj wartości pozycyjne ustawionych bitów.' },
+      ],
+      topic: 'subnetting',
+    },
+  };
+
+  /**
+   * Pick a fading mode based on user's progress on a topic.
+   * 0–2 successes: full; 3–5: scaffold; 6+: solo (no example shown).
+   * @param {string} topic
+   * @returns {'full'|'scaffold'|'hint'|'solo'}
+   */
+  function workedExampleMode(topic) {
+    const c = state.workedExampleProgress[topic] || 0;
+    if (c < 3) return 'full';
+    if (c < 6) return 'scaffold';
+    if (c < 9) return 'hint';
+    return 'solo';
+  }
+
+  /**
+   * Render a worked example with appropriate fading.
+   * @param {string} key key into WORKED_EXAMPLES
+   * @param {HTMLElement} container
+   * @param {'full'|'scaffold'|'hint'|'solo'} [mode] override auto-mode
+   */
+  function renderWorkedExample(key, container, mode) {
+    const ex = WORKED_EXAMPLES[key];
+    if (!ex) { container.innerHTML = ''; return; }
+    const m = mode || workedExampleMode(ex.topic);
+    if (m === 'solo') { container.innerHTML = ''; return; }
+    const parts = ['<div class="worked-example mode-' + m + '">',
+                   '<h4>' + escapeHtml(ex.title) + '</h4>'];
+    ex.steps.forEach(s => {
+      const body = m === 'full' ? s.full
+                 : m === 'scaffold' ? s.scaffold
+                 : s.hint;
+      parts.push('<div class="we-step"><strong>' + escapeHtml(s.label) + ':</strong> '
+                 + escapeHtml(body) + '</div>');
+    });
+    parts.push('</div>');
+    container.innerHTML = parts.join('');
+  }
+
+  /** Increment fading progress after a successful application of the topic. */
+  function noteWorkedExampleSuccess(topic) {
+    state.workedExampleProgress[topic] = (state.workedExampleProgress[topic] || 0) + 1;
+    saveState(state);
+  }
+
+  // ---------------------------------------------------------------------------
+  // 6) KNOWLEDGE MODEL + DASHBOARD
+  // ---------------------------------------------------------------------------
+
+  /**
+   * Bayesian-style EWMA: knowledge[a] = α·old + (1-α)·correct.
+   * @param {string} area
+   * @param {boolean} correct
+   */
+  function updateKnowledge(area, correct) {
+    if (state.knowledge[area] === undefined) state.knowledge[area] = 0.5;
+    const old = state.knowledge[area];
+    state.knowledge[area] = ALPHA * old + (1 - ALPHA) * (correct ? 1 : 0);
+  }
+
+  /**
+   * Composite report for dashboard rendering.
+   * readinessForExam = mean(knowledge) penalised by spread (low-area drag).
+   * @returns {{areas:Object,weakest:string[],strongest:string[],readinessForExam:number}}
+   */
+  function getKnowledgeReport() {
+    const areas = Object.assign({}, state.knowledge);
+    const entries = Object.entries(areas);
+    const sorted = entries.slice().sort((a, b) => a[1] - b[1]);
+    const weakest = sorted.slice(0, 2).map(e => e[0]);
+    const strongest = sorted.slice(-2).map(e => e[0]).reverse();
+    const mean = entries.reduce((s, [, v]) => s + v, 0) / (entries.length || 1);
+    const min = sorted.length ? sorted[0][1] : 0;
+    // Drag readiness toward the weakest area — exam fails on missing topics.
+    const readinessForExam = Math.max(0, Math.min(1, 0.6 * mean + 0.4 * min));
+    return { areas, weakest, strongest, readinessForExam };
+  }
+
+  // ---------------------------------------------------------------------------
+  // PUBLIC API
+  // ---------------------------------------------------------------------------
+  global.AdaptiveEngine = {
+    // state
+    getState: () => state,
+    resetState: () => { state = defaultState(); saveState(state); },
+    // diagnosis
+    selectDiagnosticQuestions,
+    markDiagnosisComplete,
+    isDiagnosed: () => state.diagnosed,
+    // selection
+    selectQuizQuestions,
+    // scheduling
+    RATING,
+    rateCard,
+    recordAnswer,
+    // free recall
+    matchAnswer,
+    normalizeAnswer,
+    renderFillInQuestion,
+    // worked examples
+    renderWorkedExample,
+    workedExampleMode,
+    noteWorkedExampleSuccess,
+    WORKED_EXAMPLES,
+    // dashboard
+    updateKnowledge,
+    getKnowledgeReport,
+    AREAS,
+  };
+
+  /* ============================================================================
+   * INTEGRATION INTERFACE — how to wire this into inf02-study-hub.html v1
+   * ----------------------------------------------------------------------------
+   * 1. Include this file once:
+   *      <script src="v2/adaptive-engine.js"><\/script>
+   *
+   * 2. ON FIRST LOAD — diagnostic gate:
+   *      if (!AdaptiveEngine.isDiagnosed()) {
+   *        const dq = AdaptiveEngine.selectDiagnosticQuestions(QUESTION_POOL);
+   *        runQuiz(dq, results => AdaptiveEngine.markDiagnosisComplete(results));
+   *      }
+   *
+   * 3. QUIZ MODE — replace the old random/Leitner picker:
+   *      const qs = AdaptiveEngine.selectQuizQuestions(20, QUESTION_POOL);
+   *
+   * 4. ANSWER RATING — replace box +/- with 4 buttons. After each card:
+   *      AdaptiveEngine.recordAnswer(q.id, q.area, AdaptiveEngine.RATING.GOOD);
+   *    (use AGAIN | HARD | GOOD | EASY based on user click).
+   *
+   * 5. FREE-RECALL QUESTIONS — for q.type === 'fillin':
+   *      AdaptiveEngine.renderFillInQuestion(q, mountEl, (correct, rating) => {
+   *        AdaptiveEngine.recordAnswer(q.id, q.area, rating);
+   *      });
+   *    Question pool entries:
+   *      { id:'mask27', area:'S', type:'fillin',
+   *        prompt:'Podaj maskę dziesiętną dla /27',
+   *        answer:'255.255.255.224' }
+   *      { id:'ipv6shorten', area:'S', type:'fillin',
+   *        prompt:'Skróć adres 2001:0db8:0000:0000:0000:ff00:0042:8329',
+   *        answer:['2001:db8::ff00:42:8329'] }
+   *
+   * 6. WORKED EXAMPLES — before a subnet question render the example:
+   *      AdaptiveEngine.renderWorkedExample('subnet_26', exampleMountEl);
+   *    On correct answer: AdaptiveEngine.noteWorkedExampleSuccess('subnetting').
+   *
+   * 7. DASHBOARD — rebuild the progress panel from:
+   *      const r = AdaptiveEngine.getKnowledgeReport();
+   *      // r.areas.B / O / D / S / U  (0..1)
+   *      // r.weakest, r.strongest, r.readinessForExam
+   *
+   * 8. DEBUG / RESET — expose a button calling AdaptiveEngine.resetState().
+   *
+   * State is auto-persisted to localStorage key `inf02_adaptive_state_v2` after
+   * every recordAnswer / markDiagnosisComplete call. No manual save needed.
+   * ==========================================================================*/
+})(typeof window !== 'undefined' ? window : globalThis);
+
+// ============ END ADAPTIVE ENGINE ============
+
+// =============== STATE ===============
+function chipClass(a){return a==="6"?"area6":a;}
+
+const STORAGE_KEY="inf02_progress_v2";
+function migrateV1toV2(){
+  try{const old=localStorage.getItem("inf02_progress_v1");
+    if(old && !localStorage.getItem(STORAGE_KEY)){localStorage.setItem(STORAGE_KEY,old);console.log("Migrated v1 → v2");}
+  }catch(e){}
+}
+migrateV1toV2();
+const EXAM_DATE=new Date("2026-06-12T08:00:00");
+let state={
+  version:2,
+  answered:{},
+  srs:{},
+  cards:{},
+  knowledge:{},
+  stats:{quizzes:[]},
+  profile:null,
+  streak:{count:0,lastActiveDate:null,freezesAvailable:3},
+  achievements:{unlocked:[]},
+  subnettingOk:0,
+  workedExampleProgress:{},
+  diagnosisComplete:false,
+  startedAt:Date.now()
+};
+
+function loadState(){
+  try{const s=localStorage.getItem(STORAGE_KEY);if(s){const p=JSON.parse(s);Object.assign(state,p)}}catch(e){console.warn("Load failed",e)}
+}
+function saveState(){
+  try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}catch(e){console.warn("Save failed",e)}
+}
+loadState();
+
+// =============== QUESTION BANK ===============
+// Areas: B=Budowa komputera, O=Systemy operacyjne, N=Sieci, P=Peryferia/sprzęt sieciowy, D=Diagnostyka
+const AREAS={B:"Budowa komputera",O:"Systemy operacyjne",N:"Sieci komputerowe",P:"Peryferia i sprzęt sieciowy",D:"Diagnostyka",L:"Prawo, BHP, licencje",W:"Windows Server","6":"IPv6 i routing",V:"Wirtualizacja i backup",Z:"Bezpieczeństwo",R:"Praktyka CKE"};
+const QUESTIONS=[
+// --- BUDOWA KOMPUTERA (B) ---
+{id:1,a:"B",q:"Który parametr procesora określa liczbę cykli zegarowych w jednej sekundzie?",o:["Częstotliwość taktowania","Pojemność pamięci cache","Liczba rdzeni","TDP"],c:0,e:"Częstotliwość taktowania (Hz/MHz/GHz) to liczba cykli zegarowych na sekundę. TDP to moc cieplna."},
+{id:2,a:"B",q:"Pamięć RAM typu DDR4 charakteryzuje się napięciem zasilania:",o:["1,2 V","1,35 V","1,5 V","1,8 V"],c:0,e:"DDR4 pracuje przy napięciu 1,2 V. DDR3 — 1,5 V (niskonapięciowe DDR3L — 1,35 V)."},
+{id:3,a:"B",q:"Który z wymienionych typów pamięci masowej zapewni najwyższą szybkość transferu danych?",o:["HDD 7200 RPM SATA","SSD SATA","SSD M.2 NVMe","Pendrive USB 3.0"],c:2,e:"SSD M.2 NVMe wykorzystuje magistralę PCIe (do ~7000 MB/s w PCIe 4.0). SATA jest ograniczone do ~600 MB/s."},
+{id:4,a:"B",q:"Złącze ATX 24-pin służy do zasilania:",o:["Karty graficznej","Płyty głównej","Procesora","Dysku twardego"],c:1,e:"24-pin ATX to główne zasilanie płyty głównej. CPU ma osobne 4/8-pin EPS, GPU — 6/8-pin PCIe."},
+{id:5,a:"B",q:"Standard złącza PCI Express x16 jest stosowany głównie do podłączenia:",o:["Karty graficznej","Karty dźwiękowej","Dysku SSD SATA","Karty Wi-Fi"],c:0,e:"PCIe x16 daje najwyższą przepustowość — używany do GPU. Inne karty zwykle x1/x4."},
+{id:6,a:"B",q:"Procesor Intel Core i5-12400 obsługuje gniazdo:",o:["LGA 1151","LGA 1200","LGA 1700","AM4"],c:2,e:"Procesory Intel 12. generacji (Alder Lake) używają gniazda LGA 1700."},
+{id:7,a:"B",q:"BIOS/UEFI to:",o:["System operacyjny","Oprogramowanie układowe płyty głównej","Sterownik karty graficznej","Aplikacja diagnostyczna"],c:1,e:"BIOS/UEFI to firmware (oprogramowanie układowe) płyty głównej, inicjalizujące sprzęt podczas POST."},
+{id:8,a:"B",q:"Maksymalna teoretyczna prędkość interfejsu USB 3.2 Gen 2x2 wynosi:",o:["5 Gb/s","10 Gb/s","20 Gb/s","40 Gb/s"],c:2,e:"USB 3.2 Gen 2x2 = 20 Gb/s. Gen 1 = 5, Gen 2 = 10. USB4 = 40 Gb/s."},
+{id:9,a:"B",q:"Pamięć cache L1 procesora charakteryzuje się tym, że:",o:["Jest największą i najwolniejszą","Jest najmniejszą i najszybszą","Jest współdzielona przez wszystkie rdzenie","Znajduje się poza CPU"],c:1,e:"L1 to najszybsza i najmniejsza pamięć cache, prywatna dla każdego rdzenia. L3 zwykle współdzielona."},
+{id:10,a:"B",q:"Standard RAID 1 polega na:",o:["Łączeniu kilku dysków w jedną dużą wolumin bez redundancji","Lustrzanym kopiowaniu (mirroring) tych samych danych na dwóch dyskach","Dzieleniu danych na bloki z bitami parzystości (parity) na osobnym dysku","Rozkładaniu danych na wielu dyskach z podwójną parzystością"],c:1,e:"RAID 1 to mirroring — te same dane są zapisywane równolegle na dwóch dyskach, co daje pełną redundancję kosztem 50% pojemności. RAID 0 to striping bez redundancji, RAID 5 wykorzystuje bity parzystości (parity), a RAID 6 — podwójną parzystość."},
+{id:11,a:"B",q:"Magistrala SATA III ma teoretyczną przepustowość:",o:["1,5 Gb/s","3 Gb/s","6 Gb/s","12 Gb/s"],c:2,e:"SATA III = 6 Gb/s (~600 MB/s). SATA I = 1,5, SATA II = 3."},
+{id:12,a:"B",q:"Który element płyty głównej odpowiada za komunikację CPU z RAM i PCIe?",o:["Mostek południowy","Mostek północny / kontroler IMC","Chip BIOS","Bateria CMOS"],c:1,e:"W nowoczesnych CPU kontroler pamięci (IMC) jest zintegrowany w procesorze; klasycznie to mostek północny."},
+{id:13,a:"B",q:"Format płyty głównej Mini-ITX ma wymiary:",o:["170 × 170 mm","244 × 244 mm","305 × 244 mm","305 × 330 mm"],c:0,e:"Mini-ITX = 170×170 mm. micro-ATX = 244×244, ATX = 305×244, E-ATX = 305×330."},
+{id:14,a:"B",q:"Pamięć ROM w komputerze:",o:["Jest kasowana po wyłączeniu zasilania","Służy do przechowywania danych programów uruchomionych","Przechowuje firmware (BIOS/UEFI) — nieulotna","Pełni rolę pamięci podręcznej"],c:2,e:"ROM = Read-Only Memory, nieulotna, przechowuje firmware. RAM jest ulotna."},
+{id:15,a:"B",q:"Standard zasilacza 80 PLUS Gold gwarantuje sprawność co najmniej:",o:["80%","85%","87% przy 50% obciążenia","94%"],c:2,e:"80 PLUS Gold ≥ 87% przy 50% obciążenia (ATX). Bronze 85%, Platinum 90%, Titanium 92%."},
+{id:16,a:"B",q:"Złącze M.2 obsługuje dyski SSD w trybie:",o:["Tylko SATA","Tylko NVMe","SATA i NVMe (zależnie od klucza)","Tylko PATA"],c:2,e:"Złącze M.2 obsługuje oba protokoły — kluczowanie B/M decyduje o trybie."},
+{id:17,a:"B",q:"Pamięć ECC (Error Correcting Code):",o:["Jest szybsza od pamięci non-ECC","Wykrywa i koryguje błędy bitowe","Występuje tylko w dyskach SSD","Jest tańsza od standardowej"],c:1,e:"ECC dodaje dodatkowy bit parzystości; wykrywa i koryguje pojedyncze błędy bitowe (SEC-DED). Stosowana w serwerach."},
+{id:18,a:"B",q:"Funkcja Hyper-Threading w procesorach Intel polega na:",o:["Zwiększeniu częstotliwości","Wykonywaniu 2 wątków na 1 rdzeniu fizycznym","Łączeniu 2 procesorów","Zmniejszeniu zużycia energii"],c:1,e:"HT pozwala na obsługę 2 wątków logicznych przez 1 rdzeń fizyczny — równolegle wykorzystuje jednostki wykonawcze."},
+{id:19,a:"B",q:"Karta graficzna z 8 GB GDDR6 i interfejsem PCIe 4.0 x16 wykorzystuje:",o:["Pamięć współdzieloną z RAM","Dedykowaną pamięć graficzną","Pamięć cache CPU","Dysk SSD jako VRAM"],c:1,e:"Karta z dedykowaną VRAM ma własną pamięć GDDR. Pamięć współdzielona to integrowane GPU."},
+{id:20,a:"B",q:"Który parametr opisuje pojemność maksymalną RAM obsługiwaną przez płytę główną?",o:["Liczba slotów × maks. pojemność modułu","TDP procesora","Częstotliwość FSB","Moc zasilacza"],c:0,e:"Np. 4 sloty × 32 GB = max 128 GB. Określone w specyfikacji płyty (zależy od chipsetu i CPU)."},
+{id:21,a:"B",q:"DisplayPort 1.4 obsługuje rozdzielczość:",o:["1080p przy 60 Hz","4K przy 120 Hz","Maks. 720p","Tylko obraz analogowy"],c:1,e:"DP 1.4 obsługuje 4K@120Hz lub 8K@60Hz z DSC. HDMI 2.0 — 4K@60Hz."},
+{id:22,a:"B",q:"Który chipset Intel pozwala na podkręcanie procesora 'K'?",o:["H610","B660","Z690","H670"],c:2,e:"Tylko chipsety serii Z (Z690, Z790) wspierają OC procesora i pamięci."},
+{id:23,a:"B",q:"Procesor 64-bitowy może adresować teoretycznie:",o:["4 GB pamięci","16 GB pamięci","256 TB pamięci","16 EB pamięci"],c:3,e:"Teoretyczna przestrzeń adresowa procesora 64-bitowego wynosi 2^64 = 16 EB. W praktyce architektura x86-64 ogranicza adresowanie fizyczne do 48 bitów (256 TB), a Windows nakłada własne limity systemowe — na egzaminie odpowiedzią poprawną jest jednak wartość teoretyczna."},
+{id:24,a:"B",q:"Bateria CR2032 na płycie głównej zasila:",o:["Procesor","Pamięć CMOS (ustawienia BIOS, zegar RTC)","Wentylator","Dysk SSD"],c:1,e:"Bateria CR2032 podtrzymuje CMOS — pamięć ustawień BIOS i zegar RTC, gdy komputer jest odłączony od prądu."},
+{id:25,a:"B",q:"Wymiana pasty termoprzewodzącej powinna być wykonywana:",o:["Co tydzień","Tylko przy montażu nowego chłodzenia","Co kilka lat lub przy podwyższonych temperaturach","Nigdy"],c:2,e:"Pasta z czasem wysycha; zaleca się wymianę co 3-5 lat lub przy zauważalnym wzroście temperatur."},
+{id:26,a:"B",q:"Karta dźwiękowa PCIe 5.1 obsługuje:",o:["2 głośniki","4 głośniki","6 głośników (2 przód, 2 tył, centralny, subwoofer)","8 głośników"],c:2,e:"5.1 = 5 głośników + subwoofer (.1). 7.1 = 7 + sub."},
+{id:27,a:"B",q:"Funkcja TPM 2.0 jest wymagana do:",o:["Instalacji Windows 11","Bootowania z USB","Pracy w sieci","Działania karty graficznej"],c:0,e:"Windows 11 wymaga TPM 2.0 (sprzętowy moduł kryptograficzny) jako warunek minimalny."},
+{id:28,a:"B",q:"Złącze EPS 8-pin zasila:",o:["Kartę graficzną","Procesor (linia 12 V CPU)","Wentylatory","Dysk SATA"],c:1,e:"EPS 8-pin (4+4) to dedykowane zasilanie procesora. PCIe 6+2-pin to GPU."},
+{id:29,a:"B",q:"Standard pamięci DDR5 oferuje względem DDR4:",o:["Mniejszą przepustowość","Wyższe napięcie 1,5 V","Wyższe częstotliwości i mniejsze napięcie 1,1 V","Brak kompatybilności wstecznej z DDR3"],c:2,e:"DDR5: 1,1 V, częstotliwości 4800+ MT/s, on-die ECC, dwa niezależne kanały 32-bit na moduł."},
+{id:30,a:"B",q:"Aby zwiększyć wydajność dysku w komputerze stacjonarnym, najtańszą opcją jest:",o:["Wymiana procesora","Zamiana HDD na SSD","Zwiększenie RAM","Wymiana zasilacza"],c:1,e:"Zamiana HDD→SSD daje największy zysk w odczuwalnej szybkości za niewielkie pieniądze."},
+
+// --- SYSTEMY OPERACYJNE (O) ---
+{id:31,a:"O",q:"Polecenie Linux 'chmod 755 plik' nadaje uprawnienia:",o:["rwxrwxrwx","rwxr-xr-x","rw-r--r--","r--r--r--"],c:1,e:"7=rwx (właściciel), 5=r-x (grupa, inni). 7-5-5 = rwxr-xr-x."},
+{id:32,a:"O",q:"Które polecenie Windows wyświetla konfigurację interfejsów sieciowych?",o:["ifconfig","ipconfig","netstat","route print"],c:1,e:"Windows: ipconfig. Linux/macOS: ifconfig lub ip addr. Netstat pokazuje połączenia."},
+{id:33,a:"O",q:"Maksymalny rozmiar pojedynczego pliku w systemie plików NTFS (Windows 10/11, klaster 4 KB) wynosi:",o:["4 GB","32 GB","16 TB","256 TB"],c:2,e:"Dla NTFS z domyślnym klastrem 4 KB praktyczny limit pliku/woluminu wynosi 16 TB minus 4 KB. Microsoft podniósł limit pliku NTFS do 256 TB minus 64 KB dopiero w Windows 8/Server 2012, ale wymaga to klastra 64 KB. FAT32 ogranicza plik do 4 GB."},
+{id:34,a:"O",q:"Polecenie Linux 'ls -la' wyświetla:",o:["Tylko nazwy plików","Pliki ukryte ze szczegółami","Procesy","Drzewo katalogów"],c:1,e:"-l = format długi, -a = uwzględnia pliki ukryte (zaczynające się od kropki)."},
+{id:35,a:"O",q:"Plik /etc/passwd w systemie Linux zawiera:",o:["Hasła użytkowników","Listę użytkowników i ich UID/GID/powłokę","Konfigurację sieci","Dziennik logowań"],c:1,e:"Hasła są w /etc/shadow (zaszyfrowane). /etc/passwd zawiera meta-informacje o kontach."},
+{id:36,a:"O",q:"Polecenie Windows do zarządzania użytkownikami z linii poleceń:",o:["useradd","net user","passwd","chuser"],c:1,e:"net user [nazwa] [hasło] /add — tworzy konto. Linux używa useradd/passwd."},
+{id:37,a:"O",q:"Punkt montowania w Linuxie to:",o:["Litera dysku","Katalog do którego podłączony jest system plików","Plik konfiguracyjny","Sterownik dysku"],c:1,e:"W Linuxie nie ma liter dysków; systemy plików montuje się w katalogach (np. /mnt, /media)."},
+{id:38,a:"O",q:"Polecenie 'tasklist' w Windows odpowiada poleceniu Linux:",o:["ls","ps","cat","grep"],c:1,e:"ps (process status) wyświetla działające procesy. ls — pliki, cat — wyświetla zawartość."},
+{id:39,a:"O",q:"GPO (Group Policy Object) w Windows służy do:",o:["Zarządzania politykami grup użytkowników/komputerów","Tworzenia grup roboczych","Konfiguracji firewalla","Backup'u rejestru"],c:0,e:"GPO pozwala administratorom zdalnie zarządzać konfiguracją Windows w domenie AD."},
+{id:40,a:"O",q:"Polecenie 'sudo' w Linuxie umożliwia:",o:["Wyłączenie systemu","Uruchomienie polecenia z uprawnieniami innego użytkownika (zwykle root)","Tworzenie użytkowników","Restart sieci"],c:1,e:"sudo (substitute user do) — tymczasowe podniesienie uprawnień, zwykle do root."},
+{id:41,a:"O",q:"Plik wymiany (swap) w Linuxie:",o:["Przechowuje pliki tymczasowe użytkownika","Działa jako rozszerzenie pamięci RAM","Jest kopią zapasową systemu","Zawiera logi systemowe"],c:1,e:"Swap to przestrzeń na dysku używana, gdy zabraknie RAM. Może być partycją lub plikiem."},
+{id:42,a:"O",q:"Aby wyświetlić tablicę partycji dysku w Linuxie, użyjesz:",o:["fdisk -l","ls /dev","ps aux","cat /etc/fstab"],c:0,e:"fdisk -l (jako root) listuje partycje. Alternatywnie lsblk lub parted -l."},
+{id:43,a:"O",q:"PowerShell jest:",o:["Tylko shellem CLI","Powłoką oraz językiem skryptowym opartym na .NET","Aplikacją graficzną","Systemem plików"],c:1,e:"PowerShell to nowoczesna powłoka i język skryptowy w Windows; oparty na obiektach .NET."},
+{id:44,a:"O",q:"Polecenie 'grep -i hello plik.txt':",o:["Zastępuje 'hello' w pliku","Wyszukuje 'hello' ignorując wielkość liter","Liczy linie","Sortuje plik"],c:1,e:"grep szuka wzorca; -i = ignore case. -v = invert, -c = count, -r = recursive."},
+{id:45,a:"O",q:"Rejestr Windows zawiera klucz HKEY_LOCAL_MACHINE, który przechowuje:",o:["Ustawienia bieżącego użytkownika","Globalne ustawienia systemu i sprzętu","Pliki tymczasowe","Sterowniki drukarek"],c:1,e:"HKLM = ustawienia systemowe (sprzęt, oprogramowanie globalnie). HKCU = bieżący użytkownik."},
+{id:46,a:"O",q:"Aby zmienić właściciela pliku w Linuxie, używamy:",o:["chmod","chown","chgrp","chattr"],c:1,e:"chown user:group plik — zmienia właściciela. chmod — uprawnienia, chgrp — grupę."},
+{id:47,a:"O",q:"Polecenie 'dd' w Linuxie służy do:",o:["Wyświetlania daty","Kopiowania danych blok po bloku (np. obraz dysku)","Wyświetlania procesów","Konfiguracji DNS"],c:1,e:"dd kopiuje surowe dane między urządzeniami/plikami. Często do tworzenia obrazów dysków."},
+{id:48,a:"O",q:"System plików ext4 jest typowy dla:",o:["Windows","macOS","Linux","DOS"],c:2,e:"ext4 to domyślny system plików w wielu dystrybucjach Linux. Windows: NTFS, macOS: APFS."},
+{id:49,a:"O",q:"Aby zaktualizować system Debian/Ubuntu, używamy:",o:["yum update","apt update && apt upgrade","pacman -Syu","dnf upgrade"],c:1,e:"Debian/Ubuntu używają APT. Yum/DNF — RHEL/Fedora, pacman — Arch."},
+{id:50,a:"O",q:"Plik /etc/fstab w Linuxie:",o:["Definiuje systemy plików montowane przy starcie","Zawiera hasła","Konfiguruje firewall","Listuje użytkowników"],c:0,e:"fstab = file systems table — opisuje partycje i punkty montowania automatycznie ładowane przy boot."},
+{id:51,a:"O",q:"Aby uruchomić Wiersz polecenia jako administrator w Windows, należy:",o:["Wpisać 'admin' w cmd","Kliknąć PPM → Uruchom jako administrator","Zmienić hasło","Zalogować się ponownie"],c:1,e:"PPM na cmd/PowerShell → 'Uruchom jako administrator'. UAC poprosi o zgodę."},
+{id:52,a:"O",q:"Polecenie 'top' w Linuxie pokazuje:",o:["Najnowsze pliki","Procesy w czasie rzeczywistym","Najszybsze interfejsy","Wersję jądra"],c:1,e:"top — interaktywny monitor procesów (CPU, RAM, PID). htop — wersja przyjaźniejsza."},
+{id:53,a:"O",q:"Konsola odzyskiwania Windows (WinRE) umożliwia m.in.:",o:["Granie w gry","Naprawę startu, przywrócenie systemu, dostęp do wiersza polecenia","Edycję wideo","Wyświetlanie wiadomości"],c:1,e:"WinRE = środowisko odzyskiwania: Startup Repair, System Restore, CMD, Reset PC."},
+{id:54,a:"O",q:"Aby przekierować stdout polecenia do pliku w bash:",o:["polecenie | plik","polecenie > plik","polecenie < plik","polecenie & plik"],c:1,e:"> nadpisuje, >> dopisuje, | przekierowuje do innej komendy, < kieruje plik na stdin."},
+{id:55,a:"O",q:"Komenda 'sfc /scannow' w Windows:",o:["Skanuje sieć","Sprawdza i naprawia pliki systemowe","Uruchamia ponownie system","Tworzy backup"],c:1,e:"System File Checker — skanuje integralność plików systemowych Windows i przywraca uszkodzone z cache."},
+{id:56,a:"O",q:"systemctl w Linuxie służy do:",o:["Zarządzania usługami i jednostkami systemd","Edycji plików","Przeglądania internetu","Tworzenia użytkowników"],c:0,e:"systemctl start/stop/enable/disable [nazwa].service — zarządza usługami w systemd."},
+{id:57,a:"O",q:"Wirtualna pamięć w systemie operacyjnym:",o:["Jest osobną kartą rozszerzeń","Łączy RAM i część dysku w wspólną przestrzeń adresową","Występuje tylko w sieciach","To kopia BIOS"],c:1,e:"Mechanizm pamięci wirtualnej pozwala procesom korzystać z większej przestrzeni niż fizyczny RAM dzięki swap/pagefile."},
+{id:58,a:"O",q:"W Windows do zarządzania dyskami z GUI używamy:",o:["diskmgmt.msc","gpedit.msc","services.msc","devmgmt.msc"],c:0,e:"diskmgmt.msc — Zarządzanie dyskami. services.msc — usługi, devmgmt.msc — Menedżer urządzeń."},
+{id:59,a:"O",q:"Skrót Ctrl+Alt+T w wielu dystrybucjach Linux otwiera:",o:["Menedżer plików","Terminal","Edytor","Przeglądarkę"],c:1,e:"W wielu środowiskach (Ubuntu/GNOME) Ctrl+Alt+T uruchamia okno terminala."},
+{id:60,a:"O",q:"Polecenie 'ping' wykorzystuje protokół:",o:["TCP","UDP","ICMP","ARP"],c:2,e:"Ping wysyła pakiety ICMP Echo Request i czeka na Echo Reply."},
+{id:61,a:"O",q:"Plik z rozszerzeniem .iso to:",o:["Skompresowany dokument","Obraz dysku optycznego/instalatora","Plik graficzny","Dokument tekstowy"],c:1,e:"ISO 9660 — standard obrazów płyt CD/DVD. Często używany do dystrybucji systemów operacyjnych."},
+{id:62,a:"O",q:"Aby utworzyć link symboliczny w Linuxie:",o:["ln source link","cp source link","mv source link","mkdir link"],c:0,e:"ln -s source link — symbolic link. ln bez -s — hard link."},
+{id:63,a:"O",q:"Tryb awaryjny (Safe Mode) w Windows uruchamia system:",o:["Z pełną grafiką","Z minimalnym zestawem sterowników","Bez RAM","Bez procesora"],c:1,e:"Safe Mode ładuje tylko niezbędne sterowniki — pomocny przy diagnostyce konfliktów/malware."},
+{id:64,a:"O",q:"Polecenie 'whoami' w Linuxie/Windows wyświetla:",o:["Wersję systemu","Bieżącego zalogowanego użytkownika","Listę procesów","Adres IP"],c:1,e:"whoami zwraca login bieżącego użytkownika (UID w Linuxie, NAZWA w Windows)."},
+{id:65,a:"O",q:"Repozytorium pakietów w Linuxie to:",o:["Folder z plikami użytkownika","Serwer/lokalizacja udostępniająca pakiety oprogramowania","Backup systemu","Sterownik karty sieciowej"],c:1,e:"Repozytoria APT/YUM/Pacman zawierają paczki .deb/.rpm/.pkg do instalacji przez menedżer pakietów."},
+
+// --- SIECI KOMPUTEROWE (N) ---
+{id:66,a:"N",q:"Maska podsieci /24 odpowiada zapisowi dziesiętnemu:",o:["255.255.0.0","255.255.255.0","255.255.255.128","255.255.255.255"],c:1,e:"/24 = 24 jedynki = 11111111.11111111.11111111.00000000 = 255.255.255.0."},
+{id:67,a:"N",q:"Adres IP 192.168.5.165 z maską /26 należy do podsieci:",o:["192.168.5.0/26","192.168.5.64/26","192.168.5.128/26","192.168.5.192/26"],c:2,e:"Maska /26 daje bloki po 2^(32-26)=64 adresy. Adres podsieci wyznaczamy ze wzoru: (oktet hosta div rozmiar bloku) × rozmiar bloku. Tu: 165 div 64 = 2, 2 × 64 = 128, więc adres podsieci to 192.168.5.128/26 (zakres 128–191)."},
+{id:68,a:"N",q:"Aby z sieci 192.168.1.0/24 utworzyć 8 podsieci, należy zastosować maskę:",o:["/25","/26","/27","/28"],c:2,e:"8 = 2^3 → trzy dodatkowe bity → /24+3 = /27 (255.255.255.224, po 32 adresy)."},
+{id:69,a:"N",q:"Adres broadcast w sieci 192.168.0.0/24 to:",o:["192.168.0.0","192.168.0.1","192.168.0.254","192.168.0.255"],c:3,e:"Broadcast = ostatni adres w podsieci. Dla /24 (256 adresów) = .255."},
+{id:70,a:"N",q:"Liczba dostępnych adresów hostów w sieci /28 wynosi:",o:["6","14","30","62"],c:1,e:"/28 = 16 adresów - 2 (sieć + broadcast) = 14 hostów."},
+{id:71,a:"N",q:"Protokół DHCP odpowiada za:",o:["Tłumaczenie nazw na IP","Automatyczne przydzielanie adresów IP","Routing","Szyfrowanie ruchu"],c:1,e:"DHCP (Dynamic Host Configuration Protocol) automatyzuje przydział IP, maski, bramy, DNS klientom."},
+{id:72,a:"N",q:"Protokół DNS działa zazwyczaj na porcie:",o:["21","53","80","443"],c:1,e:"DNS = port 53 (UDP/TCP). 21 = FTP, 80 = HTTP, 443 = HTTPS."},
+{id:73,a:"N",q:"W modelu OSI warstwa 3 to:",o:["Łącza danych","Sieciowa","Transportowa","Aplikacji"],c:1,e:"OSI: 1-fizyczna, 2-łącza danych, 3-sieciowa (IP), 4-transportowa (TCP/UDP), 5-sesji, 6-prezentacji, 7-aplikacji."},
+{id:74,a:"N",q:"Adres MAC ma długość:",o:["32 bity","48 bitów","64 bity","128 bitów"],c:1,e:"MAC = 48 bitów (6 oktetów), zwykle zapisywany jako 00:1A:2B:3C:4D:5E."},
+{id:75,a:"N",q:"Kabel skrętki Cat 6 obsługuje przepustowość do:",o:["100 Mb/s","1 Gb/s","10 Gb/s na 55 m","40 Gb/s"],c:2,e:"Cat 6 = 1 Gb/s na 100 m, 10 Gb/s do ok. 55 m. Cat 6a = 10 Gb/s na 100 m."},
+{id:76,a:"N",q:"Adres IPv6 ma długość:",o:["32 bity","64 bity","128 bitów","256 bitów"],c:2,e:"IPv6 = 128 bitów = 8 grup po 16 bitów (np. 2001:db8::1)."},
+{id:77,a:"N",q:"NAT (Network Address Translation) służy do:",o:["Szyfrowania","Tłumaczenia adresów IP (zwykle prywatnych na publiczne)","Routingu wewnętrznego","Filtrowania pakietów"],c:1,e:"NAT pozwala wielu urządzeniom z prywatnymi IP komunikować się przez jeden publiczny."},
+{id:78,a:"N",q:"Topologia gwiazdy charakteryzuje się tym, że:",o:["Wszystkie urządzenia połączone są w pętli","Każde urządzenie połączone jest do centralnego węzła (switcha)","Połączenie liniowe","Każdy z każdym"],c:1,e:"Gwiazda = wszystkie hosty łączą się do switcha/huba. Awaria centrum = awaria sieci."},
+{id:79,a:"N",q:"Standard IEEE 802.11ac działa na pasmach:",o:["Tylko 2,4 GHz","Tylko 5 GHz","2,4 i 5 GHz","6 GHz"],c:1,e:"802.11ac (Wi-Fi 5) działa wyłącznie na 5 GHz. 802.11ax (Wi-Fi 6) — 2,4/5/6 GHz."},
+{id:80,a:"N",q:"Polecenie 'tracert' w Windows służy do:",o:["Sprawdzenia ścieżki pakietów do celu","Skanowania portów","Konfiguracji DNS","Mapowania dysków sieciowych"],c:0,e:"tracert/traceroute pokazuje kolejne routery (hopki) na trasie do hosta docelowego."},
+{id:81,a:"N",q:"Adres 169.254.x.x to adres:",o:["Publiczny","Lokalny APIPA (gdy DHCP nie działa)","Multicast","Loopback"],c:1,e:"APIPA = Automatic Private IP Addressing — host nadaje sobie adres z 169.254.0.0/16, gdy nie otrzyma IP z DHCP."},
+{id:82,a:"N",q:"Switch działa na warstwie:",o:["1 (fizyczna)","2 (łącza danych)","3 (sieciowa)","7 (aplikacji)"],c:1,e:"Switch L2 podejmuje decyzje na podstawie MAC. Router — L3 (IP). Switch L3 łączy oba."},
+{id:83,a:"N",q:"VLAN to:",o:["Wirtualna sieć LAN, segregacja ruchu na switchu","Sieć rozległa","Protokół szyfrowania","Adres bramy"],c:0,e:"VLAN (802.1Q) dzieli switch logicznie na osobne segmenty broadcast, niezależne od fizycznych portów."},
+{id:84,a:"N",q:"Protokół TCP zapewnia:",o:["Komunikację bezpołączeniową","Komunikację połączeniową z potwierdzaniem","Brak nadawcy","Tylko broadcast"],c:1,e:"TCP — handshake, kolejność, retransmisje. UDP — bez potwierdzeń, szybszy."},
+{id:85,a:"N",q:"Brama domyślna (default gateway) to:",o:["Adres serwera DNS","Adres routera dla pakietów spoza lokalnej sieci","Adres broadcast","Adres serwera plików"],c:1,e:"Gdy host wysyła pakiet poza lokalną podsieć, kieruje go do bramy domyślnej."},
+{id:86,a:"N",q:"Sieć 10.0.0.0/8 to adresacja:",o:["Publiczna","Prywatna (klasa A)","Multicast","Loopback"],c:1,e:"Pula prywatna (RFC 1918): 10/8, 172.16-31/12, 192.168/16. Loopback = 127.0.0.0/8."},
+{id:87,a:"N",q:"Maska 255.255.255.252 odpowiada prefiksowi:",o:["/28","/29","/30","/31"],c:2,e:"/30 = 30 jedynek = 255.255.255.252 → 4 adresy, 2 hosty (klasyczne łącza P2P)."},
+{id:88,a:"N",q:"Protokół ARP służy do:",o:["Tłumaczenia IP → MAC w sieci lokalnej","Tłumaczenia nazw → IP","Routingu","Szyfrowania"],c:0,e:"ARP (Address Resolution Protocol) — mapuje adresy IP na MAC w warstwie 2."},
+{id:89,a:"N",q:"Klasa C adresów IP obejmuje sieci:",o:["1.0.0.0 - 126.255.255.255","128.0.0.0 - 191.255.255.255","192.0.0.0 - 223.255.255.255","224.0.0.0 - 239.255.255.255"],c:2,e:"Klasy: A: 1-126, B: 128-191, C: 192-223, D: 224-239 (multicast), E: 240-255."},
+{id:90,a:"N",q:"Standard PoE (Power over Ethernet) 802.3af dostarcza moc do:",o:["3 W","15,4 W","30 W","60 W"],c:1,e:"802.3af = ~15,4 W (PoE). 802.3at (PoE+) = 30 W. 802.3bt = 60-90 W."},
+{id:91,a:"N",q:"Aby z sieci /24 wydzielić 4 podsieci równe, używamy maski:",o:["/25","/26","/27","/28"],c:1,e:"4 = 2^2 → +2 bity → /26 (255.255.255.192, po 64 adresy)."},
+{id:92,a:"N",q:"Port 443 to standard dla:",o:["HTTP","HTTPS","FTP","SSH"],c:1,e:"HTTPS (HTTP over TLS) = 443. SSH = 22, HTTP = 80, FTP = 21."},
+{id:93,a:"N",q:"WPA2 stosuje algorytm szyfrowania:",o:["DES","RC4","AES (CCMP)","MD5"],c:2,e:"WPA2 = AES w trybie CCMP (obowiązkowo). WPA = TKIP. WEP = RC4 (przestarzałe, niezalecane)."},
+{id:94,a:"N",q:"Standard kabla światłowodowego SM (single-mode) charakteryzuje się:",o:["Większą odległością transmisji niż MM","Większą średnicą rdzenia","Krótszym zasięgiem","Wyższym tłumieniem"],c:0,e:"SM (rdzeń ~9 µm) — duże odległości (km), MM (50/62,5 µm) — krótsze, ale tańsze nadajniki."},
+{id:95,a:"N",q:"Adres pętli zwrotnej w IPv4 to:",o:["0.0.0.0","127.0.0.1","255.255.255.255","192.168.1.1"],c:1,e:"127.0.0.1 (localhost) — wskazuje na ten sam komputer. W IPv6 = ::1."},
+{id:96,a:"N",q:"VPN umożliwia:",o:["Tworzenie szyfrowanego tunelu przez sieć publiczną","Skanowanie portów","Tylko transmisję wideo","Tylko gier online"],c:0,e:"VPN (Virtual Private Network) tworzy zaszyfrowany tunel, np. dla zdalnej pracy."},
+{id:97,a:"N",q:"Komenda 'nslookup nazwa.pl' służy do:",o:["Sprawdzania pingu","Odpytania serwera DNS o rekordy domeny","Konfigurowania interfejsu","Routingu"],c:1,e:"nslookup pyta DNS o A/AAAA/MX/etc. dla podanej domeny. Linux ma też 'dig'."},
+{id:98,a:"N",q:"Protokół FTP w trybie pasywnym używa portów:",o:["20 do danych, 21 do kontroli","21 do kontroli, dynamiczne do danych (server →)","80 i 443","Tylko 21"],c:1,e:"FTP pasywne: kontrola na 21, dane na porcie wybranym przez serwer (>1023). Klient inicjuje połączenia."},
+{id:99,a:"N",q:"DMZ (Demilitarized Zone) w sieci to:",o:["Strefa pełnego zaufania","Strefa wystawiona dla usług publicznych, oddzielona od LAN","Sieć bezprzewodowa","Backup"],c:1,e:"DMZ to wydzielona podsieć dla serwerów dostępnych z internetu (np. www, mail), oddzielona zaporą od LAN."},
+{id:100,a:"N",q:"Maks. liczba hostów w sieci klasy /16 to:",o:["256","65 534","16 777 214","254"],c:1,e:"/16 = 65536 - 2 = 65534 hostów. Klasa B."},
+
+// --- PERYFERIA / SPRZĘT SIECIOWY (P) ---
+{id:101,a:"P",q:"Drukarka laserowa do utrwalenia tonera używa:",o:["Wody","Lasera","Wysokiej temperatury (zespół utrwalający - fuser)","Sprężonego powietrza"],c:2,e:"Toner topi się w fuserze (~180°C) i wnika w papier. Laser tylko naładowuje bęben."},
+{id:102,a:"P",q:"Drukarka atramentowa najczęściej zatyka się przez:",o:["Brak papieru","Wyschnięcie tuszu w dyszach głowicy","Niskie napięcie","Brak tonera"],c:1,e:"Tusz wodny szybko wysycha; brak druku → należy uruchomić cykl czyszczenia głowicy."},
+{id:103,a:"P",q:"Standard rozdzielczości drukarki wyrażany jest w:",o:["dpi (punktów na cal)","Hz","Mb/s","ppm"],c:0,e:"dpi = dots per inch — gęstość punktów. ppm = pages per minute (prędkość)."},
+{id:104,a:"P",q:"Skaner CCD różni się od CIS tym, że:",o:["Jest tańszy","Ma większą głębię ostrości","Działa tylko w czerni","Jest ręczny"],c:1,e:"CCD ma układ optyczny + soczewki — większa głębia, ale grubszy. CIS — kompaktowy, mniejsza głębia."},
+{id:105,a:"P",q:"Switch zarządzalny umożliwia:",o:["Tylko forwardowanie ramek","Konfigurację VLAN, QoS, port mirroring","Tylko routing","Druk sieciowy"],c:1,e:"Smart/zarządzalne switche oferują VLAN, port mirroring, QoS, link aggregation, SNMP, itp."},
+{id:106,a:"P",q:"Access Point (AP) działa jako:",o:["Konwerter sygnału przewodowego na bezprzewodowy","Drukarka","Skaner","Pamięć masowa"],c:0,e:"AP łączy sieć przewodową ze stacjami Wi-Fi. Może działać samodzielnie lub w trybie kontrolera."},
+{id:107,a:"P",q:"Router domowy zwykle pełni jednocześnie role:",o:["Tylko routera","Routera, switcha, AP, DHCP, NAT, firewall","Tylko switcha","Tylko AP"],c:1,e:"Tani router SOHO łączy w sobie kilka funkcji: trasowanie, lokalna sieć (switch), Wi-Fi, DHCP, NAT, prosta zapora."},
+{id:108,a:"P",q:"Drukarka 3D typu FDM tworzy obiekty przez:",o:["Cięcie laserem","Nakładanie warstw stopionego filamentu","Rzeźbienie ręczne","Druk atramentowy"],c:1,e:"FDM (Fused Deposition Modeling) — głowica wytłacza stopiony plastik (PLA, ABS) warstwowo."},
+{id:109,a:"P",q:"Multifunkcyjne urządzenie 4w1 łączy zwykle:",o:["Drukarkę, skaner, kserokopiarkę, fax","Tylko drukarkę i skaner","Komputer z monitorem","Router z modemem"],c:0,e:"Standardowy zestaw multifunkcji (MFP): druk, skan, kopia, fax. Niektóre modele bez fax = 3w1."},
+{id:110,a:"P",q:"Klawiatura mechaniczna w przeciwieństwie do membranowej:",o:["Jest cichsza","Każdy klawisz ma osobny przełącznik (switch)","Jest gumowa","Nie ma podświetlenia"],c:1,e:"Mechaniczne switche (Cherry MX, Gateron) — wytrzymalsze, lepsza taktylność, droższe niż membrana."},
+{id:111,a:"P",q:"Mysz optyczna używa:",o:["Kulki","Diody LED i czujnika obrazu","Mechaniki","Lasera medycznego"],c:1,e:"Optyczne myszy oświetlają powierzchnię diodą; sensor analizuje zmiany. Laserowe — laser zamiast LED."},
+{id:112,a:"P",q:"Standard HDMI 2.1 obsługuje rozdzielczość:",o:["1080p@60Hz","4K@60Hz","4K@120Hz, 8K@60Hz","Tylko 720p"],c:2,e:"HDMI 2.1 (48 Gb/s) wspiera 4K@120Hz, 8K@60Hz, VRR, eARC."},
+{id:113,a:"P",q:"Tablet graficzny komunikuje się z PC najczęściej przez:",o:["VGA","USB lub Bluetooth","HDMI","SATA"],c:1,e:"Tablety graficzne (Wacom, XP-Pen) łączą się przez USB lub bezprzewodowo (BT/dongle)."},
+{id:114,a:"P",q:"Kontroler RAID sprzętowy:",o:["Wymaga oprogramowania OS","Realizuje obliczenia parzystości w dedykowanym chipie","Działa tylko z SSD","Nie obsługuje RAID 5"],c:1,e:"RAID sprzętowy ma własny procesor i pamięć cache; nie obciąża CPU. Software RAID — przez OS (mdadm, Storage Spaces)."},
+{id:115,a:"P",q:"Dysk twardy zewnętrzny USB-C 3.2 Gen 2 osiąga max:",o:["100 MB/s","500 MB/s","1000 MB/s","5000 MB/s"],c:2,e:"USB 3.2 Gen 2 = 10 Gb/s = ~1000 MB/s teoretycznie. SSD wykorzysta to, HDD nie."},
+{id:116,a:"P",q:"UPS (Uninterruptible Power Supply) służy do:",o:["Zasilania awaryjnego po zaniku prądu","Filtrowania internetu","Tworzenia kopii zapasowych","Drukowania"],c:0,e:"UPS dostarcza energię z baterii (line-interactive/online), umożliwia bezpieczne zamknięcie lub kontynuację pracy."},
+{id:117,a:"P",q:"Patchpanel służy do:",o:["Łączenia kabli sieciowych w szafie krosowniczej","Drukowania","Skanowania","Routingu"],c:0,e:"Patchpanel agreguje przewody strukturalne; używa się keystone/kabli krosowych do switcha."},
+{id:118,a:"P",q:"Skaner kodów kreskowych komunikuje się zwykle przez:",o:["Tylko Bluetooth","USB (HID — emulacja klawiatury) lub COM","HDMI","VGA"],c:1,e:"Czytniki bardzo często emulują klawiaturę — wpisują zeskanowany kod tam, gdzie kursor."},
+{id:119,a:"P",q:"Modem ADSL używa do transmisji:",o:["Linii światłowodowej","Linii telefonicznej miedzianej","Sieci komórkowej","Wi-Fi"],c:1,e:"ADSL — Asymmetric Digital Subscriber Line, na klasycznej miedzianej parze. VDSL2 też miedź; FTTH — światłowód."},
+{id:120,a:"P",q:"Wkładka SFP+ obsługuje przepustowość:",o:["1 Gb/s","10 Gb/s","25 Gb/s","100 Gb/s"],c:1,e:"SFP = 1 Gb/s, SFP+ = 10 Gb/s, SFP28 = 25, QSFP+ = 40, QSFP28 = 100."},
+
+// --- DIAGNOSTYKA (D) ---
+{id:121,a:"D",q:"Sygnały dźwiękowe BIOS przy starcie informują o:",o:["Wersji systemu","Błędach POST (np. RAM, GPU)","Stanie baterii laptopa","Połączeniu z siecią"],c:1,e:"BIOS używa kodów beep (np. AMI, Award) sygnalizujących błędy diagnostyczne POST: 1 long 2 short = błąd GPU, itp."},
+{id:122,a:"D",q:"Komputer włącza się, wentylatory działają, ale brak obrazu. Najpierw sprawdź:",o:["System operacyjny","Pamięć RAM, kartę graficzną, kabel monitora","Drukarkę","Internet"],c:1,e:"Brak obrazu = problem warstwy sprzętowej: kabel monitora, RAM (re-seat, na pojedynczych modułach), GPU."},
+{id:123,a:"D",q:"Niebieski ekran (BSOD) w Windows oznacza:",o:["Brak prądu","Krytyczny błąd jądra systemu","Aktualizację","Tryb prezentacji"],c:1,e:"BSOD pokazuje kod błędu (np. PAGE_FAULT_IN_NONPAGED_AREA) — wskazuje na sterowniki, RAM lub uszkodzenie systemu."},
+{id:124,a:"D",q:"Aby przetestować pamięć RAM pod kątem błędów, użyjesz:",o:["chkdsk","memtest86","sfc","ping"],c:1,e:"memtest86/86+ to standard testowania RAM przez wielokrotny zapis/odczyt wzorców."},
+{id:125,a:"D",q:"Komenda 'chkdsk /f /r' w Windows:",o:["Defragmentuje dysk","Sprawdza i naprawia błędy systemu plików oraz sektory dysku","Tworzy obraz","Nic nie robi"],c:1,e:"/f = napraw błędy systemu plików, /r = lokalizuj złe sektory i odzyskuj informacje."},
+{id:126,a:"D",q:"Termiczne wyłączenie komputera (thermal shutdown) zwykle wskazuje na:",o:["Awarię zasilacza","Problem chłodzenia procesora (zatkany radiator, wyschnięta pasta)","Złą kartę sieciową","Wirus"],c:1,e:"CPU/GPU mają mechanizmy ochrony termicznej — wyłączenie chroni przed uszkodzeniem. Sprawdź wentylatory, pastę, kurz."},
+{id:127,a:"D",q:"Komputer co kilka minut sam się wyłącza. Najbardziej prawdopodobna przyczyna:",o:["Brak miejsca na dysku","Przegrzewanie się lub awaria zasilacza","Stary mikrofon","Niska wersja oprogramowania"],c:1,e:"Niespodziewane wyłączenia: temperatura (CPU/GPU/VRM) lub PSU (spadki napięcia). Sprawdź temperatury i PSU."},
+{id:128,a:"D",q:"SMART (Self-Monitoring) w dyskach służy do:",o:["Szyfrowania","Monitorowania kondycji i przewidywania awarii","Defragmentacji","Klonowania"],c:1,e:"SMART pokazuje atrybuty (Reallocated Sectors, Spin Retry, itp.) — narzędzia: smartctl, CrystalDiskInfo."},
+{id:129,a:"D",q:"Dioda LED na płycie głównej oznaczona 'CPU' świeci ciągle. Oznacza to:",o:["Problem z procesorem lub jego zasilaniem","Brak Wi-Fi","Problem z drukarką","Uszkodzony monitor"],c:0,e:"LED diagnostyczne (Q-LED) wskazują który komponent zawodzi w POST: CPU, DRAM, VGA, BOOT."},
+{id:130,a:"D",q:"Kabel sieciowy nie działa po przeniesieniu PC. Pierwszy krok:",o:["Wymienić zasilacz","Sprawdzić czy lampki LED na karcie sieciowej i switchu świecą","Reinstalować Windows","Wymienić CPU"],c:1,e:"Diody link/activity na NIC i switchu — najszybsza diagnostyka warstwy fizycznej."},
+{id:131,a:"D",q:"Tester kabli UTP wykrywa:",o:["Ciągłość żył i kolejność (T568A/B)","Ilość RAM","Wersję BIOS","Hasło sieci"],c:0,e:"Tester pokazuje przerwy, zwarcia, krzyżowanie żył (split pair) i schemat zarobienia końcówek."},
+{id:132,a:"D",q:"Komputer zatrzymuje się na ekranie 'No bootable device'. Sprawdź:",o:["Konto Windows","Kolejność boot w BIOS, podłączenie dysku, MBR/GPT","Klawiaturę","Drukarkę"],c:1,e:"Sprawdź czy dysk jest widoczny w BIOS, kolejność boot, integralność MBR/GPT, ewentualnie odbuduj bootloader."},
+{id:133,a:"D",q:"Narzędzie 'Event Viewer' (Podgląd zdarzeń) w Windows:",o:["Tworzy nowe zdarzenia","Pokazuje logi systemowe, aplikacji, zabezpieczeń","Konfiguruje sieć","Defragmentuje dysk"],c:1,e:"Event Viewer = eventvwr.msc. Logi: System, Application, Security — kluczowe przy diagnostyce błędów."},
+{id:134,a:"D",q:"Wadliwy moduł RAM w teście memtest objawia się:",o:["Brakiem dźwięku","Czerwonymi błędami z adresami","Wyższą wydajnością","Lepszą grafiką"],c:1,e:"Memtest pokazuje błędy z adresami pamięci (logical/physical). Wymień moduł lub przesuń do innego slotu, by zlokalizować."},
+{id:135,a:"D",q:"Bateria CMOS jest rozładowana. Objaw:",o:["Czas/data się resetują, BIOS gubi ustawienia","Brak Wi-Fi","Wyższe FPS","Drukarka działa wolniej"],c:0,e:"CR2032 podtrzymuje pamięć ustawień i RTC. Po rozładowaniu — reset BIOS po wyłączeniu z sieci."},
+{id:136,a:"D",q:"Polecenie 'ping 8.8.8.8' działa, ale 'ping google.com' nie. Problem dotyczy:",o:["Routingu","DNS","Karty sieciowej","Zasilania"],c:1,e:"Sieć działa (IP osiągalne), ale rozwiązywanie nazw nie — sprawdź konfigurację DNS w karcie sieciowej."},
+{id:137,a:"D",q:"Wąchający się zapach plastiku z komputera + brak obrazu = ",o:["Normalne","Możliwe spalenie elementu (zwykle PSU lub VRM) — natychmiast wyłącz","Aktualizacja","Brak tonera"],c:1,e:"Zapach spalonej elektroniki = uszkodzenie. Wyłącz, odłącz zasilanie, oględziny — wzdęte kondensatory, ślady."},
+{id:138,a:"D",q:"Drukarka drukuje 'puste' strony, choć tonera/tuszu jest dużo. Sprawdź:",o:["Wersję Windows","Sterownik, zatrzask kartridża, ewentualnie głowicę/uszczelkę","Sieć","Pamięć RAM"],c:1,e:"Atramentówka — czyszczenie głowicy. Laser — sprawdź zatrzask kartridża, korotron transferowy, uszkodzony bęben."},
+{id:139,a:"D",q:"Komputer nie reaguje na przycisk Power. Pierwszy krok:",o:["Wymień RAM","Sprawdź zasilanie (kabel, listwa, wyłącznik PSU, przycisk Reset)","Reinstaluj Windows","Wymień GPU"],c:1,e:"Brak reakcji = sprawdź najprostsze: kabel zasilający, wyłącznik PSU (z tyłu), próba zwarcia pinów PWR na płycie."},
+{id:140,a:"D",q:"Dysk SSD wykazuje 'Reallocated Sector Count' rosnący w SMART. Oznacza to:",o:["Dysk jest nowy","Zaczyna mieć złe komórki — rozważ wymianę","Lepsza wydajność","Aktualizacja firmware"],c:1,e:"Wzrost realokacji = pogorszenie kondycji nośnika. Backup, ewentualnie wymiana."},
+{id:141,a:"D",q:"Komputer nie łączy się z siecią Wi-Fi domową (inne urządzenia działają). Sprawdź:",o:["Tylko zasilanie","Tryb samolotowy, sterownik karty Wi-Fi, zapisane hasło","Procesor","Drukarkę"],c:1,e:"Skoro inne klienty działają — problem po stronie tego PC: tryb samolotowy, sterownik, profil Wi-Fi."},
+{id:142,a:"D",q:"Po aktualizacji systemu sterownik karty graficznej powoduje BSOD. Najszybsze rozwiązanie:",o:["Wymienić GPU","Tryb awaryjny → przywrócenie sterownika z DDU lub starszej wersji","Reinstalacja systemu","Wymiana RAM"],c:1,e:"Tryb awaryjny → DDU (Display Driver Uninstaller) → instalacja stabilnej wersji sterownika."},
+{id:143,a:"D",q:"Multimetr w trybie pomiaru napięcia DC służy do sprawdzenia:",o:["Napięć linii zasilacza (12V, 5V, 3.3V)","Sieci Wi-Fi","Temperatury CPU","Adresu IP"],c:0,e:"Multimetrem w DC mierzymy napięcia PSU na molexach/SATA — odchyłki >5% świadczą o problemach."},
+{id:144,a:"D",q:"Tonery i bębny laserowe są zużyte. Najczęstszy objaw:",o:["Zbyt szybki druk","Smużenie, jasne wydruki, powtarzające się ślady na stronie","Brak prądu","Niskie napięcie"],c:1,e:"Zużyte komponenty: smugi, bladość, powtarzające się punkty co obwód bębna (ok. 75 mm)."},
+{id:145,a:"D",q:"Dysk twardy klika niespotykanym dźwiękiem. Działanie:",o:["Kontynuuj pracę","Natychmiast wyłącz, zrób backup z innej maszyny — możliwa awaria głowicy","Defragmentuj","Format"],c:1,e:"Klik (head clicking) = mechaniczna awaria. Im dłużej pracuje — tym mniej szans na odzyskanie. Backup priorytetem."},
+{id:146,a:"D",q:"Komenda 'ipconfig /flushdns' w Windows:",o:["Resetuje hasło","Czyści cache DNS klienta","Restartuje sieć","Wyłącza interfejs"],c:1,e:"Po zmianach DNS lub problemach z rozwiązywaniem — czyszczenie cache DNS pomoże uniknąć nieaktualnych wpisów."},
+{id:147,a:"D",q:"Komputer wolno działa, dysk obciążony 100%. Sprawdź:",o:["Procesy w Menedżerze zadań, kondycję dysku (SMART), antywirus","Wymień zasilacz","Aktualizacja BIOS","Wymień klawiaturę"],c:0,e:"Dysk @ 100% = zwykle: skanowanie AV, indeksowanie, Windows Update, awaria HDD. Sprawdź źródło i SMART."},
+{id:148,a:"D",q:"Polecenie 'ping -t 192.168.1.1' w Windows:",o:["Wysyła jeden pakiet","Wysyła pakiety w pętli aż do przerwania (Ctrl+C)","Resetuje połączenie","Czyści cache"],c:1,e:"Flaga -t = ciągły ping. Przydatne do monitorowania stabilności połączenia."},
+{id:149,a:"D",q:"Karta graficzna ma artefakty graficzne (zniekształcenia, kolorowe piksele). Możliwa przyczyna:",o:["Awaria pamięci VRAM lub GPU, problemy z chłodzeniem, sterownik","Brak DNS","Wymiana klawiatury","Zła rozdzielczość ekranu"],c:0,e:"Artefakty = zwykle: przegrzewanie GPU/VRAM, awaria pamięci, niestabilny OC. Test FurMark, monitoring temp."},
+{id:150,a:"D",q:"Aby utworzyć obraz dysku do diagnostyki/backupu w Linuxie, użyjesz:",o:["dd if=/dev/sda of=/sciezka/obraz.img bs=4M","ls -la","ping","grep"],c:0,e:"dd kopiuje surowe dane sektor-po-sektorze. UWAGA na if/of (jak pomylisz — zniszczysz dysk!)."},
+{id:151,a:"L",q:"Maksymalny czas pracy przy monitorze ekranowym, po którym pracownikowi przysługuje 5-minutowa przerwa, wynosi zgodnie z Kodeksem pracy:",o:["30 minut","45 minut","1 godzina","2 godziny"],c:2,e:"Rozporządzenie MPiPS w sprawie BHP na stanowiskach z monitorami ekranowymi: po każdej godzinie pracy przysługuje co najmniej 5 minut przerwy wliczanej do czasu pracy lub łączenie z innymi czynnościami niewymagającymi obsługi monitora."},
+{id:152,a:"L",q:"Licencja OEM systemu Windows jest:",o:["Przenoszalna na dowolny komputer bez ograniczeń","Przypisana na stałe do konkretnego sprzętu (płyty głównej)","Bezpłatna dla użytkowników domowych","Ograniczona do 1 roku użytkowania"],c:1,e:"Licencja OEM (Original Equipment Manufacturer) jest trwale powiązana z urządzeniem, na którym pierwotnie aktywowano system. Po wymianie płyty głównej zwykle wymaga ponownego zakupu. Licencja BOX (Retail) jest przenoszalna między komputerami."},
+{id:153,a:"L",q:"Licencja GNU GPL należy do grupy licencji:",o:["Komercyjnych zamkniętych","Open Source typu copyleft","Freeware bez dostępu do kodu","Shareware z opłatą po okresie próbnym"],c:1,e:"GNU GPL to licencja Open Source typu copyleft — udostępnia kod źródłowy i wymaga, by dzieła pochodne również były dystrybuowane na tej samej licencji. Freeware oznacza darmowe oprogramowanie bez kodu źródłowego."},
+{id:154,a:"L",q:"Minimalna odległość oczu pracownika od ekranu monitora powinna wynosić:",o:["20-30 cm","40-75 cm","100-120 cm","150 cm"],c:1,e:"Zgodnie z normami BHP odległość oczu od monitora powinna wynosić 40–75 cm (najczęściej podaje się 50–70 cm). Górna krawędź ekranu na wysokości oczu lub nieco poniżej."},
+{id:155,a:"L",q:"Symbol CE na sprzęcie komputerowym oznacza:",o:["Certyfikat Energy Star o niskim zużyciu energii","Zgodność z dyrektywami Unii Europejskiej","Produkt wytworzony w Chinach","Przedłużoną gwarancję 2-letnią"],c:1,e:"Oznaczenie CE (Conformité Européenne) potwierdza, że produkt spełnia wymagania zasadnicze odpowiednich dyrektyw UE (m.in. EMC, LVD, RoHS) i może być wprowadzony do obrotu na terenie Europejskiego Obszaru Gospodarczego."},
+{id:156,a:"L",q:"Zużyty sprzęt elektroniczny należy zgodnie z ustawą o ZSEE przekazać:",o:["Do zwykłego pojemnika na odpady komunalne","Do PSZOK lub punktu zbiórki ZSEE","Do skupu złomu metali kolorowych","Spalić we własnym zakresie"],c:1,e:"Ustawa o zużytym sprzęcie elektrycznym i elektronicznym (ZSEE) zabrania wyrzucania elektrośmieci do odpadów komunalnych. Sprzęt oddajemy do PSZOK, punktu zbiórki ZSEE lub sprzedawcy przy zakupie nowego (1 za 1)."},
+{id:157,a:"L",q:"Dokumentem opisującym sposób połączeń kablowych w sieci strukturalnej jest:",o:["Schemat blokowy systemu operacyjnego","Dokumentacja powykonawcza okablowania","Karta gwarancyjna switcha","Polityka prywatności RODO"],c:1,e:"Dokumentacja powykonawcza okablowania strukturalnego zawiera schemat tras kablowych, oznaczenia gniazd, długości linii, wyniki pomiarów certyfikacyjnych (NEXT, tłumienie, mapy żył) — wymagana przy odbiorze instalacji."},
+{id:158,a:"L",q:"Norma PN-EN 50173 dotyczy:",o:["Bezpieczeństwa pracy z monitorami","Okablowania strukturalnego budynków","Ergonomii klawiatury","Ochrony danych osobowych"],c:1,e:"PN-EN 50173 to europejska norma określająca wymagania dla systemów okablowania strukturalnego (kategorie kabli, klasy łączy, topologie). Definiuje m.in. klasy D, E, EA, F dla różnych kategorii kabli (Cat5e, Cat6, Cat6A, Cat7)."},
+{id:159,a:"L",q:"Kosztorys ofertowy w zamówieniu serwisowym powinien zawierać:",o:["Tylko cenę końcową brutto","Pozycje materiałowe, robocizna, VAT i wartość brutto","Imię i nazwisko technika oraz numer telefonu","Wyłącznie listę narzędzi diagnostycznych"],c:1,e:"Kosztorys to dokument finansowy z wyszczególnieniem materiałów (cena jedn. × ilość), robocizny (rbg × stawka), wartości netto, VAT i wartości brutto. Pozwala klientowi zweryfikować kalkulację."},
+{id:160,a:"L",q:"Pierwszą pomocą dla osoby porażonej prądem jest:",o:["Polanie poszkodowanego wodą","Odłączenie źródła prądu i wezwanie pomocy, w razie potrzeby RKO","Natychmiastowe podanie napoju","Owinięcie poszkodowanego folią aluminiową"],c:1,e:"Procedura BHP: 1) odłączyć napięcie (wyłącznik, wyjęcie wtyczki) — nigdy nie dotykać porażonego pod napięciem, 2) wezwać pogotowie 112/999, 3) sprawdzić oddech i tętno, w razie braku rozpocząć RKO 30:2."},
+{id:161,a:"L",q:"Klauzula RODO w dokumentacji serwisowej dotyczy:",o:["Ograniczenia odpowiedzialności producenta sprzętu","Przetwarzania danych osobowych klienta","Warunków gwarancji urządzenia","Norm jakości ISO 9001"],c:1,e:"RODO (GDPR) reguluje zasady przetwarzania danych osobowych. W serwisie IT klient powinien wyrazić zgodę na przetwarzanie danych (imię, nazwisko, telefon, dane z dysku) i otrzymać klauzulę informacyjną o administratorze danych."},
+{id:162,a:"L",q:"Licencja CAL (Client Access License) Windows Server jest wymagana, gdy:",o:["Instalujesz system Windows Server na maszynie wirtualnej","Klient (użytkownik lub urządzenie) korzysta z usług serwera","Konfigurujesz statyczny adres IP serwera","Aktualizujesz sterowniki sieciowe"],c:1,e:"CAL (Client Access License) to licencja dostępu klienta — wymagana dla każdego użytkownika (User CAL) lub urządzenia (Device CAL), które łączy się z usługami Windows Server. Sama licencja serwera nie wystarcza."},
+{id:163,a:"L",q:"Środkiem ochrony osobistej (ŚOI) podczas wymiany komponentów PC jest:",o:["Opaska antystatyczna ESD","Okulary VR","Kombinezon ognioodporny","Hełm ochronny"],c:0,e:"Opaska antystatyczna ESD wyrównuje potencjał technika z masą obudowy/maty, zapobiegając wyładowaniu, które mogłoby uszkodzić wrażliwe układy CMOS na płycie głównej, RAM czy karcie graficznej."},
+{id:164,a:"L",q:"Gaśnica odpowiednia do gaszenia pożaru sprzętu komputerowego pod napięciem to gaśnica:",o:["Wodna (W)","Pianowa (P)","Śniegowa CO2 (typ BC/AB)","Z proszku wapna gaszonego"],c:2,e:"Gaśnica śniegowa (CO2) jest dielektrykiem — bezpieczna dla urządzeń pod napięciem, nie pozostawia osadu i nie uszkadza elektroniki. Gaśnice wodne i pianowe są zabronione przy urządzeniach elektrycznych."},
+{id:165,a:"L",q:"Protokół zdawczo-odbiorczy serwisu komputera powinien obejmować:",o:["Stan kompletności sprzętu, opis usterki, datę i podpisy stron","Tylko numer seryjny urządzenia","Wyłącznie kwotę naprawy","Zdjęcie technika z klientem"],c:0,e:"Protokół zdawczo-odbiorczy chroni serwis i klienta — dokumentuje co zostało przyjęte (kompletność: zasilacz, kabel, akumulator), zgłoszoną usterkę, datę przyjęcia/zwrotu oraz podpisy obu stron."},
+{id:166,a:"W",q:"Rola serwera DHCP w Windows Server odpowiada za:",o:["Tłumaczenie nazw domenowych na adresy IP","Automatyczne przydzielanie konfiguracji IP klientom","Uwierzytelnianie użytkowników w domenie","Udostępnianie plików przez SMB"],c:1,e:"DHCP (Dynamic Host Configuration Protocol) automatycznie przydziela klientom adres IP, maskę, bramę domyślną i serwery DNS z określonej puli (zakresu/scope). Tłumaczenie nazw to rola DNS."},
+{id:167,a:"W",q:"Czas dzierżawy adresu DHCP (lease time) określa:",o:["Maksymalny rozmiar pakietu DHCP","Okres ważności przydzielonej konfiguracji IP dla klienta","Czas uruchomienia serwera DHCP","Liczbę jednoczesnych klientów"],c:1,e:"Lease time to czas, na jaki klient otrzymuje adres IP. Po upływie 50% czasu klient próbuje go odnowić (renew) u serwera. Domyślnie w Windows Server to 8 dni dla sieci przewodowych."},
+{id:168,a:"W",q:"Rekord DNS typu A służy do mapowania:",o:["Nazwy hosta na adres IPv4","Nazwy hosta na adres IPv6","Aliasu na inną nazwę domenową","Domeny na serwer pocztowy"],c:0,e:"Rekord A (Address) mapuje nazwę hosta (np. www.firma.pl) na adres IPv4. Rekord AAAA odpowiada za IPv6, CNAME to alias nazwy, MX wskazuje serwer pocztowy."},
+{id:169,a:"W",q:"Rekord MX w DNS określa:",o:["Maskę podsieci dla domeny","Serwer pocztowy obsługujący domenę","Adres serwera DNS","Czas życia rekordu (TTL)"],c:1,e:"Rekord MX (Mail Exchanger) wskazuje serwer pocztowy odpowiedzialny za odbieranie maili dla danej domeny. Posiada priorytet — niższa wartość = wyższy priorytet."},
+{id:170,a:"W",q:"Active Directory Domain Services (AD DS) przechowuje informacje w:",o:["Plikach tekstowych w katalogu C:\\Windows","Bazie danych NTDS.DIT na kontrolerze domeny","Rejestrze systemowym Windows","Pliku hosts"],c:1,e:"AD DS przechowuje obiekty (użytkownicy, komputery, grupy, OU) w bazie danych NTDS.DIT (Extensible Storage Engine) na każdym kontrolerze domeny (DC). Replikacja zapewnia spójność między DC."},
+{id:171,a:"W",q:"Aby promować Windows Server do roli kontrolera domeny, należy zainstalować rolę:",o:["DHCP Server","DNS Server","Active Directory Domain Services","File and Storage Services"],c:2,e:"Rola AD DS instalowana z Server Managera (lub PowerShell: Install-WindowsFeature AD-Domain-Services), następnie wykonanie kreatora promocji (dcpromo / Install-ADDSForest) tworzy kontroler domeny."},
+{id:172,a:"W",q:"OU (Organizational Unit) w AD DS pozwala na:",o:["Tworzenie partycji dyskowych","Logiczne grupowanie obiektów i delegowanie uprawnień","Konfigurację firewalla","Definiowanie tras routingu"],c:1,e:"OU to jednostka organizacyjna — kontener AD pozwalający logicznie grupować użytkowników, komputery i grupy. Umożliwia stosowanie GPO oraz delegowanie zadań administracyjnych do określonej OU."},
+{id:173,a:"W",q:"Polityki GPO są stosowane w kolejności (LSDOU):",o:["Site → Domain → OU → Local","Local → Site → Domain → OU","OU → Domain → Site → Local","Domain → Local → OU → Site"],c:1,e:"Kolejność stosowania GPO to LSDOU: Local Policy → Site → Domain → OU. Późniejsze polityki nadpisują wcześniejsze, więc GPO z OU mają najwyższy priorytet (chyba że ustawiono Enforced lub Block Inheritance)."},
+{id:174,a:"W",q:"Polecenie wymuszające natychmiastowe odświeżenie zasad GPO na kliencie to:",o:["gpresult /R","gpupdate /force","secedit /refresh","policy /apply"],c:1,e:"gpupdate /force wymusza pełne ponowne zastosowanie wszystkich GPO (Computer i User). gpresult /R wyświetla raport zastosowanych polityk (RSoP), ale ich nie odświeża."},
+{id:175,a:"W",q:"FSMO Schema Master jest rolą obecną:",o:["Na każdym kontrolerze domeny","Tylko jeden raz w całym lesie AD","Raz w każdej domenie","Tylko na serwerze DNS"],c:1,e:"Role FSMO: Schema Master i Domain Naming Master są unikalne w obrębie lasu (jedna instancja). RID Master, PDC Emulator i Infrastructure Master występują po jednej w każdej domenie."},
+{id:176,a:"W",q:"Grupa zabezpieczeń typu Domain Local może zawierać:",o:["Tylko użytkowników z lokalnej domeny","Konta i grupy z dowolnej domeny w lesie, ale nadawana lokalnie","Tylko grupy uniwersalne","Wyłącznie konta komputerów"],c:1,e:"Grupy Domain Local mogą zawierać użytkowników/grupy z dowolnej zaufanej domeny, ale uprawnienia mogą być nadawane tylko do zasobów w domenie macierzystej. Strategia AGDLP: Account → Global → Domain Local → Permission."},
+{id:177,a:"W",q:"Rezerwacja DHCP polega na:",o:["Wyłączeniu serwera DHCP na czas nocny","Trwałym przypisaniu konkretnego adresu IP do adresu MAC","Blokadzie adresów dla obcych klientów","Tworzeniu kopii zapasowej bazy DHCP"],c:1,e:"Rezerwacja (reservation) wiąże adres MAC karty sieciowej klienta z konkretnym adresem IP w obrębie zakresu (scope). Klient zawsze otrzymuje ten sam IP, mimo że konfiguracja jest dystrybuowana przez DHCP."},
+{id:178,a:"W",q:"Strefa DNS typu Reverse Lookup Zone służy do:",o:["Tłumaczenia nazwy hosta na adres IP","Tłumaczenia adresu IP na nazwę hosta","Replikacji rekordów między DC","Buforowania zapytań DNS"],c:1,e:"Strefa wsteczna (reverse lookup) tłumaczy adresy IP na nazwy hostów (rekordy PTR), używana m.in. przez serwery pocztowe do weryfikacji nadawcy (rDNS) i przez nslookup z opcją -type=PTR."},
+{id:179,a:"W",q:"Polecenie PowerShell tworzące nowego użytkownika w AD to:",o:["New-LocalUser","New-ADUser","Add-User","Create-DomainUser"],c:1,e:"Cmdlet New-ADUser (z modułu ActiveDirectory) tworzy konto w domenie, np.: New-ADUser -Name 'Jan Kowalski' -SamAccountName jkowalski -Path 'OU=Pracownicy,DC=firma,DC=local' -AccountPassword (Read-Host -AsSecureString) -Enabled $true."},
+{id:180,a:"W",q:"Profil mobilny (roaming profile) użytkownika domenowego:",o:["Jest przechowywany lokalnie tylko na jednym komputerze","Jest pobierany z udziału sieciowego po zalogowaniu na dowolnym komputerze domeny","Wymaga osobnej licencji M365","Działa tylko z laptopami"],c:1,e:"Profil mobilny przechowywany jest na serwerze plików (UNC: \\\\serwer\\profile$\\%username%). Po zalogowaniu kopiowany lokalnie, po wylogowaniu — synchronizowany z serwerem. Pozwala na te same ustawienia na każdej stacji domeny."},
+{id:181,a:"6",q:"Adres IPv6 fe80::/10 oznacza adres typu:",o:["Globalny unicast","Link-local","Multicast","Pętli zwrotnej (loopback)"],c:1,e:"Prefiks fe80::/10 to adresy link-local — automatycznie generowane na każdym interfejsie IPv6 i ważne tylko w obrębie pojedynczego segmentu sieci. Loopback IPv6 to ::1, multicast — ff00::/8."},
+{id:182,a:"6",q:"Skrócony zapis adresu IPv6 2001:0db8:0000:0000:0000:0000:1428:57ab to:",o:["2001:db8::1428:57ab","2001:0db8::1428::57ab","2001:db8:1428:57ab","2001::db8:1428:57ab"],c:0,e:"Reguły skracania IPv6: 1) usuwamy wiodące zera w każdej grupie (0db8 → db8), 2) jeden ciąg samych zer zastępujemy '::' (tylko raz w adresie). Wynik: 2001:db8::1428:57ab."},
+{id:183,a:"6",q:"Adres IPv6 ::1 oznacza:",o:["Adres broadcastu","Adres pętli zwrotnej (loopback)","Adres link-local","Bramę domyślną"],c:1,e:"::1/128 to adres pętli zwrotnej IPv6 (odpowiednik 127.0.0.1 w IPv4). IPv6 nie posiada adresu rozgłoszeniowego (broadcast) — zastępuje go multicast (np. ff02::1 dla wszystkich węzłów w segmencie)."},
+{id:184,a:"6",q:"Liczba bitów adresu IPv6 wynosi:",o:["32","64","128","256"],c:2,e:"Adres IPv6 ma 128 bitów (16 bajtów), zapisywany jako 8 grup po 4 cyfry szesnastkowe. Daje to teoretyczną pulę 2^128 adresów. IPv4 ma 32 bity."},
+{id:185,a:"6",q:"Statyczna trasa w routerze Cisco dodawana jest poleceniem:",o:["set route 10.0.0.0 mask 255.0.0.0 next-hop 192.168.1.1","ip route 10.0.0.0 255.0.0.0 192.168.1.1","route add 10.0.0.0/8 via 192.168.1.1","static-route 10.0.0.0 192.168.1.1"],c:1,e:"Składnia w trybie konfiguracji globalnej IOS: ip route <sieć_docelowa> <maska> <next-hop|interfejs_wyjściowy> [dystans_administracyjny]. Np. ip route 10.0.0.0 255.0.0.0 192.168.1.1."},
+{id:186,a:"6",q:"Brama domyślna (default gateway) w tablicy routingu reprezentowana jest przez sieć:",o:["255.255.255.255/32","0.0.0.0/0","127.0.0.1/8","169.254.0.0/16"],c:1,e:"Trasa domyślna (default route) ma adres docelowy 0.0.0.0 z maską 0.0.0.0 (/0) — pasuje do dowolnego adresu IP, gdy żadna bardziej specyficzna trasa nie pasuje (longest prefix match)."},
+{id:187,a:"6",q:"Adres globalny unicast IPv6 zaczyna się od prefiksu:",o:["fe80::/10","fc00::/7","2000::/3","ff00::/8"],c:2,e:"Globalny unicast IPv6 należy do zakresu 2000::/3 (czyli pierwszy znak to 2 lub 3) — odpowiednik publicznego adresu IPv4. fc00::/7 to ULA (unique local), ff00::/8 — multicast."},
+{id:188,a:"6",q:"Mechanizm SLAAC w IPv6 służy do:",o:["Szyfrowania ruchu IPv6","Automatycznej konfiguracji adresu na podstawie ogłoszeń routera (RA)","Tłumaczenia IPv6 na IPv4","Filtrowania pakietów ICMPv6"],c:1,e:"SLAAC (Stateless Address Autoconfiguration) — host generuje sobie adres IPv6 na podstawie prefiksu otrzymanego od routera w komunikacie Router Advertisement i własnego identyfikatora interfejsu (EUI-64 lub losowy)."},
+{id:189,a:"6",q:"Protokół dynamicznego routingu typu link-state to:",o:["RIPv2","OSPF","BGP","EIGRP"],c:1,e:"OSPF (Open Shortest Path First) to protokół link-state — każdy router buduje pełną mapę topologii (LSDB) i wybiera najkrótszą ścieżkę algorytmem Dijkstry. RIP to distance-vector, BGP — path-vector, EIGRP — hybrydowy."},
+{id:190,a:"6",q:"ICMPv6 typu Neighbor Solicitation (NS) zastępuje w IPv6 protokół:",o:["DHCP","ARP","DNS","ICMP Echo"],c:1,e:"W IPv6 nie ma protokołu ARP. NDP (Neighbor Discovery Protocol) wykorzystuje wiadomości ICMPv6 NS (Neighbor Solicitation) i NA (Neighbor Advertisement) do mapowania adresów IPv6 na adresy MAC."},
+{id:191,a:"V",q:"Hyper-V to technologia wirtualizacji typu:",o:["Hosted (typ 2) — uruchamiana na systemie hosta","Bare-metal hypervisor (typ 1)","Emulator sprzętowy aplikacyjny","Konteneryzacja (Docker)"],c:1,e:"Hyper-V to hypervisor typu 1 (bare-metal) — działa bezpośrednio na sprzęcie. Po włączeniu roli system Windows staje się partycją nadrzędną (parent), maszyny gości — partycjami potomnymi. VirtualBox/VMware Workstation to typ 2."},
+{id:192,a:"V",q:"Format dysku wirtualnego stosowany w Hyper-V to:",o:[".vmdk",".vdi",".vhd / .vhdx",".qcow2"],c:2,e:"Hyper-V używa VHD (starszy, max 2 TB) lub VHDX (od Server 2012, max 64 TB, odporność na uszkodzenia). VMDK to VMware, VDI — VirtualBox, QCOW2 — KVM/QEMU."},
+{id:193,a:"V",q:"Snapshot (punkt kontrolny) maszyny wirtualnej:",o:["Tworzy pełną kopię pliku VHDX na innym dysku","Zapisuje stan maszyny do późniejszego przywrócenia, używając pliku różnicowego","Defragmentuje dysk wirtualny","Aktualizuje system gościa"],c:1,e:"Snapshot/checkpoint zapisuje aktualny stan VM (pamięć + dysk) i tworzy plik różnicowy AVHDX, do którego trafiają nowe zapisy. Dłuższe trzymanie wielu snapshotów degraduje wydajność — zalecane do testów, nie jako backup."},
+{id:194,a:"V",q:"Backup pełny (full) charakteryzuje się tym, że:",o:["Kopiuje tylko pliki zmienione od ostatniego backupu","Kopiuje wszystkie wybrane dane za każdym razem","Wymaga przyrostowych do odzyskania","Działa tylko na systemach Windows"],c:1,e:"Backup pełny kopiuje całość danych za każdym razem — najwięcej miejsca i czasu, ale najszybsze odtwarzanie (jeden zestaw). Stanowi punkt bazowy dla strategii przyrostowych i różnicowych."},
+{id:195,a:"V",q:"Backup różnicowy (differential) różni się od przyrostowego (incremental) tym, że:",o:["Różnicowy kopiuje wszystko, przyrostowy tylko zmiany","Różnicowy zapisuje zmiany od ostatniego pełnego, przyrostowy — od ostatniego dowolnego","Różnicowy działa na taśmach, przyrostowy na dyskach","Nie ma między nimi różnicy"],c:1,e:"Różnicowy zawsze odnosi się do ostatniego backupu pełnego (rośnie z czasem). Przyrostowy odnosi się do ostatniego backupu (full lub incremental). Odtwarzanie: full+ostatni differential, lub full+wszystkie incremental."},
+{id:196,a:"V",q:"Strategia rotacji nośników GFS (Grandfather-Father-Son) zakłada:",o:["Trzy generacje kopii: dzienne, tygodniowe, miesięczne","Trzech administratorów backupu","Trzy lokalizacje geograficzne","Trzykrotne szyfrowanie danych"],c:0,e:"GFS to schemat retencji: Son = backup dzienny (codzienny), Father = tygodniowy, Grandfather = miesięczny. Pozwala odtworzyć dane z różnych horyzontów czasowych przy ograniczonej liczbie nośników."},
+{id:197,a:"V",q:"Reguła backupu 3-2-1 mówi, że należy mieć:",o:["3 kopie, na 2 różnych nośnikach, 1 poza siedzibą","3 administratorów, 2 lokalizacje, 1 hasło","3 dyski w RAID 1, 2 zasilacze, 1 UPS","3 dni retencji, 2 godziny RPO, 1 godzinę RTO"],c:0,e:"Reguła 3-2-1: 3 kopie danych (oryginał + 2 kopie zapasowe), na 2 różnych typach nośników (np. dysk + taśma/chmura), z czego 1 kopia w lokalizacji zewnętrznej (off-site/chmura) — ochrona przed pożarem, kradzieżą, ransomware."},
+{id:198,a:"V",q:"Funkcja Live Migration w Hyper-V umożliwia:",o:["Migrację konta użytkownika między domenami","Przenoszenie działającej maszyny wirtualnej między hostami bez przerywania pracy","Aktualizację BIOS-u serwera","Zmianę systemu plików w locie"],c:1,e:"Live Migration kopiuje pamięć VM między hostami klastra, a następnie przełącza wykonywanie na nowy host — bez wyłączania VM. Wymaga klastra failover lub SMB 3.0 (Shared Nothing Live Migration)."},
+{id:199,a:"V",q:"Parametr RPO (Recovery Point Objective) określa:",o:["Maksymalny dopuszczalny czas niedostępności systemu","Maksymalną dopuszczalną utratę danych w czasie","Liczbę kopii zapasowych","Pojemność nośnika backupu"],c:1,e:"RPO to maksymalna akceptowalna ilość utraconych danych liczona w czasie (np. 1h = backup co godzinę). RTO (Recovery Time Objective) to maksymalny czas odtworzenia. Razem definiują SLA odtwarzania."},
+{id:200,a:"V",q:"Maksymalny rozmiar dysku wirtualnego VHDX wynosi:",o:["2 TB","16 TB","64 TB","256 TB"],c:2,e:"VHDX (Hyper-V od Windows Server 2012) obsługuje dyski wirtualne do 64 TB i sektory 4K. Starszy format VHD ograniczony jest do 2 TB i sektorów 512B."},
+{id:201,a:"Z",q:"BitLocker w systemie Windows służy do:",o:["Kompresji plików w czasie rzeczywistym","Szyfrowania całych woluminów dyskowych","Tworzenia kopii zapasowych","Optymalizacji startu systemu"],c:1,e:"BitLocker to mechanizm szyfrowania całych woluminów (full disk encryption) wykorzystujący AES (128 lub 256 bit). Najlepiej współpracuje z układem TPM 2.0, który przechowuje klucze szyfrowania."},
+{id:202,a:"Z",q:"Układ TPM przechowuje:",o:["Pliki użytkownika","Klucze kryptograficzne i certyfikaty","Sterowniki sprzętowe","Kopie zapasowe rejestru"],c:1,e:"TPM (Trusted Platform Module) to dedykowany chip kryptograficzny przechowujący klucze, hashe i certyfikaty w sposób odporny na manipulacje. BitLocker używa go do bezpiecznego odblokowywania dysku przy starcie."},
+{id:203,a:"Z",q:"W systemie NTFS, gdy użytkownik należy do dwóch grup z konfliktującymi uprawnieniami, obowiązuje zasada:",o:["Allow zawsze wygrywa nad Deny","Deny ma pierwszeństwo nad Allow","Decyduje kolejność alfabetyczna grup","Decyduje wiek konta użytkownika"],c:1,e:"W ACL NTFS wprost ustawione Deny ma zawsze pierwszeństwo nad Allow. Wyjątek: jawne (explicit) Allow nadpisuje dziedziczone (inherited) Deny. Reguła to fundament planowania uprawnień AGDLP."},
+{id:204,a:"Z",q:"EFS (Encrypting File System) szyfruje:",o:["Cały dysk wraz z systemem operacyjnym","Pojedyncze pliki i foldery na woluminie NTFS","Tylko pliki w sieci","Pliki rejestru Windows"],c:1,e:"EFS to mechanizm szyfrowania na poziomie pliku/folderu w NTFS, powiązany z certyfikatem użytkownika. Klucz pliku (FEK) szyfrowany jest kluczem publicznym użytkownika. Dla całego dysku stosuje się BitLocker."},
+{id:205,a:"Z",q:"Polityka haseł w GPO 'Minimum password length' = 12 oznacza:",o:["Hasło wygasa po 12 dniach","Hasło musi mieć co najmniej 12 znaków","Maksymalnie 12 nieudanych logowań","Historia 12 ostatnich haseł"],c:1,e:"Polityka 'Minimum password length' wymusza minimalną długość hasła (np. 12 znaków). 'Password history' określa liczbę zapamiętanych poprzednich haseł, 'Maximum password age' — czas wygaśnięcia, 'Account lockout' — limit prób."},
+{id:206,a:"Z",q:"Uprawnienie NTFS 'Modify' obejmuje:",o:["Tylko odczyt pliku","Odczyt, zapis, usuwanie pliku, ale bez zmiany uprawnień","Pełną kontrolę z możliwością zmiany właściciela","Wyłącznie wykonywanie programów"],c:1,e:"Modify = Read & Execute + Write + Delete (dla pojedynczego pliku/folderu). Nie zawiera zmiany uprawnień (Change Permissions) ani przejęcia własności (Take Ownership) — te są w Full Control."},
+{id:207,a:"Z",q:"Atak typu phishing polega na:",o:["Przeciążeniu serwera pakietami SYN","Wyłudzaniu danych przez podszywanie się pod zaufany podmiot","Łamaniu haseł metodą słownikową","Przechwytywaniu pakietów w sieci Wi-Fi"],c:1,e:"Phishing to socjotechnika — atakujący podszywa się pod znaną instytucję (bank, firma kurierska) i wysyła sfałszowane maile/SMSy z linkami do fałszywych stron lub załącznikami z malware, w celu wyłudzenia danych logowania."},
+{id:208,a:"Z",q:"Zasada 'least privilege' (najmniejszych uprawnień) oznacza:",o:["Każdy użytkownik ma uprawnienia administratora","Użytkownik ma tylko uprawnienia niezbędne do wykonywania swoich zadań","Wszyscy mają dostęp tylko do odczytu","Hasła są wspólne dla zespołu"],c:1,e:"Least privilege (najmniejsze konieczne uprawnienia) to filar bezpieczeństwa — minimalizuje skutki kompromitacji konta. W praktyce: użytkownicy bez praw lokalnego administratora, role dedykowane do zadań."},
+{id:209,a:"Z",q:"Uwierzytelnianie wieloskładnikowe (MFA) wymaga co najmniej:",o:["Dwóch haseł","Dwóch z trzech: coś co wiesz, coś co masz, czymś jesteś","Hasła i numeru telefonu","Loginu i adresu e-mail"],c:1,e:"MFA łączy minimum dwa różne czynniki uwierzytelnienia: wiedza (hasło/PIN), posiadanie (token, telefon, klucz U2F), cecha (biometria). Dwa hasła to nie MFA — to wciąż jeden czynnik (wiedza)."},
+{id:210,a:"Z",q:"AppLocker w Windows służy do:",o:["Defragmentacji aplikacji","Definiowania reguł, które aplikacje mogą być uruchamiane","Aktualizacji aplikacji ze sklepu Microsoft","Wyłączania klawiszy specjalnych"],c:1,e:"AppLocker (dostępny w Enterprise/Education) pozwala administratorowi tworzyć białe/czarne listy aplikacji wg ścieżki, wydawcy lub hasha pliku — zapobiega uruchomieniu nieautoryzowanych programów (np. ransomware)."},
+{id:211,a:"R",q:"RAID 5 zbudowany z 4 dysków po 2 TB ma pojemność użytkową:",o:["4 TB","6 TB","8 TB","2 TB"],c:1,e:"RAID 5 wykorzystuje (n-1) dysków na dane: (4-1) × 2 TB = 6 TB. Jeden dysk pojemnościowy poświęcony jest na rozproszone bity parzystości — odporność na awarię 1 dysku."},
+{id:212,a:"R",q:"RAID 10 zbudowany z 4 dysków po 1 TB daje pojemność użytkową:",o:["1 TB","2 TB","3 TB","4 TB"],c:1,e:"RAID 10 (1+0) = stripe lustrzanych par. 4 dyski tworzą 2 pary lustrzane (mirror), z których stripe daje 2 × 1 TB = 2 TB. Odporny na awarię 1 dysku z każdej pary."},
+{id:213,a:"R",q:"Sieć 192.168.1.0/24 podzielono na podsieci /27. Liczba uzyskanych podsieci to:",o:["4","8","16","32"],c:1,e:"Pożyczamy (27-24) = 3 bity na podsieci → 2^3 = 8 podsieci po 32 adresy każda (z czego 30 użytkowych). Pierwsza: 192.168.1.0/27, ostatnia: 192.168.1.224/27."},
+{id:214,a:"R",q:"Liczba hostów użytkowych w podsieci /29 wynosi:",o:["2","6","8","14"],c:1,e:"/29 = 32-29 = 3 bity hosta → 2^3 = 8 adresów, minus adres sieci i broadcast = 6 hostów użytkowych. Często używana do połączeń point-to-point z rezerwą."},
+{id:215,a:"R",q:"Adres rozgłoszeniowy podsieci 10.20.30.64/27 to:",o:["10.20.30.63","10.20.30.95","10.20.30.96","10.20.30.127"],c:1,e:"/27 → blok 32 adresów. Sieć 64, broadcast = 64 + 32 - 1 = 95. Zakres hostów: 10.20.30.65 – 10.20.30.94."},
+{id:216,a:"R",q:"Sieć potrzebuje pomieścić 50 hostów. Najbardziej oszczędna maska to:",o:["/24","/25","/26","/27"],c:2,e:"Dla 50 hostów potrzeba 50+2 (sieć/broadcast) = min. 64 adresów. 2^6 = 64, więc 6 bitów hosta → maska /26 (32-6=26). /27 daje tylko 30 hostów — za mało."},
+{id:217,a:"R",q:"Dla adresu 172.16.50.130/22 adres sieci to:",o:["172.16.48.0","172.16.49.0","172.16.50.0","172.16.52.0"],c:0,e:"/22 = maska 255.255.252.0 → blok 4 w trzecim oktecie. Sieci 172.16.0.0, 4.0, 8.0... 48.0, 52.0. 50 mieści się w 48–51, więc adres sieci to 172.16.48.0/22."},
+{id:218,a:"R",q:"Klient po podłączeniu do sieci otrzymał IP 169.254.10.5. Oznacza to:",o:["Poprawne pobranie z DHCP","Brak komunikacji z DHCP — adres APIPA","Adres z sieci publicznej","Konfigurację statyczną z routera"],c:1,e:"169.254.0.0/16 to zakres APIPA (Automatic Private IP Addressing) — Windows nadaje go sam, gdy nie udało się skontaktować z serwerem DHCP. Diagnozujemy: kabel, port DHCP, scope, firewall serwera."},
+{id:219,a:"R",q:"Komputer ma IP 192.168.1.10/24, brama 192.168.1.1. Nie pinguje 8.8.8.8, ale pinguje 192.168.1.1. Najbardziej prawdopodobna przyczyna to:",o:["Wadliwa karta sieciowa","Brak konfiguracji DNS","Problem z bramą/routerem (np. brak NAT, brak Internetu na WAN)","Zła maska podsieci"],c:2,e:"Skoro brama odpowiada (warstwa 3 LAN OK), ale nie ma odpowiedzi spoza sieci — problem leży po stronie routera (brak Internetu na WAN, NAT, ACL) lub trasy domyślnej. DNS nie wpływa na ping po IP."},
+{id:220,a:"R",q:"Zaprojektuj adresację dla 4 oddziałów po max. 25 komputerów, startując z 192.168.10.0/24. Użyta maska podsieci to:",o:["/26","/27","/28","/29"],c:1,e:"25 hostów + 2 (sieć/broadcast) = 27. 2^5 = 32 ≥ 27, więc 5 bitów hosta → /27. Daje 8 podsieci po 30 hostów: 192.168.10.0, .32, .64, .96 (wystarcza dla 4 oddziałów)."},
+{id:221,a:"R",q:"W kosztorysie sieci potrzebne jest 80 m kabla UTP Cat 6 po 2,50 zł/m + 8 gniazd RJ-45 po 12 zł. Wartość netto materiałów wynosi:",o:["196 zł","296 zł","320 zł","260 zł"],c:1,e:"Kabel: 80 × 2,50 = 200 zł. Gniazda: 8 × 12 = 96 zł. Razem netto: 200 + 96 = 296 zł. Wartość brutto przy VAT 23%: 296 × 1,23 = 364,08 zł."},
+{id:222,a:"R",q:"Czas pełnego backupu 500 GB przy prędkości 100 MB/s wynosi około:",o:["50 sekund","5 minut","83 minuty","8 godzin"],c:2,e:"500 GB = 500 000 MB. 500 000 / 100 = 5000 s ≈ 83 minuty (1 godz. 23 min). Pamiętaj: w praktyce dochodzi narzut protokołu i wahań prędkości."},
+{id:223,a:"R",q:"Komputer wyświetla BSOD z kodem 0x0000007B (INACCESSIBLE_BOOT_DEVICE). Pierwszą czynnością diagnostyczną jest:",o:["Wymiana zasilacza","Sprawdzenie kontrolera SATA/AHCI/RAID w BIOS i kabli dysku","Przeinstalowanie sterownika karty graficznej","Wymiana klawiatury"],c:1,e:"Błąd 0x7B oznacza, że Windows nie może odczytać woluminu rozruchowego — najczęściej przez zmianę trybu kontrolera (AHCI ↔ RAID ↔ IDE), uszkodzony kabel/dysk lub brak sterownika kontrolera w obrazie systemu."},
+{id:224,a:"R",q:"Stacja robocza nie łączy się z udziałem \\\\fileserver\\dane. Polecenie do diagnostyki uprawnień udziału z linii komend to:",o:["ipconfig /flushdns","net use Z: \\\\fileserver\\dane","tracert fileserver","chkdsk C: /f"],c:1,e:"Polecenie 'net use Z: \\\\fileserver\\dane' próbuje zmapować dysk i zwraca konkretny błąd (np. 'Access denied' = problem z uprawnieniami SMB/NTFS, 'Network path not found' = DNS/firewall)."},
+{id:225,a:"R",q:"Drukarka sieciowa 192.168.5.20 nie odpowiada. Pierwszy poziom diagnostyki to:",o:["Wymiana tonera","ping 192.168.5.20 + sprawdzenie diody LAN i konfiguracji IP drukarki","Reinstalacja systemu Windows","Format dysku stacji roboczej"],c:1,e:"Diagnostyka zaczyna się od warstw niskich: link (dioda LAN), warstwa 3 (ping IP, ARP), warstwa 4-7 (port 9100/IPP, sterownik). Toner i format to ostateczność."},
+{id:226,a:"R",q:"RAID 6 z 6 dysków po 4 TB ma pojemność użytkową:",o:["12 TB","16 TB","20 TB","24 TB"],c:1,e:"RAID 6 wykorzystuje 2 dyski pojemnościowe na podwójną parzystość: (n-2) × pojemność = (6-2) × 4 TB = 16 TB. Odporny na jednoczesną awarię 2 dysków."},
+{id:227,a:"R",q:"Łączny wpływ kompresji 1,5:1 i deduplikacji 2:1 na 600 GB danych daje rozmiar po backupie:",o:["100 GB","200 GB","300 GB","400 GB"],c:1,e:"Najpierw deduplikacja: 600 / 2 = 300 GB. Następnie kompresja: 300 / 1,5 = 200 GB. Kolejność operacji nie zmienia wyniku w tym uproszczonym modelu (mnożenie współczynników)."},
+{id:228,a:"R",q:"Klient zgłasza brak dźwięku po aktualizacji Windows. Pierwsze działanie diagnostyczne:",o:["Wymiana karty dźwiękowej","Sprawdzenie urządzenia domyślnego w panelu Dźwięk i statusu sterownika w Menedżerze urządzeń","Zwrot komputera do producenta","Reinstalacja systemu"],c:1,e:"Po aktualizacji typowe przyczyny: zmiana urządzenia domyślnego (np. monitor HDMI), zaktualizowany ogólny sterownik HD Audio. Sprawdzamy panel Dźwięk → Odtwarzanie i Menedżer urządzeń → Kontrolery dźwięku."},
+{id:229,a:"R",q:"Przy projektowaniu sieci dla 100 stacji w jednej domenie rozgłoszeniowej najczęstszym problemem będzie:",o:["Zbyt wysoka przepustowość","Nadmiar ruchu rozgłoszeniowego (broadcast) i obciążenie ARP","Brak adresów MAC","Niedostateczna ilość wtyczek RJ-45"],c:1,e:"Duże domeny rozgłoszeniowe generują dużo broadcastu (ARP, NetBIOS, DHCP) — degradują wydajność. Rozwiązaniem jest segmentacja na VLAN-y i odpowiednia adresacja IP."},
+{id:230,a:"R",q:"Komputer nie startuje, na ekranie POST komunikat 'CMOS checksum error'. Najprostszą naprawą jest:",o:["Wymiana procesora","Wymiana baterii CR2032 na płycie głównej i ustawienie BIOS-u","Reinstalacja Windows","Wymiana zasilacza"],c:1,e:"Komunikat oznacza utratę zawartości CMOS (zegar, ustawienia BIOS) — najczęstsza przyczyna to wyczerpana bateria CR2032. Po wymianie należy wejść do BIOS-u i zapisać domyślne ustawienia oraz ustawić datę/godzinę."}
+];
+
+// =============== PROGRESS HELPERS ===============
+function dueSrs(){
+  const now=Date.now();
+  return Object.entries(state.srs).filter(([_,v])=>v.due<=now).map(([k])=>parseInt(k));
+}
+function progressByArea(){
+  const out={};
+  for(const a of Object.keys(AREAS)){
+    const inArea=QUESTIONS.filter(q=>q.a===a);
+    const answeredCorrect=inArea.filter(q=>state.answered[q.id]&&state.answered[q.id].correct).length;
+    out[a]={total:inArea.length,correct:answeredCorrect,pct:Math.round(answeredCorrect/inArea.length*100)};
+  }
+  return out;
+}
+function totalProgress(){
+  const total=QUESTIONS.length;
+  const correct=Object.values(state.answered).filter(x=>x.correct).length;
+  return {total,correct,pct:Math.round(correct/total*100)};
+}
+function daysToExam(){
+  const now=new Date();
+  return Math.ceil((EXAM_DATE-now)/(1000*60*60*24));
+}
+
+// =============== ROUTING ===============
+const VIEWS={};
+let currentView="dash",quizState=null,timerInterval=null;
+
+document.querySelectorAll("nav button[data-view]").forEach(b=>{
+  b.addEventListener("click",()=>render(b.dataset.view));
+});
+function render(view){
+  if(timerInterval&&view!=="quiz"){clearInterval(timerInterval);timerInterval=null;document.getElementById("timer").style.display="none";}
+  currentView=view;
+  document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("active",b.dataset.view===view));
+  const app=document.getElementById("app");
+  app.innerHTML="";
+  (VIEWS[view]||VIEWS.dash)(app);
+}
+
+// =============== DASHBOARD ===============
+VIEWS.dash=(app)=>{
+  const days=daysToExam();
+  const tot=totalProgress();
+  const dueQ=dueSrs();
+  const last5=state.stats.quizzes.slice(-5).reverse();
+  const areas=progressByArea();
+  const week=currentStudyWeek();
+  app.innerHTML=`
+    <div class="row">
+      <div class="card"><h3>Dni do egzaminu praktycznego</h3><div class="bigstat">${days>0?days:0}<small>${days>0?'12.06.2026':'Egzamin za nami'}</small></div></div>
+      <div class="card"><h3>Ogólny postęp</h3><div class="bigstat">${tot.pct}%<small>${tot.correct}/${tot.total} pytań poprawnie</small></div><div class="bar"><span style="width:${tot.pct}%"></span></div></div>
+      <div class="card"><h3>Fiszki na dziś</h3><div class="bigstat">${dueQ.length}<small>do powtórzenia</small></div>${dueQ.length?`<button class="btn" onclick="render('srs')">Rozpocznij</button>`:'<small style="color:var(--muted)">Brak zaległości — odpowiedz na pytania w quizach, by uruchomić SR.</small>'}</div>
+    </div>
+    <div class="card">
+      <h2>Plan 6-tygodniowy</h2>
+      <div class="weekplan">
+        ${["Tyg 1: Budowa","Tyg 2: Peryferia","Tyg 3: OS Windows","Tyg 4: OS Linux","Tyg 5: Sieci","Tyg 6: Mocki + powtórki"].map((t,i)=>`<div class="w ${i+1===week?'now':''}"><b>${i+1===week?'AKTUALNY':''}</b>${t}</div>`).join("")}
+      </div>
+      <div class="note">Tydzień obliczany od 6 tygodni przed datą egzaminu (12.06.2026).</div>
+    </div>
+    <div class="card">
+      <h2>Postęp po obszarach</h2>
+      ${Object.entries(areas).map(([k,v])=>`
+        <div class="area-row">
+          <span class="chip ${k}">${k}</span>
+          <div class="name">${AREAS[k]}<div class="bar"><span style="width:${v.pct}%"></span></div></div>
+          <div class="count">${v.correct}/${v.total} (${v.pct}%)</div>
+        </div>`).join("")}
+    </div>
+    <div class="card">
+      <h2>Ostatnie quizy</h2>
+      ${last5.length?`<table style="width:100%;border-collapse:collapse">
+        <tr style="text-align:left;color:var(--muted);font-size:12px;border-bottom:1px solid var(--border)"><th style="padding:6px 0">Data</th><th>Wynik</th><th>%</th><th>Czas</th></tr>
+        ${last5.map(q=>`<tr style="border-bottom:1px solid #f0f2f6"><td style="padding:6px 0">${new Date(q.date).toLocaleString("pl-PL")}</td><td>${q.score}/${q.total}</td><td><b style="color:${q.score/q.total>=.5?'var(--good)':'var(--bad)'}">${Math.round(q.score/q.total*100)}%</b></td><td>${Math.round(q.duration/60)} min</td></tr>`).join("")}
+      </table>`:'<div class="empty">Brak danych — rozpocznij quiz, aby zobaczyć statystyki.</div>'}
+    </div>
+    <div class="card">
+      <h3>Szybki start</h3>
+      <div class="toolbar">
+        <button class="btn" onclick="render('quiz')">📝 Quiz egzaminacyjny (40 pyt, 60 min)</button>
+        <button class="btn ghost" onclick="render('topics')">📚 Nauka tematyczna</button>
+        <button class="btn ghost" onclick="render('practice')">🛠️ Symulator praktyczny</button>
+      </div>
+    </div>
+  `;
+};
+
+
+VIEWS.diagnosis=(app)=>{
+  const eng = window.AdaptiveEngine;
+  if(!eng || !eng.selectDiagnosticQuestions){
+    app.innerHTML='<div class="card empty">Diagnoza wstępna niedostępna w tej wersji.</div>';return;
+  }
+  if(state.diagnosisComplete){
+    const report = eng.getKnowledgeReport ? eng.getKnowledgeReport(state) : null;
+    app.innerHTML = '<div class="card"><h2>🎯 Diagnoza ukończona</h2>'+
+      '<p>Twoja gotowość do egzaminu: <b>'+(report?Math.round((report.readinessForExam||0)*100):0)+'%</b></p>'+
+      '<p>Najsłabsze obszary: '+(report?(report.weakest||[]).map(a=>'<span class="chip '+chipClass(a)+'">'+(AREAS[a]||a)+'</span>').join(' '):'—')+'</p>'+
+      '<button class="btn" onclick="if(confirm(\'Powtórzyć diagnozę?\')){state.diagnosisComplete=false;saveState();render(\'diagnosis\');}">🔄 Powtórz diagnozę</button>'+
+      '<button class="btn ghost" onclick="render(\'review\')">🎯 Naucz się słabych</button>'+
+    '</div>';
+    return;
+  }
+  app.innerHTML='<div class="card"><h2>🎯 Diagnoza wstępna</h2>'+
+    '<p>Krótka kalibracja — pytania z różnych obszarów. Sprawdzimy z czego zacząć naukę.</p>'+
+    '<ul style="color:var(--muted);font-size:13px"><li>Trwa około 10-15 minut</li><li>Pytania nie wpływają na statystyki quizów</li><li>Wynik = plan nauki dopasowany do Ciebie</li></ul>'+
+    '<button class="btn" onclick="startDiagnostic()">▶ Rozpocznij diagnozę</button>'+
+  '</div>';
+};
+window.startDiagnostic=function(){
+  const eng = window.AdaptiveEngine;
+  if(!eng || !eng.selectDiagnosticQuestions){alert("Diagnoza niedostępna");return;}
+  const qs = eng.selectDiagnosticQuestions(QUESTIONS, 12);
+  quizState={questions:qs,answers:Array(qs.length).fill(null),current:0,startTime:Date.now(),duration:900,total:qs.length,isDiagnostic:true};
+  startTimer(900);
+  render("quiz");
+};
+
+VIEWS.achievements=(app)=>{
+  app.innerHTML='<div class="card"><h2>🏆 Osiągnięcia</h2><div id="ach-grid">Ładowanie...</div></div>';
+  if(window.UX&&UX.achievements&&UX.achievements.renderGrid){
+    UX.achievements.renderGrid(document.getElementById("ach-grid"),state);
+  } else {
+    document.getElementById("ach-grid").innerHTML='<div class="empty">Moduł osiągnięć nie został załadowany.</div>';
+  }
+};
+
+VIEWS.review=(app)=>{
+  const eng = window.AdaptiveEngine;
+  if(!eng || !eng.selectQuizQuestions){
+    app.innerHTML='<div class="card empty">Tryb słabości niedostępny.</div>';return;
+  }
+  const report = eng.getKnowledgeReport ? eng.getKnowledgeReport(state) : null;
+  const weakest = report ? (report.weakest||[]) : [];
+  const weakHtml = weakest.length ? weakest.map(a=>'<span class="chip '+chipClass(a)+'">'+(AREAS[a]||a)+'</span>').join(' ') : '(rozpocznij diagnozę aby zobaczyć)';
+  app.innerHTML='<div class="card"><h2>📈 Naucz się słabych</h2>'+
+    '<p>Tryb adaptacyjny — kierujemy 70% pytań do twoich najsłabszych obszarów: '+weakHtml+'.</p>'+
+    '<button class="btn" onclick="startQuiz(10,600)">▶ Quiz 10 pyt × 10 min</button> '+
+    '<button class="btn ghost" onclick="startQuiz(20,1200)">⏱ Quiz 20 pyt × 20 min</button>'+
+  '</div>';
+};
+
+function currentStudyWeek(){
+  const examStart=new Date(EXAM_DATE);
+  const planStart=new Date(examStart);planStart.setDate(planStart.getDate()-42);
+  const now=new Date();
+  const diff=now-planStart;
+  const w=Math.floor(diff/(7*24*60*60*1000))+1;
+  return Math.max(1,Math.min(6,w));
+}
+
+// =============== QUIZ MODE ===============
+VIEWS.quiz=(app)=>{
+  if(!quizState){
+    app.innerHTML=`
+      <div class="card"><h2>Quiz egzaminacyjny</h2>
+        <p>Symulacja egzaminu pisemnego INF.02:</p>
+        <ul>
+          <li>40 losowych pytań z całej puli (${QUESTIONS.length} dostępnych)</li>
+          <li>Czas: 60 minut (próg zdawalności: 50% = 20 pkt)</li>
+          <li>Po zakończeniu zobaczysz wyjaśnienia i błędne pytania trafią do fiszek SR</li>
+        </ul>
+        <div class="toolbar">
+          <button class="btn" onclick="startQuiz(40,3600)">▶ Rozpocznij egzamin (40 pyt × 60 min)</button>
+          <button class="btn ghost" onclick="startQuiz(20,1200)">⏱ Mini-test (20 pyt × 20 min)</button>
+          <button class="btn ghost" onclick="startQuiz(10,600)">⚡ Szybki test (10 pyt × 10 min)</button>
+        </div>
+      </div>`;
+    return;
+  }
+  renderQuizQuestion();
+};
+
+window.startQuiz=function(n,seconds){
+  const shuffled = (window.AdaptiveEngine && AdaptiveEngine.selectQuizQuestions)
+    ? AdaptiveEngine.selectQuizQuestions(n, QUESTIONS)
+    : [...QUESTIONS].sort(()=>Math.random()-0.5).slice(0,n);
+  quizState={questions:shuffled,answers:Array(n).fill(null),current:0,startTime:Date.now(),duration:seconds,total:n};
+  startTimer(seconds);
+  render("quiz");
+};
+
+function startTimer(seconds){
+  const t=document.getElementById("timer");
+  t.style.display="block";
+  function update(){
+    const left=quizState.duration-Math.floor((Date.now()-quizState.startTime)/1000);
+    if(left<=0){clearInterval(timerInterval);finishQuiz();return;}
+    const m=Math.floor(left/60),s=left%60;
+    t.textContent=`⏱ ${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+    t.className="timer"+(left<300?" crit":left<600?" warn":"");
+  }
+  update();
+  timerInterval=setInterval(update,1000);
+}
+
+function renderQuizQuestion(){
+  const app=document.getElementById("app");
+  const q=quizState.questions[quizState.current];
+  const userAns=quizState.answers[quizState.current];
+  app.innerHTML=`
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <h2 style="margin:0">Pytanie ${quizState.current+1} / ${quizState.total}</h2>
+        <button class="btn ghost" onclick="if(confirm('Przerwać quiz?')){quizState=null;clearInterval(timerInterval);document.getElementById('timer').style.display='none';render('quiz')}">✕ Przerwij</button>
+      </div>
+      <div class="bar" style="margin-top:12px"><span style="width:${(quizState.current+1)/quizState.total*100}%"></span></div>
+    </div>
+    <div class="q-card">
+      <div class="q-meta"><span class="chip ${chipClass(q.a)}">${AREAS[q.a]}</span><span>ID #${q.id}</span></div>
+      <div class="q-text">${q.q}</div>
+      ${q.o.map((opt,i)=>`<div class="opt ${userAns===i?'selected':''}" onclick="selectAnswer(${i})">${String.fromCharCode(65+i)}. ${opt}</div>`).join("")}
+    </div>
+    <div class="toolbar">
+      <button class="btn ghost" ${quizState.current===0?'disabled':''} onclick="navQuiz(-1)">← Poprzednie</button>
+      <div class="spacer"></div>
+      ${quizState.current<quizState.total-1?
+        `<button class="btn" onclick="navQuiz(1)">Następne →</button>`:
+        `<button class="btn success" onclick="finishQuiz()">✓ Zakończ i sprawdź wyniki</button>`}
+    </div>
+    <div class="note">Odpowiedzi: ${quizState.answers.filter(a=>a!==null).length} / ${quizState.total} · Czas startu: ${new Date(quizState.startTime).toLocaleTimeString("pl-PL")}</div>
+  `;
+}
+window.selectAnswer=function(i){quizState.answers[quizState.current]=i;if(window.UX&&UX.streak)UX.streak.markActivity(state);renderQuizQuestion();};
+window.navQuiz=function(d){quizState.current+=d;renderQuizQuestion();};
+
+window.finishQuiz=function(){
+  clearInterval(timerInterval);
+  document.getElementById("timer").style.display="none";
+  const dur=Math.floor((Date.now()-quizState.startTime)/1000);
+  let score=0;
+  const wrongIds=[];
+  quizState.questions.forEach((q,i)=>{
+    const correct=quizState.answers[i]===q.c;
+    if(correct)score++;
+    else wrongIds.push(q.id);
+    state.answered[q.id]={correct,ts:Date.now(),attempts:(state.answered[q.id]?.attempts||0)+1};
+    // Update SRS: wrong → box1, correct → advance
+    const cur=state.srs[q.id];
+    if(correct){
+      const box=Math.min(5,(cur?.box||0)+1);
+      state.srs[q.id]={box,due:Date.now()+srsBoxToMs(box)};
+    } else {
+      state.srs[q.id]={box:1,due:Date.now()+srsBoxToMs(1)};
+    }
+  });
+  state.stats.quizzes.push({score,total:quizState.total,date:Date.now(),duration:dur});
+  saveState();
+  const _pct = Math.round(score/quizState.total*100);
+  if(window.UX){
+    if(UX.achievements&&UX.achievements.checkAll)UX.achievements.checkAll(state);
+    if(UX.fx&&UX.fx.confetti && _pct>=50)UX.fx.confetti();
+  }
+  if(window.AdaptiveEngine&&AdaptiveEngine.markDiagnosisComplete && quizState.isDiagnostic){
+    AdaptiveEngine.markDiagnosisComplete(quizState.questions.map((q,i)=>({qid:q.id,area:q.a,correct:quizState.answers[i]===q.c})));
+    state.diagnosisComplete=true;saveState();
+  }
+  showQuizResults(score,dur,wrongIds);
+};
+
+function srsBoxToMs(box){
+  // Box 1: 10 min, Box 2: 1 day, Box 3: 3 days, Box 4: 7 days, Box 5: 21 days
+  return [10*60*1000,24*60*60*1000,3*24*60*60*1000,7*24*60*60*1000,21*24*60*60*1000][box-1];
+}
+
+function showQuizResults(score,dur,wrongIds){
+  const app=document.getElementById("app");
+  const pct=Math.round(score/quizState.total*100);
+  const passed=pct>=50;
+  const wrongQuestions=quizState.questions.map((q,i)=>({q,userAns:quizState.answers[i]})).filter(x=>x.userAns!==x.q.c);
+  app.innerHTML=`
+    <div class="card" style="text-align:center;padding:30px">
+      <div style="font-size:48px;margin-bottom:8px">${passed?'🎉':'📚'}</div>
+      <h2 style="margin:0">${passed?'Zaliczono!':'Poniżej progu — kontynuuj naukę'}</h2>
+      <div class="bigstat" style="font-size:64px;margin:20px 0;color:${passed?'var(--good)':'var(--bad)'}">${pct}%</div>
+      <div style="color:var(--muted)">${score} / ${quizState.total} poprawnie · czas: ${Math.floor(dur/60)} min ${dur%60}s</div>
+      <div class="note">Próg zdawalności pisemnego INF.02: 50%. ${wrongIds.length} pytań trafiło do kolejki SR.</div>
+      <div class="toolbar" style="justify-content:center;margin-top:16px">
+        <button class="btn" onclick="quizState=null;render('quiz')">Nowy quiz</button>
+        <button class="btn ghost" onclick="quizState=null;render('dash')">Dashboard</button>
+      </div>
+    </div>
+    ${wrongQuestions.length?`
+    <div class="card">
+      <h2>Pytania, w których popełniłeś błąd (${wrongQuestions.length})</h2>
+      ${wrongQuestions.map(({q,userAns})=>`
+        <div class="q-card">
+          <div class="q-meta"><span class="chip ${chipClass(q.a)}">${AREAS[q.a]}</span><span>ID #${q.id}</span></div>
+          <div class="q-text">${q.q}</div>
+          ${q.o.map((opt,i)=>`<div class="opt disabled ${i===q.c?'correct':i===userAns?'wrong':''}">${String.fromCharCode(65+i)}. ${opt}</div>`).join("")}
+          <div class="explanation"><b>Wyjaśnienie:</b> ${q.e}</div>
+        </div>`).join("")}
+    </div>`:`<div class="card empty">🎯 Wszystkie pytania poprawne!</div>`}
+  `;
+}
+
+// =============== SRS (FISZKI) ===============
+let srsState=null;
+VIEWS.srs=(app)=>{
+  if(!srsState){
+    const due=dueSrs();
+    if(due.length===0){
+      app.innerHTML=`
+        <div class="card"><h2>Fiszki SR (Spaced Repetition)</h2>
+        <p>Brak pytań w kolejce. Rozwiąż quiz lub dodaj pytania do nauki.</p>
+        <button class="btn" onclick="addAllToSrs()">+ Dodaj wszystkie pytania do SR</button>
+        <button class="btn ghost" onclick="render('quiz')">Lub zacznij od quizu</button>
+        </div>
+        ${renderSrsStats()}`;
+      return;
+    }
+    srsState={queue:[...due].sort(()=>Math.random()-0.5),current:0,results:{correct:0,wrong:0}};
+  }
+  if(srsState.current>=srsState.queue.length){
+    app.innerHTML=`
+      <div class="card" style="text-align:center;padding:30px">
+        <div style="font-size:48px">✓</div><h2>Sesja SR ukończona!</h2>
+        <div style="margin:16px 0">Poprawnie: <b style="color:var(--good)">${srsState.results.correct}</b> · Błędnie: <b style="color:var(--bad)">${srsState.results.wrong}</b></div>
+        <button class="btn" onclick="srsState=null;render('srs')">Nowa sesja</button>
+        <button class="btn ghost" onclick="srsState=null;render('dash')">Dashboard</button>
+      </div>${renderSrsStats()}`;
+    return;
+  }
+  const qid=srsState.queue[srsState.current];
+  const q=QUESTIONS.find(x=>x.id===qid);
+  const sBox=state.srs[qid]?.box||1;
+  app.innerHTML=`
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <h2 style="margin:0">Fiszka ${srsState.current+1} / ${srsState.queue.length}</h2>
+        <span class="flag box${sBox}">Box ${sBox}/5</span>
+      </div>
+      <div class="bar" style="margin-top:12px"><span style="width:${(srsState.current+1)/srsState.queue.length*100}%"></span></div>
+    </div>
+    <div class="q-card" id="srs-card">
+      <div class="q-meta"><span class="chip ${chipClass(q.a)}">${AREAS[q.a]}</span><span>ID #${q.id}</span></div>
+      <div class="q-text">${q.q}</div>
+      ${q.o.map((opt,i)=>`<div class="opt" onclick="srsAnswer(${i})">${String.fromCharCode(65+i)}. ${opt}</div>`).join("")}
+    </div>
+    <div class="note">Algorytm Leitnera: poprawna odpowiedź → wyższy box (rzadsze powtórki), błąd → box 1 (powrót).</div>
+  `;
+};
+
+window.srsAnswer=function(i){
+  const qid=srsState.queue[srsState.current];
+  const q=QUESTIONS.find(x=>x.id===qid);
+  const correct=i===q.c;
+  if(correct)srsState.results.correct++;else srsState.results.wrong++;
+  state.answered[qid]={correct,ts:Date.now(),attempts:(state.answered[qid]?.attempts||0)+1};
+  const cur=state.srs[qid];
+  if(correct){const box=Math.min(5,(cur?.box||1)+1);state.srs[qid]={box,due:Date.now()+srsBoxToMs(box)};}
+  else state.srs[qid]={box:1,due:Date.now()+srsBoxToMs(1)};
+  saveState();
+  if(window.UX&&UX.streak)UX.streak.markActivity(state);
+  if(window.UX&&UX.fx&&UX.fx.haptic)UX.fx.haptic(correct);
+  if(window.AdaptiveEngine&&AdaptiveEngine.recordAnswer)AdaptiveEngine.recordAnswer(qid,correct,q.a);
+
+  // Show answer feedback briefly
+  const card=document.getElementById("srs-card");
+  if(card){
+    const opts=card.querySelectorAll(".opt");
+    opts.forEach((el,idx)=>{el.classList.add("disabled");if(idx===q.c)el.classList.add("correct");else if(idx===i)el.classList.add("wrong");});
+    const ex=document.createElement("div");ex.className="explanation";ex.innerHTML="<b>Wyjaśnienie:</b> "+q.e;
+    card.appendChild(ex);
+    const next=document.createElement("button");next.className="btn";next.textContent="Następne →";next.style.marginTop="12px";
+    next.onclick=()=>{srsState.current++;render("srs");};
+    card.appendChild(next);
+  }
+};
+
+window.addAllToSrs=function(){
+  const now=Date.now();
+  QUESTIONS.forEach(q=>{if(!state.srs[q.id])state.srs[q.id]={box:1,due:now};});
+  saveState();
+  srsState=null;render("srs");
+};
+
+function renderSrsStats(){
+  const buckets={1:0,2:0,3:0,4:0,5:0};
+  Object.values(state.srs).forEach(s=>{buckets[s.box]=(buckets[s.box]||0)+1;});
+  const total=Object.values(buckets).reduce((a,b)=>a+b,0);
+  if(total===0)return "";
+  return `<div class="card"><h2>Stan boxów Leitnera</h2>
+    ${[1,2,3,4,5].map(b=>`<div class="area-row">
+      <span class="flag box${b}">Box ${b}</span>
+      <div class="name">${["10 min","1 dzień","3 dni","7 dni","21 dni"][b-1]} interwału<div class="bar"><span style="width:${total?buckets[b]/total*100:0}%"></span></div></div>
+      <div class="count">${buckets[b]} pytań</div>
+    </div>`).join("")}
+  </div>`;
+}
+
+// =============== TOPICS (NAUKA TEMATYCZNA) ===============
+let topicFilter="ALL";
+VIEWS.topics=(app)=>{
+  const filtered=topicFilter==="ALL"?QUESTIONS:QUESTIONS.filter(q=>q.a===topicFilter);
+  app.innerHTML=`
+    <div class="card">
+      <h2>Nauka tematyczna</h2>
+      <div class="toolbar">
+        <span style="color:var(--muted)">Obszar:</span>
+        <select class="areafilter" onchange="topicFilter=this.value;render('topics')">
+          <option value="ALL"${topicFilter==="ALL"?" selected":""}>Wszystkie (${QUESTIONS.length})</option>
+          ${Object.entries(AREAS).map(([k,v])=>`<option value="${k}"${topicFilter===k?" selected":""}>${v} (${QUESTIONS.filter(q=>q.a===k).length})</option>`).join("")}
+        </select>
+        <div class="spacer"></div>
+        <button class="btn ghost" onclick="topicHideAnswers=!topicHideAnswers;render('topics')">${topicHideAnswers?"👁 Pokaż odpowiedzi":"🙈 Ukryj odpowiedzi"}</button>
+      </div>
+      <div class="note">Tryb nauki: pytania z wyjaśnieniami. ${topicHideAnswers?"Kliknij pytanie, aby zobaczyć odpowiedź.":""}</div>
+    </div>
+    ${filtered.map(q=>renderTopicQ(q)).join("")}
+  `;
+};
+let topicHideAnswers=false;
+function renderTopicQ(q){
+  const ans=state.answered[q.id];
+  return `<div class="q-card" id="tq-${q.id}" ${topicHideAnswers?`onclick="document.getElementById('te-${q.id}').style.display='block';this.onclick=null"`:""}>
+    <div class="q-meta">
+      <span class="chip ${chipClass(q.a)}">${AREAS[q.a]}</span>
+      <span>ID #${q.id}${ans?` · ostatnio: ${ans.correct?'✓':'✗'}`:""}</span>
+    </div>
+    <div class="q-text">${q.q}</div>
+    ${q.o.map((opt,i)=>`<div class="opt disabled ${(!topicHideAnswers||ans)&&i===q.c?'correct':''}">${String.fromCharCode(65+i)}. ${opt}</div>`).join("")}
+    <div class="explanation" id="te-${q.id}" style="display:${topicHideAnswers?'none':'block'}"><b>Odp: ${String.fromCharCode(65+q.c)}.</b> ${q.e}</div>
+  </div>`;
+}
+
+// =============== PRACTICE (SYMULATOR) ===============
+VIEWS.practice=(app)=>{
+  app.innerHTML=`
+    <div class="tabbar">
+      <button class="active" onclick="practiceTab(this,'subnet')">🌐 Kalkulator podsieci</button>
+      <button onclick="practiceTab(this,'subnetq')">🎯 Generator zadań IP</button>
+      <button onclick="practiceTab(this,'cmd')">⌨️ Polecenia CLI</button>
+    </div>
+    <div id="practice-content"></div>
+  `;
+  practiceTab(document.querySelector(".tabbar button.active"),"subnet");
+};
+window.practiceTab=function(btn,tab){
+  document.querySelectorAll(".tabbar button").forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
+  const c=document.getElementById("practice-content");
+  if(tab==="subnet")c.innerHTML=subnetCalcHtml();
+  else if(tab==="subnetq")c.innerHTML=subnetGenHtml();
+  else if(tab==="cmd")c.innerHTML=cmdQuizHtml();
+  if(tab==="subnet")setTimeout(updateSubnet,0);
+  if(tab==="subnetq")setTimeout(generateSubnetQ,0);
+  if(tab==="cmd")setTimeout(loadCmdQ,0);
+};
+
+function subnetCalcHtml(){
+  return `<div class="card"><h2>Kalkulator podsieci IPv4</h2>
+    <div class="subnet-grid">
+      <label>Adres IP:</label><input id="snip" value="192.168.1.0" oninput="updateSubnet()">
+      <label>Maska / CIDR:</label><input id="sncidr" value="24" type="number" min="0" max="32" oninput="updateSubnet()">
+    </div>
+    <div class="subnet-out" id="snout"></div>
+    <div class="note">Zmieniaj wartości, by zobaczyć wyniki na żywo. Maska może być w postaci /24 lub 255.255.255.0.</div>
+  </div>`;
+}
+window.updateSubnet=function(){
+  const ip=document.getElementById("snip").value.trim();
+  const cidrInp=document.getElementById("sncidr").value.trim();
+  let cidr=parseInt(cidrInp);
+  if(cidrInp.includes(".")){
+    // dot notation mask
+    const parts=cidrInp.split(".").map(Number);
+    cidr=parts.reduce((acc,o)=>acc+o.toString(2).split("1").length-1,0);
+  }
+  const out=document.getElementById("snout");
+  if(!validIp(ip)||isNaN(cidr)||cidr<0||cidr>32){out.innerHTML='<span style="color:var(--bad)">Nieprawidłowy adres lub CIDR</span>';return;}
+  const ipN=ipToNum(ip);
+  const maskN=cidr===0?0:(0xFFFFFFFF<<(32-cidr))>>>0;
+  const networkN=(ipN&maskN)>>>0;
+  const broadcastN=(networkN|(~maskN>>>0))>>>0;
+  const total=cidr===32?1:(cidr===31?2:Math.pow(2,32-cidr));
+  const usable=cidr>=31?total:total-2;
+  const firstHost=cidr>=31?networkN:networkN+1;
+  const lastHost=cidr>=31?broadcastN:broadcastN-1;
+  const cls=ipN<0x80000000?"A":ipN<0xC0000000?"B":ipN<0xE0000000?"C":ipN<0xF0000000?"D (multicast)":"E";
+  const priv=isPrivateIp(ipN);
+  out.innerHTML=`
+    <div class="row"><span>Adres sieci:</span><b>${numToIp(networkN)}/${cidr}</b></div>
+    <div class="row"><span>Maska podsieci:</span><b>${numToIp(maskN)}</b></div>
+    <div class="row"><span>Maska binarnie:</span><span style="font-size:11px">${maskToBin(maskN)}</span></div>
+    <div class="row"><span>Broadcast:</span><b>${numToIp(broadcastN)}</b></div>
+    <div class="row"><span>Pierwszy host:</span><b>${numToIp(firstHost)}</b></div>
+    <div class="row"><span>Ostatni host:</span><b>${numToIp(lastHost)}</b></div>
+    <div class="row"><span>Liczba adresów:</span><b>${total}</b></div>
+    <div class="row"><span>Liczba hostów:</span><b>${Math.max(0,usable)}</b></div>
+    <div class="row"><span>Klasa:</span><b>${cls}</b> ${priv?'<span class="chip">prywatny</span>':''}</div>
+  `;
+};
+function validIp(ip){const p=ip.split(".");if(p.length!==4)return false;return p.every(o=>/^\d+$/.test(o)&&+o>=0&&+o<=255);}
+function ipToNum(ip){return ip.split(".").reduce((a,o)=>(a<<8)+ +o,0)>>>0;}
+function numToIp(n){return [(n>>>24)&255,(n>>>16)&255,(n>>>8)&255,n&255].join(".");}
+function maskToBin(m){return [(m>>>24)&255,(m>>>16)&255,(m>>>8)&255,m&255].map(o=>o.toString(2).padStart(8,"0")).join(".");}
+function isPrivateIp(n){return (n>=0x0A000000&&n<=0x0AFFFFFF)||(n>=0xAC100000&&n<=0xAC1FFFFF)||(n>=0xC0A80000&&n<=0xC0A8FFFF);}
+
+function subnetGenHtml(){
+  return `<div class="card"><h2>Generator zadań IP</h2>
+    <div id="subq-area"></div>
+    <button class="btn" onclick="generateSubnetQ()" style="margin-top:12px">🔄 Nowe pytanie</button>
+  </div>`;
+}
+window.generateSubnetQ=function(){
+  const area=document.getElementById("subq-area");
+  const taskType=Math.floor(Math.random()*4);
+  const baseIPs=["192.168.1.0","10.0.0.0","172.16.0.0","192.168.5.0","10.10.10.0","172.20.0.0"];
+  const base=baseIPs[Math.floor(Math.random()*baseIPs.length)];
+  let q,answer,explanation;
+  if(taskType===0){
+    // Subnet from /24 to N subnets
+    const n=[2,4,8,16,32][Math.floor(Math.random()*5)];
+    const newCidr=24+Math.log2(n);
+    const mask=numToIp((0xFFFFFFFF<<(32-newCidr))>>>0);
+    q=`Sieć ${base}/24 należy podzielić na <b>${n} równych podsieci</b>. Jaką maskę zastosować?`;
+    answer=`/${newCidr} czyli ${mask}`;
+    explanation=`${n} podsieci = 2^${Math.log2(n)} → ${Math.log2(n)} dodatkowe bity → /24 + ${Math.log2(n)} = /${newCidr} = ${mask}`;
+  } else if(taskType===1){
+    // Hosts in /N
+    const cidr=20+Math.floor(Math.random()*10);
+    const hosts=cidr>=31?(cidr===31?2:1):Math.pow(2,32-cidr)-2;
+    q=`Ile hostów można zaadresować w sieci /${cidr}?`;
+    answer=`${hosts}`;
+    explanation=`/${cidr}: 2^(32-${cidr}) = ${Math.pow(2,32-cidr)} adresów - 2 (sieć i broadcast) = ${hosts} hostów.`;
+  } else if(taskType===2){
+    // Broadcast for IP/cidr
+    const cidr=24+Math.floor(Math.random()*5);
+    const ipN=ipToNum(base);
+    const maskN=(0xFFFFFFFF<<(32-cidr))>>>0;
+    const netN=(ipN&maskN)>>>0;
+    const bcastN=(netN|(~maskN>>>0))>>>0;
+    q=`Adres komputera: <b>${base}</b> z maską <b>/${cidr}</b>. Jaki jest adres rozgłoszeniowy (broadcast)?`;
+    answer=numToIp(bcastN);
+    explanation=`Maska /${cidr} → blok ${Math.pow(2,32-cidr)} adresów. Sieć: ${numToIp(netN)}, broadcast: ${numToIp(bcastN)} (ostatni adres w bloku).`;
+  } else {
+    // Network address
+    const cidr=20+Math.floor(Math.random()*10);
+    const offset=Math.floor(Math.random()*Math.min(254,Math.pow(2,32-cidr)));
+    const ipN=(ipToNum(base)+offset)>>>0;
+    const maskN=cidr===0?0:(0xFFFFFFFF<<(32-cidr))>>>0;
+    const netN=(ipN&maskN)>>>0;
+    q=`Adres komputera: <b>${numToIp(ipN)}</b> z maską <b>/${cidr}</b>. Jaki jest adres podsieci?`;
+    answer=numToIp(netN)+"/"+cidr;
+    explanation=`Adres sieci = IP AND maska. ${numToIp(ipN)} AND ${numToIp(maskN)} = ${numToIp(netN)}.`;
+  }
+  area.innerHTML=`<div class="q-text">${q}</div>
+    <input id="subq-input" placeholder="Twoja odpowiedź" style="padding:8px;border:1px solid var(--border);border-radius:4px;width:300px;font:inherit;font-family:Menlo,monospace">
+    <button class="btn" onclick="checkSubnetQ('${answer.replace(/'/g,"\\'")}','${explanation.replace(/'/g,"\\'")}')">Sprawdź</button>
+    <div id="subq-res" style="margin-top:12px"></div>`;
+};
+window.checkSubnetQ=function(answer,explanation){
+  const inp=document.getElementById("subq-input").value.trim();
+  const res=document.getElementById("subq-res");
+  const correct=normalizeAns(inp)===normalizeAns(answer);
+  res.innerHTML=`<div class="explanation" style="border-left-color:${correct?'var(--good)':'var(--bad)'}">
+    <b style="color:${correct?'var(--good)':'var(--bad)'}">${correct?'✓ Poprawnie':'✗ Niepoprawnie'}</b> ·
+    Prawidłowa odp: <b>${answer}</b><br>${explanation}
+  </div>`;
+};
+function normalizeAns(s){return s.toLowerCase().replace(/\s+/g,"").replace(/^\//,"");}
+
+const CMDQS=[
+  {q:"Wyświetla zawartość katalogu (Linux)",a:"ls",alts:["ls -la","dir"]},
+  {q:"Wyświetla konfigurację interfejsów sieciowych w Windows",a:"ipconfig",alts:["ipconfig /all"]},
+  {q:"Wyświetla działające procesy w Linuxie",a:"ps",alts:["ps aux","ps -ef","top"]},
+  {q:"Zmienia uprawnienia pliku w Linuxie",a:"chmod"},
+  {q:"Tłumaczy nazwę domenową na adres IP (Windows i Linux)",a:"nslookup",alts:["dig","host"]},
+  {q:"Sprawdza ścieżkę pakietów do hosta (Windows)",a:"tracert",alts:["pathping"]},
+  {q:"Sprawdza ścieżkę pakietów do hosta (Linux)",a:"traceroute",alts:["mtr"]},
+  {q:"Czyści cache DNS w Windows",a:"ipconfig /flushdns"},
+  {q:"Sprawdza i naprawia pliki systemowe Windows",a:"sfc /scannow"},
+  {q:"Sprawdza dysk pod kątem błędów (Windows, z naprawą)",a:"chkdsk /f /r"},
+  {q:"Wyświetla otwarte połączenia sieciowe i porty (Linux/Windows)",a:"netstat",alts:["netstat -an","ss -tunlp"]},
+  {q:"Tworzy katalog (Linux/Windows)",a:"mkdir"},
+  {q:"Kopiuje plik (Linux)",a:"cp"},
+  {q:"Przenosi/zmienia nazwę pliku (Linux)",a:"mv"},
+  {q:"Usuwa plik (Linux)",a:"rm"},
+  {q:"Edycja pliku w trybie tekstowym Linux",a:"nano",alts:["vi","vim"]},
+  {q:"Wyświetla ostatnie linie pliku (Linux)",a:"tail",alts:["tail -f"]},
+  {q:"Filtruje tekst po wzorcu (Linux)",a:"grep"},
+  {q:"Wyłącza komputer Windows natychmiast",a:"shutdown /s /t 0"},
+  {q:"Aktualizuje listę pakietów w Debian/Ubuntu",a:"apt update"},
+  {q:"Instaluje pakiet w Debian/Ubuntu",a:"apt install"},
+  {q:"Tworzy nowego użytkownika w Linuxie",a:"useradd",alts:["adduser"]},
+  {q:"Zmienia hasło użytkownika w Linuxie",a:"passwd"},
+  {q:"Wyświetla zalogowanego użytkownika",a:"whoami"},
+  {q:"Wyświetla wolne miejsce na dyskach (Linux)",a:"df",alts:["df -h"]},
+  {q:"Wyświetla zużycie miejsca przez katalog (Linux)",a:"du",alts:["du -sh"]}
+];
+function cmdQuizHtml(){
+  return `<div class="card"><h2>Quiz poleceń CLI</h2>
+    <div id="cmdq-area"></div>
+    <div class="toolbar"><button class="btn" onclick="loadCmdQ()">🔄 Następne pytanie</button></div>
+  </div>`;
+}
+let curCmdQ=null;
+window.loadCmdQ=function(){
+  curCmdQ=CMDQS[Math.floor(Math.random()*CMDQS.length)];
+  document.getElementById("cmdq-area").innerHTML=`
+    <div class="q-text">${curCmdQ.q}</div>
+    <input id="cmdq-inp" placeholder="np. ls" style="padding:8px;border:1px solid var(--border);border-radius:4px;width:300px;font:inherit;font-family:Menlo,monospace" onkeyup="if(event.key==='Enter')checkCmdQ()">
+    <button class="btn" onclick="checkCmdQ()">Sprawdź</button>
+    <div id="cmdq-res" style="margin-top:12px"></div>`;
+};
+window.checkCmdQ=function(){
+  const inp=document.getElementById("cmdq-inp").value.trim().toLowerCase();
+  const valid=[curCmdQ.a.toLowerCase(),...(curCmdQ.alts||[]).map(x=>x.toLowerCase())];
+  const correct=valid.some(v=>inp===v||inp.startsWith(v+" ")||v.startsWith(inp));
+  const matchedExact=valid.some(v=>inp===v);
+  document.getElementById("cmdq-res").innerHTML=`<div class="explanation" style="border-left-color:${matchedExact?'var(--good)':correct?'var(--warn)':'var(--bad)'}">
+    <b style="color:${matchedExact?'var(--good)':correct?'var(--warn)':'var(--bad)'}">${matchedExact?'✓ Poprawnie':correct?'≈ Częściowo':'✗ Niepoprawnie'}</b><br>
+    Prawidłowe odpowiedzi: <span class="kbd">${[curCmdQ.a,...(curCmdQ.alts||[])].join("</span> · <span class=\"kbd\">")}</span>
+  </div>`;
+};
+
+// =============== SETTINGS / EXPORT ===============
+VIEWS.settings=(app)=>{
+  const sz=new Blob([JSON.stringify(state)]).size;
+  app.innerHTML=`
+    <div class="card"><h2>Postępy / Eksport-Import</h2>
+    <p>Postępy są zapisywane lokalnie w przeglądarce. Aby zachować je między sesjami Cowork, regularnie eksportuj plik JSON.</p>
+    <div class="toolbar">
+      <button class="btn" onclick="exportProgress()">⬇ Eksportuj postępy do pliku</button>
+      <label class="btn ghost" style="cursor:pointer">⬆ Importuj plik JSON
+        <input type="file" accept=".json" style="display:none" onchange="importProgress(this)">
+      </label>
+      <button class="btn danger" onclick="if(confirm('Wyczyścić WSZYSTKIE postępy?')){state={version:1,answered:{},srs:{},stats:{quizzes:[]},startedAt:Date.now()};saveState();render('settings')}">🗑 Reset postępów</button>
+    </div>
+    <div class="note">Rozmiar danych: ${(sz/1024).toFixed(1)} KB · ${Object.keys(state.answered).length} pytań w historii · ${Object.keys(state.srs).length} w SR</div>
+    </div>
+    <div class="card"><h3>Stan szczegółowy</h3>
+      <table style="width:100%;border-collapse:collapse;font-size:13px">
+        <tr><td><b>Pytań w bazie</b></td><td>${QUESTIONS.length}</td></tr>
+        <tr><td><b>Pytań rozwiązanych</b></td><td>${Object.keys(state.answered).length}</td></tr>
+        <tr><td><b>Pytań w SR</b></td><td>${Object.keys(state.srs).length}</td></tr>
+        <tr><td><b>Quizów ukończonych</b></td><td>${state.stats.quizzes.length}</td></tr>
+        <tr><td><b>Średni wynik quizów</b></td><td>${state.stats.quizzes.length?Math.round(state.stats.quizzes.reduce((s,q)=>s+q.score/q.total*100,0)/state.stats.quizzes.length)+"%":"—"}</td></tr>
+      </table>
+    </div>
+    <div class="card"><h3>Jak zachować postępy między sesjami</h3>
+    <ol>
+      <li>Klikaj <b>Eksportuj postępy</b> co kilka dni — zapisz plik <code>inf02-progress.json</code> w folderze <code>~/projects/INF02/</code>.</li>
+      <li>Po otwarciu artifact w nowej sesji — kliknij <b>Importuj</b> i wybierz ten plik.</li>
+      <li>Postępy: błędne pytania, kolejka SR, statystyki quizów, plan tygodnia.</li>
+    </ol>
+    </div>
+  `;
+};
+window.exportProgress=function(){
+  const data=JSON.stringify(state,null,2);
+  const blob=new Blob([data],{type:"application/json"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url;a.download=`inf02-progress-${new Date().toISOString().slice(0,10)}.json`;
+  document.body.appendChild(a);a.click();a.remove();
+  URL.revokeObjectURL(url);
+};
+window.importProgress=function(inp){
+  const f=inp.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=()=>{
+    try{const p=JSON.parse(r.result);if(p.version!==1)throw new Error("Nieznana wersja");
+      state=Object.assign({version:1,answered:{},srs:{},stats:{quizzes:[]},startedAt:Date.now()},p);
+      saveState();alert("Zaimportowano postępy.");render("settings");
+    }catch(e){alert("Błąd importu: "+e.message);}
+  };
+  r.readAsText(f);
+};
+
+
+// ============ UX MODULES (Phase 1D) ============
+
+(function(){
+  const M = (window.UX = window.UX || {});
+  M.onboarding = {
+    /**
+     * Pokaż wizard, jeśli nie ma profilu i brak odpowiedzi.
+     * Wywoływać po loadState() z v1.
+     */
+    maybeShow(){
+      if(!window.state) return;
+      const fresh = Object.keys(window.state.answered||{}).length === 0;
+      if(fresh && !window.state.profile){ this.show(); }
+    },
+    show(){
+      if(document.getElementById("ux-ob-overlay")) return;
+      const tpl = document.getElementById("ux-onboarding-template");
+      const node = tpl.content.cloneNode(true);
+      document.body.appendChild(node);
+      this._bind();
+    },
+    close(){
+      const ov = document.getElementById("ux-ob-overlay");
+      if(!ov) return;
+      ov.classList.add("closing");
+      setTimeout(()=>ov.remove(),200);
+    },
+    _state:{step:1,goal:"exam",dailyGoalMin:20},
+    _bind(){
+      const self=this;
+      // Radio click — ładnie zaznacz
+      document.querySelectorAll(".ux-radio input").forEach(r=>{
+        r.addEventListener("change",e=>{
+          self._state.goal = e.target.value;
+          document.querySelectorAll(".ux-radio").forEach(el=>{
+            el.classList.toggle("checked", el.querySelector("input").checked);
+          });
+        });
+        if(r.checked) r.closest(".ux-radio").classList.add("checked");
+      });
+      // Slider
+      const slider=document.getElementById("ux-ob-slider");
+      const out=document.getElementById("ux-ob-min");
+      slider.addEventListener("input",e=>{
+        self._state.dailyGoalMin = parseInt(e.target.value);
+        out.textContent = e.target.value;
+      });
+      // Buttons
+      document.getElementById("ux-ob-next").addEventListener("click",()=>self._next());
+      document.getElementById("ux-ob-back").addEventListener("click",()=>self._prev());
+      document.getElementById("ux-ob-skip").addEventListener("click",()=>self._finish(true));
+    },
+    _next(){
+      if(this._state.step < 3){
+        this._state.step++;
+        this._renderStep();
+      } else {
+        this._finish(false);
+      }
+    },
+    _prev(){
+      if(this._state.step > 1){ this._state.step--; this._renderStep(); }
+    },
+    _renderStep(){
+      const s=this._state.step;
+      document.querySelectorAll("[data-step-content]").forEach(el=>{
+        el.hidden = parseInt(el.dataset.stepContent) !== s;
+      });
+      document.querySelectorAll(".ux-step-pill").forEach(p=>{
+        const n=parseInt(p.dataset.step);
+        p.classList.toggle("active", n===s);
+        p.classList.toggle("done", n<s);
+      });
+      document.getElementById("ux-ob-back").hidden = s===1;
+      const next=document.getElementById("ux-ob-next");
+      next.textContent = s===3 ? "Rozpocznij diagnozę" : "Dalej →";
+    },
+    _finish(skipped){
+      window.state.profile = {
+        goal: skipped ? null : this._state.goal,
+        dailyGoalMin: skipped ? null : this._state.dailyGoalMin,
+        onboardedAt: Date.now(),
+        skipped: !!skipped
+      };
+      if(typeof window.saveState==="function") window.saveState();
+      this.close();
+      // Hook: jeśli user dotarł do step 3 — odpal diagnozę
+      if(!skipped && typeof window.startDiagnostic === "function"){
+        setTimeout(()=>window.startDiagnostic(),250);
+      } else if(typeof window.render==="function"){
+        setTimeout(()=>window.render("dash"),250);
+      }
+    }
+  };
+})();
+
+
+(function(){
+  const M = (window.UX = window.UX || {});
+  function todayKey(d=new Date()){
+    return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+  }
+  function yesterdayKey(){
+    const d=new Date(); d.setDate(d.getDate()-1); return todayKey(d);
+  }
+
+  M.streak = {
+    /** Inicjalizacja struktury w state. Idempotentne. */
+    ensure(){
+      if(!window.state) return;
+      if(!window.state.streak){
+        window.state.streak = {count:0,lastActiveDate:null,freezesAvailable:3};
+      }
+    },
+    /**
+     * Wywołać po KAŻDEJ aktywności (odpowiedź quiz/SRS/diagnostyka).
+     * Zwraca obiekt {bumped:bool, count:number, milestone:7|30|null}.
+     */
+    markActivity(){
+      this.ensure();
+      const s=window.state.streak;
+      const today=todayKey();
+      let result={bumped:false,count:s.count,milestone:null};
+      if(s.lastActiveDate === today){
+        // już aktywny — noop
+        return result;
+      }
+      if(s.lastActiveDate === yesterdayKey()){
+        s.count += 1;
+        result.bumped=true;
+      } else if(s.lastActiveDate === null){
+        s.count = 1;
+        result.bumped=true;
+      } else {
+        // przerwa — sprawdź freeze (auto-uzycie)
+        if(s.freezesAvailable > 0){
+          // Symulujemy freeze za każdy brakujący dzień (max 1 dzień luki = 1 freeze)
+          s.freezesAvailable -= 1;
+          s.count += 1;
+          result.bumped=true;
+        } else {
+          s.count = 1;
+          result.bumped=true;
+        }
+      }
+      s.lastActiveDate = today;
+      result.count = s.count;
+      if(s.count===7) result.milestone=7;
+      if(s.count===30) result.milestone=30;
+      if(typeof window.saveState==="function") window.saveState();
+      this.renderInNav();
+      // Hook do achievements + confetti
+      if(result.milestone && M.achievements){
+        if(result.milestone===7) M.achievements.unlock("streak_7");
+        if(result.milestone===30) M.achievements.unlock("streak_30");
+        if(M.fx && M.fx.confetti) M.fx.confetti();
+      }
+      return result;
+    },
+    useFreeze(){
+      this.ensure();
+      const s=window.state.streak;
+      if(s.freezesAvailable<=0) return false;
+      s.freezesAvailable--;
+      // Odśwież lastActiveDate na dziś jako "zamrożone"
+      s.lastActiveDate = todayKey();
+      if(typeof window.saveState==="function") window.saveState();
+      this.renderInNav();
+      return true;
+    },
+    /** Wstrzyknij badge w <nav>. Idempotentne. */
+    renderInNav(){
+      this.ensure();
+      const nav=document.querySelector("nav");
+      if(!nav) return;
+      let wrap=document.getElementById("ux-streak-nav-wrap");
+      if(!wrap){
+        wrap=document.createElement("div");
+        wrap.className="ux-streak-nav-wrap";
+        wrap.id="ux-streak-nav-wrap";
+        // Wstaw zaraz po <h1>
+        const h1=nav.querySelector("h1");
+        if(h1) h1.after(wrap); else nav.prepend(wrap);
+      }
+      const s=window.state.streak;
+      const cold = s.count===0 || (s.lastActiveDate!==todayKey() && s.lastActiveDate!==yesterdayKey());
+      wrap.innerHTML = `
+        <button class="ux-streak ${cold?'cold':''}" id="ux-streak-btn" aria-label="Codzienna seria: ${s.count} dni">
+          <span class="ux-fire">${cold?'❄️':'🔥'}</span>
+          <span>${s.count}</span>
+        </button>
+        <div class="ux-streak-tip" id="ux-streak-tip" role="tooltip">
+          <h4>Codzienna seria · ${s.count} ${s.count===1?'dzień':'dni'}</h4>
+          <p>Nie zrywaj łańcucha! Wystarczy 1 odpowiedź dziennie.<br>
+          Zamrożenia: <b>${s.freezesAvailable}</b> dostępne</p>
+          <button class="btn ghost" id="ux-streak-freeze" ${s.freezesAvailable<=0?'disabled':''}>
+            ❄️ Użyj zamrożenia (${s.freezesAvailable})
+          </button>
+        </div>
+      `;
+      const btn=document.getElementById("ux-streak-btn");
+      const tip=document.getElementById("ux-streak-tip");
+      btn.addEventListener("click",e=>{
+        e.stopPropagation();
+        tip.classList.toggle("open");
+      });
+      document.getElementById("ux-streak-freeze").addEventListener("click",e=>{
+        e.stopPropagation();
+        if(M.streak.useFreeze()){
+          tip.classList.remove("open");
+        }
+      });
+      document.addEventListener("click",e=>{
+        if(!wrap.contains(e.target)) tip.classList.remove("open");
+      });
+    },
+    /** Test helper — wymusza animację ognia */
+    bump(){
+      const btn=document.getElementById("ux-streak-btn");
+      if(!btn) return;
+      btn.classList.remove("bumped");
+      void btn.offsetWidth;
+      btn.classList.add("bumped");
+    }
+  };
+})();
+
+
+(function(){
+  const M = (window.UX = window.UX || {});
+
+  const CATALOG = {
+    first_quiz:           {ico:"🎯",name:"Pierwszy quiz",desc:"Ukończ pierwszy quiz"},
+    streak_7:             {ico:"🔥",name:"Tydzień ognia",desc:"7 dni z rzędu"},
+    streak_30:            {ico:"💎",name:"Diament",desc:"30 dni z rzędu"},
+    area_mastered_B:      {ico:"🖥️",name:"Mistrz Budowy",desc:"100% w obszarze B"},
+    area_mastered_O:      {ico:"⚙️",name:"Mistrz OS",desc:"100% w obszarze O"},
+    area_mastered_N:      {ico:"🌐",name:"Mistrz Sieci",desc:"100% w obszarze N"},
+    area_mastered_P:      {ico:"🔌",name:"Mistrz Peryferii",desc:"100% w obszarze P"},
+    area_mastered_D:      {ico:"🔧",name:"Mistrz Diagnostyki",desc:"100% w obszarze D"},
+    quiz_perfect_40:      {ico:"💯",name:"Perfekcja",desc:"40/40 w pełnym quizie"},
+    quiz_passed_first_try:{ico:"🚀",name:"Za pierwszym razem",desc:"≥50% przy 1. próbie"},
+    subnetting_master:    {ico:"📡",name:"Subnetting Master",desc:"10 podsieci poprawnie"},
+    "100_questions_done": {ico:"🏆",name:"Setka",desc:"100 pytań rozwiązanych"}
+  };
+
+  M.achievements = {
+    catalog: CATALOG,
+    ensure(){
+      if(!window.state) return;
+      if(!window.state.achievements){
+        window.state.achievements = {}; // id -> {unlockedAt}
+      }
+    },
+    isUnlocked(id){
+      this.ensure();
+      return !!window.state.achievements[id];
+    },
+    /**
+     * Odblokuj achievement. Zwraca true tylko jeśli to nowe odblokowanie.
+     */
+    unlock(id){
+      this.ensure();
+      if(!CATALOG[id]) { console.warn("Unknown achievement",id); return false; }
+      if(window.state.achievements[id]) return false;
+      window.state.achievements[id] = {unlockedAt: Date.now()};
+      if(typeof window.saveState==="function") window.saveState();
+      this.toast(id);
+      // Confetti hook
+      if(M.fx && M.fx.confetti) M.fx.confetti();
+      return true;
+    },
+    toast(id){
+      const a = CATALOG[id]; if(!a) return;
+      let stack=document.getElementById("ux-toast-stack");
+      if(!stack){
+        stack=document.createElement("div");
+        stack.id="ux-toast-stack";
+        stack.className="ux-toast-stack";
+        document.body.appendChild(stack);
+      }
+      const el=document.createElement("div");
+      el.className="ux-toast";
+      el.innerHTML=`
+        <div class="ux-toast-head">
+          <span class="ux-toast-ico">🏆</span>
+          <span class="ux-toast-title">Odblokowane: ${a.name}</span>
+        </div>
+        <div class="ux-toast-sub">${a.ico} ${a.desc}</div>
+        <div class="ux-toast-bar"><span></span></div>
+      `;
+      stack.appendChild(el);
+      setTimeout(()=>{
+        el.classList.add("out");
+        setTimeout(()=>el.remove(),250);
+      },4000);
+    },
+    /**
+     * Sprawdź wszystkie warunki na podstawie state. Wywoływać po istotnych akcjach.
+     */
+    checkAll(){
+      if(!window.state) return;
+      const st=window.state;
+      const ans=Object.values(st.answered||{});
+      // first_quiz / 100_questions_done
+      if((st.stats?.quizzes||[]).length>=1) this.unlock("first_quiz");
+      if(ans.length>=100) this.unlock("100_questions_done");
+      // streaks
+      if(st.streak?.count>=7) this.unlock("streak_7");
+      if(st.streak?.count>=30) this.unlock("streak_30");
+      // area mastery — wymaga window.QUESTIONS i window.AREAS
+      if(window.QUESTIONS){
+        ["B","O","N","P","D"].forEach(area=>{
+          const inArea=window.QUESTIONS.filter(q=>q.a===area);
+          if(!inArea.length) return;
+          const ok=inArea.every(q=>st.answered?.[q.id]?.correct);
+          if(ok) this.unlock("area_mastered_"+area);
+        });
+      }
+      // quiz perfect / first try
+      (st.stats?.quizzes||[]).forEach(q=>{
+        if(q.total===40 && q.score===40) this.unlock("quiz_perfect_40");
+      });
+      const firstQuiz=(st.stats?.quizzes||[])[0];
+      if(firstQuiz && (firstQuiz.score/firstQuiz.total) >= 0.5){
+        this.unlock("quiz_passed_first_try");
+      }
+      // subnetting_master — z osobnego countera
+      if((st.subnettingOk||0)>=10) this.unlock("subnetting_master");
+    },
+    /** Renderuje siatkę 4×3 — np. w view 'achievements' lub w settings. */
+    renderGrid(targetEl){
+      this.ensure();
+      const st=window.state.achievements||{};
+      const html=Object.entries(CATALOG).map(([id,a])=>{
+        const u=!!st[id];
+        return `
+          <div class="ux-ach-card ${u?'unlocked':'locked'}" title="${a.desc}">
+            <div class="ux-ach-ico">${a.ico}</div>
+            <div class="ux-ach-name">${a.name}</div>
+            <div class="ux-ach-desc">${a.desc}</div>
+          </div>
+        `;
+      }).join("");
+      targetEl.innerHTML = `<div class="ux-ach-grid">${html}</div>`;
+    },
+    /** Liczba odblokowanych / total — przydatne do nagłówka. */
+    progress(){
+      this.ensure();
+      const total=Object.keys(CATALOG).length;
+      const done=Object.keys(window.state.achievements||{}).length;
+      return {done,total};
+    }
+  };
+})();
+
+
+(function(){
+  const M = (window.UX = window.UX || {});
+
+  M.mobile = {
+    /**
+     * Wstrzykuje przycisk "More" do nav (widoczny tylko na mobile),
+     * dodaje labels pod ikony, zapewnia obsługę drawer'a.
+     */
+    init(){
+      const nav=document.querySelector("nav");
+      if(!nav) return;
+      // Dodaj labels pod ikony (jeśli jeszcze nie ma)
+      const labels={dash:"Panel",quiz:"Quiz",srs:"Fiszki",topics:"Tematy",practice:"Praktyka",settings:"Więcej",more:"Więcej"};
+      nav.querySelectorAll("button[data-view]").forEach(b=>{
+        if(!b.querySelector(".ux-label")){
+          const lbl=document.createElement("span");
+          lbl.className="ux-label";
+          lbl.textContent = labels[b.dataset.view] || b.textContent.trim();
+          b.appendChild(lbl);
+        }
+      });
+      // Dodaj "More" jeśli nie ma
+      if(!nav.querySelector('[data-view="more"]')){
+        const more=document.createElement("button");
+        more.dataset.view="more";
+        more.innerHTML=`<span class="ico">⋯</span><span class="ux-label">Więcej</span>`;
+        more.addEventListener("click",()=>this.openMore());
+        nav.appendChild(more);
+      }
+      // Drawer overlay
+      if(!document.getElementById("ux-more-overlay")){
+        const ov=document.createElement("div");
+        ov.id="ux-more-overlay";
+        ov.className="ux-more-overlay";
+        ov.innerHTML=`
+          <div class="ux-more-sheet" onclick="event.stopPropagation()">
+            <h3>Więcej</h3>
+            <button data-action="achievements">🏆 <span>Osiągnięcia</span></button>
+            <button data-action="settings">⚙️ <span>Postępy / Eksport</span></button>
+            <button data-action="onboarding">🎯 <span>Pokaż onboarding</span></button>
+          </div>
+        `;
+        ov.addEventListener("click",e=>{
+          if(e.target===ov) ov.classList.remove("open");
+        });
+        ov.querySelectorAll("button[data-action]").forEach(b=>{
+          b.addEventListener("click",()=>{
+            const act=b.dataset.action;
+            ov.classList.remove("open");
+            if(act==="settings" && typeof window.render==="function") window.render("settings");
+            if(act==="achievements" && typeof window.render==="function") window.render("achievements");
+            if(act==="onboarding" && M.onboarding) M.onboarding.show();
+          });
+        });
+        document.body.appendChild(ov);
+      }
+    },
+    openMore(){
+      const ov=document.getElementById("ux-more-overlay");
+      if(ov) ov.classList.add("open");
+    }
+  };
+})();
+
+
+(function(){
+  const M = (window.UX = window.UX || {});
+  const easeOutCubic = t => 1 - Math.pow(1-t, 3);
+
+  M.fx = {
+    /**
+     * Confetti — czysty Canvas API. 50 cząsteczek, gravity, fadeout 2.5s.
+     * Kolory z CSS variables (accent + good).
+     */
+    confetti(opts={}){
+      const N = opts.count || 50;
+      const canvas = this._ensureCanvas();
+      const ctx = canvas.getContext("2d");
+      // Kolory z CSS (z fallbackiem)
+      const css = getComputedStyle(document.documentElement);
+      const accent = css.getPropertyValue("--accent").trim() || "#2f6ef0";
+      const good   = css.getPropertyValue("--good").trim()   || "#1f9d55";
+      const colors = [accent, good, "#fbbf24", "#ec4899", "#8b5cf6"];
+      const W=canvas.width, H=canvas.height;
+      const cx = opts.x ?? W/2, cy = opts.y ?? H/3;
+      const parts = [];
+      for(let i=0;i<N;i++){
+        const ang = Math.random()*Math.PI*2;
+        const speed = 4 + Math.random()*6;
+        parts.push({
+          x:cx, y:cy,
+          vx:Math.cos(ang)*speed,
+          vy:Math.sin(ang)*speed - 4,
+          size: 4+Math.random()*4,
+          color: colors[(Math.random()*colors.length)|0],
+          rot: Math.random()*Math.PI,
+          vr: (Math.random()-.5)*.3,
+          life: 0
+        });
+      }
+      const DURATION = 2500;
+      const t0 = performance.now();
+      const tick = (t)=>{
+        const dt = t - t0;
+        ctx.clearRect(0,0,W,H);
+        let alive=0;
+        parts.forEach(p=>{
+          p.vy += 0.22; // gravity
+          p.vx *= 0.99;
+          p.x += p.vx; p.y += p.vy;
+          p.rot += p.vr;
+          p.life = dt/DURATION;
+          if(p.life < 1){
+            alive++;
+            ctx.save();
+            ctx.globalAlpha = Math.max(0, 1 - p.life);
+            ctx.translate(p.x,p.y);
+            ctx.rotate(p.rot);
+            ctx.fillStyle = p.color;
+            ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size);
+            ctx.restore();
+          }
+        });
+        if(alive>0 && dt<DURATION){ requestAnimationFrame(tick); }
+        else { ctx.clearRect(0,0,W,H); }
+      };
+      requestAnimationFrame(tick);
+    },
+    _ensureCanvas(){
+      let c=document.getElementById("ux-confetti-canvas");
+      if(!c){
+        c=document.createElement("canvas");
+        c.id="ux-confetti-canvas";
+        document.body.appendChild(c);
+      }
+      const dpr=window.devicePixelRatio||1;
+      c.width = window.innerWidth*dpr;
+      c.height = window.innerHeight*dpr;
+      c.style.width = window.innerWidth+"px";
+      c.style.height = window.innerHeight+"px";
+      c.getContext("2d").scale(dpr,dpr);
+      // override po scale: width/height już ustawione, kontekst po scale liczy w CSS px
+      c.width = window.innerWidth;
+      c.height = window.innerHeight;
+      return c;
+    },
+
+    /**
+     * Animowany count-up. Element musi mieć tekst startowy (np. "0%").
+     * fx.countUp(el, {from:0, to:75, suffix:"%", duration:1200})
+     */
+    countUp(el, {from=0,to=100,suffix="",duration=1200,prefix=""}={}){
+      if(!el) return;
+      const t0=performance.now();
+      const tick=(t)=>{
+        const p=Math.min(1,(t-t0)/duration);
+        const v=from + (to-from)*easeOutCubic(p);
+        el.textContent = prefix + Math.round(v) + suffix;
+        if(p<1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    },
+
+    /** Haptic feedback — silently skipped jeśli brak supportu. */
+    hapticGood(){
+      try{ navigator.vibrate && navigator.vibrate(20); }catch(e){}
+    },
+    hapticBad(){
+      try{ navigator.vibrate && navigator.vibrate([40,30,40]); }catch(e){}
+    },
+
+    /** Mikroshake na DOM elemencie — bez side effectu po zakończeniu. */
+    shake(el){
+      if(!el) return;
+      el.classList.remove("ux-shake");
+      void el.offsetWidth; // reflow dla restartu animacji
+      el.classList.add("ux-shake");
+      setTimeout(()=>el.classList.remove("ux-shake"),350);
+    },
+    pulseGood(el){
+      if(!el) return;
+      el.classList.remove("ux-pulse-good");
+      void el.offsetWidth;
+      el.classList.add("ux-pulse-good");
+      setTimeout(()=>el.classList.remove("ux-pulse-good"),650);
+    },
+
+    /**
+     * Sugar: feedback po odpowiedzi. Wywołać z selectAnswer/srsAnswer.
+     * fx.answerFeedback(optEl, correct)
+     */
+    answerFeedback(el, correct){
+      if(correct){ this.hapticGood(); this.pulseGood(el); }
+      else       { this.hapticBad();  this.shake(el);    }
+    }
+  };
+
+  // Resize canvas — gdy istnieje
+  window.addEventListener("resize",()=>{
+    const c=document.getElementById("ux-confetti-canvas");
+    if(c){ c.width=window.innerWidth; c.height=window.innerHeight; }
+  });
+})();
+
+// ============ END UX MODULES ============
+
+// =============== INIT ===============
+render("dash");
+</script>
+</body>
+</html>
