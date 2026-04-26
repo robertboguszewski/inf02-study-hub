@@ -835,6 +835,14 @@ label{display:block;margin-bottom:var(--sp-xs);font-size:var(--fs-xs);color:var(
   }
 
   function navigate(view, params) {
+    const pageMap = { quiz:'quiz.html', diagnostic:'diagnostic.html', practical:'practical.html', srs:'srs.html' };
+    if (pageMap[view]) {
+      const qs = params && Object.keys(params).length
+        ? '?' + Object.keys(params).map(k => encodeURIComponent(k)+'='+encodeURIComponent(params[k])).join('&')
+        : '';
+      location.href = pageMap[view] + qs;
+      return;
+    }
     if (!VIEWS.includes(view)) view = 'dashboard';
     let hash = '#' + view;
     if (params && Object.keys(params).length) {
@@ -1495,11 +1503,25 @@ label{display:block;margin-bottom:var(--sp-xs);font-size:var(--fs-xs);color:var(
     if (_currentView === 'achievements') return renderAchievements(main);
     if (_currentView === 'review')    return renderReview(main);
 
-    // Other views — placeholder if Builder not yet loaded
+    // Navigate to standalone module pages
+    const pageMap = {
+      quiz:       'quiz.html',
+      diagnostic: 'diagnostic.html',
+      practical:  'practical.html',
+      srs:        'srs.html'
+    };
+    const targetPage = pageMap[_currentView];
+    if (targetPage) {
+      const qs = Object.keys(_currentParams || {}).length
+        ? '?' + Object.keys(_currentParams).map(k => encodeURIComponent(k) + '=' + encodeURIComponent(_currentParams[k])).join('&')
+        : '';
+      location.href = targetPage + qs;
+      return;
+    }
+    // Truly unknown view — show minimal fallback
     main.appendChild(el('div', { class:'card' }, [
-      el('h2', null, VIEW_LABEL[_currentView] || _currentView),
-      el('p', { class:'muted' }, 'Ten widok zostanie dostarczony przez moduł Buildera. Wczytaj odpowiedni artefakt (quiz.html / diagnostic.html / practical.html / srs.html) lub wróć do Dashboard.'),
-      el('button', { class:'btn ghost', onClick: () => navigate('dashboard') }, '← Dashboard')
+      el('h2', null, 'Nieznany widok'),
+      el('button', { class:'btn ghost', onclick: () => navigate('dashboard') }, '← Dashboard')
     ]));
   }
 
