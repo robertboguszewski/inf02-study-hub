@@ -479,12 +479,18 @@ input { font: inherit; }
   }
 
   /* -------- Shell stubs (graceful when shell missing) -------- */
+  const STATE_KEY = 'inf02.v3.state';
   function getShell() {
     return (window.INF02 && window.INF02.shell) || null;
   }
   function shellGetState() {
     const sh = getShell();
-    return (sh && typeof sh.getState === 'function') ? sh.getState() : null;
+    if (sh && typeof sh.getState === 'function') return sh.getState();
+    // Standalone fallback: read from localStorage synchronously
+    try {
+      const raw = localStorage.getItem(STATE_KEY);
+      return raw ? JSON.parse(raw) : null;
+    } catch (_) { return null; }
   }
   async function shellSetState(patch) {
     const sh = getShell();
@@ -505,6 +511,65 @@ input { font: inherit; }
     else console.info('[quiz] route', view, params);
   }
 
+  /* -------- Embedded fallback question bank (≥ 40 q, all 11 areas) -------- */
+  const FALLBACK_QUESTIONS = [
+    // --- B: Budowa komputera ---
+    {id:"FB-B01",area:"B",difficulty:"easy",type:"mcq",q:"Jaki socket jest używany przez procesory AMD Ryzen serii 5000?",options:["LGA1700","AM4","LGA1200","AM5"],correct:1,explanation:"Procesory AMD Ryzen 5000 (Zen 3) używają gniazda AM4.",ckeRef:"INF.02.2.1",tags:["cpu","socket","amd"]},
+    {id:"FB-B02",area:"B",difficulty:"easy",type:"mcq",q:"Co oznacza skrót RAM?",options:["Read-Access Memory","Random Access Memory","Rapid Access Module","Read-And-Modify"],correct:1,explanation:"RAM (Random Access Memory) to pamięć o dostępie swobodnym — dane można odczytywać i zapisywać w dowolnej kolejności.",ckeRef:"INF.02.2.2",tags:["ram","memory"]},
+    {id:"FB-B03",area:"B",difficulty:"easy",type:"mcq",q:"Który standard płyty głównej definiuje rozmiar 305 × 244 mm?",options:["mATX","ITX","ATX","E-ATX"],correct:2,explanation:"Standardowy ATX ma wymiary 305 × 244 mm i jest najczęściej spotykany w komputerach stacjonarnych.",ckeRef:"INF.02.2.1",tags:["motherboard","atx"]},
+    {id:"FB-B04",area:"B",difficulty:"medium",type:"mcq",q:"Ile kanałów pamięci obsługuje platforma Intel LGA1700 (12. gen) w konfiguracji Dual Channel?",options:["1","2","4","8"],correct:1,explanation:"LGA1700 (Alder Lake) obsługuje konfigurację Dual Channel (2 kanały) DDR4 lub DDR5.",ckeRef:"INF.02.2.2",tags:["memory","dual-channel","intel"]},
+    {id:"FB-B05",area:"B",difficulty:"easy",type:"mcq",q:"Czym charakteryzuje się dysk SSD NVMe w porównaniu z SATA SSD?",options:["Niższa prędkość odczytu","Wyższa prędkość dzięki interfejsowi PCIe","Brak bufora pamięci","Większy pobór energii"],correct:1,explanation:"NVMe korzysta z magistrali PCIe, co zapewnia przepustowość wielokrotnie wyższą niż SATA (6 Gb/s vs do 32 Gb/s dla PCIe 4.0 ×4).",ckeRef:"INF.02.2.2",tags:["ssd","nvme","storage"]},
+    // --- O: Systemy operacyjne ---
+    {id:"FB-O01",area:"O",difficulty:"easy",type:"mcq",q:"Które polecenie w systemie Windows wyświetla konfigurację IP wszystkich interfejsów sieciowych?",options:["ipconfig /all","ifconfig -a","netstat -a","ping /all"],correct:0,explanation:"Polecenie 'ipconfig /all' wyświetla pełną konfigurację TCP/IP wszystkich kart sieciowych w Windows.",ckeRef:"INF.02.3.1",tags:["windows","network","cli"]},
+    {id:"FB-O02",area:"O",difficulty:"easy",type:"mcq",q:"Jaki system plików jest domyślnie używany przez Windows 10 dla partycji systemowej?",options:["FAT32","exFAT","NTFS","ext4"],correct:2,explanation:"Windows 10 używa systemu NTFS (New Technology File System) dla partycji systemowej, obsługuje prawa dostępu, kompresję i szyfrowanie.",ckeRef:"INF.02.3.2",tags:["filesystem","ntfs","windows"]},
+    {id:"FB-O03",area:"O",difficulty:"medium",type:"mcq",q:"Co to jest wirtualna pamięć w systemie operacyjnym?",options:["Pamięć graficzna GPU","Rozszerzenie przestrzeni adresowej RAM z wykorzystaniem dysku","Pamięć cache procesora","Pamięć ROM BIOS"],correct:1,explanation:"Wirtualna pamięć pozwala systemowi używać miejsca na dysku jako rozszerzenia RAM, dzięki czemu programy mogą zajmować więcej pamięci niż fizycznie dostępna.",ckeRef:"INF.02.3.3",tags:["virtual-memory","os"]},
+    {id:"FB-O04",area:"O",difficulty:"easy",type:"mcq",q:"Polecenie 'ls -la' w systemie Linux wyświetla:",options:["Tylko pliki ukryte","Listę procesów","Wszystkie pliki (w tym ukryte) z uprawnieniami","Dostępne partycje dysku"],correct:2,explanation:"'ls -l' wyświetla szczegóły, '-a' wyświetla wszystkie pliki (w tym zaczynające się od kropki – ukryte).",ckeRef:"INF.02.3.1",tags:["linux","cli","filesystem"]},
+    {id:"FB-O05",area:"O",difficulty:"medium",type:"mcq",q:"Które narzędzie w Windows służy do zarządzania dyskami i partycjami?",options:["regedit","msconfig","diskmgmt.msc","devmgmt.msc"],correct:2,explanation:"diskmgmt.msc to Zarządzanie dyskami — graficzne narzędzie do tworzenia, usuwania i formatowania partycji.",ckeRef:"INF.02.3.2",tags:["windows","disk","management"]},
+    // --- N: Sieci komputerowe ---
+    {id:"FB-N01",area:"N",difficulty:"easy",type:"mcq",q:"Które urządzenie pracuje w warstwie 3 modelu OSI i kieruje pakietami między sieciami?",options:["Switch","Hub","Router","Repeater"],correct:2,explanation:"Router pracuje w warstwie sieciowej (warstwa 3) i podejmuje decyzje o trasowaniu pakietów między różnymi sieciami.",ckeRef:"INF.02.4.1",tags:["router","osi","network"]},
+    {id:"FB-N02",area:"N",difficulty:"easy",type:"mcq",q:"Jaka jest maksymalna długość kabla skrętki UTP Cat5e w sieci Ethernet 1000BASE-T?",options:["50 m","100 m","150 m","300 m"],correct:1,explanation:"Maksymalna długość segmentu Ethernet na kablu UTP Cat5e wynosi 100 m.",ckeRef:"INF.02.4.2",tags:["cable","ethernet","utp"]},
+    {id:"FB-N03",area:"N",difficulty:"medium",type:"mcq",q:"Adres IP 192.168.10.0/24 — ile hostów można zaadresować w tej sieci?",options:["254","255","256","128"],correct:0,explanation:"/24 daje 256 adresów; odjąć adres sieci i broadcast = 254 użytecznych adresów hostów.",ckeRef:"INF.02.4.3",tags:["ip","subnet","addressing"]},
+    {id:"FB-N04",area:"N",difficulty:"easy",type:"mcq",q:"Jaki protokół jest odpowiedzialny za dynamiczne przydzielanie adresów IP hostom?",options:["DNS","FTP","DHCP","SMTP"],correct:2,explanation:"DHCP (Dynamic Host Configuration Protocol) automatycznie przydziela adresy IP, maski podsieci, bram domyślnych i serwery DNS.",ckeRef:"INF.02.4.1",tags:["dhcp","protocol","network"]},
+    {id:"FB-N05",area:"N",difficulty:"medium",type:"mcq",q:"Które polecenie w Windows sprawdza trasę do zdalnego hosta, podając kolejne węzły?",options:["ping","ipconfig","tracert","nslookup"],correct:2,explanation:"tracert (trace route) wysyła pakiety z rosnącym TTL, odkrywając kolejne routery na ścieżce.",ckeRef:"INF.02.4.3",tags:["tracert","routing","diagnostics"]},
+    // --- P: Peryferia ---
+    {id:"FB-P01",area:"P",difficulty:"easy",type:"mcq",q:"Który interfejs drukarki zapewnia połączenie bezprzewodowe w standardzie 802.11?",options:["USB","LPT","Ethernet","Wi-Fi"],correct:3,explanation:"Wi-Fi (802.11) umożliwia bezprzewodowe drukowanie bez fizycznego połączenia z komputerem.",ckeRef:"INF.02.5.1",tags:["printer","wireless","wifi"]},
+    {id:"FB-P02",area:"P",difficulty:"easy",type:"mcq",q:"Co to jest DPI w kontekście drukarek i skanerów?",options:["Data Per Interface","Dots Per Inch — rozdzielczość","Distance Per Image","Digital Print Index"],correct:1,explanation:"DPI (Dots Per Inch) określa rozdzielczość wydruku lub skanu — im wyższe DPI, tym więcej szczegółów.",ckeRef:"INF.02.5.1",tags:["printer","scanner","resolution"]},
+    {id:"FB-P03",area:"P",difficulty:"medium",type:"mcq",q:"Który rodzaj drukarki używa tonera i bębna światłoczułego?",options:["Atramentowa","Termiczna","Laserowa","Igłowa"],correct:2,explanation:"Drukarka laserowa używa tonera (proszku) i bębna światłoczułego ładowanego elektrostatycznie.",ckeRef:"INF.02.5.1",tags:["printer","laser","toner"]},
+    {id:"FB-P04",area:"P",difficulty:"easy",type:"mcq",q:"Czym jest UPS w kontekście zasilania sprzętu komputerowego?",options:["Universal Port Switch","Uninterruptible Power Supply — zasilacz awaryjny","USB Power Source","Unified Print Server"],correct:1,explanation:"UPS (Uninterruptible Power Supply) to zasilacz awaryjny chroniący sprzęt przed przerwami i wahaniami napięcia.",ckeRef:"INF.02.5.2",tags:["ups","power","hardware"]},
+    {id:"FB-P05",area:"P",difficulty:"medium",type:"mcq",q:"Jaki standard złącza jest najczęściej używany do podłączenia monitora z obsługą DisplayPort 1.4?",options:["VGA","DVI-D","HDMI 1.4","DisplayPort"],correct:3,explanation:"DisplayPort 1.4 to złącze obsługujące rozdzielczości 8K i wysoką częstotliwość odświeżania, dedykowane dla profesjonalnych monitorów.",ckeRef:"INF.02.5.1",tags:["monitor","displayport","connector"]},
+    // --- D: Diagnostyka ---
+    {id:"FB-D01",area:"D",difficulty:"easy",type:"mcq",q:"Co oznacza ciągły sygnał dźwiękowy POST podczas uruchamiania komputera (AMI BIOS)?",options:["Normalne uruchomienie","Problem z pamięcią RAM","Błąd karty graficznej","Przegrzanie procesora"],correct:2,explanation:"W AMI BIOS jeden długi ciągły dźwięk POST oznacza problem z kartą graficzną lub jej brakiem.",ckeRef:"INF.02.6.1",tags:["bios","post","beep","diagnostics"]},
+    {id:"FB-D02",area:"D",difficulty:"medium",type:"mcq",q:"Który program w Windows pozwala sprawdzić zdrowie dysku twardego przy użyciu technologii S.M.A.R.T.?",options:["defrag","chkdsk","CrystalDiskInfo","diskpart"],correct:2,explanation:"CrystalDiskInfo odczytuje parametry S.M.A.R.T. dysku i ostrzega o zbliżającej się awarii.",ckeRef:"INF.02.6.2",tags:["smart","hdd","diagnostics"]},
+    {id:"FB-D03",area:"D",difficulty:"easy",type:"mcq",q:"Co sprawdza polecenie 'chkdsk /f' w Windows?",options:["Formatuje dysk","Sprawdza i naprawia błędy systemu plików","Defragmentuje dysk","Wyświetla partycje"],correct:1,explanation:"chkdsk /f sprawdza integralność systemu plików i naprawia napotkane błędy.",ckeRef:"INF.02.6.2",tags:["chkdsk","windows","diagnostics"]},
+    {id:"FB-D04",area:"D",difficulty:"medium",type:"mcq",q:"Komputer uruchamia się, ale monitor pozostaje czarny. Pierwsze działanie diagnostyczne?",options:["Wymiana karty graficznej","Sprawdzenie kabla i połączenia monitora","Reinstalacja systemu","Aktualizacja BIOS"],correct:1,explanation:"Zawsze zaczyna się od sprawdzenia najprostszych przyczyn — kabla sygnałowego i źródła zasilania monitora.",ckeRef:"INF.02.6.1",tags:["troubleshooting","monitor","diagnostics"]},
+    {id:"FB-D05",area:"D",difficulty:"easy",type:"mcq",q:"Jaka jest typowa temperatura robocza procesora pod pełnym obciążeniem (zakres akceptowalny)?",options:["20–40°C","40–50°C","60–90°C","100–120°C"],correct:2,explanation:"Większość współczesnych procesorów pracuje bezpiecznie w zakresie 60–90°C pod obciążeniem; powyżej ~95°C włącza się throttling.",ckeRef:"INF.02.6.1",tags:["cpu","temperature","thermal"]},
+    // --- L: Prawo, BHP, licencje ---
+    {id:"FB-L01",area:"L",difficulty:"easy",type:"mcq",q:"Jaką licencję stosuje oprogramowanie Open Source umożliwiające darmowe używanie, modyfikowanie i dystrybucję?",options:["Licencja komercyjna","GPL (GNU General Public License)","Freeware","Shareware"],correct:1,explanation:"GPL to licencja copyleft — pozwala na darmowe użytkowanie, modyfikację i dystrybucję pod warunkiem zachowania tej samej licencji.",ckeRef:"INF.02.7.1",tags:["license","gpl","open-source"]},
+    {id:"FB-L02",area:"L",difficulty:"easy",type:"mcq",q:"Który przepis reguluje ochronę danych osobowych w UE od 2018 roku?",options:["Ustawa o informatyzacji","RODO (GDPR)","Ustawa o prawie autorskim","Kodeks Pracy"],correct:1,explanation:"RODO (Rozporządzenie Ogólne o Ochronie Danych) weszło w życie 25 maja 2018 r. i reguluje przetwarzanie danych osobowych w UE.",ckeRef:"INF.02.7.2",tags:["rodo","gdpr","law"]},
+    {id:"FB-L03",area:"L",difficulty:"medium",type:"mcq",q:"Co oznacza skrót BHP w kontekście pracy z komputerem?",options:["Bezprzewodowa Komunikacja Profesjonalna","Bezpieczeństwo i Higiena Pracy","Baza Hostów i Portów","Budowa Hardware i Peryferia"],correct:1,explanation:"BHP — Bezpieczeństwo i Higiena Pracy — reguluje zasady bezpiecznego środowiska pracy, w tym przy komputerach.",ckeRef:"INF.02.7.3",tags:["bhp","safety","work"]},
+    {id:"FB-L04",area:"L",difficulty:"easy",type:"mcq",q:"Oprogramowanie Freeware to:",options:["Oprogramowanie płatne z próbną wersją","Oprogramowanie bezpłatne, ale zamknięty kod źródłowy","Oprogramowanie o otwartym kodzie","Oprogramowanie wymagające subskrypcji"],correct:1,explanation:"Freeware jest bezpłatne w użytkowaniu, ale kod źródłowy nie jest udostępniony — różni się od Free/Open Source Software.",ckeRef:"INF.02.7.1",tags:["freeware","license","software"]},
+    // --- W: Windows Server ---
+    {id:"FB-W01",area:"W",difficulty:"medium",type:"mcq",q:"Która rola Windows Server zarządza użytkownikami, grupami i zasadami w sieci?",options:["DNS Server","DHCP Server","Active Directory Domain Services","File and Storage Services"],correct:2,explanation:"Active Directory Domain Services (AD DS) to katalog sieciowy zarządzający obiektami domeny: użytkownikami, komputerami i zasadami.",ckeRef:"INF.02.8.1",tags:["active-directory","windows-server","domain"]},
+    {id:"FB-W02",area:"W",difficulty:"easy",type:"mcq",q:"Narzędzie 'Group Policy' (GPO) w Windows Server służy do:",options:["Monitorowania sieci","Zarządzania ustawieniami komputerów i użytkowników w domenie","Tworzenia kopii zapasowych","Zarządzania drukarkami"],correct:1,explanation:"GPO (Group Policy Objects) pozwalają administratorowi centralnie stosować ustawienia do komputerów i użytkowników w domenie AD.",ckeRef:"INF.02.8.2",tags:["gpo","windows-server","policy"]},
+    {id:"FB-W03",area:"W",difficulty:"medium",type:"mcq",q:"Co to jest RAID 1?",options:["Dzielenie danych na wiele dysków (striping)","Lustrzane kopiowanie danych na dwóch dyskach","Parzystość danych na trzech dyskach","Striping z parzystością"],correct:1,explanation:"RAID 1 (mirroring) duplikuje dane na dwóch dyskach — awaria jednego nie powoduje utraty danych.",ckeRef:"INF.02.8.3",tags:["raid","storage","redundancy"]},
+    // --- 6: IPv6 i routing ---
+    {id:"FB-601",area:"6",difficulty:"easy",type:"mcq",q:"Ile bitów ma adres IPv6?",options:["32","64","128","256"],correct:2,explanation:"Adres IPv6 ma 128 bitów (16 bajtów), zapisywany jako 8 grup 4 cyfr szesnastkowych.",ckeRef:"INF.02.9.1",tags:["ipv6","addressing"]},
+    {id:"FB-602",area:"6",difficulty:"medium",type:"mcq",q:"Który adres IPv6 jest odpowiednikiem adresu loopback 127.0.0.1 w IPv4?",options:["::","::1","fe80::1","ff02::1"],correct:1,explanation:"::1 to adres loopback IPv6, odpowiednik 127.0.0.1 z IPv4.",ckeRef:"INF.02.9.1",tags:["ipv6","loopback"]},
+    {id:"FB-603",area:"6",difficulty:"medium",type:"mcq",q:"Jaki protokół zastępuje ARP w sieciach IPv6?",options:["ICMPv6 NDP","RARP","DHCP","OSPF"],correct:0,explanation:"Neighbor Discovery Protocol (NDP) działa przez ICMPv6 i zastępuje ARP, dostarczając rozwiązanie adresów warstwy 2.",ckeRef:"INF.02.9.2",tags:["ipv6","ndp","arp"]},
+    // --- V: Wirtualizacja i backup ---
+    {id:"FB-V01",area:"V",difficulty:"easy",type:"mcq",q:"Czym jest hypervisor Typu 1 (bare-metal)?",options:["Oprogramowanie instalowane w systemie gościa","Platforma wirtualizacji działająca bezpośrednio na sprzęcie","Kontener aplikacji Docker","Emulator procesora"],correct:1,explanation:"Hypervisor Typu 1 (np. VMware ESXi, Hyper-V) działa bezpośrednio na sprzęcie bez systemu operacyjnego hosta.",ckeRef:"INF.02.10.1",tags:["virtualization","hypervisor","type1"]},
+    {id:"FB-V02",area:"V",difficulty:"medium",type:"mcq",q:"Reguła 3-2-1 backupu oznacza:",options:["3 serwery, 2 lokalizacje, 1 system","3 kopie danych, 2 różne nośniki, 1 kopia poza siedzibą","3 dyski, 2 macierze, 1 chmura","3 pełne kopie, 2 różnicowe, 1 przyrostowa"],correct:1,explanation:"Reguła 3-2-1: trzy kopie danych, na dwóch różnych typach nośników, z co najmniej jedną kopią off-site.",ckeRef:"INF.02.10.2",tags:["backup","321-rule","storage"]},
+    {id:"FB-V03",area:"V",difficulty:"easy",type:"mcq",q:"Co to jest snapshot maszyny wirtualnej?",options:["Kopia zapasowa na taśmie","Zapis stanu maszyny wirtualnej w danej chwili","Klon dysku fizycznego","Migawka sieci VLAN"],correct:1,explanation:"Snapshot VM zapisuje stan maszyny (pamięć, dysk, konfiguracja) w danej chwili, umożliwiając szybki powrót do tego stanu.",ckeRef:"INF.02.10.1",tags:["vm","snapshot","virtualization"]},
+    // --- Z: Bezpieczeństwo ---
+    {id:"FB-Z01",area:"Z",difficulty:"easy",type:"mcq",q:"Który atak polega na przeciążeniu serwera ogromną liczbą zapytań?",options:["Phishing","SQL Injection","DoS / DDoS","Man-in-the-Middle"],correct:2,explanation:"DoS (Denial of Service) i DDoS (Distributed DoS) przeciążają serwer, uniemożliwiając obsługę legalnych użytkowników.",ckeRef:"INF.02.11.1",tags:["security","dos","attack"]},
+    {id:"FB-Z02",area:"Z",difficulty:"easy",type:"mcq",q:"Co to jest firewall?",options:["Program antywirusowy","Narzędzie do szyfrowania dysków","System filtrowania ruchu sieciowego","Protokół VPN"],correct:2,explanation:"Firewall kontroluje ruch sieciowy na podstawie reguł, blokując nieautoryzowane połączenia przychodzące i wychodzące.",ckeRef:"INF.02.11.2",tags:["firewall","security","network"]},
+    {id:"FB-Z03",area:"Z",difficulty:"medium",type:"mcq",q:"Które szyfrowanie asymetryczne jest powszechnie stosowane w HTTPS do wymiany kluczy?",options:["AES-256","RSA","MD5","SHA-1"],correct:1,explanation:"RSA (i nowsze ECDH) to algorytmy asymetryczne używane do bezpiecznej wymiany kluczy w TLS/HTTPS.",ckeRef:"INF.02.11.3",tags:["encryption","rsa","https","tls"]},
+    // --- R: Praktyka CKE ---
+    {id:"FB-R01",area:"R",difficulty:"medium",type:"mcq",q:"Egzamin INF.02 składa się z części:",options:["Tylko pisemnej","Tylko praktycznej","Pisemnej i praktycznej","Ustnej i pisemnej"],correct:2,explanation:"Egzamin zawodowy INF.02 ma dwie części: pisemną (test) i praktyczną (zadanie egzaminacyjne).",ckeRef:"INF.02.R.1",tags:["exam","cke","inf02"]},
+    {id:"FB-R02",area:"R",difficulty:"easy",type:"mcq",q:"Minimalny próg zaliczenia części pisemnej egzaminu INF.02 to:",options:["30%","40%","50%","60%"],correct:2,explanation:"Aby zdać część pisemną egzaminu potwierdzającego kwalifikację INF.02, należy uzyskać co najmniej 50% punktów.",ckeRef:"INF.02.R.1",tags:["exam","cke","pass-threshold"]},
+    {id:"FB-R03",area:"R",difficulty:"medium",type:"mcq",q:"Które urządzenie działa w warstwie 2 modelu OSI i filtruje ruch na podstawie adresów MAC?",options:["Router","Hub","Switch","Modem"],correct:2,explanation:"Switch (przełącznik) pracuje w warstwie łącza danych (warstwa 2) i przesyła ramki na podstawie tablicy adresów MAC.",ckeRef:"INF.02.4.1",tags:["switch","osi","mac"]}
+  ];
+
   /* -------- Question source -------- */
   async function getQuestions() {
     if (window.INF02 && Array.isArray(window.INF02.questions) && window.INF02.questions.length) {
@@ -514,17 +579,40 @@ input { font: inherit; }
       const res = await fetch('../data/questions.json');
       if (res.ok) {
         const data = await res.json();
-        return Array.isArray(data) ? data : (Array.isArray(data.questions) ? data.questions : []);
+        const loaded = Array.isArray(data) ? data : (Array.isArray(data.questions) ? data.questions : []);
+        if (loaded.length) return loaded;
       }
-    } catch (e) { console.warn('[quiz] fetch questions.json failed', e); }
-    return [];
+    } catch (e) { console.warn('[quiz] fetch questions.json failed — using embedded fallback', e); }
+    console.info('[quiz] Using embedded fallback question bank (' + FALLBACK_QUESTIONS.length + ' questions)');
+    return FALLBACK_QUESTIONS;
   }
 
   /* -------- Question selection per mode -------- */
   function selectExam(pool, n) {
-    // Random sample, but try to keep area proportions roughly even
-    if (pool.length <= n) return shuffle(pool).slice(0, n);
-    return shuffle(pool).slice(0, n);
+    // Sample questions keeping area proportions roughly even (round-robin per area)
+    if (pool.length <= n) return shuffle(pool);
+    const byArea = {};
+    for (const q of pool) {
+      if (!byArea[q.area]) byArea[q.area] = [];
+      byArea[q.area].push(q);
+    }
+    const areas = Object.keys(byArea);
+    areas.forEach(a => { byArea[a] = shuffle(byArea[a]); });
+    const indices = {}; areas.forEach(a => { indices[a] = 0; });
+    const result = [];
+    // Round-robin until we have n questions or exhaust pool
+    while (result.length < n) {
+      let added = 0;
+      for (const a of shuffle(areas)) {
+        if (result.length >= n) break;
+        if (indices[a] < byArea[a].length) {
+          result.push(byArea[a][indices[a]++]);
+          added++;
+        }
+      }
+      if (added === 0) break; // all areas exhausted
+    }
+    return shuffle(result).slice(0, n);
   }
   function selectTopic(pool, area, n) {
     const filtered = pool.filter(q => q.area === area);
@@ -637,6 +725,10 @@ input { font: inherit; }
   /* -------- Public API (per Architecture sec 1.2) -------- */
   async function startSession(mode, params) {
     if (!RUN.questions.length) {
+      // Show loading state while questions fetch
+      const r = root();
+      r.innerHTML = `<section class="picker-wrap" style="text-align:center;padding:var(--sp-2xl)">
+        <p style="color:var(--color-text-muted);font-size:var(--fs-md)">Ładowanie pytań…</p></section>`;
       RUN.questions = await getQuestions();
       RUN.questionsById = {};
       RUN.questions.forEach(q => { RUN.questionsById[q.id] = q; });
@@ -754,12 +846,44 @@ input { font: inherit; }
       if (a.correct) perArea[k].correct += 1;
     }
 
-    // Persist via shell — append session, FIFO 50
+    // Persist via shell — append session, FIFO 50; also update mastery per area
     const state = shellGetState();
     const oldSessions = (state && Array.isArray(state.sessions)) ? state.sessions : [];
     const nextSessions = oldSessions.concat([RUN.session]);
     while (nextSessions.length > 50) nextSessions.shift();
-    await shellSetState({ sessions: nextSessions });
+
+    // Update knowledge mastery with EWMA (α=0.3) — ADR-005
+    const oldKnowledge = (state && state.knowledge) || {};
+    const oldPerArea = (oldKnowledge && oldKnowledge.perArea) || {};
+    const newPerArea = Object.assign({}, oldPerArea);
+    const ALPHA = 0.3;
+    for (const [areaCode, areaData] of Object.entries(perArea)) {
+      const sessionMastery = areaData.attempts > 0 ? areaData.correct / areaData.attempts : 0;
+      const prev = (newPerArea[areaCode] && typeof newPerArea[areaCode].mastery === 'number')
+        ? newPerArea[areaCode].mastery : sessionMastery;
+      const next = prev + ALPHA * (sessionMastery - prev);
+      newPerArea[areaCode] = Object.assign({}, newPerArea[areaCode], {
+        mastery: +next.toFixed(4),
+        attempts: ((newPerArea[areaCode] && newPerArea[areaCode].attempts) || 0) + areaData.attempts,
+        lastSeen: new Date().toISOString()
+      });
+    }
+    const nextKnowledge = Object.assign({}, oldKnowledge, { perArea: newPerArea, updatedAt: new Date().toISOString() });
+
+    // Also save directly to localStorage when shell is absent (standalone mode)
+    const stateKey = 'inf02.v3.state';
+    try {
+      const rawState = await storage.getItem(stateKey);
+      const storedState = rawState ? JSON.parse(rawState) : {};
+      const mergedState = Object.assign({}, storedState, {
+        sessions: nextSessions,
+        knowledge: nextKnowledge,
+        updatedAt: new Date().toISOString()
+      });
+      await storage.setItem(stateKey, JSON.stringify(mergedState));
+    } catch (e) { console.warn('[quiz] localStorage persist failed', e); }
+
+    await shellSetState({ sessions: nextSessions, knowledge: nextKnowledge });
 
     // Emit
     shellEmit('quiz:ended', {
@@ -840,7 +964,7 @@ input { font: inherit; }
     if (live) live.textContent = text;
   }
   function labelForMode(m) {
-    return ({ exam: 'Egzamin', adaptive: 'Adaptywny', topic: 'Obszar', review: 'Powtórka', diagnostic: 'Diagnoza' })[m] || m;
+    return ({ exam: 'Egzamin', adaptive: 'Adaptacyjny', topic: 'Obszar', review: 'Powtórka', diagnostic: 'Diagnoza' })[m] || m;
   }
 
   function renderEmpty(msg) {
@@ -864,7 +988,7 @@ input { font: inherit; }
         <h2>Wybierz tryb quizu</h2>
         <div class="picker-grid">
           <button class="btn btn--primary" data-mode="exam">Egzamin (40 pyt × 60 min)</button>
-          <button class="btn" data-mode="adaptive">Adaptywny (20 pyt)</button>
+          <button class="btn" data-mode="adaptive">Adaptacyjny (20 pyt)</button>
           <button class="btn" data-mode="topic">Obszar tematyczny</button>
           <button class="btn" data-mode="review">Powtórka błędów</button>
         </div>

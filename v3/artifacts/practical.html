@@ -873,18 +873,22 @@
    * Scenario loading
    * =========================================================== */
   async function loadScenarios() {
-    // Priority: window.INF02.scenarios → fetch ./data/scenarios.json → builtin
+    // Priority: window.INF02.scenarios → fetch ../data/scenarios.json → builtin
     if (window.INF02 && Array.isArray(window.INF02.scenarios) && window.INF02.scenarios.length) {
       return window.INF02.scenarios;
     }
     try {
-      const r = await fetch("../data/scenarios.json", { cache: "force-cache" });
+      const r = await fetch("../data/scenarios.json", { cache: "no-cache" });
       if (r.ok) {
         const data = await r.json();
         if (Array.isArray(data) && data.length) return data;
         if (data && Array.isArray(data.scenarios)) return data.scenarios;
+      } else {
+        console.error("[practical] scenarios.json fetch failed:", r.status, r.statusText);
       }
-    } catch (_) {}
+    } catch (e) {
+      console.error("[practical] scenarios.json fetch error:", e);
+    }
     return BUILTIN_SCENARIOS;
   }
 
@@ -1065,40 +1069,54 @@
   }
 
   /* ===========================================================
-   * Persistence (delegate to shell.setState; never write state directly)
+   * Persistence (delegate to shell.setState; localStorage fallback)
    * =========================================================== */
+  const PRACTICAL_SESSIONS_KEY = "inf02.v3.practical.sessions";
+
   function persistSession() {
-    if (!shellAvailable() || typeof window.INF02.shell.setState !== "function") return;
-    try {
-      const session = STATE.activeSession;
-      if (!session) return;
-      // append a "practical-in-progress" marker into sessions; shell can dedupe
-      // We don't push QuizSession here — we track activePractical separately
-      window.INF02.shell.setState({ activePractical: session.scenarioId });
-    } catch (_) {}
+    if (shellAvailable() && typeof window.INF02.shell.setState === "function") {
+      try {
+        const session = STATE.activeSession;
+        if (!session) return;
+        window.INF02.shell.setState({ activePractical: session.scenarioId });
+      } catch (_) {}
+    }
   }
 
   function persistSessionToShell(result) {
-    if (!shellAvailable() || typeof window.INF02.shell.setState !== "function") return;
+    const record = {
+      sessionId: result.sessionId,
+      mode: "practical",
+      questionIds: result.stepsResult.map(s => "Q-" + String(9000 + s.n).padStart(4, "0")),
+      answers: [],
+      startedAt: result.startedAt,
+      endedAt: result.endedAt,
+      score: result.percent,
+      isDiagnostic: false,
+      scenarioId: result.scenarioId,
+      passed: result.passed
+    };
+
+    // Persist via shell (preferred)
+    if (shellAvailable() && typeof window.INF02.shell.setState === "function") {
+      try {
+        const cur = (typeof window.INF02.shell.getState === "function") ? window.INF02.shell.getState() : null;
+        const sessions = (cur && Array.isArray(cur.sessions)) ? cur.sessions.slice() : [];
+        sessions.push(record);
+        window.INF02.shell.setState({ sessions: sessions.slice(-50), activePractical: null });
+      } catch (e) {
+        console.warn("[practical] shell persist failed", e);
+      }
+    }
+
+    // Also persist to localStorage directly as fallback (standalone mode)
     try {
-      const cur = (typeof window.INF02.shell.getState === "function") ? window.INF02.shell.getState() : null;
-      const sessions = (cur && Array.isArray(cur.sessions)) ? cur.sessions.slice() : [];
-      // QuizSession-shaped record with mode='practical' (semi-fit; actual practical session lives separately)
-      sessions.push({
-        sessionId: result.sessionId,
-        mode: "practical",
-        questionIds: result.stepsResult.map(s => "Q-" + String(9000 + s.n).padStart(4, "0")),
-        answers: [],
-        startedAt: result.startedAt,
-        endedAt: result.endedAt,
-        score: result.percent,
-        isDiagnostic: false,
-        scenarioId: result.scenarioId,
-        passed: result.passed
-      });
-      window.INF02.shell.setState({ sessions: sessions.slice(-50), activePractical: null });
+      const raw = localStorage.getItem(PRACTICAL_SESSIONS_KEY);
+      const sessions = raw ? JSON.parse(raw) : [];
+      sessions.push(record);
+      localStorage.setItem(PRACTICAL_SESSIONS_KEY, JSON.stringify(sessions.slice(-50)));
     } catch (e) {
-      console.warn("[practical] persist failed", e);
+      console.warn("[practical] localStorage persist failed", e);
     }
   }
 
@@ -1712,6 +1730,11 @@
    * Bootstrap
    * =========================================================== */
   async function init() {
+    // Show loading state
+    const root = document.getElementById("pp-root");
+    if (root) {
+      root.innerHTML = '<div style="padding:48px;text-align:center;color:var(--color-text-muted)">Ładowanie scenariuszy…</div>';
+    }
     try {
       STATE.scenarios = await loadScenarios();
     } catch (e) {

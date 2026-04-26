@@ -276,6 +276,10 @@
       <div id="emptyState" class="empty-state hidden">
         <h2>Wszystko nadrobione!</h2>
         <p>Następna fiszka <time id="nextDueTime">-</time>.</p>
+        <p style="margin-top:var(--sp-sm)">
+          Możesz w międzyczasie poćwiczyć w
+          <a href="quiz.html" style="color:var(--color-accent);font-weight:600;">quizie</a>.
+        </p>
       </div>
     </section>
 
@@ -337,8 +341,26 @@ window.INF02 = window.INF02 || {};
 INF02.shell = INF02.shell || (function fallbackShell() {
   // Minimal stand-alone fallback — używany tylko gdy artefakt
   // ładowany solo (np. self-test). Shell.html implementuje pełną wersję.
+  // Gdy shell nieobecny, ładujemy stan z localStorage (klucz inf02.v3.state).
+  const STATE_KEY = "inf02.v3.state";
   const subs = new Set();
-  let state = {
+
+  function loadFromStorage() {
+    try {
+      const raw = localStorage.getItem(STATE_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (parsed && typeof parsed === "object") return parsed;
+      }
+    } catch (_) {}
+    return null;
+  }
+
+  function saveToStorage(s) {
+    try { localStorage.setItem(STATE_KEY, JSON.stringify(s)); } catch (_) {}
+  }
+
+  const defaults = {
     version: "3.0.0",
     profile: null,
     knowledge: { perArea: {}, weakest: [], strongest: [], readinessForExam: 0 },
@@ -349,6 +371,13 @@ INF02.shell = INF02.shell || (function fallbackShell() {
     settings: { theme: "auto", reducedMotion: false, locale: "pl-PL" },
     seq: 0
   };
+
+  const persisted = loadFromStorage() || {};
+  let state = Object.assign({}, defaults, persisted);
+  // Ensure sub-objects are deep-merged, not replaced
+  state.cards = Object.assign({}, persisted.cards || {});
+  state.knowledge = Object.assign({}, defaults.knowledge, persisted.knowledge || {});
+
   const events = {
     listeners: new Map(),
     on(name, fn) {
@@ -370,6 +399,7 @@ INF02.shell = INF02.shell || (function fallbackShell() {
       if (patch && patch.cards) state.cards = Object.assign({}, prevCards, patch.cards);
       if (patch && patch.knowledge) state.knowledge = Object.assign({}, prevKnowledge, patch.knowledge);
       state.seq = (state.seq | 0) + 1;
+      saveToStorage(state);
       subs.forEach((fn) => { try { fn(state); } catch (e) {} });
       return state;
     },

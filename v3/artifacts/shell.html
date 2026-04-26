@@ -280,6 +280,32 @@ label{display:block;margin-bottom:var(--sp-xs);font-size:var(--fs-xs);color:var(
 .daily-goal__label { font-size:.8rem; color:var(--color-text-muted); margin-bottom:.25rem; }
 .daily-goal__bar { height:.5rem; background:var(--color-surface-2); border-radius:9999px; overflow:hidden; }
 .daily-goal__fill { height:100%; background:var(--color-accent); border-radius:9999px; transition:width .3s; }
+
+/* Settings form */
+.settings-group { margin-bottom: 1.25rem; }
+.settings-label { display: block; font-size: .875rem; font-weight: 600; color: var(--color-text-muted); margin-bottom: .375rem; }
+.settings-input { width: 100%; padding: .5rem .75rem; background: var(--color-surface-2); border: 1px solid var(--color-border); border-radius: .375rem; color: var(--color-text); font-size: .9rem; min-height: 40px; }
+.settings-input:focus { outline: none; border-color: var(--color-accent); }
+
+/* Achievement cards: locked state */
+.ach-card { display:flex; flex-direction:column; gap:.375rem; }
+.ach-card.locked { opacity:.4; filter:grayscale(1); }
+.ach-icon { font-size:1.75rem; line-height:1; }
+
+/* Light theme overrides */
+[data-theme="light"] {
+  --color-bg:#f8fafc;
+  --color-surface:#ffffff;
+  --color-surface-2:#f1f5f9;
+  --color-text:#0f172a;
+  --color-text-muted:#475569;
+  --color-border:#cbd5e1;
+  --color-accent-fg:#ffffff;
+  color-scheme: light;
+}
+[data-theme="dark"] {
+  color-scheme: dark;
+}
 </style>
 </head>
 <body>
@@ -416,6 +442,18 @@ label{display:block;margin-bottom:var(--sp-xs);font-size:var(--fs-xs);color:var(
     return String(s == null ? '' : s)
       .replace(/&/g,'&amp;').replace(/</g,'&lt;')
       .replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+  }
+
+  /* ---------- Theme application -------------------------------------- */
+  function applyTheme(theme) {
+    const root = document.documentElement;
+    if (theme === 'light') {
+      root.setAttribute('data-theme', 'light');
+    } else if (theme === 'dark') {
+      root.setAttribute('data-theme', 'dark');
+    } else {
+      root.removeAttribute('data-theme');
+    }
   }
 
   function formatDate(iso) {
@@ -1281,83 +1319,101 @@ label{display:block;margin-bottom:var(--sp-xs);font-size:var(--fs-xs);color:var(
     root.appendChild(el('p', { class:'disclaimer' }, 'Pytania w stylu CKE własnego autorstwa. Nie są kopią arkuszy egzaminacyjnych.'));
   }
 
-  /* ---------- Views: Settings (export/import) ------------------------ */
+  /* ---------- Views: Settings ---------------------------------------- */
   function renderSettings(root) {
     const s = _state;
-    const card = el('div', { class:'card' }, [el('h2', null, 'Ustawienia')]);
+    const profile = s.profile || {};
+    const settings = s.settings || {};
 
-    // Profile section
-    const profCard = el('div', { class:'card' }, [el('h3', null, 'Profil')]);
-    if (s.profile) {
-      profCard.appendChild(el('p', null, `Pseudonim: ${escapeHtml(s.profile.pseudonim || '—')}`));
-      profCard.appendChild(el('p', null, `Cel: ${s.profile.goal} · ${s.profile.dailyGoalMin} min/dzień`));
-      if (s.profile.examDate) profCard.appendChild(el('p', null, `Egzamin: ${formatDate(s.profile.examDate + 'T00:00:00Z')}`));
-    } else {
-      profCard.appendChild(el('p', { class:'muted' }, 'Brak profilu. Wykonaj diagnozę.'));
+    // Main settings card with form
+    const mainCard = el('div', { class:'card', style:'max-width:640px;margin:0 auto' });
+    mainCard.appendChild(el('h2', { style:'margin-bottom:1.5rem' }, 'Ustawienia'));
+
+    // Helper to create a settings group
+    function settingsGroup(labelText, inputEl) {
+      const g = el('div', { class:'settings-group' });
+      g.appendChild(el('label', { class:'settings-label' }, labelText));
+      g.appendChild(inputEl);
+      return g;
     }
 
-    // Preferences (theme, reduced motion)
-    const prefCard = el('div', { class:'card' }, [el('h3', null, 'Preferencje')]);
+    // Pseudonym input
+    const pseudoInp = el('input', { type:'text', id:'s-pseudo', maxlength:'24',
+      class:'settings-input', placeholder:'np. Technik2026' });
+    pseudoInp.value = profile.pseudonim || '';
+    mainCard.appendChild(settingsGroup('Pseudonim (opcjonalny)', pseudoInp));
 
-    // Reduced motion toggle
-    const rmRow = el('div', { class:'setting-row' }, [
-      el('div', { class:'label' }, [
-        el('div', null, 'Ograniczone animacje'),
-        el('div', { class:'desc' }, 'Wyłącza przejścia i animacje.')
-      ])
-    ]);
-    const rmLbl = el('label', { class:'toggle' });
-    const rmInp = el('input', { type:'checkbox' });
-    rmInp.checked = !!s.settings.reducedMotion;
-    rmInp.addEventListener('change', () => {
-      setState({ settings: { reducedMotion: rmInp.checked } });
-    });
-    rmLbl.appendChild(rmInp);
-    rmLbl.appendChild(el('span', { class:'slider' }));
-    rmRow.appendChild(rmLbl);
-    prefCard.appendChild(rmRow);
+    // Exam date input
+    const examInp = el('input', { type:'date', id:'s-examdate', class:'settings-input' });
+    examInp.value = profile.examDate || '';
+    mainCard.appendChild(settingsGroup('Data egzaminu', examInp));
 
-    // Sound toggle
-    const sndRow = el('div', { class:'setting-row' }, [
-      el('div', { class:'label' }, [
-        el('div', null, 'Dźwięki'),
-        el('div', { class:'desc' }, 'Krótkie potwierdzenia.')
-      ])
-    ]);
-    const sndLbl = el('label', { class:'toggle' });
-    const sndInp = el('input', { type:'checkbox' });
-    sndInp.checked = !!s.settings.soundEnabled;
-    sndInp.addEventListener('change', () => {
-      setState({ settings: { soundEnabled: sndInp.checked } });
-    });
-    sndLbl.appendChild(sndInp);
-    sndLbl.appendChild(el('span', { class:'slider' }));
-    sndRow.appendChild(sndLbl);
-    prefCard.appendChild(sndRow);
+    // Daily goal input
+    const goalInp = el('input', { type:'number', id:'s-goal', min:'5', max:'120', class:'settings-input' });
+    goalInp.value = String(profile.dailyGoalMin || 20);
+    mainCard.appendChild(settingsGroup('Dzienny cel nauki (minuty, 5–120)', goalInp));
 
-    // Theme
-    const thRow = el('div', { class:'setting-row' }, [
-      el('div', { class:'label' }, [
-        el('div', null, 'Motyw'),
-        el('div', { class:'desc' }, 'auto / jasny / ciemny')
-      ])
-    ]);
-    const thSel = el('select');
-    for (const t of ['auto','light','dark']) {
-      const o = el('option', { value:t }, t);
-      if (t === s.settings.theme) o.setAttribute('selected','');
+    // Theme select
+    const thSel = el('select', { id:'s-theme', class:'settings-input' });
+    const themeOptions = [['auto','Automatyczny (systemowy)'],['light','Jasny'],['dark','Ciemny']];
+    for (const [val, lbl] of themeOptions) {
+      const o = el('option', { value:val }, lbl);
+      if ((settings.theme || 'auto') === val) o.setAttribute('selected','');
       thSel.appendChild(o);
     }
-    thSel.style.maxWidth = '160px';
-    thSel.addEventListener('change', () => {
-      setState({ settings: { theme: thSel.value } });
-    });
-    thRow.appendChild(thSel);
-    prefCard.appendChild(thRow);
+    // Apply theme immediately on change
+    thSel.addEventListener('change', () => applyTheme(thSel.value));
+    mainCard.appendChild(settingsGroup('Motyw', thSel));
 
-    // Export/Import
-    const ioCard = el('div', { class:'card' }, [el('h3', null, 'Postęp — eksport / import')]);
-    const expBtn = el('button', { class:'btn', id:'btnExport' }, 'Eksportuj postępy');
+    // Reduced motion toggle
+    const rmWrap = el('label', { style:'display:flex;align-items:center;gap:.5rem;cursor:pointer;font-size:.9rem' });
+    const rmInp = el('input', { type:'checkbox', id:'s-motion' });
+    rmInp.checked = !!settings.reducedMotion;
+    rmWrap.appendChild(rmInp);
+    rmWrap.appendChild(document.createTextNode('Wyłącz animacje (dostępność)'));
+    mainCard.appendChild(settingsGroup('Zredukowany ruch', rmWrap));
+
+    // Sound toggle
+    const sndWrap = el('label', { style:'display:flex;align-items:center;gap:.5rem;cursor:pointer;font-size:.9rem' });
+    const sndInp = el('input', { type:'checkbox', id:'s-sound' });
+    sndInp.checked = !!settings.soundEnabled;
+    sndWrap.appendChild(sndInp);
+    sndWrap.appendChild(document.createTextNode('Włącz dźwięki potwierdzenia'));
+    mainCard.appendChild(settingsGroup('Dźwięki', sndWrap));
+
+    // Buttons row
+    const btnRow = el('div', { style:'display:flex;gap:.75rem;flex-wrap:wrap;margin-top:1.5rem' });
+
+    // Save button
+    const saveBtn = el('button', { class:'btn' }, 'Zapisz ustawienia');
+    saveBtn.addEventListener('click', () => {
+      const pseudo = pseudoInp.value.trim();
+      const examDate = examInp.value;
+      const goal = parseInt(goalInp.value, 10) || 20;
+      const theme = thSel.value;
+      const reducedMotion = rmInp.checked;
+      const soundEnabled = sndInp.checked;
+
+      const cur = _state;
+      const newProfile = Object.assign({}, cur.profile || {}, {
+        pseudonim: pseudo || undefined,
+        examDate: examDate || undefined,
+        dailyGoalMin: Math.min(120, Math.max(5, goal)),
+        goal: (cur.profile && cur.profile.goal) || 'pass',
+        onboardedAt: (cur.profile && cur.profile.onboardedAt) || new Date().toISOString()
+      });
+      if (!newProfile.pseudonim) delete newProfile.pseudonim;
+      if (!newProfile.examDate)  delete newProfile.examDate;
+
+      const newSettings = Object.assign({}, cur.settings, { theme, reducedMotion, soundEnabled, locale: 'pl-PL' });
+      setState(Object.assign({}, cur, { profile: newProfile, settings: newSettings }));
+      applyTheme(theme);
+      showToast('Ustawienia zapisane', 'success');
+    });
+    btnRow.appendChild(saveBtn);
+
+    // Export button
+    const expBtn = el('button', { class:'btn ghost' }, '📤 Eksportuj postępy');
     expBtn.addEventListener('click', () => {
       try {
         const json = exportState();
@@ -1365,88 +1421,104 @@ label{display:block;margin-bottom:var(--sp-xs);font-size:var(--fs-xs);color:var(
         const url = URL.createObjectURL(blob);
         const a = document.getElementById('exportLink');
         a.href = url;
-        a.download = `inf02-progress-${todayIso()}.json`;
+        a.download = 'inf02-postepy-' + todayIso() + '.json';
         a.removeAttribute('hidden');
         a.click();
         a.setAttribute('hidden','');
         setTimeout(() => URL.revokeObjectURL(url), 1000);
-        showToast('Wyeksportowano postępy', 'success');
+        showToast('Eksport zapisany', 'success');
       } catch (e) {
         showToast('Błąd eksportu: ' + e.message, 'danger');
       }
     });
-    const impBtn = el('button', { class:'btn ghost', id:'btnImport' }, 'Importuj postępy…');
+    btnRow.appendChild(expBtn);
+
+    // Import button
+    const impBtn = el('button', { class:'btn ghost' }, '📥 Importuj postępy');
     impBtn.addEventListener('click', () => {
       const f = document.getElementById('importFile');
       f.value = '';
       f.click();
     });
-    const impDesc = el('p', { class:'muted', style:'margin-top:var(--sp-sm);font-size:var(--fs-xs)' },
-      'Wczytaj plik JSON wcześniej wyeksportowany. Aktualne dane zostaną zastąpione.');
-    ioCard.appendChild(expBtn);
-    ioCard.appendChild(document.createTextNode(' '));
-    ioCard.appendChild(impBtn);
-    ioCard.appendChild(impDesc);
+    btnRow.appendChild(impBtn);
 
-    // Migration trigger (manual)
-    const migCard = el('div', { class:'card' }, [el('h3', null, 'Migracja z v2')]);
-    migCard.appendChild(el('p', { class:'muted' }, 'Jeśli istnieje stary postęp z v2 (klucz inf02_progress_v2), możesz go zaimportować.'));
-    const migBtn = el('button', { class:'btn ghost' }, 'Sprawdź i migruj');
+    mainCard.appendChild(btnRow);
+
+    // Footer / danger zone
+    const footerDiv = el('div', { style:'margin-top:2rem;padding-top:1rem;border-top:1px solid var(--color-border)' });
+    footerDiv.appendChild(el('p', { style:'font-size:.8rem;color:var(--color-text-muted)' },
+      `Wersja: ${s.version} · Storage: ${_storageKind} · State seq: ${s.seq}`));
+    footerDiv.appendChild(el('p', { style:'font-size:.8rem;color:var(--color-text-muted);margin-bottom:.75rem' },
+      'Dane przechowywane lokalnie w przeglądarce. Eksportuj regularnie!'));
+
+    const migBtn = el('button', { class:'btn ghost', style:'margin-right:.5rem;margin-bottom:.5rem' }, 'Sprawdź i migruj z v2');
     migBtn.addEventListener('click', async () => {
       const r = await migrateFromV2();
-      if (r.migrated) showToast(`Zmigrowano: ${r.fields.join(', ')}`, 'success');
+      if (r.migrated) showToast('Zmigrowano: ' + r.fields.join(', '), 'success');
       else showToast('Brak danych v2 do migracji', 'danger');
     });
-    migCard.appendChild(migBtn);
+    footerDiv.appendChild(migBtn);
 
-    // Reset
-    const dangerCard = el('div', { class:'card' }, [el('h3', null, 'Reset')]);
-    const resetBtn = el('button', { class:'btn danger' }, 'Wyczyść wszystkie dane');
+    const resetBtn = el('button', { class:'btn ghost', style:'color:#ef4444;border-color:#ef4444' }, '🗑️ Resetuj wszystkie postępy');
     resetBtn.addEventListener('click', async () => {
-      if (!confirm('Na pewno usunąć cały postęp v3? (kopia v2 pozostanie)')) return;
+      if (!confirm('Czy na pewno chcesz usunąć WSZYSTKIE postępy v3? Tej operacji nie można cofnąć.')) return;
       _state = defaultState();
       _state.seq = 0;
       rebuildSnapshot();
       await storage.setItem(STATE_KEY, JSON.stringify(_state));
       events.emit('state:changed', { prevState: null, nextState: _frozenSnapshot, patch: { _reset: true }});
       notify();
-      showToast('Stan zresetowany', 'success');
+      showToast('Postępy zresetowane', 'success');
       navigate('dashboard');
     });
-    dangerCard.appendChild(resetBtn);
+    footerDiv.appendChild(resetBtn);
 
-    // Storage info
-    const infoCard = el('div', { class:'card' }, [
-      el('h3', null, 'Informacje techniczne'),
-      el('p', null, [el('span', { class:'muted' }, 'Storage backend: '), el('span', { class:'mono' }, _storageKind)]),
-      el('p', null, [el('span', { class:'muted' }, 'State seq: '), el('span', { class:'mono' }, String(s.seq))]),
-      el('p', null, [el('span', { class:'muted' }, 'Wersja: '), el('span', { class:'mono' }, s.version)])
-    ]);
-
-    root.appendChild(card);
-    root.appendChild(profCard);
-    root.appendChild(prefCard);
-    root.appendChild(ioCard);
-    root.appendChild(migCard);
-    root.appendChild(dangerCard);
-    root.appendChild(infoCard);
+    mainCard.appendChild(footerDiv);
+    root.appendChild(mainCard);
   }
 
   /* ---------- View: Achievements ------------------------------------- */
   function renderAchievements(root) {
     const s = _state;
-    root.appendChild(el('div', { class:'card' }, [el('h2', null, 'Osiągnięcia')]));
-    if (s.achievements.length === 0) {
-      root.appendChild(el('div', { class:'card empty' }, 'Brak odblokowanych osiągnięć. Ucz się i zdobywaj!'));
-      return;
-    }
+
+    // All 10 achievement definitions (mirrors checkAndUnlockAchievements defs)
+    const ALL_ACHIEVEMENTS = [
+      { id: 'A-first-quiz',   icon: '🥉', title: 'Pierwszy Krok',        desc: 'Ukończono pierwszy quiz',                       hint: 'Ukończ 1 quiz lub sesję' },
+      { id: 'A-streak-3',     icon: '🔥', title: 'Trzydniowa Passa',      desc: '3-dniowa passa nauki',                          hint: 'Ucz się 3 dni z rzędu' },
+      { id: 'A-streak-7',     icon: '🌟', title: 'Tygodniowa Passa',      desc: '7-dniowa passa nauki',                          hint: 'Ucz się 7 dni z rzędu' },
+      { id: 'A-diag-done',    icon: '📊', title: 'Samoświadomość',        desc: 'Ukończono diagnozę wiedzy',                     hint: 'Ukończ diagnozę wiedzy' },
+      { id: 'A-quizzes-10',   icon: '🥈', title: 'Regularny Uczeń',       desc: 'Ukończono 10 quizów',                           hint: 'Ukończ 10 sesji' },
+      { id: 'A-quizzes-50',   icon: '🥇', title: 'Zaawansowany',          desc: 'Ukończono 50 quizów',                           hint: 'Ukończ 50 sesji' },
+      { id: 'A-mastery-N',    icon: '🌐', title: 'Mistrz Sieci',          desc: 'Opanowano obszar Sieci na 80%',                 hint: 'Osiągnij 80% mastery w obszarze N' },
+      { id: 'A-mastery-W',    icon: '🖥️', title: 'Admin Serwera',         desc: 'Opanowano Windows Server na 80%',               hint: 'Osiągnij 80% mastery w obszarze W' },
+      { id: 'A-practical-1',  icon: '🔧', title: 'Praktyk',               desc: 'Ukończono pierwsze zadanie praktyczne',         hint: 'Ukończ 1 zadanie praktyczne' },
+      { id: 'A-exam-ready',   icon: '🎓', title: 'Gotowy na Egzamin',     desc: 'Gotowość egzaminacyjna powyżej 75%',            hint: 'Osiągnij 75% gotowości egzaminacyjnej' }
+    ];
+
+    const unlockedMap = new Map((s.achievements || []).map(a => [a.id, a]));
+    const unlockedCount = unlockedMap.size;
+    const totalCount = ALL_ACHIEVEMENTS.length;
+
+    root.appendChild(el('div', { class:'card' }, [
+      el('h2', null, 'Osiągnięcia'),
+      el('p', { class:'muted' }, `Odblokowano: ${unlockedCount} / ${totalCount}`)
+    ]));
+
     const grid = el('div', { class:'row' });
-    for (const a of s.achievements) {
-      grid.appendChild(el('div', { class:'card', style:'min-width:240px' }, [
-        el('h3', null, a.title),
-        el('p', { class:'muted' }, a.desc),
-        el('p', { class:'mono', style:'font-size:var(--fs-xs)' }, `Odblokowano: ${a.unlockedAt ? formatRelative(a.unlockedAt) : '—'}`)
-      ]));
+    for (const def of ALL_ACHIEVEMENTS) {
+      const unlocked = unlockedMap.get(def.id);
+      const cardEl = el('div', { class:'card ach-card' + (unlocked ? '' : ' locked'), style:'min-width:220px' });
+      cardEl.appendChild(el('div', { class:'ach-icon' }, def.icon));
+      cardEl.appendChild(el('h3', { style:'margin-bottom:.25rem' }, def.title));
+      cardEl.appendChild(el('p', { class:'muted', style:'font-size:var(--fs-xs);margin-bottom:.25rem' }, def.desc));
+      if (unlocked) {
+        cardEl.appendChild(el('p', { style:'font-size:var(--fs-xs);color:var(--color-success)' },
+          '✅ Odblokowano: ' + formatRelative(unlocked.unlockedAt)));
+      } else {
+        cardEl.appendChild(el('p', { style:'font-size:var(--fs-xs);color:var(--color-text-muted)' },
+          '🔒 ' + def.hint));
+      }
+      grid.appendChild(cardEl);
     }
     root.appendChild(grid);
   }
@@ -1584,7 +1656,10 @@ label{display:block;margin-bottom:var(--sp-xs);font-size:var(--fs-xs);color:var(
 
     // Ensure "today" streak isn't decayed mistakenly — leave streak as-is on boot
 
-    // 3. Apply reduced-motion preference at OS-level (mirror to settings)
+    // 3. Apply theme from saved settings
+    applyTheme(_state.settings.theme || 'auto');
+
+    // 3a. Apply reduced-motion preference at OS-level (mirror to settings)
     if (matchMedia('(prefers-reduced-motion: reduce)').matches && !_state.settings.reducedMotion) {
       _state.settings.reducedMotion = true;
       rebuildSnapshot();

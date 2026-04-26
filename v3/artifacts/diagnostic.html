@@ -15,8 +15,9 @@
   Storage: ALL via INF02.shell.setState / shell.storage. ZERO localStorage direct.
 -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.js"
-  integrity="sha384-iU8HYtnGQ8Cy4zl7gbNMOhsDTTKX02BTXptVP/vqAWIaTfM7isw76iyZCsjL2eVi"
-  crossorigin="anonymous"></script>
+  integrity="sha384-OLBgp1GsljhM2TJ+sbHjaiH9txEUvgdDTAzHv2P24donTt6/529l+9Ua0vFImLlb"
+  crossorigin="anonymous"
+  onerror="window.__chartJsFailed=true"></script>
 <style>
 /* ============================================================
  * DESIGN TOKENS — copied from contracts/design-tokens.json
@@ -499,6 +500,7 @@ header.bd-header h1 { margin: 0; font-size: var(--fs-xl); }
   {"id":"Q-0028","area":"Z","difficulty":"easy","type":"mcq","q":"WPA2 używa szyfrowania:","options":["WEP","AES/CCMP","DES","Brak"],"correct":1,"explanation":"WPA2 wymaga AES/CCMP (zamiast TKIP w WPA)."},
   {"id":"Q-0029","area":"Z","difficulty":"medium","type":"mcq","q":"MFA to:","options":["Multi-Factor Authentication","More File Access","Master Firewall Auto","Manual Force Apply"],"correct":0,"explanation":"MFA = dwa lub więcej czynników: hasło + token + biometria."},
   {"id":"Q-0030","area":"Z","difficulty":"hard","type":"mcq","q":"VPN typu Site-to-Site najczęściej używa:","options":["IPsec IKEv2","HTTP","Telnet","FTP"],"correct":0,"explanation":"IPsec IKEv2 (lub IKEv1) to standard tuneli S2S."},
+  {"id":"Q-0033","area":"R","difficulty":"easy","type":"mcq","q":"Część pisemna egzaminu INF.02 wymaga uzyskania co najmniej:","options":["30%","50%","75%","90%"],"correct":1,"explanation":"Próg zaliczenia pisemnego INF.02 wynosi 50% punktów."},
   {"id":"Q-0031","area":"R","difficulty":"medium","type":"mcq","q":"Praktyczny test CKE INF.02 trwa:","options":["60 min","90 min","120 min","150 min"],"correct":3,"explanation":"Część praktyczna INF.02 = 150 minut, próg 75%."},
   {"id":"Q-0032","area":"R","difficulty":"hard","type":"mcq","q":"W teście praktycznym ocenia się:","options":["Tylko wynik końcowy","Tylko poprawność komend","Etapy zgodne z rubryką","Czas wykonania"],"correct":2,"explanation":"Punktacja rubryczna obejmuje wszystkie kryteria w arkuszu."}
 ]
@@ -1468,18 +1470,31 @@ const Dashboard = {
         </div>
         <div class="actions" style="margin: 0;">
           <button class="primary" type="button" id="cta-adaptive">Quiz adaptive (10 pyt)</button>
+          <button class="ghost" type="button" id="cta-full-quiz">Pełny quiz →</button>
         </div>
       </div>`;
 
-    const replayHtml = diagnosticDoneAt ? `
-      <div class="card" style="margin-top: var(--sp-md);">
-        <p>Diagnoza ukończona <strong>${escapeHtml(formatDate(diagnosticDoneAt.endedAt))}</strong>. Wynik: ${(diagnosticDoneAt.score*100).toFixed(0)}% (${escapeHtml(diagnosticDoneAt.questionIds.length)} pyt).</p>
-        <p>Powtórz diagnozę?</p>
-        <div class="actions">
-          <button class="primary" id="replay-yes" type="button">Tak — zacznij od nowa</button>
-          <button class="ghost"   id="replay-no"  type="button">Nie</button>
+    // Return-visit card: shown whenever a profile exists (returning user),
+    // whether or not they've done a diagnostic before.
+    const returnVisitHtml = diagnosticDoneAt ? `
+      <div class="card" style="margin-top: var(--sp-md); border-color: var(--color-accent);">
+        <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:var(--sp-md);">
+          <div>
+            <h3 style="margin:0 0 var(--sp-xs) 0;">Poprzednia diagnoza</h3>
+            <p class="muted" style="margin:0;">Ukończona <strong>${escapeHtml(formatDate(diagnosticDoneAt.endedAt))}</strong> · wynik ${(diagnosticDoneAt.score*100).toFixed(0)}% (${escapeHtml(String(diagnosticDoneAt.questionIds.length))} pyt)</p>
+          </div>
+          <button class="ghost" id="btn-rediagnose" type="button">Powtórz diagnozę</button>
         </div>
-      </div>` : '';
+      </div>` : (onboarded ? `
+      <div class="card" style="margin-top: var(--sp-md);">
+        <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:var(--sp-md);">
+          <div>
+            <h3 style="margin:0 0 var(--sp-xs) 0;">Diagnoza wstępna</h3>
+            <p class="muted" style="margin:0;">Nie wykonano jeszcze diagnozy.</p>
+          </div>
+          <button class="primary" id="btn-start-diag" type="button">Rozpocznij diagnozę (12 pyt)</button>
+        </div>
+      </div>` : '');
 
     root.innerHTML = `
       ${onboarded ? '' : `
@@ -1489,6 +1504,8 @@ const Dashboard = {
           <button class="primary" type="button" id="start-onboarding">Rozpocznij onboarding</button>
         </div>`}
 
+      ${returnVisitHtml}
+
       ${(cur.knowledge && (cur.knowledge.perArea || {})[AREAS[0]] && (cur.knowledge.perArea[AREAS[0]].attempts || 0) > 0)
         ? recommendBanner : ''}
 
@@ -1496,6 +1513,7 @@ const Dashboard = {
         <div class="card">
           <h3>Mapa wiedzy (radar 11 obszarów)</h3>
           <div class="chart-wrap"><canvas id="radarCanvas" role="img" aria-label="Radar mocnych i słabych stron 11 obszarów"></canvas></div>
+          <div id="radar-fallback" hidden style="margin-top:var(--sp-md);"></div>
         </div>
         <div class="card">
           <h3>Gotowość do egzaminu</h3>
@@ -1510,7 +1528,10 @@ const Dashboard = {
       <div class="card">
         <h3>Słabe punkty</h3>
         <div class="actions" style="margin-bottom: var(--sp-md);">${top3WeakHtml}</div>
-        <button class="primary" type="button" id="cta-adaptive-2">Naucz się słabych (Quiz adaptive)</button>
+        <div class="actions">
+          <button class="primary" type="button" id="cta-adaptive-2">Quiz adaptive (słabe obszary)</button>
+          <button class="ghost" type="button" id="cta-full-quiz-2">Pełny quiz (40 pyt) →</button>
+        </div>
       </div>
 
       <div class="card">
@@ -1522,28 +1543,54 @@ const Dashboard = {
         <h3>Postępy (11 obszarów)</h3>
         <div class="area-bars">${barsHtml}</div>
       </div>
-
-      ${replayHtml}
     `;
 
     this.destroyCharts();
     this.renderRadar(report);
     this.renderDoughnut(report.readinessForExam);
+    this.renderFallbackTable(report);
 
-    const onCta = () => ShellBridge.navigate('quiz', { mode: 'adaptive', n: 10 });
-    document.getElementById('cta-adaptive')?.addEventListener('click', onCta);
-    document.getElementById('cta-adaptive-2')?.addEventListener('click', onCta);
+    const onAdaptive = () => ShellBridge.navigate('quiz', { mode: 'adaptive', n: 10 });
+    const onFullQuiz = () => ShellBridge.navigate('quiz', { mode: 'exam', n: 40 });
+    document.getElementById('cta-adaptive')?.addEventListener('click', onAdaptive);
+    document.getElementById('cta-adaptive-2')?.addEventListener('click', onAdaptive);
+    document.getElementById('cta-full-quiz')?.addEventListener('click', onFullQuiz);
+    document.getElementById('cta-full-quiz-2')?.addEventListener('click', onFullQuiz);
     document.getElementById('start-onboarding')?.addEventListener('click', () => Onboarding.open());
-    document.getElementById('replay-yes')?.addEventListener('click', async () => {
+    document.getElementById('btn-start-diag')?.addEventListener('click', () => Router.navigate('diagnostic-quiz'));
+    document.getElementById('btn-rediagnose')?.addEventListener('click', async () => {
       // Reset knowledge to defaults — keep profile.
       await ShellBridge.setState({ knowledge: { perArea: defaultPerArea(), weakest: [], strongest: [], readinessForExam: 0.5 } });
       Router.navigate('diagnostic-quiz');
     });
-    document.getElementById('replay-no')?.addEventListener('click', () => Router.navigate('home'));
+  },
+  renderFallbackTable(report) {
+    // Shown only when Chart.js failed to load or is unavailable.
+    if (typeof Chart !== 'undefined' && !window.__chartJsFailed) return;
+    const fb = document.getElementById('radar-fallback');
+    if (!fb) return;
+    fb.hidden = false;
+    // Also hide canvases
+    const rc = document.getElementById('radarCanvas'); if (rc) rc.hidden = true;
+    const dc = document.getElementById('readinessCanvas'); if (dc) dc.hidden = true;
+    const rows = AREAS.map(a => {
+      const k = report.areas[a];
+      const pct = Math.round((k.mastery || 0) * 100);
+      const label = DESIGN_TOKENS.color.areas[a].label;
+      const fg = DESIGN_TOKENS.color.areas[a].fg;
+      const bar = `<div style="height:10px;background:#252932;border-radius:5px;overflow:hidden;width:120px;display:inline-block;vertical-align:middle;">` +
+        `<div style="height:100%;width:${pct}%;background:${fg};border-radius:5px;"></div></div>`;
+      return `<tr><td style="padding:4px 8px;"><span class="area-chip" data-area="${a}">${escapeHtml(a)}</span></td>` +
+        `<td style="padding:4px 8px;color:var(--color-text-muted);font-size:var(--fs-xs);">${escapeHtml(label)}</td>` +
+        `<td style="padding:4px 8px;">${bar}</td>` +
+        `<td style="padding:4px 8px;font-family:var(--mono);font-size:var(--fs-xs);">${pct}%</td></tr>`;
+    }).join('');
+    fb.innerHTML = `<p class="muted" style="font-size:var(--fs-xs);margin-bottom:var(--sp-sm);">Graf niedostępny — tabela zastępcza</p>` +
+      `<table style="width:100%;border-collapse:collapse;">${rows}</table>`;
   },
   renderRadar(report) {
     const ctx = document.getElementById('radarCanvas');
-    if (!ctx || typeof Chart === 'undefined') return;
+    if (!ctx || typeof Chart === 'undefined' || window.__chartJsFailed) return;
     const labels = AREAS.map(a => `${a} · ${DESIGN_TOKENS.color.areas[a].label}`);
     const data = AREAS.map(a => Math.round((report.areas[a].mastery || 0) * 100));
     this.charts.radar = new Chart(ctx, {
@@ -1578,7 +1625,7 @@ const Dashboard = {
   },
   renderDoughnut(readiness) {
     const ctx = document.getElementById('readinessCanvas');
-    if (!ctx || typeof Chart === 'undefined') return;
+    if (!ctx || typeof Chart === 'undefined' || window.__chartJsFailed) return;
     const pct = Math.round(readiness * 100);
     const color = pct >= 75 ? '#3DDC97' : pct >= 50 ? '#FFB454' : '#FF6B6B';
     this.charts.doughnut = new Chart(ctx, {
