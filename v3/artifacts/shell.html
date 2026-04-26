@@ -1786,6 +1786,34 @@ label{display:block;margin-bottom:var(--sp-xs);font-size:var(--fs-xs);color:var(
   } else {
     bootstrap().catch(console.error);
   }
+
+  // BF Cache recovery: Safari/Chrome restore the page from memory without re-running scripts.
+  // When the user presses Back from diagnostic.html/quiz.html, the old _state is in memory
+  // but localStorage may have newer data. Re-read and re-render without re-wiring all listeners.
+  window.addEventListener('pageshow', (event) => {
+    if (!event.persisted) return;
+    storage.getItem(STATE_KEY).then(raw => {
+      if (!raw) return;
+      try {
+        const parsed = JSON.parse(raw);
+        const errs = validateAppState(parsed);
+        if (errs.length === 0) {
+          const refreshed = deepMerge(defaultState(), parsed);
+          refreshed.version = STATE_VERSION;
+          // Recompute derived fields
+          const ws2 = computeWeakStrong(refreshed.knowledge.perArea);
+          const r2  = computeReadiness(refreshed.knowledge.perArea);
+          refreshed.knowledge.weakest  = ws2.weakest.slice(0, 2);
+          refreshed.knowledge.strongest = ws2.strongest;
+          refreshed.knowledge.readinessForExam = r2;
+          _state = refreshed;
+          rebuildSnapshot();
+          notify();
+          handleRoute();
+        }
+      } catch(e) { console.warn('[Shell] pageshow state refresh failed', e); }
+    }).catch(e => console.warn('[Shell] pageshow storage read failed', e));
+  });
 })();
 </script>
 

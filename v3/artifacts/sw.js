@@ -10,7 +10,7 @@
  * NO direct localStorage usage in this file (constraint).
  */
 
-const CACHE_VERSION = 'inf02-v3.0.0';
+const CACHE_VERSION = 'inf02-v3.2.0';
 
 const ASSETS = [
   './shell.html',
@@ -82,7 +82,13 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // 2) Cache-first dla static assets z whitelist (HTML / icons / manifest / Chart.js CDN)
+  // 2a) Network-first dla HTML (aktualizacje muszą być natychmiast widoczne)
+  if (url.pathname.endsWith('.html')) {
+    event.respondWith(networkFirst(req));
+    return;
+  }
+
+  // 2b) Cache-first dla static assets z whitelist (icons / manifest / Chart.js CDN)
   if (isCachedAsset(url, req.url)) {
     event.respondWith(cacheFirst(req));
     return;

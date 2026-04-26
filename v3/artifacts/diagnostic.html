@@ -656,7 +656,31 @@ const ShellBridge = {
   navigate(view, params) {
     if (INF02.shell && typeof INF02.shell.navigate === 'function') return INF02.shell.navigate(view, params);
     if (INF02.shell && typeof INF02.shell.route === 'function') return INF02.shell.route(view, params);
-    location.hash = '#' + view + (params ? ('?' + new URLSearchParams(params).toString()) : '');
+    // Standalone mode: navigate to the correct HTML file (not just hash on this page).
+    const pageMap = {
+      quiz:       'quiz.html',
+      diagnostic: 'diagnostic.html',
+      practical:  'practical.html',
+      srs:        'srs.html',
+      dashboard:  'shell.html',
+      settings:   'shell.html#settings',
+      achievements:'shell.html#achievements'
+    };
+    const dest = pageMap[view];
+    if (dest) {
+      const qs = params && Object.keys(params).length
+        ? ('?' + new URLSearchParams(params).toString())
+        : '';
+      // For shell.html targets that include a hash, append query before hash
+      if (dest.includes('#')) {
+        const [base, hash] = dest.split('#');
+        location.href = base + qs + '#' + hash;
+      } else {
+        location.href = dest + qs;
+      }
+    } else {
+      location.hash = '#' + view + (params ? ('?' + new URLSearchParams(params).toString()) : '');
+    }
   }
 };
 function mergeDeep(a, b) {
