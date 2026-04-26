@@ -1340,8 +1340,16 @@ input { font: inherit; }
   document.addEventListener('DOMContentLoaded', () => {
     if (!getShell() || !getShell().route) {
       RUN.rootEl = document.getElementById('quiz-app');
-      // Auto-render picker for standalone test
-      renderModePicker();
+      // Parse URL parameters passed via location.href (e.g. from diagnostic.html or shell.html)
+      const urlParams = Object.fromEntries(new URLSearchParams(window.location.search));
+      // Coerce numeric strings
+      if (urlParams.n) urlParams.n = parseInt(urlParams.n, 10) || 10;
+      if (urlParams.durationSec) urlParams.durationSec = parseInt(urlParams.durationSec, 10);
+      if (urlParams.mode) {
+        startSession(urlParams.mode, urlParams);
+      } else {
+        renderModePicker();
+      }
     }
   });
 })();
