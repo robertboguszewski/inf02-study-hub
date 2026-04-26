@@ -1,0 +1,248 @@
+{
+  "$schema": "https://inf02-study-hub.local/v3/curriculum-mapping.schema",
+  "version": "1.0.0",
+  "source": "Rozporzadzenie MEN o podstawie programowej kształcenia w zawodzie technik informatyk (351203). Kwalifikacja INF.02 — Administracja i eksploatacja systemów komputerowych, urządzeń peryferyjnych i lokalnych sieci komputerowych. Formuła 2019.",
+  "areas": {
+    "B": "Budowa komputera",
+    "O": "Systemy operacyjne",
+    "N": "Sieci komputerowe",
+    "P": "Peryferia i sprzęt sieciowy",
+    "D": "Diagnostyka",
+    "L": "Prawo, BHP, licencje",
+    "W": "Windows Server",
+    "6": "IPv6 i routing zaawansowany",
+    "V": "Wirtualizacja i backup",
+    "Z": "Bezpieczeństwo zaawansowane",
+    "R": "Praktyka CKE-style"
+  },
+  "effects": [
+    {
+      "code": "BPRO.01",
+      "title": "Bezpieczeństwo i higiena pracy",
+      "areas": ["L"],
+      "minQuestions": 8
+    },
+    {
+      "code": "BPRO.02",
+      "title": "Podstawy działalności gospodarczej i prawo pracy",
+      "areas": ["L"],
+      "minQuestions": 4
+    },
+    {
+      "code": "BPRO.03",
+      "title": "Komunikacja i kompetencje społeczne",
+      "areas": ["L"],
+      "minQuestions": 2
+    },
+    {
+      "code": "INF.02.1",
+      "title": "Przygotowanie do pracy zawodowej (BHP, ergonomia, ochrona p.poż., pierwsza pomoc, środki ochrony osobistej)",
+      "areas": ["L"],
+      "minQuestions": 6
+    },
+    {
+      "code": "INF.02.2.1",
+      "title": "Identyfikacja podzespołów komputera (CPU, RAM, dyski, magistrale, zasilanie)",
+      "areas": ["B"],
+      "minQuestions": 12
+    },
+    {
+      "code": "INF.02.2.2",
+      "title": "Montaż i konfiguracja jednostki centralnej",
+      "areas": ["B", "D"],
+      "minQuestions": 10
+    },
+    {
+      "code": "INF.02.2.3",
+      "title": "Modernizacja zestawu komputerowego, dobór komponentów",
+      "areas": ["B"],
+      "minQuestions": 6
+    },
+    {
+      "code": "INF.02.3.1",
+      "title": "Instalacja systemów operacyjnych (Windows, Linux, BSD)",
+      "areas": ["O"],
+      "minQuestions": 8
+    },
+    {
+      "code": "INF.02.3.2",
+      "title": "Konfiguracja systemów plików (NTFS, FAT32, ext4, btrfs) i partycjonowanie (MBR/GPT)",
+      "areas": ["O"],
+      "minQuestions": 6
+    },
+    {
+      "code": "INF.02.3.3",
+      "title": "Zarządzanie kontami użytkowników, uprawnieniami i grupami w systemach operacyjnych",
+      "areas": ["O", "W"],
+      "minQuestions": 8
+    },
+    {
+      "code": "INF.02.3.4",
+      "title": "Polecenia powłoki (CMD, PowerShell, bash) — diagnostyka i administracja",
+      "areas": ["O", "D"],
+      "minQuestions": 10
+    },
+    {
+      "code": "INF.02.4.1",
+      "title": "Diagnostyka sprzętu (POST, kody błędów, narzędzia testowe)",
+      "areas": ["D"],
+      "minQuestions": 6
+    },
+    {
+      "code": "INF.02.4.2",
+      "title": "Diagnostyka oprogramowania (event viewer, dzienniki systemowe, narzędzia)",
+      "areas": ["D"],
+      "minQuestions": 6
+    },
+    {
+      "code": "INF.02.4.3",
+      "title": "Naprawa i konserwacja sprzętu komputerowego (czyszczenie, pasta, wymiana)",
+      "areas": ["D", "B"],
+      "minQuestions": 4
+    },
+    {
+      "code": "INF.02.5.1",
+      "title": "Topologie i media transmisyjne (UTP/FTP/STP/światłowód, kategorie kabli)",
+      "areas": ["N"],
+      "minQuestions": 8
+    },
+    {
+      "code": "INF.02.5.2",
+      "title": "Adresacja IPv4 (klasy, CIDR, podsieci, NAT, RFC1918)",
+      "areas": ["N"],
+      "minQuestions": 12
+    },
+    {
+      "code": "INF.02.5.3",
+      "title": "Adresacja IPv6 (link-local, ULA, GUA, skracanie, prefixy)",
+      "areas": ["6"],
+      "minQuestions": 6
+    },
+    {
+      "code": "INF.02.5.4",
+      "title": "Routing i protokoły (statyczny, RIP, OSPF — podstawy)",
+      "areas": ["N", "6"],
+      "minQuestions": 4
+    },
+    {
+      "code": "INF.02.5.5",
+      "title": "Konfiguracja switchy, VLAN, STP",
+      "areas": ["N"],
+      "minQuestions": 4
+    },
+    {
+      "code": "INF.02.5.6",
+      "title": "Sieci bezprzewodowe (standardy 802.11, WPA2/WPA3, AES/CCMP)",
+      "areas": ["N", "Z"],
+      "minQuestions": 4
+    },
+    {
+      "code": "INF.02.6.1",
+      "title": "Montaż i konfiguracja urządzeń peryferyjnych (drukarki, skanery, projektory)",
+      "areas": ["P"],
+      "minQuestions": 6
+    },
+    {
+      "code": "INF.02.6.2",
+      "title": "Konfiguracja urządzeń sieciowych (router, AP, switch, modem)",
+      "areas": ["P", "N"],
+      "minQuestions": 6
+    },
+    {
+      "code": "INF.02.7.1",
+      "title": "Administracja Windows Server (role, AD DS, GPO, DNS, DHCP)",
+      "areas": ["W"],
+      "minQuestions": 14
+    },
+    {
+      "code": "INF.02.7.2",
+      "title": "Administracja Linux server (systemd, użytkownicy, uprawnienia, usługi)",
+      "areas": ["O", "W"],
+      "minQuestions": 4
+    },
+    {
+      "code": "INF.02.8.1",
+      "title": "Wirtualizacja (Hyper-V, VirtualBox, VMware) i kontenery — podstawy",
+      "areas": ["V"],
+      "minQuestions": 6
+    },
+    {
+      "code": "INF.02.8.2",
+      "title": "Kopie zapasowe (pełna, przyrostowa, różnicowa, strategie 3-2-1)",
+      "areas": ["V", "D"],
+      "minQuestions": 4
+    },
+    {
+      "code": "INF.02.9.1",
+      "title": "Bezpieczeństwo systemu (firewall, antywirus, polityki haseł, MFA)",
+      "areas": ["Z"],
+      "minQuestions": 6
+    },
+    {
+      "code": "INF.02.9.2",
+      "title": "Bezpieczeństwo sieci (filtrowanie, VPN, segmentacja, IDS/IPS)",
+      "areas": ["Z", "N"],
+      "minQuestions": 4
+    },
+    {
+      "code": "INF.02.10.1",
+      "title": "Licencjonowanie oprogramowania (OEM, BOX, Volume, CAL, GPL)",
+      "areas": ["L"],
+      "minQuestions": 4
+    },
+    {
+      "code": "INF.02.10.2",
+      "title": "RODO, ZSEE, dokumentacja serwisowa",
+      "areas": ["L"],
+      "minQuestions": 4
+    },
+    {
+      "code": "INF.02.11.1",
+      "title": "Zadanie praktyczne — konfiguracja sieci LAN i podsieci",
+      "areas": ["R", "N"],
+      "minQuestions": 0,
+      "minScenarios": 2
+    },
+    {
+      "code": "INF.02.11.2",
+      "title": "Zadanie praktyczne — instalacja i konfiguracja serwera (AD DS / Linux)",
+      "areas": ["R", "W"],
+      "minQuestions": 0,
+      "minScenarios": 2
+    },
+    {
+      "code": "INF.02.11.3",
+      "title": "Zadanie praktyczne — diagnostyka i naprawa stanowiska",
+      "areas": ["R", "D"],
+      "minQuestions": 0,
+      "minScenarios": 1
+    },
+    {
+      "code": "INF.02.11.4",
+      "title": "Zadanie praktyczne — konfiguracja urządzeń peryferyjnych i sieciowych",
+      "areas": ["R", "P"],
+      "minQuestions": 0,
+      "minScenarios": 1
+    }
+  ],
+  "minTotalQuestions": 250,
+  "areaProportions": {
+    "B": 0.13,
+    "O": 0.10,
+    "N": 0.16,
+    "P": 0.06,
+    "D": 0.07,
+    "L": 0.13,
+    "W": 0.13,
+    "6": 0.06,
+    "V": 0.05,
+    "Z": 0.05,
+    "R": 0.06
+  },
+  "notes": [
+    "CKE NIE publikuje oficjalnego klucza obszarowego — proporcje wyznaczono na podstawie analizy publicznych baz pytań (egzamin-informatyk.pl, zawodowe.edu.pl, kursinf.pl) z research-findings v2.",
+    "Każde pytanie MUSI mieć przypisany 'area' (Question.area) zgodny z jednym z 11 kodów.",
+    "Pytanie L (prawo/BHP) MUSI mieć ckeRef wskazujący normę (PN-EN, ustawa, rozporządzenie).",
+    "Scenariusze praktyczne (R) — minimum 6, pokrycie wszystkich 4 podtypów INF.02.11.*."
+  ]
+}

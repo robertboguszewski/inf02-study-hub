@@ -1,0 +1,1728 @@
+<!DOCTYPE html>
+<html lang="pl-PL">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>INF.02 — Symulator zadań praktycznych</title>
+<style>
+  /* ================================================================
+   * INF.02 Study Hub v3 — Practical Scenario Simulator
+   * Builder-Practical (BP) — artifacts/practical.html
+   * Tokens kopiowane z contracts/design-tokens.json (single-file constraint)
+   * ================================================================ */
+  :root {
+    --color-bg: #0F1115;
+    --color-surface: #1A1D24;
+    --color-surface-2: #252932;
+    --color-text: #F2F4F7;
+    --color-text-muted: #A8B0BD;
+    --color-border: #2E3340;
+    --color-accent: #5EA9FF;
+    --color-accent-fg: #0F1115;
+    --color-success: #3DDC97;
+    --color-warning: #FFB454;
+    --color-danger: #FF6B6B;
+    --color-focus: #FFD166;
+
+    --area-B-bg: #1F3A5F; --area-B-fg: #A9D5FF;
+    --area-O-bg: #3F2A5F; --area-O-fg: #D5B8FF;
+    --area-N-bg: #1F4F3F; --area-N-fg: #9BEBC9;
+    --area-P-bg: #5F3F1F; --area-P-fg: #FFCC9B;
+    --area-D-bg: #5F1F2F; --area-D-fg: #FFB0B8;
+    --area-L-bg: #4F4F1F; --area-L-fg: #E6E0A8;
+    --area-W-bg: #1F4F5F; --area-W-fg: #A8DCE6;
+    --area-6-bg: #2F1F5F; --area-6-fg: #B8B0FF;
+    --area-V-bg: #1F5F4F; --area-V-fg: #9BD9C7;
+    --area-Z-bg: #5F2F4F; --area-Z-fg: #FFB0DC;
+    --area-R-bg: #3F3F3F; --area-R-fg: #E0E0E0;
+
+    --fs-xs: 0.8rem;
+    --fs-sm: 1rem;
+    --fs-md: 1.25rem;
+    --fs-lg: 1.563rem;
+    --fs-xl: 1.953rem;
+    --fs-2xl: 2.441rem;
+
+    --sp-xs: 4px;
+    --sp-sm: 8px;
+    --sp-md: 16px;
+    --sp-lg: 24px;
+    --sp-xl: 32px;
+    --sp-2xl: 48px;
+    --sp-3xl: 64px;
+
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+    --dur-fast: 120ms;
+    --dur-base: 200ms;
+    --dur-slow: 320ms;
+
+    --shadow-1: 0 1px 2px rgba(0,0,0,0.4);
+    --shadow-2: 0 4px 12px rgba(0,0,0,0.5);
+    --shadow-3: 0 12px 32px rgba(0,0,0,0.6);
+
+    --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+    --font-mono: ui-monospace, "SF Mono", "Cascadia Mono", "Roboto Mono", Consolas, monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: var(--font-sans);
+    font-size: var(--fs-sm);
+    line-height: 1.55;
+    color: var(--color-text);
+    background: var(--color-bg);
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, h4 { line-height: 1.2; margin: 0 0 var(--sp-md); }
+  h1 { font-size: var(--fs-xl); }
+  h2 { font-size: var(--fs-lg); }
+  h3 { font-size: var(--fs-md); }
+  p { margin: 0 0 var(--sp-md); }
+
+  *:focus-visible {
+    outline: 3px solid var(--color-focus);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0ms !important; transition-duration: 0ms !important; }
+  }
+
+  button {
+    font-family: inherit;
+    font-size: var(--fs-sm);
+    min-height: 44px;
+    min-width: 44px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    border: 1px solid var(--color-border);
+    background: var(--color-surface-2);
+    color: var(--color-text);
+    cursor: pointer;
+    transition: background var(--dur-fast) var(--ease-out),
+                transform var(--dur-fast) var(--ease-out);
+  }
+  button:hover:not(:disabled) { background: var(--color-border); }
+  button:active:not(:disabled) { transform: translateY(1px); }
+  button:disabled { opacity: 0.5; cursor: not-allowed; }
+  button.btn-primary {
+    background: var(--color-accent);
+    color: var(--color-accent-fg);
+    border-color: var(--color-accent);
+    font-weight: 600;
+  }
+  button.btn-primary:hover:not(:disabled) { background: #7BBCFF; }
+  button.btn-danger {
+    background: var(--color-danger);
+    color: var(--color-bg);
+    border-color: var(--color-danger);
+    font-weight: 600;
+  }
+
+  input[type="text"], input[type="number"], textarea {
+    font-family: var(--font-mono);
+    font-size: var(--fs-sm);
+    background: var(--color-bg);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    padding: 12px;
+    width: 100%;
+    min-height: 44px;
+  }
+  textarea { min-height: 88px; resize: vertical; font-family: var(--font-mono); }
+
+  .pp-app { min-height: 100vh; padding: var(--sp-md); }
+  @media (min-width: 768px) { .pp-app { padding: var(--sp-lg); } }
+
+  .pp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--sp-md);
+    margin-bottom: var(--sp-lg);
+  }
+  .pp-header h1 { margin: 0; }
+  .pp-header .muted { color: var(--color-text-muted); font-size: var(--fs-xs); }
+
+  /* ============== SELECTOR VIEW ============== */
+  .pp-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-sm);
+    margin-bottom: var(--sp-lg);
+  }
+  .pp-filter-chip {
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    font-size: var(--fs-xs);
+    cursor: pointer;
+    color: var(--color-text);
+    min-height: 36px;
+  }
+  .pp-filter-chip[aria-pressed="true"] {
+    background: var(--color-accent);
+    color: var(--color-accent-fg);
+    border-color: var(--color-accent);
+    font-weight: 600;
+  }
+
+  .pp-scenario-grid {
+    display: grid;
+    gap: var(--sp-md);
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 768px) {
+    .pp-scenario-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (min-width: 1024px) {
+    .pp-scenario-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  .pp-scenario-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: var(--sp-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-md);
+    transition: transform var(--dur-base) var(--ease-out),
+                box-shadow var(--dur-base) var(--ease-out);
+  }
+  .pp-scenario-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-2);
+  }
+  .pp-scenario-card h3 { margin: 0; }
+  .pp-card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-sm);
+    align-items: center;
+  }
+  .pp-area-chip {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: var(--fs-xs);
+    font-weight: 600;
+  }
+  .pp-area-chip[data-area="B"] { background: var(--area-B-bg); color: var(--area-B-fg); }
+  .pp-area-chip[data-area="O"] { background: var(--area-O-bg); color: var(--area-O-fg); }
+  .pp-area-chip[data-area="N"] { background: var(--area-N-bg); color: var(--area-N-fg); }
+  .pp-area-chip[data-area="P"] { background: var(--area-P-bg); color: var(--area-P-fg); }
+  .pp-area-chip[data-area="D"] { background: var(--area-D-bg); color: var(--area-D-fg); }
+  .pp-area-chip[data-area="L"] { background: var(--area-L-bg); color: var(--area-L-fg); }
+  .pp-area-chip[data-area="W"] { background: var(--area-W-bg); color: var(--area-W-fg); }
+  .pp-area-chip[data-area="6"] { background: var(--area-6-bg); color: var(--area-6-fg); }
+  .pp-area-chip[data-area="V"] { background: var(--area-V-bg); color: var(--area-V-fg); }
+  .pp-area-chip[data-area="Z"] { background: var(--area-Z-bg); color: var(--area-Z-fg); }
+  .pp-area-chip[data-area="R"] { background: var(--area-R-bg); color: var(--area-R-fg); }
+
+  .pp-meta-pill {
+    background: var(--color-surface-2);
+    color: var(--color-text-muted);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: var(--fs-xs);
+    font-family: var(--font-mono);
+  }
+
+  .pp-empty {
+    text-align: center;
+    padding: var(--sp-3xl) var(--sp-md);
+    color: var(--color-text-muted);
+  }
+
+  /* ============== RUN VIEW ============== */
+  .pp-run {
+    display: grid;
+    gap: var(--sp-md);
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "topbar"
+      "main"
+      "sidebar";
+  }
+  @media (min-width: 1024px) {
+    .pp-run {
+      grid-template-columns: 280px 1fr 220px;
+      grid-template-areas:
+        "sidebar main timer"
+        "sidebar main timer";
+      align-items: start;
+    }
+    .pp-topbar { display: none; }
+  }
+
+  .pp-topbar {
+    grid-area: topbar;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    padding: var(--sp-md);
+    flex-wrap: wrap;
+    gap: var(--sp-sm);
+  }
+
+  .pp-sidebar {
+    grid-area: sidebar;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    padding: var(--sp-md);
+    max-height: calc(100vh - 80px);
+    overflow-y: auto;
+  }
+  @media (min-width: 1024px) {
+    .pp-sidebar {
+      position: sticky;
+      top: var(--sp-lg);
+    }
+  }
+  .pp-sidebar h3 { margin-top: 0; font-size: var(--fs-sm); color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+  .pp-step-list { list-style: none; margin: 0; padding: 0; }
+  .pp-step-list li {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-sm);
+    padding: 8px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-bottom: 4px;
+    border: 1px solid transparent;
+    font-size: var(--fs-xs);
+    min-height: 44px;
+  }
+  .pp-step-list li:hover { background: var(--color-surface-2); }
+  .pp-step-list li[data-active="true"] {
+    background: var(--color-surface-2);
+    border-color: var(--color-accent);
+  }
+  .pp-step-list .stat {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .pp-step-list .stat[data-status="todo"] { background: var(--color-surface-2); color: var(--color-text-muted); border: 1px solid var(--color-border); }
+  .pp-step-list .stat[data-status="done"] { background: var(--color-success); color: var(--color-bg); }
+  .pp-step-list .stat[data-status="skip"] { background: var(--color-warning); color: var(--color-bg); }
+
+  .pp-main {
+    grid-area: main;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: var(--sp-lg);
+    min-height: 400px;
+  }
+  .pp-step-instr {
+    background: var(--color-surface-2);
+    padding: var(--sp-md);
+    border-radius: 8px;
+    border-left: 4px solid var(--color-accent);
+    margin-bottom: var(--sp-lg);
+    line-height: 1.7;
+    white-space: pre-wrap;
+  }
+  .pp-step-hint {
+    background: rgba(255, 180, 84, 0.1);
+    border-left: 4px solid var(--color-warning);
+    padding: 12px var(--sp-md);
+    margin: var(--sp-md) 0;
+    border-radius: 6px;
+    color: var(--color-warning);
+    font-size: var(--fs-xs);
+  }
+
+  .pp-mcq-options { display: flex; flex-direction: column; gap: var(--sp-sm); }
+  .pp-mcq-option {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--sp-md);
+    padding: var(--sp-md);
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    cursor: pointer;
+    min-height: 44px;
+  }
+  .pp-mcq-option input[type="radio"] { flex-shrink: 0; margin-top: 4px; }
+  .pp-mcq-option:hover { background: var(--color-surface-2); }
+
+  .pp-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--sp-sm);
+    margin-top: var(--sp-lg);
+    flex-wrap: wrap;
+  }
+  .pp-feedback {
+    margin-top: var(--sp-md);
+    padding: 12px var(--sp-md);
+    border-radius: 8px;
+    border: 1px solid;
+    font-weight: 500;
+  }
+  .pp-feedback--ok { background: rgba(61, 220, 151, 0.1); border-color: var(--color-success); color: var(--color-success); }
+  .pp-feedback--bad { background: rgba(255, 107, 107, 0.1); border-color: var(--color-danger); color: var(--color-danger); }
+
+  .pp-timer {
+    grid-area: timer;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: var(--sp-md);
+    text-align: center;
+  }
+  @media (min-width: 1024px) {
+    .pp-timer {
+      position: sticky;
+      top: var(--sp-lg);
+    }
+  }
+  .pp-timer-label { font-size: var(--fs-xs); color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+  .pp-timer-value {
+    font-family: var(--font-mono);
+    font-size: var(--fs-xl);
+    font-weight: 700;
+    color: var(--color-accent);
+  }
+  .pp-timer-value[data-warn="true"] { color: var(--color-warning); }
+  .pp-timer-value[data-crit="true"] { color: var(--color-danger); }
+  .pp-score-line {
+    margin-top: var(--sp-md);
+    padding-top: var(--sp-md);
+    border-top: 1px solid var(--color-border);
+  }
+  .pp-score-line .pp-score-num {
+    font-family: var(--font-mono);
+    font-size: var(--fs-md);
+    font-weight: 700;
+  }
+
+  /* ============== RUBRIC PHASE ============== */
+  .pp-rubric-list { display: flex; flex-direction: column; gap: var(--sp-md); }
+  .pp-rubric-item {
+    background: var(--color-surface-2);
+    padding: var(--sp-md);
+    border-radius: 8px;
+    border: 1px solid var(--color-border);
+    display: flex;
+    gap: var(--sp-md);
+    align-items: flex-start;
+  }
+  .pp-rubric-item input[type="checkbox"] {
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    cursor: pointer;
+  }
+  .pp-rubric-item .pp-rubric-text { flex: 1; }
+  .pp-rubric-item .pp-rubric-pts {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    color: var(--color-accent);
+    flex-shrink: 0;
+  }
+  .pp-rubric-item[data-auto="true"] {
+    opacity: 0.85;
+    border-style: dashed;
+  }
+
+  /* ============== RESULT VIEW ============== */
+  .pp-result-hero {
+    text-align: center;
+    padding: var(--sp-2xl) var(--sp-md);
+    border-radius: 12px;
+    margin-bottom: var(--sp-lg);
+  }
+  .pp-result-hero.scenario-result--passed {
+    background: rgba(61, 220, 151, 0.1);
+    border: 2px solid var(--color-success);
+  }
+  .pp-result-hero.scenario-result--failed {
+    background: rgba(255, 107, 107, 0.1);
+    border: 2px solid var(--color-danger);
+  }
+  .pp-result-pct {
+    font-family: var(--font-mono);
+    font-size: var(--fs-2xl);
+    font-weight: 700;
+  }
+  .scenario-result--passed .pp-result-pct { color: var(--color-success); }
+  .scenario-result--failed .pp-result-pct { color: var(--color-danger); }
+
+  .pp-result-grid {
+    display: grid;
+    gap: var(--sp-md);
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 768px) {
+    .pp-result-grid { grid-template-columns: 1fr 1fr; }
+  }
+  .pp-result-section {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    padding: var(--sp-md);
+  }
+  .pp-result-section h3 { margin-top: 0; }
+  .pp-breakdown-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--color-border);
+    gap: var(--sp-sm);
+  }
+  .pp-breakdown-row:last-child { border-bottom: 0; }
+  .pp-breakdown-row .lbl { flex: 1; min-width: 0; word-break: break-word; }
+  .pp-breakdown-row .pts {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+  .pp-breakdown-row .pts.full { color: var(--color-success); }
+  .pp-breakdown-row .pts.partial { color: var(--color-warning); }
+  .pp-breakdown-row .pts.zero { color: var(--color-danger); }
+
+  /* utility */
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+  .pp-toast {
+    position: fixed;
+    bottom: var(--sp-lg);
+    right: var(--sp-lg);
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-border);
+    padding: var(--sp-md);
+    border-radius: 8px;
+    box-shadow: var(--shadow-2);
+    z-index: 9999;
+    animation: ppFadeIn var(--dur-base) var(--ease-out);
+    max-width: 320px;
+  }
+  @keyframes ppFadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+<div id="pp-root" class="pp-app" role="main"></div>
+
+<script>
+(function() {
+  "use strict";
+
+  /* ===========================================================
+   * Storage adapter — KOPIA z Architecture.md sekcja 1.2 (ADR-003)
+   * =========================================================== */
+  const storage = (function() {
+    if (typeof window !== "undefined" && window.storage && typeof window.storage.getItem === "function") {
+      return Object.assign({ kind: "claude" }, window.storage);
+    }
+    try {
+      if (typeof localStorage !== "undefined") {
+        localStorage.setItem("__test__", "1");
+        localStorage.removeItem("__test__");
+        return {
+          kind: "local",
+          getItem: (k) => Promise.resolve(localStorage.getItem(k)),
+          setItem: (k, v) => Promise.resolve(localStorage.setItem(k, v))
+        };
+      }
+    } catch (_) {}
+    const mem = new Map();
+    return {
+      kind: "memory",
+      getItem: (k) => Promise.resolve(mem.get(k) != null ? mem.get(k) : null),
+      setItem: (k, v) => Promise.resolve(void mem.set(k, v))
+    };
+  })();
+
+  /* ===========================================================
+   * Tokens (engine config — kopia z design-tokens.json)
+   * =========================================================== */
+  const TOKENS = {
+    practicalDurationSec: 9000,
+    practicalPassPct: 0.75
+  };
+
+  const AREA_LABELS = {
+    "B": "Budowa komputera",
+    "O": "Systemy operacyjne",
+    "N": "Sieci komputerowe",
+    "P": "Peryferia i sprzęt sieciowy",
+    "D": "Diagnostyka",
+    "L": "Prawo, BHP, licencje",
+    "W": "Windows Server",
+    "6": "IPv6 i routing zaawansowany",
+    "V": "Wirtualizacja i backup",
+    "Z": "Bezpieczeństwo zaawansowane",
+    "R": "Praktyka CKE-style"
+  };
+
+  /* ===========================================================
+   * Tolerant matcher — fill / command kinds
+   * Delegacja do INF02.diagnostic.matchAnswer jeśli istnieje
+   * =========================================================== */
+  function stripDiacritics(s) {
+    return String(s)
+      .normalize("NFD")
+      .replace(/[̀-ͯ]/g, "")
+      .replace(/ł/g, "l")
+      .replace(/Ł/g, "L");
+  }
+
+  function normalizeBasic(s) {
+    if (s == null) return "";
+    return String(s).normalize("NFC").toLowerCase().trim().replace(/\s+/g, " ");
+  }
+
+  function normalizeCommand(s) {
+    // CLI: collapse whitespace, lowercase, strip leading/trailing
+    return normalizeBasic(s);
+  }
+
+  function isLikelyIp(s) {
+    return /^\d{1,3}(\.\d{1,3}){3}(\/\d{1,2})?$/.test(s.trim());
+  }
+
+  function normalizeIp(s) {
+    // remove leading zeros from each octet, optional CIDR preserved
+    const m = String(s).trim().match(/^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})(\/\d{1,2})?$/);
+    if (!m) return s.trim();
+    const oct = [m[1], m[2], m[3], m[4]].map(o => String(parseInt(o, 10))).join(".");
+    return oct + (m[5] || "");
+  }
+
+  function matchAnswerLocal(given, expected) {
+    if (expected == null) return false;
+    const exps = Array.isArray(expected) ? expected : [expected];
+    const G = normalizeBasic(given);
+    if (!G) return false;
+    for (const e of exps) {
+      const E = normalizeBasic(e);
+      if (G === E) return true;
+      // diacritic-insensitive fallback
+      if (stripDiacritics(G) === stripDiacritics(E)) return true;
+      // IP-aware comparison (leading zeros, optional CIDR equivalence)
+      if (isLikelyIp(G) || isLikelyIp(E)) {
+        const Gn = normalizeIp(G);
+        const En = normalizeIp(E);
+        if (Gn === En) return true;
+        // allow optional /CIDR mismatch (192.168.10.63 == 192.168.10.63/26)
+        const Gbase = Gn.split("/")[0];
+        const Ebase = En.split("/")[0];
+        if (Gbase === Ebase && (Gn.includes("/") !== En.includes("/"))) return true;
+      }
+      // command-style: also strip leading "./" or "/" for relative paths
+      const Gc = G.replace(/^\.?\//, "");
+      const Ec = E.replace(/^\.?\//, "");
+      if (Gc === Ec) return true;
+    }
+    return false;
+  }
+
+  function matchAnswer(given, expected) {
+    if (window.INF02 && window.INF02.diagnostic && typeof window.INF02.diagnostic.matchAnswer === "function") {
+      try {
+        const r = window.INF02.diagnostic.matchAnswer(given, expected);
+        if (typeof r === "boolean") return r;
+      } catch (_) {}
+    }
+    return matchAnswerLocal(given, expected);
+  }
+
+  /* ===========================================================
+   * Built-in fallback scenarios (used if no scenarios.json)
+   * Schema-compliant: PracticalScenario v3
+   * =========================================================== */
+  const BUILTIN_SCENARIOS = [
+    {
+      scenarioId: "S-001",
+      title: "Konfiguracja sieci LAN dla małej firmy (CIDR + DHCP)",
+      area: "N",
+      durationSec: 9000,
+      ckeRef: "INF.02.11 LAN",
+      steps: [
+        { n: 1, instruction: "Adres sieci: 192.168.10.0/26. Podaj adres rozgłoszeniowy (broadcast).", expectedAnswer: ["192.168.10.63"], pointsMax: 5, kind: "fill" },
+        { n: 2, instruction: "Podaj maskę podsieci w notacji dziesiętnej dla /26.", expectedAnswer: ["255.255.255.192"], pointsMax: 5, kind: "fill" },
+        { n: 3, instruction: "Ile użytecznych adresów hostów ma podsieć /26?", expectedAnswer: ["62"], pointsMax: 4, kind: "fill" },
+        { n: 4, instruction: "Polecenie systemu Windows wyświetlające pełną konfigurację interfejsów (z DNS, MAC).", expectedAnswer: ["ipconfig /all", "ipconfig/all"], pointsMax: 4, kind: "command", hint: "Spacja przed slashem akceptowana." },
+        { n: 5, instruction: "Wybierz właściwy zakres adresów dla DHCP w sieci 192.168.10.0/26 (rezerwacja: 192.168.10.1 — brama; 192.168.10.62 — drukarka).", pointsMax: 4, kind: "choose", expectedAnswer: ["B"] },
+        { n: 6, instruction: "Opisz krótko (1-2 zdania) zasadę działania DHCP w trybie dynamicznym.", pointsMax: 3, kind: "checkbox" }
+      ],
+      rubric: [
+        { criterion: "Wszystkie podsieci poprawnie obliczone (broadcast, maska, hosty)", points: 14, autograde: true },
+        { criterion: "Polecenie diagnostyczne sieci poprawne", points: 4, autograde: true },
+        { criterion: "Zakres DHCP nie nakłada się na rezerwacje", points: 4, autograde: true },
+        { criterion: "Konfiguracja DHCP — opisana w pełni (zakres, dzierżawa, brama)", points: 25, autograde: false },
+        { criterion: "Dokumentacja techniczna spójna i czytelna", points: 10, autograde: false }
+      ],
+      totalPoints: 57
+    },
+    {
+      scenarioId: "S-002",
+      title: "Promocja Windows Server do kontrolera domeny (AD DS)",
+      area: "W",
+      durationSec: 9000,
+      ckeRef: "INF.02.11 server",
+      steps: [
+        { n: 1, instruction: "Cmdlet PowerShell instalujący rolę AD DS na Windows Server.", expectedAnswer: ["Install-WindowsFeature AD-Domain-Services", "Install-WindowsFeature -Name AD-Domain-Services"], pointsMax: 5, kind: "command" },
+        { n: 2, instruction: "Cmdlet promujący serwer do nowego lasu o nazwie 'firma.local'.", expectedAnswer: ["Install-ADDSForest -DomainName firma.local"], pointsMax: 5, kind: "command", hint: "PowerShell, parametr -DomainName." },
+        { n: 3, instruction: "Po promocji DC, jaki port TCP musi być otwarty dla replikacji LDAP (bez TLS)?", expectedAnswer: ["389"], pointsMax: 3, kind: "fill" },
+        { n: 4, instruction: "Wybierz prawidłową kolejność czynności przy tworzeniu nowej domeny w istniejącym lesie.", pointsMax: 4, kind: "choose", expectedAnswer: ["C"] },
+        { n: 5, instruction: "Opisz w 1-2 zdaniach różnicę między domeną a lasem AD DS.", pointsMax: 3, kind: "checkbox" }
+      ],
+      rubric: [
+        { criterion: "Polecenia PowerShell składniowo poprawne", points: 10, autograde: true },
+        { criterion: "Znajomość portów AD DS", points: 3, autograde: true },
+        { criterion: "Procedura promocji DC poprawnie zaplanowana", points: 4, autograde: true },
+        { criterion: "OU + GPO — struktura zaprojektowana zgodnie z best practice", points: 20, autograde: false },
+        { criterion: "Polityki haseł i blokady konta — zdefiniowane", points: 15, autograde: false }
+      ],
+      totalPoints: 52
+    },
+    {
+      scenarioId: "S-003",
+      title: "Diagnostyka awarii: brak sieci na stacji roboczej",
+      area: "D",
+      durationSec: 7200,
+      ckeRef: "INF.02.11 diagnostyka",
+      steps: [
+        { n: 1, instruction: "Polecenie testujące osiągalność hosta 8.8.8.8.", expectedAnswer: ["ping 8.8.8.8"], pointsMax: 3, kind: "command" },
+        { n: 2, instruction: "Polecenie wyświetlające tablicę routingu w Windows.", expectedAnswer: ["route print", "netstat -r"], pointsMax: 4, kind: "command" },
+        { n: 3, instruction: "Wybierz najbardziej prawdopodobną przyczynę: ping do bramy działa, do 8.8.8.8 nie działa.", pointsMax: 4, kind: "choose", expectedAnswer: ["B"] },
+        { n: 4, instruction: "Polecenie odnawiające dzierżawę DHCP.", expectedAnswer: ["ipconfig /renew", "ipconfig/renew"], pointsMax: 3, kind: "command" },
+        { n: 5, instruction: "Opisz w 2-3 punktach metodę OSI (warstwowa diagnostyka od L1).", pointsMax: 4, kind: "checkbox" }
+      ],
+      rubric: [
+        { criterion: "Polecenia diagnostyczne poprawne i adekwatne", points: 10, autograde: true },
+        { criterion: "Hipoteza awarii uzasadniona logicznie", points: 4, autograde: true },
+        { criterion: "Procedura DHCP — refresh poprawnie wykonany", points: 3, autograde: true },
+        { criterion: "Metoda diagnostyki warstwowej OSI udokumentowana", points: 18, autograde: false },
+        { criterion: "Plan naprawy + weryfikacja po fix opisana", points: 15, autograde: false }
+      ],
+      totalPoints: 50
+    },
+    {
+      scenarioId: "S-004",
+      title: "Konfiguracja przełącznika zarządzanego — VLAN i port-trunking",
+      area: "P",
+      durationSec: 7200,
+      ckeRef: "INF.02.11 sprzęt sieciowy",
+      steps: [
+        { n: 1, instruction: "Polecenie Cisco IOS tworzące VLAN 10 o nazwie 'sales'.", expectedAnswer: ["vlan 10\nname sales", "vlan 10 name sales"], pointsMax: 4, kind: "command", hint: "Tryb config; dwie linie lub jedna." },
+        { n: 2, instruction: "Polecenie przypisujące port FastEthernet 0/5 do VLAN 10 (access mode).", expectedAnswer: ["switchport access vlan 10"], pointsMax: 4, kind: "command" },
+        { n: 3, instruction: "Polecenie ustawiające port jako trunk z dot1q.", expectedAnswer: ["switchport mode trunk"], pointsMax: 4, kind: "command" },
+        { n: 4, instruction: "Wybierz, który tag VLAN (PVID) jest standardowo 'native' na porcie trunk.", pointsMax: 3, kind: "choose", expectedAnswer: ["A"] },
+        { n: 5, instruction: "Opisz, dlaczego inter-VLAN routing wymaga routera lub L3 switch.", pointsMax: 4, kind: "checkbox" }
+      ],
+      rubric: [
+        { criterion: "Polecenia VLAN składniowo poprawne", points: 12, autograde: true },
+        { criterion: "Konfiguracja trunk poprawna", points: 4, autograde: true },
+        { criterion: "Wiedza o native VLAN", points: 3, autograde: true },
+        { criterion: "Topologia VLAN udokumentowana z portami", points: 18, autograde: false },
+        { criterion: "Inter-VLAN routing zaimplementowany / opisany", points: 14, autograde: false }
+      ],
+      totalPoints: 51
+    },
+    {
+      scenarioId: "S-005",
+      title: "Tworzenie i przywracanie kopii zapasowej (Wbadmin)",
+      area: "V",
+      durationSec: 5400,
+      ckeRef: "INF.02.11 backup",
+      steps: [
+        { n: 1, instruction: "Polecenie wbadmin tworzące kopię zapasową dysku C: na D:.", expectedAnswer: ["wbadmin start backup -backuptarget:D: -include:C: -quiet"], pointsMax: 5, kind: "command" },
+        { n: 2, instruction: "Strategia 3-2-1 oznacza: 3 kopie, 2 nośniki, ile lokalizacji off-site?", expectedAnswer: ["1"], pointsMax: 3, kind: "fill" },
+        { n: 3, instruction: "Wybierz różnicę między incremental a differential backup.", pointsMax: 4, kind: "choose", expectedAnswer: ["B"] },
+        { n: 4, instruction: "Polecenie listujące dostępne wersje kopii zapasowych.", expectedAnswer: ["wbadmin get versions"], pointsMax: 4, kind: "command" },
+        { n: 5, instruction: "Opisz krótko, dlaczego testowanie przywracania (restore drill) jest obowiązkowe.", pointsMax: 4, kind: "checkbox" }
+      ],
+      rubric: [
+        { criterion: "Polecenia wbadmin poprawne i kompletne", points: 9, autograde: true },
+        { criterion: "Wiedza o strategii 3-2-1 oraz typach backupu", points: 7, autograde: true },
+        { criterion: "Plan harmonogramu backupu — zdefiniowany", points: 18, autograde: false },
+        { criterion: "Procedura restore drill udokumentowana", points: 12, autograde: false }
+      ],
+      totalPoints: 46
+    },
+    {
+      scenarioId: "S-006",
+      title: "Hardening systemu Linux (zapora, SSH, użytkownicy)",
+      area: "Z",
+      durationSec: 7200,
+      ckeRef: "INF.02.11 bezpieczeństwo",
+      steps: [
+        { n: 1, instruction: "Polecenie ufw blokujące cały ruch przychodzący domyślnie.", expectedAnswer: ["ufw default deny incoming", "sudo ufw default deny incoming"], pointsMax: 4, kind: "command" },
+        { n: 2, instruction: "Polecenie ufw zezwalające na SSH (port 22).", expectedAnswer: ["ufw allow 22", "ufw allow ssh", "sudo ufw allow 22", "sudo ufw allow ssh"], pointsMax: 4, kind: "command" },
+        { n: 3, instruction: "Plik konfiguracyjny SSH demona na Linux (pełna ścieżka).", expectedAnswer: ["/etc/ssh/sshd_config"], pointsMax: 3, kind: "fill" },
+        { n: 4, instruction: "Wybierz najbezpieczniejszą metodę uwierzytelniania SSH.", pointsMax: 4, kind: "choose", expectedAnswer: ["C"] },
+        { n: 5, instruction: "Opisz, jak wyłączyć logowanie roota przez SSH (1 zdanie + zmiana w pliku).", pointsMax: 4, kind: "checkbox" }
+      ],
+      rubric: [
+        { criterion: "Polecenia ufw poprawne", points: 8, autograde: true },
+        { criterion: "Lokalizacja pliku konfiguracyjnego sshd", points: 3, autograde: true },
+        { criterion: "Wybór metody uwierzytelniania uzasadniony", points: 4, autograde: true },
+        { criterion: "Polityka kont użytkowników (sudo, hasła) zdefiniowana", points: 18, autograde: false },
+        { criterion: "Audyt logów + fail2ban — opisany", points: 17, autograde: false }
+      ],
+      totalPoints: 50
+    }
+  ];
+
+  // MCQ option choices for `choose` steps
+  const STEP_CHOICES = {
+    "S-001-5": [
+      "A) 192.168.10.0 — 192.168.10.63",
+      "B) 192.168.10.10 — 192.168.10.50",
+      "C) 192.168.10.1 — 192.168.10.62",
+      "D) 192.168.10.64 — 192.168.10.127"
+    ],
+    "S-002-4": [
+      "A) Promocja DC → utworzenie lasu → dodanie OU",
+      "B) Dodanie OU → promocja DC → polityki haseł",
+      "C) Sprawdzenie DNS → instalacja roli AD DS → promocja DC",
+      "D) Reboot → sprawdzenie DNS → utworzenie GPO"
+    ],
+    "S-003-3": [
+      "A) Awaria fizyczna kabla",
+      "B) Brak skonfigurowanego DNS / brama bez routingu do internetu",
+      "C) Wadliwa karta sieciowa",
+      "D) Konflikt adresów IP w sieci LAN"
+    ],
+    "S-004-4": [
+      "A) VLAN 1",
+      "B) VLAN 0",
+      "C) VLAN 4095",
+      "D) VLAN 1024"
+    ],
+    "S-005-3": [
+      "A) Incremental zapisuje wszystkie zmiany od pełnej kopii; differential — tylko od ostatniej incremental",
+      "B) Incremental zapisuje zmiany od ostatniej kopii (jakiejkolwiek); differential — od ostatniej pełnej kopii",
+      "C) Brak różnicy",
+      "D) Incremental jest szybszy do przywracania niż differential"
+    ],
+    "S-006-4": [
+      "A) Hasło tekstowe",
+      "B) Hasło + 2FA SMS",
+      "C) Klucz publiczny (Ed25519/RSA)",
+      "D) Anonimowy login"
+    ]
+  };
+
+  /* ===========================================================
+   * SHELL helpers
+   * =========================================================== */
+  function shellAvailable() {
+    return !!(window.INF02 && window.INF02.shell);
+  }
+  function emitEvent(name, payload) {
+    if (shellAvailable() && window.INF02.shell.events && typeof window.INF02.shell.events.emit === "function") {
+      try { window.INF02.shell.events.emit(name, payload); } catch (_) {}
+    }
+    try {
+      window.dispatchEvent(new CustomEvent("INF02:" + name, { detail: payload }));
+    } catch (_) {}
+  }
+
+  function uuid() {
+    if (window.crypto && typeof window.crypto.randomUUID === "function") {
+      return window.crypto.randomUUID();
+    }
+    // RFC4122 v4 fallback
+    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function(c) {
+      const r = Math.random() * 16 | 0;
+      const v = c === "x" ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
+  }
+
+  /* ===========================================================
+   * Scenario loading
+   * =========================================================== */
+  async function loadScenarios() {
+    // Priority: window.INF02.scenarios → fetch ./data/scenarios.json → builtin
+    if (window.INF02 && Array.isArray(window.INF02.scenarios) && window.INF02.scenarios.length) {
+      return window.INF02.scenarios;
+    }
+    try {
+      const r = await fetch("../data/scenarios.json", { cache: "force-cache" });
+      if (r.ok) {
+        const data = await r.json();
+        if (Array.isArray(data) && data.length) return data;
+        if (data && Array.isArray(data.scenarios)) return data.scenarios;
+      }
+    } catch (_) {}
+    return BUILTIN_SCENARIOS;
+  }
+
+  /* ===========================================================
+   * State (local module state — global state via shell setState)
+   * =========================================================== */
+  const STATE = {
+    view: "selector",        // selector | run | result
+    scenarios: [],
+    filter: "ALL",
+    activeSession: null,     // { sessionId, scenarioId, startedAt, durationSec, currentStep, answers, rubricChecks, endedAt }
+    activeScenario: null,
+    timerHandle: null,
+    elapsedSec: 0,
+    lastResult: null
+  };
+
+  /* ===========================================================
+   * Session ops
+   * =========================================================== */
+  function startScenario(scenarioId) {
+    const sc = STATE.scenarios.find(s => s.scenarioId === scenarioId);
+    if (!sc) throw new Error("Scenario not found: " + scenarioId);
+    const sessionId = uuid();
+    const session = {
+      sessionId,
+      scenarioId,
+      startedAt: new Date().toISOString(),
+      durationSec: sc.durationSec,
+      currentStep: 1,
+      answers: {},      // stepN -> { given, correct, pointsAwarded }
+      rubricChecks: {}, // criterionIndex -> bool (manual only)
+      endedAt: null
+    };
+    STATE.activeSession = session;
+    STATE.activeScenario = sc;
+    STATE.elapsedSec = 0;
+    STATE.view = "run";
+    persistSession();
+    startTimer();
+    return { sessionId, startedAt: session.startedAt, durationSec: sc.durationSec };
+  }
+
+  function abortScenario() {
+    stopTimer();
+    STATE.activeSession = null;
+    STATE.activeScenario = null;
+    STATE.view = "selector";
+    render();
+  }
+
+  function submitStep(sessionId, stepN, given) {
+    const session = STATE.activeSession;
+    if (!session || session.sessionId !== sessionId) {
+      throw new Error("No matching active session");
+    }
+    const sc = STATE.activeScenario;
+    const step = sc.steps.find(s => s.n === stepN);
+    if (!step) throw new Error("Step not found: " + stepN);
+
+    let correct = false;
+    let pointsAwarded = 0;
+    let feedback = "OK";
+
+    if (step.kind === "fill" || step.kind === "command") {
+      correct = matchAnswer(given, step.expectedAnswer);
+      pointsAwarded = correct ? step.pointsMax : 0;
+      feedback = correct ? "OK" : "Niepoprawnie. Spróbuj ponownie lub przejdź dalej.";
+    } else if (step.kind === "choose") {
+      // expectedAnswer: array of letter codes ["A"|"B"|"C"|"D"] or string
+      const exp = Array.isArray(step.expectedAnswer) ? step.expectedAnswer : [step.expectedAnswer];
+      const G = String(given || "").trim().toUpperCase();
+      correct = exp.map(e => String(e).trim().toUpperCase()).includes(G);
+      pointsAwarded = correct ? step.pointsMax : 0;
+      feedback = correct ? "Trafione." : "Niepoprawny wybór.";
+    } else if (step.kind === "checkbox") {
+      // self-assess open response — points granted if user marks "wykonane"
+      // `given` is bool
+      correct = !!given;
+      pointsAwarded = correct ? step.pointsMax : 0;
+      feedback = correct ? "Oznaczono jako wykonane." : "Pominięto.";
+    }
+
+    session.answers[stepN] = { given, correct, pointsAwarded };
+    persistSession();
+    return { correct, pointsAwarded, feedback };
+  }
+
+  function computeAutoPointsByStep() {
+    const sc = STATE.activeScenario;
+    const session = STATE.activeSession;
+    if (!sc || !session) return 0;
+    let sum = 0;
+    for (const step of sc.steps) {
+      const a = session.answers[step.n];
+      if (a) sum += a.pointsAwarded;
+    }
+    return sum;
+  }
+
+  function computeRubricBreakdown() {
+    const sc = STATE.activeScenario;
+    const session = STATE.activeSession;
+    if (!sc || !session) return [];
+    const stepAutoSum = computeAutoPointsByStep();
+    const stepAutoMax = sc.steps.reduce((acc, s) => acc + s.pointsMax, 0);
+    const result = [];
+    let stepShareDistributed = 0;
+    sc.rubric.forEach((r, i) => {
+      if (r.autograde) {
+        // proportionally distribute auto points (steps are the de-facto autograde criteria)
+        const ratio = stepAutoMax > 0 ? r.points / sc.rubric.filter(x => x.autograde).reduce((a, x) => a + x.points, 0) : 0;
+        const autoTotal = sc.rubric.filter(x => x.autograde).reduce((a, x) => a + x.points, 0);
+        const earned = autoTotal > 0 ? Math.round((stepAutoSum / stepAutoMax) * r.points * 10) / 10 : 0;
+        result.push({ idx: i, criterion: r.criterion, points: r.points, autograde: true, earned });
+        stepShareDistributed += earned;
+      } else {
+        const checked = !!session.rubricChecks[i];
+        result.push({ idx: i, criterion: r.criterion, points: r.points, autograde: false, earned: checked ? r.points : 0 });
+      }
+    });
+    return result;
+  }
+
+  function endScenario(sessionId) {
+    const session = STATE.activeSession;
+    if (!session || session.sessionId !== sessionId) {
+      throw new Error("No matching active session");
+    }
+    const sc = STATE.activeScenario;
+    stopTimer();
+    session.endedAt = new Date().toISOString();
+    const breakdown = computeRubricBreakdown();
+    const totalEarned = breakdown.reduce((a, r) => a + r.earned, 0);
+    const totalPoints = sc.totalPoints;
+    const percent = totalPoints > 0 ? totalEarned / totalPoints : 0;
+    const passPct = sc.passThresholdPct != null ? sc.passThresholdPct : TOKENS.practicalPassPct;
+    const passed = percent >= passPct;
+    const result = {
+      sessionId,
+      scenarioId: sc.scenarioId,
+      title: sc.title,
+      area: sc.area,
+      totalEarned: Math.round(totalEarned * 10) / 10,
+      totalPoints,
+      percent,
+      passed,
+      passPct,
+      breakdown,
+      stepsResult: sc.steps.map(st => {
+        const a = session.answers[st.n];
+        return {
+          n: st.n,
+          instruction: st.instruction,
+          kind: st.kind,
+          pointsMax: st.pointsMax,
+          pointsAwarded: a ? a.pointsAwarded : 0,
+          given: a ? a.given : null,
+          correct: a ? a.correct : false
+        };
+      }),
+      durationSec: STATE.elapsedSec,
+      startedAt: session.startedAt,
+      endedAt: session.endedAt
+    };
+    STATE.lastResult = result;
+    STATE.view = "result";
+    // Emit event + persist via shell
+    emitEvent("practical:ended", {
+      scenarioId: sc.scenarioId,
+      score: result.totalEarned,
+      totalPoints: result.totalPoints,
+      durationSec: result.durationSec,
+      passed: result.passed
+    });
+    persistSessionToShell(result);
+    return { totalPoints, percent, passed };
+  }
+
+  /* ===========================================================
+   * Persistence (delegate to shell.setState; never write state directly)
+   * =========================================================== */
+  function persistSession() {
+    if (!shellAvailable() || typeof window.INF02.shell.setState !== "function") return;
+    try {
+      const session = STATE.activeSession;
+      if (!session) return;
+      // append a "practical-in-progress" marker into sessions; shell can dedupe
+      // We don't push QuizSession here — we track activePractical separately
+      window.INF02.shell.setState({ activePractical: session.scenarioId });
+    } catch (_) {}
+  }
+
+  function persistSessionToShell(result) {
+    if (!shellAvailable() || typeof window.INF02.shell.setState !== "function") return;
+    try {
+      const cur = (typeof window.INF02.shell.getState === "function") ? window.INF02.shell.getState() : null;
+      const sessions = (cur && Array.isArray(cur.sessions)) ? cur.sessions.slice() : [];
+      // QuizSession-shaped record with mode='practical' (semi-fit; actual practical session lives separately)
+      sessions.push({
+        sessionId: result.sessionId,
+        mode: "practical",
+        questionIds: result.stepsResult.map(s => "Q-" + String(9000 + s.n).padStart(4, "0")),
+        answers: [],
+        startedAt: result.startedAt,
+        endedAt: result.endedAt,
+        score: result.percent,
+        isDiagnostic: false,
+        scenarioId: result.scenarioId,
+        passed: result.passed
+      });
+      window.INF02.shell.setState({ sessions: sessions.slice(-50), activePractical: null });
+    } catch (e) {
+      console.warn("[practical] persist failed", e);
+    }
+  }
+
+  /* ===========================================================
+   * Timer
+   * =========================================================== */
+  function startTimer() {
+    stopTimer();
+    STATE.timerHandle = setInterval(() => {
+      STATE.elapsedSec += 1;
+      const remaining = Math.max(0, (STATE.activeScenario.durationSec || 9000) - STATE.elapsedSec);
+      const el = document.getElementById("pp-timer-value");
+      if (el) {
+        el.textContent = formatHMS(remaining);
+        const total = STATE.activeScenario.durationSec || 9000;
+        el.dataset.warn = (remaining <= total * 0.2 && remaining > total * 0.1) ? "true" : "false";
+        el.dataset.crit = (remaining <= total * 0.1) ? "true" : "false";
+      }
+      if (remaining <= 0) {
+        // auto end
+        stopTimer();
+        try {
+          if (STATE.activeSession) {
+            endScenario(STATE.activeSession.sessionId);
+            render();
+          }
+        } catch (_) {}
+      }
+    }, 1000);
+  }
+  function stopTimer() {
+    if (STATE.timerHandle) {
+      clearInterval(STATE.timerHandle);
+      STATE.timerHandle = null;
+    }
+  }
+  function formatHMS(sec) {
+    sec = Math.max(0, Math.floor(sec));
+    const h = Math.floor(sec / 3600);
+    const m = Math.floor((sec % 3600) / 60);
+    const s = sec % 60;
+    return [h, m, s].map(x => String(x).padStart(2, "0")).join(":");
+  }
+  function formatHMmm(sec) {
+    sec = Math.max(0, Math.floor(sec));
+    const h = Math.floor(sec / 3600);
+    const m = Math.floor((sec % 3600) / 60);
+    return h + "h " + String(m).padStart(2, "0") + "m";
+  }
+
+  /* ===========================================================
+   * Rendering
+   * =========================================================== */
+  function el(tag, attrs, children) {
+    const node = document.createElement(tag);
+    if (attrs) {
+      for (const k of Object.keys(attrs)) {
+        if (k === "class" || k === "className") node.className = attrs[k];
+        else if (k === "html") node.innerHTML = attrs[k];
+        else if (k === "text") node.textContent = attrs[k];
+        else if (k.indexOf("on") === 0 && typeof attrs[k] === "function") {
+          node.addEventListener(k.slice(2).toLowerCase(), attrs[k]);
+        } else if (k === "style" && typeof attrs[k] === "object") {
+          Object.assign(node.style, attrs[k]);
+        } else if (attrs[k] === true) node.setAttribute(k, "");
+        else if (attrs[k] !== false && attrs[k] != null) node.setAttribute(k, attrs[k]);
+      }
+    }
+    if (children) {
+      const arr = Array.isArray(children) ? children : [children];
+      for (const c of arr) {
+        if (c == null || c === false) continue;
+        if (typeof c === "string") node.appendChild(document.createTextNode(c));
+        else node.appendChild(c);
+      }
+    }
+    return node;
+  }
+
+  function render() {
+    const root = document.getElementById("pp-root");
+    if (!root) return;
+    root.innerHTML = "";
+    if (STATE.view === "selector") root.appendChild(renderSelector());
+    else if (STATE.view === "run") root.appendChild(renderRun());
+    else if (STATE.view === "result") root.appendChild(renderResult());
+  }
+
+  function renderSelector() {
+    const wrap = el("div");
+    wrap.appendChild(el("div", { class: "pp-header" }, [
+      el("div", null, [
+        el("h1", { text: "Symulator zadań praktycznych" }),
+        el("div", { class: "muted", text: "INF.02 · 150 minut · próg 75%" })
+      ])
+    ]));
+
+    // Filters
+    const areas = Array.from(new Set(STATE.scenarios.map(s => s.area))).sort();
+    const filterRow = el("div", { class: "pp-filters", role: "tablist" });
+    const allBtn = el("button", {
+      class: "pp-filter-chip",
+      "aria-pressed": STATE.filter === "ALL",
+      onclick: () => { STATE.filter = "ALL"; render(); }
+    }, "Wszystkie (" + STATE.scenarios.length + ")");
+    filterRow.appendChild(allBtn);
+    for (const a of areas) {
+      const cnt = STATE.scenarios.filter(s => s.area === a).length;
+      filterRow.appendChild(el("button", {
+        class: "pp-filter-chip",
+        "aria-pressed": STATE.filter === a,
+        onclick: () => { STATE.filter = a; render(); }
+      }, [a + " · " + (AREA_LABELS[a] || a) + " (" + cnt + ")"]));
+    }
+    wrap.appendChild(filterRow);
+
+    // Grid
+    const list = STATE.filter === "ALL" ? STATE.scenarios : STATE.scenarios.filter(s => s.area === STATE.filter);
+    if (!list.length) {
+      wrap.appendChild(el("div", { class: "pp-empty" }, "Brak scenariuszy w tej kategorii."));
+      return wrap;
+    }
+    const grid = el("div", { class: "pp-scenario-grid" });
+    for (const sc of list) {
+      const card = el("article", { class: "pp-scenario-card" });
+      card.appendChild(el("div", { class: "pp-card-meta" }, [
+        el("span", { class: "pp-area-chip", "data-area": sc.area },
+          sc.area + " · " + (AREA_LABELS[sc.area] || sc.area)),
+        el("span", { class: "pp-meta-pill" }, formatHMmm(sc.durationSec)),
+        el("span", { class: "pp-meta-pill" }, "próg " + Math.round((sc.passThresholdPct || TOKENS.practicalPassPct) * 100) + "%"),
+        el("span", { class: "pp-meta-pill" }, sc.totalPoints + " pkt")
+      ]));
+      card.appendChild(el("h3", { text: sc.title }));
+      card.appendChild(el("div", { class: "muted", text: sc.steps.length + " kroków · " + sc.rubric.length + " kryteriów rubryki" }));
+      card.appendChild(el("div", { style: { marginTop: "auto", display: "flex", gap: "8px" } }, [
+        el("button", {
+          class: "btn-primary",
+          onclick: () => { try { startScenario(sc.scenarioId); render(); } catch (e) { alert(e.message); } }
+        }, "Rozpocznij")
+      ]));
+      grid.appendChild(card);
+    }
+    wrap.appendChild(grid);
+    return wrap;
+  }
+
+  function renderRun() {
+    const sc = STATE.activeScenario;
+    const session = STATE.activeSession;
+    if (!sc || !session) {
+      STATE.view = "selector";
+      return renderSelector();
+    }
+    const stepsCount = sc.steps.length;
+    const allStepsAnswered = sc.steps.every(s => session.answers[s.n] !== undefined);
+    const rubricPhase = session.currentStep === "rubric";
+    const wrap = el("div", { class: "pp-run" });
+
+    // Topbar (mobile)
+    wrap.appendChild(el("div", { class: "pp-topbar" }, [
+      el("div", null, [
+        el("strong", { text: sc.title }),
+        el("div", { class: "muted", style: { fontSize: "var(--fs-xs)" }, text: sc.scenarioId + " · " + (AREA_LABELS[sc.area] || sc.area) })
+      ]),
+      el("div", null, [
+        el("button", {
+          class: "btn-danger",
+          onclick: () => {
+            if (confirm("Przerwać scenariusz? Postęp zostanie utracony.")) abortScenario();
+          }
+        }, "Przerwij")
+      ])
+    ]));
+
+    // Sidebar
+    const sidebar = el("aside", { class: "pp-sidebar" });
+    sidebar.appendChild(el("h3", { text: "Kroki (" + sc.steps.length + ")" }));
+    const ul = el("ul", { class: "pp-step-list" });
+    for (const st of sc.steps) {
+      const a = session.answers[st.n];
+      const status = a ? (a.correct ? "done" : "skip") : "todo";
+      const li = el("li", {
+        "data-active": session.currentStep === st.n,
+        onclick: () => { session.currentStep = st.n; render(); }
+      }, [
+        el("span", { class: "stat", "data-status": status, text: a ? (a.correct ? "✓" : "·") : st.n }),
+        el("span", { style: { flex: "1", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" } },
+          "Krok " + st.n + " · " + st.kind),
+        el("span", { class: "pp-meta-pill", style: { fontSize: "10px" } }, st.pointsMax + " pkt")
+      ]);
+      ul.appendChild(li);
+    }
+    // rubric phase entry
+    const rubricLi = el("li", {
+      "data-active": rubricPhase,
+      onclick: () => {
+        if (allStepsAnswered) {
+          session.currentStep = "rubric";
+          render();
+        }
+      }
+    }, [
+      el("span", { class: "stat", "data-status": rubricPhase ? "done" : "todo", text: "R" }),
+      el("span", { style: { flex: "1" } }, "Rubric self-check"),
+      el("span", { class: "pp-meta-pill", style: { fontSize: "10px" } }, sc.rubric.filter(r => !r.autograde).length + " ręcz.")
+    ]);
+    ul.appendChild(rubricLi);
+    sidebar.appendChild(ul);
+
+    sidebar.appendChild(el("div", { style: { marginTop: "16px", display: "flex", gap: "8px", flexWrap: "wrap" } }, [
+      el("button", {
+        onclick: () => { if (confirm("Przerwać scenariusz?")) abortScenario(); }
+      }, "Przerwij"),
+      el("button", {
+        class: "btn-primary",
+        disabled: !allStepsAnswered,
+        onclick: () => {
+          try {
+            const r = endScenario(session.sessionId);
+            render();
+          } catch (e) { alert(e.message); }
+        }
+      }, "Zakończ")
+    ]));
+    wrap.appendChild(sidebar);
+
+    // Main area
+    const main = el("section", { class: "pp-main" });
+    if (rubricPhase) {
+      main.appendChild(renderRubricPhase(sc, session));
+    } else {
+      main.appendChild(renderStep(sc, session));
+    }
+    wrap.appendChild(main);
+
+    // Timer
+    const remaining = Math.max(0, sc.durationSec - STATE.elapsedSec);
+    const timer = el("aside", { class: "pp-timer" });
+    timer.appendChild(el("div", { class: "pp-timer-label", text: "Pozostały czas" }));
+    timer.appendChild(el("div", {
+      class: "pp-timer-value",
+      id: "pp-timer-value",
+      "data-warn": "false",
+      "data-crit": "false",
+      text: formatHMS(remaining)
+    }));
+    const autoNow = computeAutoPointsByStep();
+    const totalMax = sc.totalPoints;
+    timer.appendChild(el("div", { class: "pp-score-line" }, [
+      el("div", { class: "muted", style: { fontSize: "var(--fs-xs)" }, text: "Punkty (auto)" }),
+      el("div", { class: "pp-score-num" }, autoNow.toFixed(1) + " / " + totalMax)
+    ]));
+    timer.appendChild(el("div", { style: { marginTop: "12px" } }, [
+      el("div", { class: "muted", style: { fontSize: "var(--fs-xs)" }, text: "Postęp" }),
+      el("div", { class: "pp-score-num" }, Object.keys(session.answers).length + " / " + sc.steps.length)
+    ]));
+    wrap.appendChild(timer);
+
+    return wrap;
+  }
+
+  function renderStep(sc, session) {
+    const stepN = session.currentStep;
+    const step = sc.steps.find(s => s.n === stepN);
+    if (!step) {
+      // Default to first unanswered or first
+      const next = sc.steps.find(s => session.answers[s.n] === undefined) || sc.steps[0];
+      session.currentStep = next.n;
+      return renderStep(sc, session);
+    }
+    const wrap = el("div");
+    wrap.appendChild(el("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "8px", marginBottom: "12px" } }, [
+      el("div", null, [
+        el("h2", { text: "Krok " + step.n + " z " + sc.steps.length, style: { margin: "0" } }),
+        el("div", { class: "muted", style: { fontSize: "var(--fs-xs)" } },
+          "Typ: " + step.kind + " · max " + step.pointsMax + " pkt")
+      ])
+    ]));
+    wrap.appendChild(el("div", { class: "pp-step-instr" }, step.instruction));
+    if (step.hint) {
+      wrap.appendChild(el("div", { class: "pp-step-hint", text: "Wskazówka: " + step.hint }));
+    }
+
+    const existing = session.answers[step.n];
+    const isAnswered = existing !== undefined;
+
+    let inputContainer = null;
+    let getValue = () => null;
+
+    if (step.kind === "fill" || step.kind === "command") {
+      const input = el("input", {
+        type: "text",
+        id: "pp-step-input",
+        readonly: isAnswered ? true : false,
+        autocomplete: "off",
+        spellcheck: "false",
+        placeholder: step.kind === "command" ? "Wpisz polecenie..." : "Wpisz odpowiedź..."
+      });
+      if (isAnswered) input.value = existing.given || "";
+      inputContainer = input;
+      getValue = () => input.value;
+    } else if (step.kind === "choose") {
+      const choices = STEP_CHOICES[sc.scenarioId + "-" + step.n] || ["A) Wariant A", "B) Wariant B", "C) Wariant C", "D) Wariant D"];
+      const optsWrap = el("div", { class: "pp-mcq-options" });
+      const radios = [];
+      choices.forEach((label, idx) => {
+        const letter = String.fromCharCode(65 + idx);
+        const id = "pp-choose-" + step.n + "-" + letter;
+        const opt = el("label", { class: "pp-mcq-option", for: id });
+        const radio = el("input", {
+          type: "radio",
+          name: "pp-choose-" + step.n,
+          id,
+          value: letter,
+          disabled: isAnswered ? true : false
+        });
+        if (isAnswered && existing.given === letter) radio.checked = true;
+        radios.push(radio);
+        opt.appendChild(radio);
+        opt.appendChild(el("span", { text: label }));
+        optsWrap.appendChild(opt);
+      });
+      inputContainer = optsWrap;
+      getValue = () => {
+        for (const r of radios) if (r.checked) return r.value;
+        return null;
+      };
+    } else if (step.kind === "checkbox") {
+      // open response — user marks "wykonane" to claim points
+      const ta = el("textarea", {
+        id: "pp-step-textarea",
+        rows: 4,
+        placeholder: "Twoja odpowiedź / notatka (self-assessment)..."
+      });
+      if (isAnswered && typeof existing.given === "object" && existing.given && existing.given.text) {
+        ta.value = existing.given.text;
+      }
+      const cbWrap = el("label", { class: "pp-rubric-item", style: { marginTop: "12px" } });
+      const cb = el("input", { type: "checkbox", id: "pp-step-claim" });
+      if (isAnswered && existing.correct) cb.checked = true;
+      cbWrap.appendChild(cb);
+      cbWrap.appendChild(el("span", { class: "pp-rubric-text" },
+        "Wykonałem(am) zgodnie z instrukcją (self-assessment, +" + step.pointsMax + " pkt)"));
+
+      const container = el("div");
+      container.appendChild(ta);
+      container.appendChild(cbWrap);
+      inputContainer = container;
+      getValue = () => ({ text: ta.value, claimed: cb.checked });
+    }
+
+    if (inputContainer) wrap.appendChild(inputContainer);
+
+    // Feedback area
+    const fb = el("div", { id: "pp-step-feedback" });
+    if (isAnswered) {
+      fb.appendChild(el("div", {
+        class: "pp-feedback " + (existing.correct ? "pp-feedback--ok" : "pp-feedback--bad"),
+        text: (existing.correct ? "Punkty: " : "Bez punktów: ") + existing.pointsAwarded + " / " + step.pointsMax
+      }));
+    }
+    wrap.appendChild(fb);
+
+    // Actions
+    const idx = sc.steps.findIndex(s => s.n === step.n);
+    const actions = el("div", { class: "pp-actions" });
+    actions.appendChild(el("button", {
+      disabled: idx === 0,
+      onclick: () => {
+        if (idx > 0) { session.currentStep = sc.steps[idx - 1].n; render(); }
+      }
+    }, "← Wstecz"));
+
+    if (!isAnswered) {
+      actions.appendChild(el("button", {
+        class: "btn-primary",
+        onclick: () => {
+          try {
+            const v = getValue();
+            let arg = v;
+            if (step.kind === "checkbox") {
+              // store object including text for breakdown view, but `given` for points = claimed bool
+              const obj = v || { text: "", claimed: false };
+              session.answers[step.n] = {
+                given: { text: obj.text, claimed: obj.claimed },
+                correct: !!obj.claimed,
+                pointsAwarded: obj.claimed ? step.pointsMax : 0
+              };
+              render();
+              return;
+            }
+            const r = submitStep(session.sessionId, step.n, arg);
+            // auto-advance on correct
+            if (r.correct && idx < sc.steps.length - 1) {
+              session.currentStep = sc.steps[idx + 1].n;
+            }
+            render();
+          } catch (e) { alert(e.message); }
+        }
+      }, "Zatwierdź"));
+      actions.appendChild(el("button", {
+        onclick: () => {
+          // skip — record zero points, advance
+          session.answers[step.n] = { given: null, correct: false, pointsAwarded: 0 };
+          if (idx < sc.steps.length - 1) {
+            session.currentStep = sc.steps[idx + 1].n;
+          }
+          render();
+        }
+      }, "Pomiń"));
+    } else {
+      actions.appendChild(el("button", {
+        onclick: () => {
+          // allow re-do: clear answer
+          delete session.answers[step.n];
+          render();
+        }
+      }, "Spróbuj ponownie"));
+    }
+
+    actions.appendChild(el("button", {
+      class: "btn-primary",
+      disabled: idx === sc.steps.length - 1 && !isAnswered,
+      onclick: () => {
+        if (idx < sc.steps.length - 1) {
+          session.currentStep = sc.steps[idx + 1].n;
+        } else {
+          // go to rubric self-check
+          session.currentStep = "rubric";
+        }
+        render();
+      }
+    }, idx === sc.steps.length - 1 ? "Do rubryki →" : "Dalej →"));
+
+    wrap.appendChild(actions);
+    return wrap;
+  }
+
+  function renderRubricPhase(sc, session) {
+    const wrap = el("div");
+    wrap.appendChild(el("h2", { text: "Rubric — samoocena" }));
+    wrap.appendChild(el("p", { class: "muted", text: "Zaznacz kryteria, które wykonałeś poprawnie. Punkty z manualnych kryteriów zostaną dodane TYLKO po zaznaczeniu (brak auto-pass)." }));
+
+    const list = el("div", { class: "pp-rubric-list" });
+    sc.rubric.forEach((r, i) => {
+      const item = el("label", { class: "pp-rubric-item", "data-auto": r.autograde });
+      const cb = el("input", {
+        type: "checkbox",
+        "data-rubric": r.autograde ? "auto" : "manual",
+        "data-rubric-idx": i,
+        disabled: r.autograde ? true : false,
+        checked: r.autograde ? true : (session.rubricChecks[i] || false)
+      });
+      cb.addEventListener("change", function() {
+        session.rubricChecks[i] = this.checked;
+      });
+      item.appendChild(cb);
+      const txt = el("div", { class: "pp-rubric-text" });
+      txt.appendChild(el("strong", { text: r.criterion }));
+      if (r.autograde) {
+        txt.appendChild(el("div", { class: "muted", style: { fontSize: "var(--fs-xs)" } },
+          "Autograde: punkty obliczone proporcjonalnie ze steps."));
+      } else {
+        txt.appendChild(el("div", { class: "muted", style: { fontSize: "var(--fs-xs)" } },
+          "Manualne: zaznacz tylko jeśli wykonałeś w pełni."));
+      }
+      item.appendChild(txt);
+      item.appendChild(el("span", { class: "pp-rubric-pts" }, r.points + " pkt"));
+      list.appendChild(item);
+    });
+    wrap.appendChild(list);
+
+    const actions = el("div", { class: "pp-actions" });
+    actions.appendChild(el("button", {
+      onclick: () => {
+        // back to last step
+        const last = sc.steps[sc.steps.length - 1];
+        session.currentStep = last.n;
+        render();
+      }
+    }, "← Wstecz"));
+    actions.appendChild(el("button", {
+      class: "btn-primary",
+      onclick: () => {
+        try {
+          endScenario(session.sessionId);
+          render();
+        } catch (e) { alert(e.message); }
+      }
+    }, "Zakończ scenariusz"));
+    wrap.appendChild(actions);
+    return wrap;
+  }
+
+  function renderResult() {
+    const r = STATE.lastResult;
+    if (!r) {
+      STATE.view = "selector";
+      return renderSelector();
+    }
+    const wrap = el("div");
+    wrap.appendChild(el("div", { class: "pp-header" }, [
+      el("div", null, [
+        el("h1", { text: "Wynik scenariusza" }),
+        el("div", { class: "muted", text: r.title })
+      ])
+    ]));
+
+    const passClass = r.passed ? "scenario-result--passed" : "scenario-result--failed";
+    const verdict = r.passed
+      ? ("Zaliczono — wynik powyżej progu " + Math.round(r.passPct * 100) + "%")
+      : ("Niezdane (próg " + Math.round(r.passPct * 100) + "%)");
+
+    const hero = el("div", { class: "pp-result-hero " + passClass });
+    hero.appendChild(el("div", { class: "muted", text: "Twój wynik" }));
+    hero.appendChild(el("div", { class: "pp-result-pct" }, Math.round(r.percent * 1000) / 10 + "%"));
+    hero.appendChild(el("div", { style: { marginTop: "8px" } },
+      r.totalEarned + " / " + r.totalPoints + " pkt · " + formatHMS(r.durationSec)));
+    hero.appendChild(el("h2", { text: verdict, style: { marginTop: "16px" } }));
+    wrap.appendChild(hero);
+
+    const grid = el("div", { class: "pp-result-grid" });
+
+    // Steps breakdown
+    const sec1 = el("section", { class: "pp-result-section" });
+    sec1.appendChild(el("h3", { text: "Punktacja per krok" }));
+    for (const s of r.stepsResult) {
+      const cls = s.pointsAwarded === s.pointsMax ? "full" : (s.pointsAwarded > 0 ? "partial" : "zero");
+      sec1.appendChild(el("div", { class: "pp-breakdown-row" }, [
+        el("span", { class: "lbl" }, "Krok " + s.n + ": " + truncate(s.instruction, 60)),
+        el("span", { class: "pts " + cls }, s.pointsAwarded + " / " + s.pointsMax)
+      ]));
+    }
+    grid.appendChild(sec1);
+
+    // Rubric breakdown
+    const sec2 = el("section", { class: "pp-result-section" });
+    sec2.appendChild(el("h3", { text: "Rubric" }));
+    for (const b of r.breakdown) {
+      const cls = b.earned >= b.points ? "full" : (b.earned > 0 ? "partial" : "zero");
+      sec2.appendChild(el("div", { class: "pp-breakdown-row" }, [
+        el("span", { class: "lbl" }, b.criterion + (b.autograde ? " (auto)" : " (manual)")),
+        el("span", { class: "pts " + cls }, (Math.round(b.earned * 10) / 10) + " / " + b.points)
+      ]));
+    }
+    grid.appendChild(sec2);
+
+    wrap.appendChild(grid);
+
+    // Actions
+    const actions = el("div", { class: "pp-actions", style: { marginTop: "24px", justifyContent: "center" } });
+    actions.appendChild(el("button", {
+      class: "btn-primary",
+      onclick: () => {
+        try { startScenario(r.scenarioId); render(); } catch (e) { alert(e.message); }
+      }
+    }, "Powtórz scenariusz"));
+    actions.appendChild(el("button", {
+      onclick: () => { STATE.view = "selector"; STATE.lastResult = null; render(); }
+    }, "Inny scenariusz"));
+    wrap.appendChild(actions);
+
+    return wrap;
+  }
+
+  function truncate(s, n) {
+    s = String(s || "");
+    return s.length > n ? s.slice(0, n - 1) + "…" : s;
+  }
+
+  /* ===========================================================
+   * Public API — INF02.practical
+   * =========================================================== */
+  window.INF02 = window.INF02 || {};
+  window.INF02.practical = {
+    loadScenarios: loadScenarios,
+    startScenario: function(id) { try { return startScenario(id); } finally { render(); } },
+    submitStep: submitStep,
+    endScenario: endScenario,
+    abortScenario: abortScenario,
+    // Legacy aliases per spec
+    start: function(id) { return this.startScenario(id); },
+    abort: function() { return this.abortScenario(); },
+    resume: function(sessionId) {
+      // attempt to restore from persisted state; if no state, no-op
+      console.info("[practical] resume not implemented (sessions persisted via shell)");
+    },
+    // Internal (test hooks)
+    _matchAnswer: matchAnswer,
+    _matchAnswerLocal: matchAnswerLocal,
+    _normalizeBasic: normalizeBasic,
+    _normalizeIp: normalizeIp,
+    _state: STATE,
+    _BUILTIN_SCENARIOS: BUILTIN_SCENARIOS
+  };
+
+  // Register view with shell
+  if (window.INF02 && window.INF02.shell && typeof window.INF02.shell === "object") {
+    window.INF02.shell.views = window.INF02.shell.views || {};
+    window.INF02.shell.views.practical = function(params) {
+      // params optional: { scenarioId } -> jump straight into Run
+      if (params && params.scenarioId) {
+        try { startScenario(params.scenarioId); } catch (_) {}
+      }
+      render();
+      return document.getElementById("pp-root");
+    };
+  }
+
+  /* ===========================================================
+   * Bootstrap
+   * =========================================================== */
+  async function init() {
+    try {
+      STATE.scenarios = await loadScenarios();
+    } catch (e) {
+      console.warn("[practical] loadScenarios failed, fallback to builtin", e);
+      STATE.scenarios = BUILTIN_SCENARIOS.slice();
+    }
+    render();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+
+})();
+</script>
+</body>
+</html>

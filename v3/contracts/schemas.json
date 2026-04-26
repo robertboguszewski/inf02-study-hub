@@ -1,0 +1,444 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://inf02-study-hub.local/v3/schemas",
+  "title": "INF.02 Study Hub v3 — Schemas",
+  "description": "All persisted structures. ZAMROŻONE po sign-off Checkpoint 1. Każda zmiana = bump v2.",
+  "$defs": {
+    "Area": {
+      "type": "string",
+      "enum": ["B", "O", "N", "P", "D", "L", "W", "6", "V", "Z", "R"],
+      "description": "11 obszarów: B=Budowa, O=Systemy, N=Sieci, P=Peryferia, D=Diagnostyka, L=Prawo/BHP, W=WinServer, 6=IPv6, V=Wirtualizacja, Z=Bezpieczeństwo, R=Praktyka"
+    },
+    "Difficulty": {
+      "type": "string",
+      "enum": ["easy", "medium", "hard"]
+    },
+    "Rating": {
+      "type": "integer",
+      "enum": [1, 2, 3, 4],
+      "description": "1=AGAIN, 2=HARD, 3=GOOD, 4=EASY (Anki-style)"
+    },
+    "IsoDate": {
+      "type": "string",
+      "format": "date",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "IsoDateTime": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "QuestionId": {
+      "type": "string",
+      "pattern": "^Q-[0-9]{4}$",
+      "description": "Stable ID, immutable po publikacji"
+    },
+    "Answer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["qid", "given", "correct", "elapsedMs"],
+      "properties": {
+        "qid": { "$ref": "#/$defs/QuestionId" },
+        "given": {
+          "oneOf": [
+            { "type": "integer", "minimum": 0, "maximum": 3 },
+            { "type": "string" }
+          ]
+        },
+        "correct": { "type": "boolean" },
+        "elapsedMs": { "type": "integer", "minimum": 0 },
+        "ratingApplied": { "$ref": "#/$defs/Rating" }
+      }
+    },
+    "Step": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["n", "instruction", "pointsMax", "kind"],
+      "properties": {
+        "n": { "type": "integer", "minimum": 1 },
+        "instruction": { "type": "string", "minLength": 1 },
+        "expectedAnswer": {
+          "oneOf": [
+            { "type": "string" },
+            { "type": "array", "items": { "type": "string" }, "minItems": 1 }
+          ]
+        },
+        "pointsMax": { "type": "integer", "minimum": 1, "maximum": 100 },
+        "kind": {
+          "type": "string",
+          "enum": ["checkbox", "fill", "command", "choose"]
+        },
+        "hint": { "type": "string" }
+      }
+    },
+    "RubricItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["criterion", "points", "autograde"],
+      "properties": {
+        "criterion": { "type": "string", "minLength": 1 },
+        "points": { "type": "integer", "minimum": 1, "maximum": 100 },
+        "autograde": { "type": "boolean" }
+      }
+    }
+  },
+
+  "Question": {
+    "$id": "https://inf02-study-hub.local/v3/Question",
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["id", "area", "difficulty", "type", "q", "correct", "explanation"],
+    "properties": {
+      "id": { "$ref": "#/$defs/QuestionId" },
+      "area": { "$ref": "#/$defs/Area" },
+      "difficulty": { "$ref": "#/$defs/Difficulty" },
+      "type": {
+        "type": "string",
+        "enum": ["mcq", "fill"]
+      },
+      "q": { "type": "string", "minLength": 5 },
+      "options": {
+        "oneOf": [
+          {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "minItems": 4,
+            "maxItems": 4,
+            "description": "MCQ: dokładnie 4 dystraktory, format CKE A-D"
+          },
+          { "type": "null", "description": "fill: brak options" }
+        ]
+      },
+      "correct": {
+        "oneOf": [
+          {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 3,
+            "description": "MCQ: index 0..3"
+          },
+          {
+            "type": "string",
+            "minLength": 1,
+            "description": "fill: pojedyncza odpowiedź"
+          },
+          {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "minItems": 1,
+            "description": "fill: warianty akceptowane"
+          }
+        ]
+      },
+      "explanation": { "type": "string", "minLength": 10 },
+      "ckeRef": {
+        "type": "string",
+        "description": "Norma / podstawa programowa, np. PN-EN 50173-1:2018"
+      },
+      "mediaRef": {
+        "type": "string",
+        "description": "Opcjonalna referencja do diagramu / SVG ID, np. 'svg:cidr-26'"
+      },
+      "tags": {
+        "type": "array",
+        "items": { "type": "string" },
+        "uniqueItems": true,
+        "maxItems": 10
+      }
+    }
+  },
+
+  "Card": {
+    "$id": "https://inf02-study-hub.local/v3/Card",
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["qid", "ease", "interval", "reps", "lapses", "due", "learnStep", "successStreak"],
+    "properties": {
+      "qid": { "$ref": "#/$defs/QuestionId" },
+      "ease": {
+        "type": "number",
+        "minimum": 1.3,
+        "maximum": 3.0,
+        "description": "SM-2 easiness factor"
+      },
+      "interval": {
+        "type": "number",
+        "minimum": 0,
+        "description": "dni do następnej powtórki (float)"
+      },
+      "reps": { "type": "integer", "minimum": 0 },
+      "lapses": { "type": "integer", "minimum": 0 },
+      "due": { "$ref": "#/$defs/IsoDateTime" },
+      "learnStep": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 3,
+        "description": "0..3, learning steps [1m, 10m, 1d, 3d]"
+      },
+      "successStreak": { "type": "integer", "minimum": 0 }
+    }
+  },
+
+  "KnowledgeState": {
+    "$id": "https://inf02-study-hub.local/v3/KnowledgeState",
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["perArea", "weakest", "strongest", "readinessForExam"],
+    "properties": {
+      "perArea": {
+        "type": "object",
+        "additionalProperties": false,
+        "patternProperties": {
+          "^(B|O|N|P|D|L|W|6|V|Z|R)$": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["accuracy", "attempts", "lastSeen", "mastery"],
+            "properties": {
+              "accuracy": { "type": "number", "minimum": 0, "maximum": 1 },
+              "attempts": { "type": "integer", "minimum": 0 },
+              "lastSeen": {
+                "oneOf": [
+                  { "$ref": "#/$defs/IsoDateTime" },
+                  { "type": "null" }
+                ]
+              },
+              "mastery": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1,
+                "description": "EWMA-smoothed knowledge (α=0.7)"
+              }
+            }
+          }
+        }
+      },
+      "weakest": {
+        "type": "array",
+        "items": { "$ref": "#/$defs/Area" },
+        "maxItems": 2
+      },
+      "strongest": {
+        "type": "array",
+        "items": { "$ref": "#/$defs/Area" },
+        "maxItems": 2
+      },
+      "readinessForExam": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 1,
+        "description": "0.6*mean(mastery) + 0.4*min(mastery)"
+      }
+    }
+  },
+
+  "UserProfile": {
+    "$id": "https://inf02-study-hub.local/v3/UserProfile",
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["goal", "dailyGoalMin", "onboardedAt"],
+    "description": "Anonimowy. Zero PII (no email, no DoB, no name).",
+    "properties": {
+      "pseudonim": {
+        "type": "string",
+        "maxLength": 24,
+        "description": "Opcjonalny, do gamifikacji. Brak walidacji jako 'real name'."
+      },
+      "goal": {
+        "type": "string",
+        "enum": ["pass", "ace", "refresh"],
+        "description": "pass=50%+, ace=85%+, refresh=powtórzenie"
+      },
+      "dailyGoalMin": {
+        "type": "integer",
+        "minimum": 5,
+        "maximum": 120
+      },
+      "examDate": { "$ref": "#/$defs/IsoDate" },
+      "onboardedAt": { "$ref": "#/$defs/IsoDateTime" }
+    }
+  },
+
+  "Streak": {
+    "$id": "https://inf02-study-hub.local/v3/Streak",
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["count", "lastActiveDate", "freezesAvailable", "longestStreak"],
+    "properties": {
+      "count": { "type": "integer", "minimum": 0 },
+      "lastActiveDate": {
+        "oneOf": [
+          { "$ref": "#/$defs/IsoDate" },
+          { "type": "null" }
+        ]
+      },
+      "freezesAvailable": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 2,
+        "description": "Max 2 freezes (1-day grace), regenerują 1 / 7 dni aktywności"
+      },
+      "longestStreak": { "type": "integer", "minimum": 0 }
+    }
+  },
+
+  "Achievement": {
+    "$id": "https://inf02-study-hub.local/v3/Achievement",
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["id", "title", "desc", "icon", "criteria"],
+    "properties": {
+      "id": { "type": "string", "pattern": "^A-[a-z0-9-]{2,32}$" },
+      "title": { "type": "string", "minLength": 1, "maxLength": 60 },
+      "desc": { "type": "string", "minLength": 1, "maxLength": 200 },
+      "icon": {
+        "type": "string",
+        "description": "ID inline SVG (np. 'svg:medal-bronze')"
+      },
+      "criteria": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["type", "threshold"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["streak", "quizzes", "mastery", "practical", "diagnostic", "session-time"]
+          },
+          "threshold": { "type": "number", "minimum": 0 },
+          "area": { "$ref": "#/$defs/Area" }
+        }
+      },
+      "unlockedAt": { "$ref": "#/$defs/IsoDateTime" }
+    }
+  },
+
+  "QuizSession": {
+    "$id": "https://inf02-study-hub.local/v3/QuizSession",
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["sessionId", "mode", "questionIds", "answers", "startedAt", "isDiagnostic"],
+    "properties": {
+      "sessionId": {
+        "type": "string",
+        "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+      },
+      "mode": {
+        "type": "string",
+        "enum": ["exam", "adaptive", "topic", "review", "diagnostic"]
+      },
+      "questionIds": {
+        "type": "array",
+        "items": { "$ref": "#/$defs/QuestionId" },
+        "minItems": 1
+      },
+      "answers": {
+        "type": "array",
+        "items": { "$ref": "#/$defs/Answer" }
+      },
+      "startedAt": { "$ref": "#/$defs/IsoDateTime" },
+      "endedAt": { "$ref": "#/$defs/IsoDateTime" },
+      "score": { "type": "number", "minimum": 0, "maximum": 1 },
+      "isDiagnostic": { "type": "boolean" },
+      "topicArea": { "$ref": "#/$defs/Area" },
+      "durationLimitSec": { "type": "integer", "minimum": 60 }
+    }
+  },
+
+  "PracticalScenario": {
+    "$id": "https://inf02-study-hub.local/v3/PracticalScenario",
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["scenarioId", "title", "area", "durationSec", "steps", "rubric", "totalPoints"],
+    "properties": {
+      "scenarioId": { "type": "string", "pattern": "^S-[0-9]{3}$" },
+      "title": { "type": "string", "minLength": 5, "maxLength": 120 },
+      "area": { "$ref": "#/$defs/Area" },
+      "durationSec": {
+        "type": "integer",
+        "minimum": 60,
+        "maximum": 9000,
+        "description": "Max 150 min = 9000s (CKE practical)"
+      },
+      "steps": {
+        "type": "array",
+        "items": { "$ref": "#/$defs/Step" },
+        "minItems": 3,
+        "maxItems": 30
+      },
+      "rubric": {
+        "type": "array",
+        "items": { "$ref": "#/$defs/RubricItem" },
+        "minItems": 1,
+        "maxItems": 30
+      },
+      "totalPoints": { "type": "integer", "minimum": 1 },
+      "passThresholdPct": {
+        "type": "number",
+        "minimum": 0.5,
+        "maximum": 1.0,
+        "default": 0.75
+      },
+      "ckeRef": { "type": "string" }
+    }
+  },
+
+  "AppState": {
+    "$id": "https://inf02-study-hub.local/v3/AppState",
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["version", "profile", "knowledge", "cards", "streak", "achievements", "sessions", "settings"],
+    "properties": {
+      "version": {
+        "type": "string",
+        "const": "3.0.0"
+      },
+      "profile": {
+        "oneOf": [
+          { "$ref": "https://inf02-study-hub.local/v3/UserProfile" },
+          { "type": "null" }
+        ],
+        "description": "null przed onboardingiem"
+      },
+      "knowledge": { "$ref": "https://inf02-study-hub.local/v3/KnowledgeState" },
+      "cards": {
+        "type": "object",
+        "patternProperties": {
+          "^Q-[0-9]{4}$": { "$ref": "https://inf02-study-hub.local/v3/Card" }
+        },
+        "additionalProperties": false
+      },
+      "streak": { "$ref": "https://inf02-study-hub.local/v3/Streak" },
+      "achievements": {
+        "type": "array",
+        "items": { "$ref": "https://inf02-study-hub.local/v3/Achievement" },
+        "maxItems": 50
+      },
+      "sessions": {
+        "type": "array",
+        "items": { "$ref": "https://inf02-study-hub.local/v3/QuizSession" },
+        "maxItems": 50,
+        "description": "Last 50 sessions (FIFO drop)"
+      },
+      "settings": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["theme", "reducedMotion", "locale"],
+        "properties": {
+          "theme": {
+            "type": "string",
+            "enum": ["auto", "light", "dark"]
+          },
+          "reducedMotion": { "type": "boolean" },
+          "locale": {
+            "type": "string",
+            "const": "pl-PL"
+          },
+          "soundEnabled": { "type": "boolean" }
+        }
+      },
+      "seq": {
+        "type": "integer",
+        "minimum": 0,
+        "description": "Monotone counter for race-detection (ADR-005 mitigation)"
+      }
+    }
+  }
+}

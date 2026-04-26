@@ -1,0 +1,154 @@
+{
+  "$schema": "https://inf02-study-hub.local/v3/design-tokens.schema",
+  "version": "1.0.0",
+  "color": {
+    "bg": "#0F1115",
+    "surface": "#1A1D24",
+    "surface2": "#252932",
+    "text": "#F2F4F7",
+    "textMuted": "#A8B0BD",
+    "border": "#2E3340",
+    "accent": "#5EA9FF",
+    "accentFg": "#0F1115",
+    "success": "#3DDC97",
+    "warning": "#FFB454",
+    "danger": "#FF6B6B",
+    "focus": "#FFD166",
+    "areas": {
+      "B": { "fg": "#A9D5FF", "bg": "#1F3A5F", "label": "Budowa komputera",        "contrastRatio": 7.8 },
+      "O": { "fg": "#D5B8FF", "bg": "#3F2A5F", "label": "Systemy operacyjne",       "contrastRatio": 7.2 },
+      "N": { "fg": "#9BEBC9", "bg": "#1F4F3F", "label": "Sieci komputerowe",        "contrastRatio": 8.0 },
+      "P": { "fg": "#FFCC9B", "bg": "#5F3F1F", "label": "Peryferia i sprzęt sieciowy", "contrastRatio": 6.8 },
+      "D": { "fg": "#FFB0B8", "bg": "#5F1F2F", "label": "Diagnostyka",              "contrastRatio": 6.5 },
+      "L": { "fg": "#E6E0A8", "bg": "#4F4F1F", "label": "Prawo, BHP, licencje",     "contrastRatio": 7.0 },
+      "W": { "fg": "#A8DCE6", "bg": "#1F4F5F", "label": "Windows Server",           "contrastRatio": 7.5 },
+      "6": { "fg": "#B8B0FF", "bg": "#2F1F5F", "label": "IPv6 i routing zaawansowany", "contrastRatio": 6.9 },
+      "V": { "fg": "#9BD9C7", "bg": "#1F5F4F", "label": "Wirtualizacja i backup",   "contrastRatio": 7.2 },
+      "Z": { "fg": "#FFB0DC", "bg": "#5F2F4F", "label": "Bezpieczeństwo zaawansowane", "contrastRatio": 6.4 },
+      "R": { "fg": "#E0E0E0", "bg": "#3F3F3F", "label": "Praktyka CKE-style",       "contrastRatio": 7.8 }
+    }
+  },
+  "typography": {
+    "fontStack": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif",
+    "monoStack": "ui-monospace, \"SF Mono\", \"Cascadia Mono\", \"Roboto Mono\", Consolas, monospace",
+    "scale": {
+      "ratio": 1.250,
+      "ratioName": "major-third",
+      "xs":  "0.8rem",
+      "sm":  "1rem",
+      "md":  "1.25rem",
+      "lg":  "1.563rem",
+      "xl":  "1.953rem",
+      "2xl": "2.441rem"
+    },
+    "lineHeight": { "body": 1.55, "heading": 1.2 },
+    "weight": { "regular": 400, "medium": 500, "semibold": 600, "bold": 700 }
+  },
+  "spacing": {
+    "base": 8,
+    "xs":   4,
+    "sm":   8,
+    "md":  16,
+    "lg":  24,
+    "xl":  32,
+    "2xl": 48,
+    "3xl": 64
+  },
+  "breakpoints": {
+    "sm":  375,
+    "md":  768,
+    "lg": 1024
+  },
+  "motion": {
+    "easeOut":   "cubic-bezier(0.16, 1, 0.3, 1)",
+    "easeInOut": "cubic-bezier(0.65, 0, 0.35, 1)",
+    "easeIn":    "cubic-bezier(0.7, 0, 0.84, 0)",
+    "duration": {
+      "fast": "120ms",
+      "base": "200ms",
+      "slow": "320ms"
+    },
+    "respectsReducedMotion": true
+  },
+  "focus": {
+    "ringWidth": "3px",
+    "ringColor": "#FFD166",
+    "ringOffset": "2px",
+    "ringRadius": "4px"
+  },
+  "elevation": {
+    "shadow1": "0 1px 2px rgba(0,0,0,0.4)",
+    "shadow2": "0 4px 12px rgba(0,0,0,0.5)",
+    "shadow3": "0 12px 32px rgba(0,0,0,0.6)"
+  },
+  "tapTarget": {
+    "minWidthPx":  44,
+    "minHeightPx": 44
+  },
+  "storage": {
+    "stateKey":      "inf02.v3.state",
+    "questionsKey":  "inf02.v3.questions",
+    "scenariosKey":  "inf02.v3.scenarios",
+    "legacyKeyV2":   "inf02_progress_v2",
+    "legacyEngineKeyV2": "inf02_adaptive_state_v2"
+  },
+  "i18n": {
+    "locale": "pl-PL",
+    "dateFormatStorage": "yyyy-MM-dd'T'HH:mm:ss'Z'",
+    "dateFormatDisplay": "dd.MM.yyyy",
+    "timeFormatDisplay": "HH:mm",
+    "decimalSeparator":  ",",
+    "thousandsSeparator": " "
+  },
+  "cdn": {
+    "policy": "single-origin (cdn.jsdelivr.net) + SRI required",
+    "allowed": [
+      {
+        "name": "chart.js",
+        "version": "4.5.0",
+        "url": "https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.js",
+        "integrity": "sha384-iU8HYtnGQ8Cy4zl7gbNMOhsDTTKX02BTXptVP/vqAWIaTfM7isw76iyZCsjL2eVi",
+        "crossorigin": "anonymous",
+        "globalName": "Chart",
+        "swCacheRequired": true
+      }
+    ]
+  },
+  "pwa": {
+    "manifestPath": "./manifest.webmanifest",
+    "swPath": "./sw.js",
+    "scope": "./",
+    "startUrl": "./shell.html",
+    "display": "standalone",
+    "themeColor": "#5EA9FF",
+    "backgroundColor": "#0F1115",
+    "icons": ["icons/icon-192.png", "icons/icon-512.png", "icons/icon-512-maskable.png"],
+    "cacheVersion": "v3.0.0"
+  },
+  "engine": {
+    "knowledgeAlpha": 0.7,
+    "weakSlotShare":  0.7,
+    "strongSlotShare": 0.3,
+    "diagnosticQCount": 12,
+    "examQCount":  40,
+    "examDurationSec": 3600,
+    "examPassPct": 0.5,
+    "practicalDurationSec": 9000,
+    "practicalPassPct": 0.75,
+    "srs": {
+      "ratings":     [1, 2, 3, 4],
+      "ratingNames": ["AGAIN", "HARD", "GOOD", "EASY"],
+      "easeMin": 1.3,
+      "easeMax": 3.0,
+      "easeDeltaHard": -0.15,
+      "easeDeltaGood":  0.0,
+      "easeDeltaEasy":  0.15,
+      "easeDeltaAgain": -0.20,
+      "softLapseFactor": 0.20,
+      "softLapseMinDays": 0.007,
+      "learningStepsMinutes": [1, 10, 1440, 4320],
+      "intervalFactorHard": 1.2,
+      "intervalFactorEasyMul": 1.3
+    }
+  }
+}

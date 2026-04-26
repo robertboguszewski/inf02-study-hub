@@ -1,0 +1,746 @@
+[
+  {
+    "scenarioId": "S-001",
+    "title": "Projektowanie sieci LAN dla szkoły — adresacja VLSM",
+    "area": "N",
+    "durationSec": 5400,
+    "steps": [
+      {
+        "n": 1,
+        "instruction": "Jaką maskę podsieci zastosować dla Laboratorium A wymagającego 60 hostów?",
+        "expectedAnswer": ["255.255.255.128", "/25"],
+        "pointsMax": 2,
+        "kind": "fill",
+        "hint": "2^n - 2 >= 60, sprawdź /25"
+      },
+      {
+        "n": 2,
+        "instruction": "Podaj adres sieci dla Laboratorium A (192.168.50.0/25)",
+        "expectedAnswer": "192.168.50.0",
+        "pointsMax": 1,
+        "kind": "fill"
+      },
+      {
+        "n": 3,
+        "instruction": "Podaj adres rozgłoszeniowy dla Laboratorium A (/25)",
+        "expectedAnswer": "192.168.50.127",
+        "pointsMax": 1,
+        "kind": "fill"
+      },
+      {
+        "n": 4,
+        "instruction": "Jaka jest maska podsieci dla działu Administracja (30 hostów)?",
+        "expectedAnswer": ["255.255.255.224", "/27"],
+        "pointsMax": 2,
+        "kind": "fill",
+        "hint": "2^5 - 2 = 30 hostów, /27"
+      },
+      {
+        "n": 5,
+        "instruction": "Podaj adres sieci dla Administracji (po Laboratorium A /25)",
+        "expectedAnswer": "192.168.50.128",
+        "pointsMax": 1,
+        "kind": "fill"
+      },
+      {
+        "n": 6,
+        "instruction": "Podaj adres rozgłoszeniowy dla Administracji (/27)",
+        "expectedAnswer": "192.168.50.159",
+        "pointsMax": 1,
+        "kind": "fill"
+      },
+      {
+        "n": 7,
+        "instruction": "Jaka maska jest odpowiednia dla serwerowni (6 hostów)?",
+        "expectedAnswer": ["255.255.255.248", "/29"],
+        "pointsMax": 2,
+        "kind": "fill",
+        "hint": "2^3 - 2 = 6 hostów, /29"
+      },
+      {
+        "n": 8,
+        "instruction": "Udokumentuj schemat sieci: zapisz adresy wszystkich podsieci, masek i bram domyślnych",
+        "expectedAnswer": null,
+        "pointsMax": 2,
+        "kind": "checkbox"
+      },
+      {
+        "n": 9,
+        "instruction": "Który typ kabla UTP należy zastosować do połączeń w szafie rack? Opcje: Cat 5, Cat 5e, Cat 6A, Cat 3",
+        "expectedAnswer": "Cat 6A",
+        "pointsMax": 1,
+        "kind": "choose",
+        "options": ["Cat 5", "Cat 5e", "Cat 6A", "Cat 3"]
+      },
+      {
+        "n": 10,
+        "instruction": "Ile adresów hostów jest dostępnych w sieci /27?",
+        "expectedAnswer": ["30", "30 hostów"],
+        "pointsMax": 1,
+        "kind": "fill"
+      }
+    ],
+    "rubric": [
+      {"criterion": "Poprawna maska dla Lab A (/25)", "points": 2, "autograde": true},
+      {"criterion": "Poprawny adres sieci Lab A", "points": 1, "autograde": true},
+      {"criterion": "Poprawny broadcast Lab A", "points": 1, "autograde": true},
+      {"criterion": "Poprawna maska dla Administracji (/27)", "points": 2, "autograde": true},
+      {"criterion": "Poprawny adres sieci Administracji", "points": 1, "autograde": true},
+      {"criterion": "Poprawny broadcast Administracji", "points": 1, "autograde": true},
+      {"criterion": "Poprawna maska dla Serwerowni (/29)", "points": 2, "autograde": true},
+      {"criterion": "Kompletna dokumentacja schematu sieci", "points": 2, "autograde": false},
+      {"criterion": "Wybór właściwego kabla (Cat 6A)", "points": 1, "autograde": true},
+      {"criterion": "Poprawna liczba hostów w /27", "points": 1, "autograde": true}
+    ],
+    "totalPoints": 14,
+    "passThresholdPct": 0.75,
+    "ckeRef": "INF.02.11.1"
+  },
+  {
+    "scenarioId": "S-002",
+    "title": "Instalacja i konfiguracja Windows Server 2022 z usługą Active Directory",
+    "area": "W",
+    "durationSec": 5400,
+    "steps": [
+      {
+        "n": 1,
+        "instruction": "Zainstaluj system Windows Server 2022 (minimum: 2 GB RAM, 32 GB dysk, CPU 1.4 GHz). Potwierdź pomyślną instalację.",
+        "expectedAnswer": null,
+        "pointsMax": 1,
+        "kind": "checkbox"
+      },
+      {
+        "n": 2,
+        "instruction": "Ustaw statyczny adres IP 192.168.1.1, maskę 255.255.255.0, bramę 192.168.1.254 za pomocą PowerShell.",
+        "expectedAnswer": ["New-NetIPAddress", "netsh interface ip set address"],
+        "pointsMax": 2,
+        "kind": "command",
+        "hint": "Użyj New-NetIPAddress lub netsh"
+      },
+      {
+        "n": 3,
+        "instruction": "Zmień nazwę komputera na DC01 za pomocą PowerShell.",
+        "expectedAnswer": ["Rename-Computer -NewName DC01", "Rename-Computer -NewName \"DC01\""],
+        "pointsMax": 1,
+        "kind": "command"
+      },
+      {
+        "n": 4,
+        "instruction": "Zainstaluj rolę AD DS wraz z narzędziami zarządzania.",
+        "expectedAnswer": ["Install-WindowsFeature AD-Domain-Services -IncludeManagementTools", "Install-WindowsFeature -Name AD-Domain-Services"],
+        "pointsMax": 2,
+        "kind": "command"
+      },
+      {
+        "n": 5,
+        "instruction": "Wypromuj serwer do roli kontrolera domeny dla nowej domeny szkola.local.",
+        "expectedAnswer": ["Install-ADDSForest -DomainName", "Install-ADDSForest"],
+        "pointsMax": 2,
+        "kind": "command",
+        "hint": "Użyj Install-ADDSForest z parametrem -DomainName"
+      },
+      {
+        "n": 6,
+        "instruction": "Utwórz jednostkę organizacyjną (OU) o nazwie 'Uczniowie' w domenie szkola.local.",
+        "expectedAnswer": ["New-ADOrganizationalUnit -Name", "New-ADOrganizationalUnit"],
+        "pointsMax": 1,
+        "kind": "command"
+      },
+      {
+        "n": 7,
+        "instruction": "Utwórz konto użytkownika dla Jana Kowalskiego (login: jkowalski) w OU Uczniowie.",
+        "expectedAnswer": ["New-ADUser -Name", "New-ADUser"],
+        "pointsMax": 2,
+        "kind": "command"
+      },
+      {
+        "n": 8,
+        "instruction": "Dodaj użytkownika jkowalski do grupy Domain Users.",
+        "expectedAnswer": ["Add-ADGroupMember", "Add-ADGroupMember -Identity"],
+        "pointsMax": 1,
+        "kind": "command"
+      },
+      {
+        "n": 9,
+        "instruction": "Utwórz i połącz GPO ograniczające dostęp do Panelu Sterowania dla OU Uczniowie.",
+        "expectedAnswer": null,
+        "pointsMax": 2,
+        "kind": "checkbox"
+      },
+      {
+        "n": 10,
+        "instruction": "Wymuś natychmiastowe zastosowanie zasad grupy.",
+        "expectedAnswer": ["gpupdate /force", "gpupdate"],
+        "pointsMax": 1,
+        "kind": "command",
+        "hint": "Polecenie gpupdate z parametrem /force"
+      }
+    ],
+    "rubric": [
+      {"criterion": "Serwer zainstalowany poprawnie", "points": 1, "autograde": false},
+      {"criterion": "Poprawna konfiguracja IP", "points": 2, "autograde": true},
+      {"criterion": "Nazwa komputera DC01", "points": 1, "autograde": true},
+      {"criterion": "Rola AD DS zainstalowana", "points": 2, "autograde": true},
+      {"criterion": "Serwer wypromowany do roli DC", "points": 2, "autograde": true},
+      {"criterion": "OU Uczniowie utworzona", "points": 1, "autograde": true},
+      {"criterion": "Konto jkowalski utworzone", "points": 2, "autograde": true},
+      {"criterion": "Użytkownik dodany do grupy", "points": 1, "autograde": true},
+      {"criterion": "GPO skonfigurowane poprawnie", "points": 2, "autograde": false},
+      {"criterion": "gpupdate /force wykonany", "points": 1, "autograde": true}
+    ],
+    "totalPoints": 15,
+    "passThresholdPct": 0.75,
+    "ckeRef": "INF.02.11.2"
+  },
+  {
+    "scenarioId": "S-003",
+    "title": "Konfiguracja serwera Ubuntu Server 22.04 z usługą Samba",
+    "area": "W",
+    "durationSec": 5400,
+    "steps": [
+      {
+        "n": 1,
+        "instruction": "Zaktualizuj listę pakietów systemu.",
+        "expectedAnswer": ["apt update", "sudo apt update", "apt-get update"],
+        "pointsMax": 1,
+        "kind": "command"
+      },
+      {
+        "n": 2,
+        "instruction": "Zainstaluj pakiet Samba.",
+        "expectedAnswer": ["apt install samba", "sudo apt install samba", "apt-get install samba"],
+        "pointsMax": 1,
+        "kind": "command"
+      },
+      {
+        "n": 3,
+        "instruction": "Utwórz katalog /srv/samba/publiczny do udostępnienia.",
+        "expectedAnswer": ["mkdir -p /srv/samba/publiczny", "mkdir /srv/samba/publiczny"],
+        "pointsMax": 1,
+        "kind": "command"
+      },
+      {
+        "n": 4,
+        "instruction": "Ustaw uprawnienia do katalogu tak, aby wszyscy użytkownicy mogli zapisywać pliki.",
+        "expectedAnswer": ["chmod 777 /srv/samba/publiczny", "chmod 0777 /srv/samba/publiczny", "chmod a+rwx /srv/samba/publiczny"],
+        "pointsMax": 1,
+        "kind": "command"
+      },
+      {
+        "n": 5,
+        "instruction": "Jak nazywa się główny plik konfiguracyjny usługi Samba?",
+        "expectedAnswer": ["/etc/samba/smb.conf", "smb.conf"],
+        "pointsMax": 1,
+        "kind": "fill"
+      },
+      {
+        "n": 6,
+        "instruction": "Dodaj w pliku smb.conf sekcję definiującą udział [publiczny] z ścieżką /srv/samba/publiczny, dostępem dla gości i możliwością zapisu.",
+        "expectedAnswer": null,
+        "pointsMax": 2,
+        "kind": "checkbox"
+      },
+      {
+        "n": 7,
+        "instruction": "Utwórz użytkownika Linux o nazwie 'pracownik'.",
+        "expectedAnswer": ["useradd -m pracownik", "adduser pracownik"],
+        "pointsMax": 1,
+        "kind": "command"
+      },
+      {
+        "n": 8,
+        "instruction": "Ustaw hasło Samba dla użytkownika pracownik.",
+        "expectedAnswer": ["smbpasswd -a pracownik", "sudo smbpasswd -a pracownik"],
+        "pointsMax": 1,
+        "kind": "command"
+      },
+      {
+        "n": 9,
+        "instruction": "Uruchom ponownie usługę Samba.",
+        "expectedAnswer": ["systemctl restart smbd", "systemctl restart smbd nmbd", "service smbd restart"],
+        "pointsMax": 1,
+        "kind": "command"
+      },
+      {
+        "n": 10,
+        "instruction": "Sprawdź status usługi smbd.",
+        "expectedAnswer": ["systemctl status smbd", "systemctl is-active smbd"],
+        "pointsMax": 1,
+        "kind": "command"
+      }
+    ],
+    "rubric": [
+      {"criterion": "Aktualizacja listy pakietów", "points": 1, "autograde": true},
+      {"criterion": "Samba zainstalowana", "points": 1, "autograde": true},
+      {"criterion": "Katalog /srv/samba/publiczny utworzony", "points": 1, "autograde": true},
+      {"criterion": "Uprawnienia 777 ustawione", "points": 1, "autograde": true},
+      {"criterion": "Znajomość nazwy pliku konfiguracyjnego", "points": 1, "autograde": true},
+      {"criterion": "Konfiguracja smb.conf poprawna", "points": 2, "autograde": false},
+      {"criterion": "Użytkownik pracownik utworzony", "points": 1, "autograde": true},
+      {"criterion": "Hasło Samba ustawione", "points": 1, "autograde": true},
+      {"criterion": "Usługa Samba uruchomiona i działa", "points": 1, "autograde": false},
+      {"criterion": "Status usługi smbd zweryfikowany", "points": 1, "autograde": true}
+    ],
+    "totalPoints": 11,
+    "passThresholdPct": 0.75,
+    "ckeRef": "INF.02.11.2"
+  },
+  {
+    "scenarioId": "S-004",
+    "title": "Diagnostyka i naprawa stanowiska — komputer nie uruchamia się",
+    "area": "D",
+    "durationSec": 3600,
+    "steps": [
+      {
+        "n": 1,
+        "instruction": "Sprawdź, czy kabel zasilający PSU jest prawidłowo podłączony do komputera i gniazdka.",
+        "expectedAnswer": null,
+        "pointsMax": 1,
+        "kind": "checkbox"
+      },
+      {
+        "n": 2,
+        "instruction": "Komputer nie wydaje żadnych dźwięków POST. Co może być przyczyną braku jakiegokolwiek sygnału dźwiękowego i obrazu?",
+        "expectedAnswer": ["PSU", "zasilacz", "płyta główna", "PSU lub płyta główna"],
+        "pointsMax": 2,
+        "kind": "fill",
+        "hint": "Brak sygnału POST wskazuje na brak zasilania lub awarię płyty"
+      },
+      {
+        "n": 3,
+        "instruction": "Wyjmij i ponownie zainstaluj moduły RAM. Przetestuj z jednym modułem.",
+        "expectedAnswer": null,
+        "pointsMax": 1,
+        "kind": "checkbox"
+      },
+      {
+        "n": 4,
+        "instruction": "Odłącz wszystkie urządzenia peryferyjne i karty rozszerzeń. Uruchom z minimalną konfiguracją (płyta + CPU + 1x RAM + zasilanie).",
+        "expectedAnswer": null,
+        "pointsMax": 1,
+        "kind": "checkbox"
+      },
+      {
+        "n": 5,
+        "instruction": "Jak zresetować ustawienia BIOS do wartości domyślnych bez dostępu do menu BIOS?",
+        "expectedAnswer": ["jumper", "zworkę", "wyciągnij baterię CMOS", "baterię CMOS", "clear CMOS"],
+        "pointsMax": 2,
+        "kind": "fill",
+        "hint": "Szukaj zworki CLRTC na płycie lub baterii CR2032"
+      },
+      {
+        "n": 6,
+        "instruction": "Komputer teraz uruchamia POST i wydaje 1 długi + 3 krótkie sygnały dźwiękowe (BIOS AMI). Co oznacza ten kod?",
+        "expectedAnswer": ["karta graficzna", "GPU", "brak karty graficznej", "video error"],
+        "pointsMax": 2,
+        "kind": "fill"
+      },
+      {
+        "n": 7,
+        "instruction": "Sprawdź i ponownie zainstaluj kartę graficzną w gnieździe PCIe.",
+        "expectedAnswer": null,
+        "pointsMax": 1,
+        "kind": "checkbox"
+      },
+      {
+        "n": 8,
+        "instruction": "System uruchamia się, ale Windows zgłasza błąd bootowania. Jakie polecenie uruchomić z Recovery Console, aby naprawić Master Boot Record?",
+        "expectedAnswer": ["bootrec /fixmbr", "bootrec.exe /fixmbr"],
+        "pointsMax": 2,
+        "kind": "command",
+        "hint": "bootrec /fixmbr naprawia MBR bez nadpisywania tablicy partycji"
+      },
+      {
+        "n": 9,
+        "instruction": "Sprawdź stan SMART dysku twardego za pomocą wbudowanego narzędzia Windows.",
+        "expectedAnswer": ["wmic diskdrive get status", "wmic diskdrive get model,status"],
+        "pointsMax": 1,
+        "kind": "command"
+      },
+      {
+        "n": 10,
+        "instruction": "Sporządź protokół serwisowy dokumentujący: opis usterki, wykonane czynności, wymienione części, zalecenia.",
+        "expectedAnswer": null,
+        "pointsMax": 2,
+        "kind": "checkbox"
+      }
+    ],
+    "rubric": [
+      {"criterion": "Sprawdzenie zasilania", "points": 1, "autograde": false},
+      {"criterion": "Identyfikacja przyczyny braku POST", "points": 2, "autograde": true},
+      {"criterion": "Testowanie RAM", "points": 1, "autograde": false},
+      {"criterion": "Minimalna konfiguracja testowa", "points": 1, "autograde": false},
+      {"criterion": "Reset BIOS (jumper/bateria CMOS)", "points": 2, "autograde": true},
+      {"criterion": "Interpretacja kodu błędu POST (GPU)", "points": 2, "autograde": true},
+      {"criterion": "Reinstalacja karty graficznej", "points": 1, "autograde": false},
+      {"criterion": "Naprawa MBR (bootrec /fixmbr)", "points": 2, "autograde": true},
+      {"criterion": "Diagnostyka SMART", "points": 1, "autograde": true},
+      {"criterion": "Protokół serwisowy", "points": 2, "autograde": false}
+    ],
+    "totalPoints": 15,
+    "passThresholdPct": 0.75,
+    "ckeRef": "INF.02.11.3"
+  },
+  {
+    "scenarioId": "S-005",
+    "title": "Konfiguracja drukarki sieciowej i skanera w środowisku Windows",
+    "area": "P",
+    "durationSec": 2700,
+    "steps": [
+      {
+        "n": 1,
+        "instruction": "Podłącz drukarkę do sieci (kabel RJ-45 lub Wi-Fi). Wydrukuj stronę konfiguracyjną, aby ustalić adres IP drukarki.",
+        "expectedAnswer": null,
+        "pointsMax": 1,
+        "kind": "checkbox"
+      },
+      {
+        "n": 2,
+        "instruction": "Jaki protokół jest używany do drukowania sieciowego na port 9100 TCP?",
+        "expectedAnswer": ["RAW", "Raw printing", "TCP/IP RAW", "port 9100"],
+        "pointsMax": 1,
+        "kind": "fill",
+        "hint": "Port 9100 to standardowy port druku RAW"
+      },
+      {
+        "n": 3,
+        "instruction": "Dodaj drukarkę sieciową w Windows używając PowerShell. Drukarka ma adres 192.168.1.200.",
+        "expectedAnswer": ["Add-Printer", "Add-PrinterPort", "Add-Printer -ConnectionName"],
+        "pointsMax": 2,
+        "kind": "command",
+        "hint": "Użyj Add-PrinterPort a następnie Add-Printer"
+      },
+      {
+        "n": 4,
+        "instruction": "Zainstaluj sterownik drukarki pobrany ze strony producenta. Wydrukuj stronę testową.",
+        "expectedAnswer": null,
+        "pointsMax": 1,
+        "kind": "checkbox"
+      },
+      {
+        "n": 5,
+        "instruction": "Udostępnij drukarkę w sieci Windows: w ustawieniach drukarki włącz udostępnianie i nadaj nazwę udziału.",
+        "expectedAnswer": null,
+        "pointsMax": 1,
+        "kind": "checkbox"
+      },
+      {
+        "n": 6,
+        "instruction": "Jaką minimalną rozdzielczość (DPI) zaleca się do skanowania dokumentów przeznaczonych do OCR?",
+        "expectedAnswer": ["300", "300 DPI", "300 dpi"],
+        "pointsMax": 1,
+        "kind": "fill"
+      },
+      {
+        "n": 7,
+        "instruction": "Zainstaluj sterownik skanera (TWAIN lub WIA). Przetestuj skanowanie przez aplikację Windows Scan.",
+        "expectedAnswer": null,
+        "pointsMax": 1,
+        "kind": "checkbox"
+      },
+      {
+        "n": 8,
+        "instruction": "Jakie jest rozszerzenie pliku dla kompresji bezstratnej przy skanowaniu dokumentów?",
+        "expectedAnswer": ["PDF", ".pdf", "TIFF", ".tiff", "PNG", ".png"],
+        "pointsMax": 1,
+        "kind": "fill",
+        "hint": "PDF lub TIFF są preferowane dla dokumentów"
+      }
+    ],
+    "rubric": [
+      {"criterion": "Drukarka podłączona do sieci", "points": 1, "autograde": false},
+      {"criterion": "Znajomość protokołu RAW (port 9100)", "points": 1, "autograde": true},
+      {"criterion": "Dodanie drukarki przez PowerShell", "points": 2, "autograde": true},
+      {"criterion": "Instalacja sterownika i test wydruku", "points": 1, "autograde": false},
+      {"criterion": "Udostępnienie drukarki", "points": 1, "autograde": false},
+      {"criterion": "Znajomość minimalnego DPI do OCR (300)", "points": 1, "autograde": true},
+      {"criterion": "Instalacja skanera i test", "points": 1, "autograde": false},
+      {"criterion": "Znajomość formatu bezstratnego", "points": 1, "autograde": true}
+    ],
+    "totalPoints": 9,
+    "passThresholdPct": 0.75,
+    "ckeRef": "INF.02.11.4"
+  },
+  {
+    "scenarioId": "S-006",
+    "title": "Konfiguracja adresacji IPv6 — rozpoznawanie i konfiguracja adresów",
+    "area": "N",
+    "durationSec": 3600,
+    "steps": [
+      {
+        "n": 1,
+        "instruction": "Skompresuj adres IPv6: 2001:0db8:0000:0000:0000:0000:0000:0001",
+        "expectedAnswer": ["2001:db8::1"],
+        "pointsMax": 2,
+        "kind": "fill",
+        "hint": "Skróć wiodące zera i zastąp ciągłe zera ::"
+      },
+      {
+        "n": 2,
+        "instruction": "Jakiego rodzaju jest adres FE80::1?",
+        "expectedAnswer": ["link-local", "adres lokalny łącza", "FE80::/10"],
+        "pointsMax": 1,
+        "kind": "fill"
+      },
+      {
+        "n": 3,
+        "instruction": "Jakiego rodzaju jest adres ::1?",
+        "expectedAnswer": ["loopback", "pętla zwrotna", "::1/128"],
+        "pointsMax": 1,
+        "kind": "fill"
+      },
+      {
+        "n": 4,
+        "instruction": "Wyświetl konfigurację interfejsów sieciowych w Windows, aby zobaczyć adresy IPv6.",
+        "expectedAnswer": ["ipconfig /all", "ipconfig"],
+        "pointsMax": 1,
+        "kind": "command"
+      },
+      {
+        "n": 5,
+        "instruction": "Dodaj statyczny adres IPv6 2001:db8:1::10/64 do interfejsu 'Ethernet' w Windows.",
+        "expectedAnswer": ["netsh interface ipv6 add address", "New-NetIPAddress -IPAddress 2001:db8:1::10"],
+        "pointsMax": 2,
+        "kind": "command"
+      },
+      {
+        "n": 6,
+        "instruction": "Adres MAC to 00:1A:2B:3C:4D:5E. Jaki będzie adres link-local EUI-64?",
+        "expectedAnswer": ["FE80::021A:2BFF:FE3C:4D5E", "FE80::21A:2BFF:FE3C:4D5E", "fe80::21a:2bff:fe3c:4d5e"],
+        "pointsMax": 2,
+        "kind": "fill",
+        "hint": "Wstaw FF:FE w środek adresu MAC i odwróć bit U/L (7. bit)"
+      },
+      {
+        "n": 7,
+        "instruction": "Zweryfikuj łączność IPv6 pingując adres loopback.",
+        "expectedAnswer": ["ping ::1", "ping -6 ::1"],
+        "pointsMax": 1,
+        "kind": "command"
+      },
+      {
+        "n": 8,
+        "instruction": "Jaki mechanizm pozwala hostowi IPv6 skonfigurować adres bez serwera DHCPv6?",
+        "expectedAnswer": ["SLAAC", "Stateless Address Autoconfiguration", "bezstanowa autokonfiguracja"],
+        "pointsMax": 1,
+        "kind": "fill"
+      }
+    ],
+    "rubric": [
+      {"criterion": "Poprawna kompresja IPv6", "points": 2, "autograde": true},
+      {"criterion": "Identyfikacja link-local", "points": 1, "autograde": true},
+      {"criterion": "Identyfikacja loopback", "points": 1, "autograde": true},
+      {"criterion": "Wyświetlenie konfiguracji IP", "points": 1, "autograde": true},
+      {"criterion": "Dodanie statycznego adresu IPv6", "points": 2, "autograde": true},
+      {"criterion": "Obliczenie EUI-64", "points": 2, "autograde": true},
+      {"criterion": "Ping loopback IPv6", "points": 1, "autograde": true},
+      {"criterion": "Znajomość SLAAC", "points": 1, "autograde": true}
+    ],
+    "totalPoints": 11,
+    "passThresholdPct": 0.75,
+    "ckeRef": "INF.02.11.1"
+  },
+  {
+    "scenarioId": "S-007",
+    "title": "Kompleksowa konfiguracja sieci biurowej z serwerem DHCP i DNS",
+    "area": "R",
+    "durationSec": 7200,
+    "steps": [
+      {
+        "n": 1,
+        "instruction": "Jaki jest adres rozgłoszeniowy sieci 192.168.10.0/24?",
+        "expectedAnswer": "192.168.10.255",
+        "pointsMax": 1,
+        "kind": "fill"
+      },
+      {
+        "n": 2,
+        "instruction": "Zainstaluj rolę serwera DHCP z narzędziami zarządzania.",
+        "expectedAnswer": ["Install-WindowsFeature DHCP -IncludeManagementTools", "Install-WindowsFeature -Name DHCP"],
+        "pointsMax": 1,
+        "kind": "command"
+      },
+      {
+        "n": 3,
+        "instruction": "Utwórz zakres DHCP: nazwa 'Biuro', zakres 192.168.10.100-200, maska 255.255.255.0, czas dzierżawy 8 godzin.",
+        "expectedAnswer": null,
+        "pointsMax": 2,
+        "kind": "checkbox"
+      },
+      {
+        "n": 4,
+        "instruction": "Ustaw opcję 003 (brama domyślna) na 192.168.10.1 dla zakresu 192.168.10.0.",
+        "expectedAnswer": ["Set-DhcpServerv4OptionValue -ScopeId 192.168.10.0 -Router 192.168.10.1", "Set-DhcpServerv4OptionValue"],
+        "pointsMax": 2,
+        "kind": "command"
+      },
+      {
+        "n": 5,
+        "instruction": "Autoryzuj serwer DHCP w Active Directory.",
+        "expectedAnswer": ["Add-DhcpServerInDC", "Add-DhcpServerInDC -DnsName"],
+        "pointsMax": 1,
+        "kind": "command"
+      },
+      {
+        "n": 6,
+        "instruction": "Zainstaluj rolę serwera DNS.",
+        "expectedAnswer": ["Install-WindowsFeature DNS -IncludeManagementTools", "Install-WindowsFeature -Name DNS"],
+        "pointsMax": 1,
+        "kind": "command"
+      },
+      {
+        "n": 7,
+        "instruction": "Utwórz strefę wyszukiwania do przodu (forward lookup zone) dla domeny 'biuro.local'.",
+        "expectedAnswer": null,
+        "pointsMax": 1,
+        "kind": "checkbox"
+      },
+      {
+        "n": 8,
+        "instruction": "Dodaj rekord A dla hosta 'www' wskazujący na 192.168.10.50 w strefie biuro.local.",
+        "expectedAnswer": ["Add-DnsServerResourceRecordA -ZoneName biuro.local -Name www -IPv4Address 192.168.10.50", "Add-DnsServerResourceRecordA"],
+        "pointsMax": 2,
+        "kind": "command"
+      },
+      {
+        "n": 9,
+        "instruction": "Zweryfikuj rozwiązanie nazwy www.biuro.local.",
+        "expectedAnswer": ["Resolve-DnsName www.biuro.local", "nslookup www.biuro.local"],
+        "pointsMax": 1,
+        "kind": "command"
+      },
+      {
+        "n": 10,
+        "instruction": "Jaki numer opcji DHCP konfiguruje serwer DNS dla klientów?",
+        "expectedAnswer": ["006", "6", "opcja 006", "opcja 6"],
+        "pointsMax": 1,
+        "kind": "fill"
+      },
+      {
+        "n": 11,
+        "instruction": "Podłącz klienta do sieci i zweryfikuj, że otrzymał adres IP z zakresu 192.168.10.100-200 od serwera DHCP.",
+        "expectedAnswer": null,
+        "pointsMax": 1,
+        "kind": "checkbox"
+      },
+      {
+        "n": 12,
+        "instruction": "Udokumentuj konfigurację sieci w protokole z wyszczególnieniem: adresacji, zakresów DHCP, stref DNS.",
+        "expectedAnswer": null,
+        "pointsMax": 2,
+        "kind": "checkbox"
+      }
+    ],
+    "rubric": [
+      {"criterion": "Znajomość adresu broadcast /24", "points": 1, "autograde": true},
+      {"criterion": "Rola DHCP zainstalowana", "points": 1, "autograde": true},
+      {"criterion": "Zakres DHCP skonfigurowany", "points": 2, "autograde": false},
+      {"criterion": "Opcja bramy domyślnej ustawiona", "points": 2, "autograde": true},
+      {"criterion": "DHCP autoryzowany w AD", "points": 1, "autograde": true},
+      {"criterion": "Rola DNS zainstalowana", "points": 1, "autograde": true},
+      {"criterion": "Strefa DNS biuro.local utworzona", "points": 1, "autograde": false},
+      {"criterion": "Rekord A www dodany", "points": 2, "autograde": true},
+      {"criterion": "Weryfikacja rozwiązywania nazw", "points": 1, "autograde": true},
+      {"criterion": "Znajomość opcji DHCP 006", "points": 1, "autograde": true},
+      {"criterion": "Klient otrzymał adres DHCP", "points": 1, "autograde": false},
+      {"criterion": "Dokumentacja konfiguracji", "points": 2, "autograde": false}
+    ],
+    "totalPoints": 16,
+    "passThresholdPct": 0.75,
+    "ckeRef": "INF.02.11.1"
+  },
+  {
+    "scenarioId": "S-008",
+    "title": "Zabezpieczanie systemu Windows — GPO, BitLocker i Zapora sieciowa",
+    "area": "Z",
+    "durationSec": 5400,
+    "steps": [
+      {
+        "n": 1,
+        "instruction": "Utwórz GPO 'Polityka haseł': minimum 12 znaków, włącz złożoność, maksymalny wiek 90 dni, historia 5 haseł. Połącz z domeną.",
+        "expectedAnswer": null,
+        "pointsMax": 2,
+        "kind": "checkbox"
+      },
+      {
+        "n": 2,
+        "instruction": "Włącz szyfrowanie BitLocker na dysku C: i zapisz klucz odzyskiwania.",
+        "expectedAnswer": ["manage-bde -on C:", "Enable-BitLocker -MountPoint C:"],
+        "pointsMax": 2,
+        "kind": "command"
+      },
+      {
+        "n": 3,
+        "instruction": "Wyświetl klucz odzyskiwania BitLocker dla dysku C:.",
+        "expectedAnswer": ["manage-bde -protectors -get C:", "manage-bde -status C:"],
+        "pointsMax": 1,
+        "kind": "command"
+      },
+      {
+        "n": 4,
+        "instruction": "Jakiego protokołu używa port 23 (Telnet)?",
+        "expectedAnswer": ["TCP", "TCP/IP"],
+        "pointsMax": 1,
+        "kind": "fill"
+      },
+      {
+        "n": 5,
+        "instruction": "Zablokuj ruch przychodzący na port 23 (Telnet) używając netsh.",
+        "expectedAnswer": ["netsh advfirewall firewall add rule", "netsh advfirewall firewall add rule name=\"Block Telnet\" dir=in"],
+        "pointsMax": 2,
+        "kind": "command",
+        "hint": "netsh advfirewall firewall add rule name=... dir=in action=block protocol=TCP localport=23"
+      },
+      {
+        "n": 6,
+        "instruction": "Włącz ochronę w czasie rzeczywistym Windows Defender za pomocą PowerShell.",
+        "expectedAnswer": ["Set-MpPreference -DisableRealtimeMonitoring $false", "Set-MpPreference -DisableRealTimeMonitoring $false"],
+        "pointsMax": 1,
+        "kind": "command"
+      },
+      {
+        "n": 7,
+        "instruction": "Uruchom pełne skanowanie antywirusowe za pomocą PowerShell.",
+        "expectedAnswer": ["Start-MpScan -ScanType FullScan", "Start-MpScan -ScanType 2"],
+        "pointsMax": 1,
+        "kind": "command"
+      },
+      {
+        "n": 8,
+        "instruction": "Sprawdź dziennik zdarzeń Security w poszukiwaniu nieudanych logowań (Event ID 4625), ostatnie 10 wpisów.",
+        "expectedAnswer": ["Get-EventLog -LogName Security -InstanceId 4625", "Get-WinEvent -LogName Security"],
+        "pointsMax": 2,
+        "kind": "command"
+      },
+      {
+        "n": 9,
+        "instruction": "Wyświetl wszystkie aktywne połączenia sieciowe i porty nasłuchujące.",
+        "expectedAnswer": ["netstat -an", "netstat -ano"],
+        "pointsMax": 1,
+        "kind": "command"
+      },
+      {
+        "n": 10,
+        "instruction": "Sporządź raport audytu bezpieczeństwa dokumentujący: włączone zabezpieczenia, otwarte porty, politykę haseł, zalecenia.",
+        "expectedAnswer": null,
+        "pointsMax": 2,
+        "kind": "checkbox"
+      }
+    ],
+    "rubric": [
+      {"criterion": "GPO polityki haseł skonfigurowane", "points": 2, "autograde": false},
+      {"criterion": "BitLocker włączony", "points": 2, "autograde": true},
+      {"criterion": "Klucz odzyskiwania wyświetlony", "points": 1, "autograde": true},
+      {"criterion": "Identyfikacja protokołu Telnet (TCP)", "points": 1, "autograde": true},
+      {"criterion": "Reguła firewall blokująca port 23", "points": 2, "autograde": true},
+      {"criterion": "Windows Defender aktywny", "points": 1, "autograde": true},
+      {"criterion": "Pełne skanowanie uruchomione", "points": 1, "autograde": true},
+      {"criterion": "Analiza dziennika nieudanych logowań", "points": 2, "autograde": true},
+      {"criterion": "Wyświetlenie aktywnych połączeń", "points": 1, "autograde": true},
+      {"criterion": "Raport audytu sporządzony", "points": 2, "autograde": false}
+    ],
+    "totalPoints": 15,
+    "passThresholdPct": 0.75,
+    "ckeRef": "INF.02.9.1"
+  }
+]

@@ -1,0 +1,1845 @@
+<!DOCTYPE html>
+<html lang="pl-PL">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>INF.02 Study Hub — Diagnoza i Adaptive Engine</title>
+<meta name="description" content="Diagnoza wstępna 12 pytań + adaptive engine + dashboard wiedzy. Część INF.02 Study Hub v3." />
+<meta name="theme-color" content="#5EA9FF" />
+<!--
+  artifacts/diagnostic.html — Builder-Diagnostic (BD) v3.0.0
+  OWNS: window.INF02.diagnostic (adaptive engine + UI)
+  Reads: contracts/schemas.json (KnowledgeState, Question), design-tokens.json,
+         curriculum-mapping.json, data/questions.json
+  Writes only this file.
+  Storage: ALL via INF02.shell.setState / shell.storage. ZERO localStorage direct.
+-->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.js"
+  integrity="sha384-iU8HYtnGQ8Cy4zl7gbNMOhsDTTKX02BTXptVP/vqAWIaTfM7isw76iyZCsjL2eVi"
+  crossorigin="anonymous"></script>
+<style>
+/* ============================================================
+ * DESIGN TOKENS — copied from contracts/design-tokens.json
+ * Single-file constraint per ADR-001.
+ * ============================================================ */
+:root {
+  /* Surface */
+  --color-bg: #0F1115;
+  --color-surface: #1A1D24;
+  --color-surface-2: #252932;
+  --color-text: #F2F4F7;
+  --color-text-muted: #A8B0BD;
+  --color-border: #2E3340;
+  /* Action */
+  --color-accent: #5EA9FF;
+  --color-accent-fg: #0F1115;
+  --color-success: #3DDC97;
+  --color-warning: #FFB454;
+  --color-danger: #FF6B6B;
+  --color-focus: #FFD166;
+  /* Areas — fg/bg pairs (WCAG AA ≥4.5:1) */
+  --area-B-fg: #A9D5FF; --area-B-bg: #1F3A5F;
+  --area-O-fg: #D5B8FF; --area-O-bg: #3F2A5F;
+  --area-N-fg: #9BEBC9; --area-N-bg: #1F4F3F;
+  --area-P-fg: #FFCC9B; --area-P-bg: #5F3F1F;
+  --area-D-fg: #FFB0B8; --area-D-bg: #5F1F2F;
+  --area-L-fg: #E6E0A8; --area-L-bg: #4F4F1F;
+  --area-W-fg: #A8DCE6; --area-W-bg: #1F4F5F;
+  --area-6-fg: #B8B0FF; --area-6-bg: #2F1F5F;
+  --area-V-fg: #9BD9C7; --area-V-bg: #1F5F4F;
+  --area-Z-fg: #FFB0DC; --area-Z-bg: #5F2F4F;
+  --area-R-fg: #E0E0E0; --area-R-bg: #3F3F3F;
+  /* Type */
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  --mono: ui-monospace, "SF Mono", "Cascadia Mono", "Roboto Mono", Consolas, monospace;
+  --fs-xs: 0.8rem; --fs-sm: 1rem; --fs-md: 1.25rem;
+  --fs-lg: 1.563rem; --fs-xl: 1.953rem; --fs-2xl: 2.441rem;
+  /* Spacing */
+  --sp-xs: 4px; --sp-sm: 8px; --sp-md: 16px;
+  --sp-lg: 24px; --sp-xl: 32px; --sp-2xl: 48px; --sp-3xl: 64px;
+  /* Motion */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 120ms; --dur-base: 200ms; --dur-slow: 320ms;
+  /* Elevation */
+  --shadow-1: 0 1px 2px rgba(0,0,0,0.4);
+  --shadow-2: 0 4px 12px rgba(0,0,0,0.5);
+  --shadow-3: 0 12px 32px rgba(0,0,0,0.6);
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: var(--font);
+  font-size: var(--fs-sm);
+  line-height: 1.55;
+  color: var(--color-text);
+  background: var(--color-bg);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+*:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+h1, h2, h3, h4 { line-height: 1.2; margin: 0 0 var(--sp-md) 0; }
+h1 { font-size: var(--fs-2xl); }
+h2 { font-size: var(--fs-xl); }
+h3 { font-size: var(--fs-lg); }
+h4 { font-size: var(--fs-md); }
+p { margin: 0 0 var(--sp-md) 0; }
+button {
+  font-family: inherit;
+  font-size: var(--fs-sm);
+  cursor: pointer;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-surface-2);
+  color: var(--color-text);
+  min-height: 44px;
+  min-width: 44px;
+  padding: 12px 16px;
+  transition: background var(--dur-fast) var(--ease-out),
+              transform var(--dur-fast) var(--ease-out),
+              border-color var(--dur-fast) var(--ease-out);
+}
+button:hover:not(:disabled) { background: var(--color-border); }
+button:active:not(:disabled) { transform: translateY(1px); }
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+button.primary {
+  background: var(--color-accent);
+  color: var(--color-accent-fg);
+  border-color: var(--color-accent);
+  font-weight: 600;
+}
+button.primary:hover:not(:disabled) {
+  background: #7CBBFF;
+  border-color: #7CBBFF;
+}
+button.ghost {
+  background: transparent;
+  border-color: var(--color-border);
+}
+button.danger {
+  background: var(--color-danger);
+  color: var(--color-bg);
+  border-color: var(--color-danger);
+}
+input[type="text"], input[type="number"], input[type="date"] {
+  font-family: inherit;
+  font-size: var(--fs-sm);
+  padding: 10px 12px;
+  background: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  min-height: 44px;
+}
+input[type="range"] { min-height: 44px; width: 100%; }
+.app-shell { max-width: 1200px; margin: 0 auto; padding: var(--sp-lg); }
+header.bd-header {
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: var(--sp-md);
+  margin-bottom: var(--sp-xl);
+  padding-bottom: var(--sp-md);
+  border-bottom: 1px solid var(--color-border);
+}
+header.bd-header h1 { margin: 0; font-size: var(--fs-xl); }
+.tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: var(--fs-xs);
+       background: var(--color-surface-2); color: var(--color-text-muted); }
+.muted { color: var(--color-text-muted); }
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: var(--sp-lg);
+  box-shadow: var(--shadow-1);
+}
+.card + .card { margin-top: var(--sp-md); }
+.row { display: flex; flex-wrap: wrap; gap: var(--sp-md); }
+.row > .card { flex: 1 1 320px; min-width: 0; }
+.actions { display: flex; flex-wrap: wrap; gap: var(--sp-sm); margin-top: var(--sp-md); }
+
+/* ============================================================
+ * Onboarding modal
+ * ============================================================ */
+.modal-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.7);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1000;
+  padding: var(--sp-md);
+  backdrop-filter: blur(4px);
+}
+.modal-backdrop[hidden] { display: none; }
+.modal {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  box-shadow: var(--shadow-3);
+  max-width: 540px;
+  width: 100%;
+  padding: var(--sp-xl);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+.modal h2 { margin-top: 0; }
+.steps-indicator {
+  display: flex; gap: var(--sp-xs); margin-bottom: var(--sp-lg);
+}
+.steps-indicator .dot {
+  flex: 1; height: 4px; border-radius: 2px;
+  background: var(--color-border);
+  transition: background var(--dur-base) var(--ease-out);
+}
+.steps-indicator .dot.active { background: var(--color-accent); }
+.steps-indicator .dot.done { background: var(--color-success); }
+.radio-group { display: flex; flex-direction: column; gap: var(--sp-sm); }
+.radio-row {
+  display: flex; align-items: center; gap: var(--sp-md);
+  padding: var(--sp-md);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color var(--dur-fast) var(--ease-out),
+              background var(--dur-fast) var(--ease-out);
+  min-height: 44px;
+}
+.radio-row:hover { border-color: var(--color-accent); }
+.radio-row.selected {
+  border-color: var(--color-accent);
+  background: rgba(94, 169, 255, 0.08);
+}
+.radio-row input[type="radio"] {
+  width: 20px; height: 20px; accent-color: var(--color-accent);
+}
+.slider-block label { display: block; margin-bottom: var(--sp-sm); }
+.slider-value {
+  font-size: var(--fs-lg); font-weight: 600;
+  color: var(--color-accent);
+  display: inline-block; min-width: 3ch; text-align: right;
+}
+.modal .footer {
+  display: flex; justify-content: space-between; gap: var(--sp-md);
+  margin-top: var(--sp-xl);
+}
+
+/* ============================================================
+ * Diagnostic Quiz UI
+ * ============================================================ */
+.diag-progress {
+  display: flex; align-items: center; gap: var(--sp-md);
+  margin-bottom: var(--sp-lg);
+}
+.diag-progress .bar {
+  flex: 1; height: 8px;
+  background: var(--color-surface-2);
+  border-radius: 4px; overflow: hidden;
+}
+.diag-progress .bar > div {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-accent), var(--color-success));
+  transition: width var(--dur-base) var(--ease-out);
+}
+.diag-timer {
+  font-family: var(--mono);
+  font-size: var(--fs-md);
+  color: var(--color-text-muted);
+}
+.diag-timer.warning { color: var(--color-warning); }
+.question-block { padding: var(--sp-lg); }
+.question-meta {
+  display: flex; gap: var(--sp-sm); align-items: center;
+  margin-bottom: var(--sp-md); flex-wrap: wrap;
+}
+.question-prompt {
+  font-size: var(--fs-md);
+  margin-bottom: var(--sp-lg);
+  white-space: pre-wrap;
+}
+.options-list {
+  list-style: none; padding: 0; margin: 0;
+  display: flex; flex-direction: column; gap: var(--sp-sm);
+}
+.option-row {
+  display: flex; align-items: flex-start; gap: var(--sp-md);
+  padding: var(--sp-md);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  cursor: pointer;
+  background: var(--color-surface-2);
+  min-height: 44px;
+  transition: border-color var(--dur-fast) var(--ease-out),
+              background var(--dur-fast) var(--ease-out);
+}
+.option-row:hover { border-color: var(--color-accent); }
+.option-row.selected {
+  border-color: var(--color-accent);
+  background: rgba(94, 169, 255, 0.10);
+}
+.option-row .letter {
+  font-weight: 700; color: var(--color-accent);
+  min-width: 2ch;
+}
+.fill-input {
+  width: 100%;
+  font-family: var(--mono);
+  font-size: var(--fs-md);
+}
+.diag-footer {
+  display: flex; justify-content: space-between; gap: var(--sp-md);
+  margin-top: var(--sp-lg);
+  flex-wrap: wrap;
+}
+
+/* ============================================================
+ * Area chip + bars + dashboard
+ * ============================================================ */
+.area-chip {
+  display: inline-flex; align-items: center; gap: var(--sp-xs);
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+}
+.area-chip.lg { font-size: var(--fs-sm); padding: 6px 14px; }
+.area-chip[data-area="B"] { background: var(--area-B-bg); color: var(--area-B-fg); }
+.area-chip[data-area="O"] { background: var(--area-O-bg); color: var(--area-O-fg); }
+.area-chip[data-area="N"] { background: var(--area-N-bg); color: var(--area-N-fg); }
+.area-chip[data-area="P"] { background: var(--area-P-bg); color: var(--area-P-fg); }
+.area-chip[data-area="D"] { background: var(--area-D-bg); color: var(--area-D-fg); }
+.area-chip[data-area="L"] { background: var(--area-L-bg); color: var(--area-L-fg); }
+.area-chip[data-area="W"] { background: var(--area-W-bg); color: var(--area-W-fg); }
+.area-chip[data-area="6"] { background: var(--area-6-bg); color: var(--area-6-fg); }
+.area-chip[data-area="V"] { background: var(--area-V-bg); color: var(--area-V-fg); }
+.area-chip[data-area="Z"] { background: var(--area-Z-bg); color: var(--area-Z-fg); }
+.area-chip[data-area="R"] { background: var(--area-R-bg); color: var(--area-R-fg); }
+.diff-easy   { background: rgba(61,220,151,0.15); color: var(--color-success); padding: 2px 8px; border-radius: 4px; font-size: var(--fs-xs); }
+.diff-medium { background: rgba(255,180,84,0.15);  color: var(--color-warning); padding: 2px 8px; border-radius: 4px; font-size: var(--fs-xs); }
+.diff-hard   { background: rgba(255,107,107,0.15); color: var(--color-danger);  padding: 2px 8px; border-radius: 4px; font-size: var(--fs-xs); }
+
+.area-bars { display: flex; flex-direction: column; gap: var(--sp-sm); }
+.area-bar {
+  display: grid;
+  grid-template-columns: 180px 1fr 56px;
+  gap: var(--sp-md);
+  align-items: center;
+}
+.area-bar .label { font-size: var(--fs-xs); color: var(--color-text-muted); }
+.area-bar .track {
+  height: 12px; background: var(--color-surface-2);
+  border-radius: 6px; overflow: hidden;
+}
+.area-bar .fill {
+  height: 100%;
+  border-radius: 6px;
+  transition: width var(--dur-slow) var(--ease-out);
+}
+.area-bar .pct {
+  font-family: var(--mono);
+  font-size: var(--fs-xs);
+  text-align: right;
+  color: var(--color-text-muted);
+}
+
+.charts-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--sp-md);
+}
+@media (min-width: 768px) {
+  .charts-grid { grid-template-columns: 2fr 1fr; }
+}
+.chart-wrap {
+  position: relative;
+  width: 100%;
+  height: 360px;
+}
+.chart-wrap.small { height: 220px; }
+
+/* Recommendation banner */
+.recommend-banner {
+  display: flex; flex-wrap: wrap; gap: var(--sp-md);
+  align-items: center; justify-content: space-between;
+  padding: var(--sp-md) var(--sp-lg);
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(94,169,255,0.10), rgba(255,180,84,0.10));
+  border: 1px solid var(--color-border);
+  margin-bottom: var(--sp-md);
+}
+
+/* Worked example fading */
+.worked-example {
+  border-left: 3px solid var(--color-accent);
+  padding: var(--sp-md) var(--sp-lg);
+  background: var(--color-surface-2);
+  border-radius: 0 8px 8px 0;
+  margin-bottom: var(--sp-md);
+}
+.worked-example .we-step { padding: var(--sp-xs) 0; }
+.worked-example .we-step strong { color: var(--color-accent); }
+.worked-example.mode-scaffold .we-step { color: var(--color-warning); }
+.worked-example.mode-hint .we-step { color: var(--color-text-muted); }
+
+/* Feedback */
+.fb-correct { color: var(--color-success); }
+.fb-wrong   { color: var(--color-danger); }
+.flag-ok    { background: rgba(61,220,151,0.10); border-color: var(--color-success); }
+.flag-bad   { background: rgba(255,107,107,0.10); border-color: var(--color-danger); }
+
+.skip-link {
+  position: absolute; top: -40px; left: 0;
+  background: var(--color-accent); color: var(--color-accent-fg);
+  padding: 8px 12px; z-index: 100;
+}
+.skip-link:focus { top: 0; }
+
+/* Self-test panel (toggle via ?selftest=1) */
+.selftest-panel {
+  margin-top: var(--sp-xl);
+  font-family: var(--mono);
+  font-size: var(--fs-xs);
+  background: var(--color-surface-2);
+  padding: var(--sp-md);
+  border-radius: 8px;
+}
+.selftest-panel pre { white-space: pre-wrap; margin: 0; }
+.selftest-panel .pass { color: var(--color-success); }
+.selftest-panel .fail { color: var(--color-danger); }
+
+@media (max-width: 600px) {
+  h1 { font-size: var(--fs-xl); }
+  h2 { font-size: var(--fs-lg); }
+  .area-bar { grid-template-columns: 110px 1fr 48px; gap: var(--sp-sm); }
+  .area-bar .label { font-size: 0.7rem; }
+}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Pomiń do treści</a>
+<div class="app-shell">
+  <header class="bd-header">
+    <div>
+      <h1>Diagnoza i Adaptive Engine</h1>
+      <p class="muted" style="margin: 0;">
+        <span class="tag">INF.02 Study Hub v3</span>
+        <span class="tag">Builder-Diagnostic</span>
+      </p>
+    </div>
+    <div id="header-actions"></div>
+  </header>
+
+  <main id="main">
+    <!-- Routed view container -->
+    <section id="view-root" aria-live="polite"></section>
+  </main>
+</div>
+
+<!-- Onboarding modal -->
+<div id="onboarding" class="modal-backdrop" hidden role="dialog" aria-modal="true" aria-labelledby="onb-title">
+  <div class="modal">
+    <div class="steps-indicator" id="steps-ind">
+      <div class="dot active"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+    <div id="onboarding-body"></div>
+  </div>
+</div>
+
+<!--
+  data/questions.json bundle. In runtime this script is replaced by the shell
+  with full bank. For standalone testing we ship a small valid sample (≥12 across
+  all 11 areas, matches Question schema). Shell will override window.__QBANK__.
+-->
+<script type="application/json" id="qbank-fallback">
+[
+  {"id":"Q-0001","area":"B","difficulty":"easy","type":"mcq","q":"Który komponent komputera odpowiada za wykonywanie obliczeń?","options":["RAM","CPU","HDD","BIOS"],"correct":1,"explanation":"CPU (procesor) jest jednostką obliczeniową komputera."},
+  {"id":"Q-0002","area":"B","difficulty":"medium","type":"mcq","q":"Jaką funkcję pełni magistrala PCIe x16 w komputerze?","options":["Zasila procesor","Łączy kartę graficzną z chipsetem","Steruje wentylatorami","Przechowuje BIOS"],"correct":1,"explanation":"PCIe x16 to główna magistrala dla kart graficznych."},
+  {"id":"Q-0003","area":"B","difficulty":"hard","type":"mcq","q":"Pamięć ECC RAM różni się od non-ECC tym, że:","options":["Jest szybsza","Wykrywa i koryguje błędy","Działa bez zasilania","Ma mniejszy timing"],"correct":1,"explanation":"ECC (Error-Correcting Code) wykrywa i koryguje pojedyncze błędy bitowe."},
+  {"id":"Q-0004","area":"O","difficulty":"easy","type":"mcq","q":"Który z poniższych systemów jest dystrybucją Linux?","options":["FreeBSD","Ubuntu","Solaris","macOS"],"correct":1,"explanation":"Ubuntu to popularna dystrybucja Linux oparta na Debianie."},
+  {"id":"Q-0005","area":"O","difficulty":"medium","type":"mcq","q":"Polecenie 'chmod 755 plik' nadaje uprawnienia:","options":["rwxr-xr-x","rw-r--r--","rwxrwxrwx","rwxr-xrw-"],"correct":0,"explanation":"7=rwx (właściciel), 5=r-x (grupa), 5=r-x (inni)."},
+  {"id":"Q-0006","area":"O","difficulty":"hard","type":"mcq","q":"System plików btrfs wspiera natywnie:","options":["Tylko 1 dysk","Snapshoty CoW","Tylko Windows","RAID-0 only"],"correct":1,"explanation":"btrfs używa Copy-on-Write i obsługuje snapshoty oraz RAID 0/1/10."},
+  {"id":"Q-0007","area":"N","difficulty":"easy","type":"mcq","q":"Adres 192.168.1.1 należy do klasy adresów:","options":["Publicznych","Prywatnych (RFC1918)","Multicast","Loopback"],"correct":1,"explanation":"192.168.0.0/16 to pula prywatna RFC1918."},
+  {"id":"Q-0008","area":"N","difficulty":"medium","type":"mcq","q":"Maska /26 umożliwia adresację:","options":["62 hostów","30 hostów","126 hostów","254 hostów"],"correct":0,"explanation":"32-26=6 bitów hosta → 2^6 - 2 = 62 użyteczne adresy."},
+  {"id":"Q-0009","area":"N","difficulty":"hard","type":"fill","q":"Podaj maskę dziesiętną dla notacji /27.","options":null,"correct":["255.255.255.224"],"explanation":"/27 = 24+3 jedynki w 4. oktecie: 11100000 = 224."},
+  {"id":"Q-0010","area":"P","difficulty":"easy","type":"mcq","q":"Który interfejs jest standardem dla nowoczesnych monitorów?","options":["VGA","DisplayPort","PS/2","Serial"],"correct":1,"explanation":"DisplayPort i HDMI to standardy obecnych monitorów."},
+  {"id":"Q-0011","area":"P","difficulty":"medium","type":"mcq","q":"Drukarka laserowa używa do utrwalania:","options":["Atramentu","Tonera i ciepła","Wstążki","Termicznego druku"],"correct":1,"explanation":"Toner topiony jest przez nagrzany utrwalacz (fuser)."},
+  {"id":"Q-0012","area":"P","difficulty":"hard","type":"mcq","q":"Standard PoE+ (802.3at) dostarcza max:","options":["15.4 W","25.5 W","60 W","90 W"],"correct":1,"explanation":"802.3at (PoE+) = do 25.5 W na port; 802.3bt (PoE++) do 90 W."},
+  {"id":"Q-0013","area":"D","difficulty":"easy","type":"mcq","q":"Polecenie 'ping' służy do:","options":["Kopiowania plików","Sprawdzania osiągalności hosta","Wysyłania maili","Listowania procesów"],"correct":1,"explanation":"ping wysyła ICMP Echo Request i mierzy RTT."},
+  {"id":"Q-0014","area":"D","difficulty":"medium","type":"mcq","q":"BSOD z kodem 0x0000007B oznacza:","options":["Brak RAM","Inaccessible Boot Device","Przegrzanie","Zły zasilacz"],"correct":1,"explanation":"0x7B = system nie może uzyskać dostępu do partycji systemowej."},
+  {"id":"Q-0015","area":"D","difficulty":"hard","type":"mcq","q":"Narzędzie 'memtest86' diagnozuje:","options":["Dysk twardy","Pamięć RAM","Kartę sieciową","BIOS"],"correct":1,"explanation":"memtest86 testuje moduły RAM pod kątem błędów."},
+  {"id":"Q-0016","area":"L","difficulty":"easy","type":"mcq","q":"Licencja OEM oprogramowania jest przypisana do:","options":["Użytkownika","Konkretnej maszyny","Dowolnej liczby PC","Roku zakupu"],"correct":1,"explanation":"OEM = przywiązana do pierwszego komputera."},
+  {"id":"Q-0017","area":"L","difficulty":"medium","type":"mcq","q":"Standard PN-EN 50173-1:2018 dotyczy:","options":["BHP biurowego","Okablowania strukturalnego","Recyklingu sprzętu","RODO"],"correct":1,"explanation":"PN-EN 50173-1 to norma okablowania strukturalnego budynków.","ckeRef":"PN-EN 50173-1:2018"},
+  {"id":"Q-0018","area":"L","difficulty":"hard","type":"mcq","q":"Maksymalny czas pracy przy monitorze bez przerwy wg rozp. MPiPS:","options":["30 min","50 min","60 min","90 min"],"correct":1,"explanation":"50 min pracy + 5 min przerwy lub zmiana czynności.","ckeRef":"Rozporz. MPiPS 1.12.1998"},
+  {"id":"Q-0019","area":"W","difficulty":"easy","type":"mcq","q":"AD DS to:","options":["Aktywna baza danych","Active Directory Domain Services","Advanced DDoS Defense","Auto Domain Setup"],"correct":1,"explanation":"AD DS to usługa katalogowa Microsoft do zarządzania użytkownikami i komputerami."},
+  {"id":"Q-0020","area":"W","difficulty":"medium","type":"mcq","q":"GPO dziedziczone są w kolejności:","options":["Site → Domain → OU","OU → Domain → Site","Domain → OU → Site","Random"],"correct":0,"explanation":"Kolejność LSDOU: Local → Site → Domain → OU."},
+  {"id":"Q-0021","area":"W","difficulty":"hard","type":"mcq","q":"FSMO 'PDC Emulator' odpowiada za:","options":["Synchronizację czasu w domenie","Tworzenie OU","Routing pakietów","Zapis do AD partition"],"correct":0,"explanation":"PDC Emulator jest autorytatywnym źródłem czasu i obsługuje legacy NT."},
+  {"id":"Q-0022","area":"6","difficulty":"easy","type":"mcq","q":"IPv6 link-local zaczyna się od prefixu:","options":["fc00::/7","fe80::/10","2000::/3","::1/128"],"correct":1,"explanation":"fe80::/10 to zakres link-local (RFC 4291)."},
+  {"id":"Q-0023","area":"6","difficulty":"medium","type":"fill","q":"Skróć adres 2001:0db8:0000:0000:0000:ff00:0042:8329 wg RFC5952.","options":null,"correct":["2001:db8::ff00:42:8329"],"explanation":"Usuwamy leading zeros i kompresujemy najdłuższy ciąg zer (::)."},
+  {"id":"Q-0024","area":"6","difficulty":"hard","type":"mcq","q":"OSPFv3 dla IPv6 używa adresów multicast:","options":["ff02::5 i ff02::6","ff02::1 i ff02::2","224.0.0.5 i 224.0.0.6","fe80::1"],"correct":0,"explanation":"OSPFv3 AllSPFRouters=ff02::5, AllDRouters=ff02::6."},
+  {"id":"Q-0025","area":"V","difficulty":"easy","type":"mcq","q":"Hyper-V to platforma wirtualizacji:","options":["VMware","Microsoft","Oracle","Red Hat"],"correct":1,"explanation":"Hyper-V to hipervisor typu 1 firmy Microsoft."},
+  {"id":"Q-0026","area":"V","difficulty":"medium","type":"mcq","q":"Strategia backupu 3-2-1 zakłada:","options":["3 kopie, 2 nośniki, 1 off-site","3 dni, 2 lokalizacje, 1 admin","3 wersje na 1 dysku","Tylko backup w chmurze"],"correct":0,"explanation":"3 kopie danych, na 2 typach nośników, 1 off-site."},
+  {"id":"Q-0027","area":"V","difficulty":"hard","type":"mcq","q":"Backup różnicowy (differential) zawiera:","options":["Wszystkie dane","Zmiany od ostatniego pełnego","Zmiany od ostatniego dowolnego","Tylko nowe pliki"],"correct":1,"explanation":"Differential gromadzi wszystkie zmiany od ostatniego pełnego backupu."},
+  {"id":"Q-0028","area":"Z","difficulty":"easy","type":"mcq","q":"WPA2 używa szyfrowania:","options":["WEP","AES/CCMP","DES","Brak"],"correct":1,"explanation":"WPA2 wymaga AES/CCMP (zamiast TKIP w WPA)."},
+  {"id":"Q-0029","area":"Z","difficulty":"medium","type":"mcq","q":"MFA to:","options":["Multi-Factor Authentication","More File Access","Master Firewall Auto","Manual Force Apply"],"correct":0,"explanation":"MFA = dwa lub więcej czynników: hasło + token + biometria."},
+  {"id":"Q-0030","area":"Z","difficulty":"hard","type":"mcq","q":"VPN typu Site-to-Site najczęściej używa:","options":["IPsec IKEv2","HTTP","Telnet","FTP"],"correct":0,"explanation":"IPsec IKEv2 (lub IKEv1) to standard tuneli S2S."},
+  {"id":"Q-0031","area":"R","difficulty":"medium","type":"mcq","q":"Praktyczny test CKE INF.02 trwa:","options":["60 min","90 min","120 min","150 min"],"correct":3,"explanation":"Część praktyczna INF.02 = 150 minut, próg 75%."},
+  {"id":"Q-0032","area":"R","difficulty":"hard","type":"mcq","q":"W teście praktycznym ocenia się:","options":["Tylko wynik końcowy","Tylko poprawność komend","Etapy zgodne z rubryką","Czas wykonania"],"correct":2,"explanation":"Punktacja rubryczna obejmuje wszystkie kryteria w arkuszu."}
+]
+</script>
+
+<script>
+'use strict';
+/* ============================================================
+ * Storage adapter — Architecture sekcja 1.2 (KOPIUJ DOKŁADNIE).
+ * NO direct localStorage; only via this adapter or INF02.shell.
+ * ============================================================ */
+const storage = (function () {
+  if (typeof window !== 'undefined' && window.storage && window.storage.getItem) {
+    return Object.assign({ kind: 'claude' }, window.storage);
+  }
+  try {
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem('__test__', '1'); localStorage.removeItem('__test__');
+      return {
+        kind: 'local',
+        getItem: (k) => Promise.resolve(localStorage.getItem(k)),
+        setItem: (k, v) => Promise.resolve(localStorage.setItem(k, v))
+      };
+    }
+  } catch (_) {}
+  const mem = new Map();
+  return {
+    kind: 'memory',
+    getItem: (k) => Promise.resolve(mem.has(k) ? mem.get(k) : null),
+    setItem: (k, v) => Promise.resolve(void mem.set(k, v))
+  };
+})();
+
+/* ============================================================
+ * Design tokens runtime (subset — engine + areas)
+ * Sourced from contracts/design-tokens.json. Keep in sync.
+ * ============================================================ */
+const DESIGN_TOKENS = {
+  engine: {
+    knowledgeAlpha: 0.7,
+    weakSlotShare: 0.7,
+    strongSlotShare: 0.3,
+    diagnosticQCount: 12,
+    examQCount: 40,
+    srs: {
+      ratings: [1,2,3,4],
+      ratingNames: ['AGAIN','HARD','GOOD','EASY'],
+      easeMin: 1.3, easeMax: 3.0,
+      easeDeltaHard: -0.15, easeDeltaGood: 0.0,
+      easeDeltaEasy: 0.15, easeDeltaAgain: -0.20,
+      softLapseFactor: 0.20, softLapseMinDays: 0.007,
+      learningStepsMinutes: [1, 10, 1440, 4320],
+      intervalFactorHard: 1.2, intervalFactorEasyMul: 1.3
+    }
+  },
+  color: {
+    areas: {
+      B: { fg:'#A9D5FF', bg:'#1F3A5F', label:'Budowa komputera' },
+      O: { fg:'#D5B8FF', bg:'#3F2A5F', label:'Systemy operacyjne' },
+      N: { fg:'#9BEBC9', bg:'#1F4F3F', label:'Sieci komputerowe' },
+      P: { fg:'#FFCC9B', bg:'#5F3F1F', label:'Peryferia i sprzęt sieciowy' },
+      D: { fg:'#FFB0B8', bg:'#5F1F2F', label:'Diagnostyka' },
+      L: { fg:'#E6E0A8', bg:'#4F4F1F', label:'Prawo, BHP, licencje' },
+      W: { fg:'#A8DCE6', bg:'#1F4F5F', label:'Windows Server' },
+      '6': { fg:'#B8B0FF', bg:'#2F1F5F', label:'IPv6 i routing zaawansowany' },
+      V: { fg:'#9BD9C7', bg:'#1F5F4F', label:'Wirtualizacja i backup' },
+      Z: { fg:'#FFB0DC', bg:'#5F2F4F', label:'Bezpieczeństwo zaawansowane' },
+      R: { fg:'#E0E0E0', bg:'#3F3F3F', label:'Praktyka CKE-style' }
+    }
+  }
+};
+
+/* Curriculum proportions — used as priority weights in diag selection. */
+const AREA_PROPORTIONS = {
+  B:0.13, O:0.10, N:0.16, P:0.06, D:0.07, L:0.13,
+  W:0.13, '6':0.06, V:0.05, Z:0.05, R:0.06
+};
+/* Always derived from tokens — NEVER hardcode list (v2 bug fix). */
+const AREAS = Object.keys(DESIGN_TOKENS.color.areas);
+
+/* ============================================================
+ * Utilities
+ * ============================================================ */
+function clamp(x, lo, hi) { return Math.max(lo, Math.min(hi, x)); }
+function nowIso() { return new Date().toISOString(); }
+function escapeHtml(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, c =>
+    ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
+}
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+function uuid4() {
+  if (typeof crypto !== 'undefined' && crypto.randomUUID) return crypto.randomUUID();
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+    const r = Math.random()*16|0, v = c === 'x' ? r : (r&0x3|0x8); return v.toString(16);
+  });
+}
+function normalizeAnswer(s) {
+  if (s == null) return '';
+  let out = String(s).normalize('NFC').toLowerCase().trim();
+  const map = {'ą':'a','ć':'c','ę':'e','ł':'l','ń':'n','ó':'o','ś':'s','ź':'z','ż':'z'};
+  out = out.replace(/[ąćęłńóśźż]/g, ch => map[ch] || ch);
+  out = out.replace(/[\s,;]+/g, '');
+  out = out.replace(/:{3,}/g, '::');
+  return out;
+}
+function matchAnswer(userInput, accepted) {
+  const u = normalizeAnswer(userInput);
+  const variants = Array.isArray(accepted) ? accepted : [accepted];
+  return variants.some(v => normalizeAnswer(v) === u);
+}
+function sigmoid(x) { return 1 / (1 + Math.exp(-x)); }
+
+/* ============================================================
+ * Shell-bridge — abstrahuje INF02.shell dla standalone running.
+ * Gdy shell nie istnieje, używamy storage adaptera + memory state.
+ * ============================================================ */
+const INF02 = (typeof window.INF02 === 'object' && window.INF02) ? window.INF02 : (window.INF02 = {});
+const STATE_KEY = 'inf02.v3.state';
+
+const ShellBridge = {
+  _localState: null,
+  _subs: [],
+  async getState() {
+    if (INF02.shell && typeof INF02.shell.getState === 'function') return INF02.shell.getState();
+    if (this._localState) return this._localState;
+    const raw = await storage.getItem(STATE_KEY);
+    if (raw) { try { this._localState = JSON.parse(raw); } catch(_) { this._localState = defaultAppState(); } }
+    else this._localState = defaultAppState();
+    return this._localState;
+  },
+  async setState(patch) {
+    if (INF02.shell && typeof INF02.shell.setState === 'function') return INF02.shell.setState(patch);
+    const cur = await this.getState();
+    const next = mergeDeep(cur, patch);
+    next.seq = (cur.seq || 0) + 1;
+    this._localState = next;
+    await storage.setItem(STATE_KEY, JSON.stringify(next));
+    this._subs.forEach(fn => { try { fn(next); } catch(_) {} });
+    return next;
+  },
+  subscribe(fn) {
+    if (INF02.shell && typeof INF02.shell.subscribe === 'function') return INF02.shell.subscribe(fn);
+    this._subs.push(fn);
+    return () => { this._subs = this._subs.filter(f => f !== fn); };
+  },
+  navigate(view, params) {
+    if (INF02.shell && typeof INF02.shell.navigate === 'function') return INF02.shell.navigate(view, params);
+    if (INF02.shell && typeof INF02.shell.route === 'function') return INF02.shell.route(view, params);
+    location.hash = '#' + view + (params ? ('?' + new URLSearchParams(params).toString()) : '');
+  }
+};
+function mergeDeep(a, b) {
+  if (Array.isArray(b)) return b.slice();
+  if (b && typeof b === 'object') {
+    const out = Object.assign({}, a || {});
+    for (const k of Object.keys(b)) {
+      const av = out[k], bv = b[k];
+      if (bv && typeof bv === 'object' && !Array.isArray(bv) && av && typeof av === 'object' && !Array.isArray(av)) {
+        out[k] = mergeDeep(av, bv);
+      } else {
+        out[k] = bv;
+      }
+    }
+    return out;
+  }
+  return b;
+}
+function defaultPerArea() {
+  const o = {};
+  for (const a of AREAS) o[a] = { accuracy: 0.5, attempts: 0, lastSeen: null, mastery: 0.5 };
+  return o;
+}
+function defaultAppState() {
+  return {
+    version: '3.0.0',
+    profile: null,
+    knowledge: { perArea: defaultPerArea(), weakest: [], strongest: [], readinessForExam: 0.5 },
+    cards: {},
+    streak: { count: 0, lastActiveDate: null, freezesAvailable: 2, longestStreak: 0 },
+    achievements: [],
+    sessions: [],
+    settings: { theme: 'auto', reducedMotion: false, locale: 'pl-PL' },
+    seq: 0,
+    workedExampleProgress: {},
+    history: []
+  };
+}
+
+/* ============================================================
+ * QBANK loader — preferuje shell.storage(inf02.v3.questions), fallback embed.
+ * ============================================================ */
+async function loadQuestionBank() {
+  if (window.__QBANK__ && Array.isArray(window.__QBANK__)) return window.__QBANK__;
+  try {
+    const raw = await storage.getItem('inf02.v3.questions');
+    if (raw) {
+      const arr = JSON.parse(raw);
+      if (Array.isArray(arr) && arr.length) return arr;
+    }
+  } catch (_) {}
+  const el = document.getElementById('qbank-fallback');
+  if (el) {
+    try { return JSON.parse(el.textContent); } catch (_) {}
+  }
+  return [];
+}
+
+/* ============================================================
+ * 1) DIAGNOSTIC SELECTION
+ * ============================================================ */
+function selectDiagnosticQuestions(qbank, n) {
+  if (!Array.isArray(qbank) || qbank.length === 0) return [];
+  const total = (typeof n === 'number' && n > 0) ? n : DESIGN_TOKENS.engine.diagnosticQCount;
+
+  // Phase A: jeden easy + medium + hard per area (gdzie dostępne) — daje 33 max
+  const perAreaPicks = [];
+  for (const area of AREAS) {
+    for (const diff of ['easy','medium','hard']) {
+      const cands = qbank.filter(q => q.area === area && q.difficulty === diff);
+      if (cands.length) {
+        perAreaPicks.push({
+          q: cands[Math.floor(Math.random()*cands.length)],
+          area, diff, prio: AREA_PROPORTIONS[area] || 0.05
+        });
+      }
+    }
+  }
+
+  // Phase B: weź ranking by priority (większe obszary mają więcej szans)
+  // Ale gwarantujemy minimum 1 q dla TOP-4 (B,N,W,L wg areaProportions)
+  const TOP4 = ['B','N','W','L'];
+  const used = new Set();
+  const out = [];
+  for (const a of TOP4) {
+    const cand = perAreaPicks.find(p => p.area === a && !used.has(p.q.id));
+    if (cand) { out.push(cand.q); used.add(cand.q.id); }
+  }
+
+  // Phase C: dopełnij wg priorytetu — sortuj malejąco po priority,
+  // przeplatając difficulty (round-robin) by zachować mix.
+  const remaining = perAreaPicks
+    .filter(p => !used.has(p.q.id))
+    .sort((a, b) => b.prio - a.prio || (Math.random() - 0.5));
+  for (const p of remaining) {
+    if (out.length >= total) break;
+    out.push(p.q); used.add(p.q.id);
+  }
+
+  // Jeśli nadal mało (mały bank) — bierz cokolwiek pozostało
+  if (out.length < total) {
+    for (const q of qbank) {
+      if (out.length >= total) break;
+      if (!used.has(q.id)) { out.push(q); used.add(q.id); }
+    }
+  }
+
+  // Difficulty balance check: ≥3 each. Jeśli za mało, zamień nadmiar.
+  function diffCount(diff) { return out.filter(x => x.difficulty === diff).length; }
+  ['easy','medium','hard'].forEach(diff => {
+    while (diffCount(diff) < 3 && out.length === total) {
+      // Znajdź q tego difficulty, którego nie ma; znajdź najbardziej liczny diff w out
+      const newCand = qbank.find(q => q.difficulty === diff && !used.has(q.id));
+      if (!newCand) break;
+      const counts = {easy:diffCount('easy'), medium:diffCount('medium'), hard:diffCount('hard')};
+      const overDiff = Object.keys(counts).reduce((m,k)=> counts[k]>counts[m]?k:m, 'easy');
+      if (overDiff === diff) break;
+      // Wymień: usuń ostatni overDiff, dodaj newCand
+      const idx = [...out].reverse().findIndex(x => x.difficulty === overDiff);
+      if (idx === -1) break;
+      const realIdx = out.length - 1 - idx;
+      used.delete(out[realIdx].id);
+      out[realIdx] = newCand;
+      used.add(newCand.id);
+    }
+  });
+
+  // Shuffle final order (anti-ceiling artefact, Bjork)
+  return shuffle(out).slice(0, total);
+}
+
+/* ============================================================
+ * 2) markDiagnosisComplete — aktualizuje state.knowledge.perArea
+ * Per spec: clamp [0.1, 0.9], obszary bez pyt = 0.5 default.
+ * ============================================================ */
+async function markDiagnosisComplete(results) {
+  const tally = {};
+  for (const r of (results || [])) {
+    if (!r || !r.area) continue;
+    if (!tally[r.area]) tally[r.area] = { c: 0, n: 0 };
+    tally[r.area].n += 1;
+    if (r.correct) tally[r.area].c += 1;
+  }
+  const cur = await ShellBridge.getState();
+  const perArea = Object.assign({}, cur.knowledge ? cur.knowledge.perArea : null) || {};
+  for (const a of AREAS) {
+    const entry = perArea[a] || { accuracy: 0.5, attempts: 0, lastSeen: null, mastery: 0.5 };
+    if (tally[a] && tally[a].n > 0) {
+      const p = tally[a].c / tally[a].n;
+      const clamped = clamp(p, 0.1, 0.9);
+      perArea[a] = {
+        accuracy: clamped,
+        attempts: tally[a].n,
+        lastSeen: nowIso(),
+        mastery: clamped
+      };
+    } else {
+      perArea[a] = { accuracy: 0.5, attempts: entry.attempts || 0, lastSeen: entry.lastSeen || null, mastery: 0.5 };
+    }
+  }
+  // Compute weakest/strongest/readiness
+  const report = computeReport(perArea);
+  const next = await ShellBridge.setState({
+    knowledge: {
+      perArea,
+      weakest: report.weakest.slice(0, 2),
+      strongest: report.strongest.slice(0, 2),
+      readinessForExam: report.readinessForExam
+    }
+  });
+  // Emit event
+  try {
+    window.dispatchEvent(new CustomEvent('diag:completed', { detail: { knowledge: next.knowledge } }));
+  } catch (_) {}
+  return next.knowledge;
+}
+
+/* ============================================================
+ * 3) selectQuizQuestions — weighted, weak/strong split.
+ * weight = (1 - mastery)^2 + 0.01.
+ * 70% slots from weak (mastery<0.5), 30% strong (mastery>=0.5).
+ * Skip questions answered correctly 3+ times in last 7 days.
+ * ============================================================ */
+async function selectQuizQuestions(n, qbank) {
+  const pool = Array.isArray(qbank) ? qbank : await loadQuestionBank();
+  if (!pool.length) return [];
+  const cur = await ShellBridge.getState();
+  const knowledge = (cur.knowledge && cur.knowledge.perArea) || defaultPerArea();
+  const history = cur.history || [];
+  const weekMs = 7 * 24 * 3600 * 1000;
+  const sevenAgo = Date.now() - weekMs;
+  const wins = {};
+  for (const h of history) {
+    if (!h || !h.qid) continue;
+    const t = typeof h.ts === 'number' ? h.ts : Date.parse(h.ts || '');
+    if (t >= sevenAgo && h.correct) wins[h.qid] = (wins[h.qid] || 0) + 1;
+  }
+  const filtered = pool.filter(q => (wins[q.id] || 0) < 3);
+  if (!filtered.length) return [];
+
+  const weakSlots = Math.round(n * DESIGN_TOKENS.engine.weakSlotShare);
+  const strongSlots = n - weakSlots;
+
+  const masteryFor = (area) => {
+    const k = knowledge[area];
+    return (k && typeof k.mastery === 'number') ? k.mastery : 0.5;
+  };
+  const weakPool = filtered.filter(q => masteryFor(q.area) < 0.5);
+  const strongPool = filtered.filter(q => masteryFor(q.area) >= 0.5);
+
+  function weightedDraw(arr, count) {
+    if (!arr.length || count <= 0) return [];
+    const seen = new Set();
+    const picks = [];
+    const weights = arr.map(q => {
+      const m = masteryFor(q.area);
+      return Math.pow(1 - m, 2) + 0.01;
+    });
+    for (let i = 0; i < count && seen.size < arr.length; i++) {
+      let total = 0;
+      for (let j = 0; j < weights.length; j++) if (!seen.has(j)) total += weights[j];
+      if (total <= 0) break;
+      let r = Math.random() * total;
+      let pickIdx = -1;
+      for (let j = 0; j < weights.length; j++) {
+        if (seen.has(j)) continue;
+        r -= weights[j];
+        if (r <= 0) { pickIdx = j; break; }
+      }
+      if (pickIdx === -1) break;
+      seen.add(pickIdx); picks.push(arr[pickIdx]);
+    }
+    return picks;
+  }
+
+  const usedIds = new Set();
+  const collect = (arr) => arr.filter(q => !usedIds.has(q.id) && (usedIds.add(q.id), true));
+
+  let picks = [];
+  // Weak slots → from weakPool, fallback to whole filtered if too small
+  picks = picks.concat(collect(weightedDraw(weakPool.length >= weakSlots ? weakPool : filtered, weakSlots)));
+  // Strong slots → uniformly from strongPool, fallback to remainder
+  const strongCandidates = strongPool.filter(q => !usedIds.has(q.id));
+  const sShuf = shuffle(strongCandidates).slice(0, strongSlots);
+  picks = picks.concat(collect(sShuf));
+  // Fill if short
+  if (picks.length < n) {
+    const rem = filtered.filter(q => !usedIds.has(q.id));
+    picks = picks.concat(collect(shuffle(rem).slice(0, n - picks.length)));
+  }
+  return picks.slice(0, n);
+}
+
+/* alias dla Architecture 1.2 spec */
+function selectAdaptiveQuestions(pool, n, knowledgeOverride) {
+  // Pure synchronous variant for tests / explicit knowledge.
+  if (!Array.isArray(pool) || !pool.length) return [];
+  const knowledge = (knowledgeOverride && (knowledgeOverride.perArea || knowledgeOverride)) || defaultPerArea();
+  const lookup = knowledge.perArea ? knowledge.perArea : knowledge;
+  const weakSlots = Math.round(n * DESIGN_TOKENS.engine.weakSlotShare);
+  const strongSlots = n - weakSlots;
+  const masteryFor = (area) => {
+    const v = lookup[area];
+    if (typeof v === 'number') return v;
+    if (v && typeof v.mastery === 'number') return v.mastery;
+    return 0.5;
+  };
+  const weakPool = pool.filter(q => masteryFor(q.area) < 0.5);
+  const strongPool = pool.filter(q => masteryFor(q.area) >= 0.5);
+
+  function weightedDraw(arr, count) {
+    if (!arr.length || count <= 0) return [];
+    const seen = new Set();
+    const picks = [];
+    const weights = arr.map(q => Math.pow(1 - masteryFor(q.area), 2) + 0.01);
+    for (let i = 0; i < count && seen.size < arr.length; i++) {
+      let total = 0;
+      for (let j = 0; j < weights.length; j++) if (!seen.has(j)) total += weights[j];
+      if (total <= 0) break;
+      let r = Math.random() * total;
+      let pickIdx = -1;
+      for (let j = 0; j < weights.length; j++) {
+        if (seen.has(j)) continue;
+        r -= weights[j];
+        if (r <= 0) { pickIdx = j; break; }
+      }
+      if (pickIdx === -1) break;
+      seen.add(pickIdx); picks.push(arr[pickIdx]);
+    }
+    return picks;
+  }
+
+  const used = new Set();
+  const out = [];
+  const wpicks = weightedDraw(weakPool.length >= weakSlots ? weakPool : pool, weakSlots);
+  for (const q of wpicks) { if (!used.has(q.id)) { used.add(q.id); out.push(q); } }
+  const sCand = strongPool.filter(q => !used.has(q.id));
+  for (const q of shuffle(sCand).slice(0, strongSlots)) { used.add(q.id); out.push(q); }
+  if (out.length < n) {
+    const rem = pool.filter(q => !used.has(q.id));
+    for (const q of shuffle(rem).slice(0, n - out.length)) { used.add(q.id); out.push(q); }
+  }
+  return out.slice(0, n);
+}
+
+/* ============================================================
+ * 4) EWMA knowledge update — α=0.7
+ * ============================================================ */
+async function recordAnswer(qid, correct, area) {
+  if (!area) return;
+  const ALPHA = DESIGN_TOKENS.engine.knowledgeAlpha;
+  const cur = await ShellBridge.getState();
+  const perArea = Object.assign({}, cur.knowledge ? cur.knowledge.perArea : null);
+  const old = perArea[area] || { accuracy: 0.5, attempts: 0, lastSeen: null, mastery: 0.5 };
+  const newAcc = ALPHA * old.accuracy + (1 - ALPHA) * (correct ? 1 : 0);
+  const mastery = clamp(sigmoid((newAcc * 2 - 1) * 4), 0, 1);
+  perArea[area] = {
+    accuracy: clamp(newAcc, 0, 1),
+    attempts: (old.attempts || 0) + 1,
+    lastSeen: nowIso(),
+    mastery: mastery
+  };
+  const report = computeReport(perArea);
+  const history = (cur.history || []).slice();
+  history.push({ qid, area, correct: !!correct, ts: Date.now() });
+  if (history.length > 2000) history.splice(0, history.length - 2000);
+  await ShellBridge.setState({
+    knowledge: {
+      perArea,
+      weakest: report.weakest.slice(0, 2),
+      strongest: report.strongest.slice(0, 2),
+      readinessForExam: report.readinessForExam
+    },
+    history
+  });
+}
+/* Pure variant for tests — no persistence. */
+function updateKnowledge(area, correct, knowledgeIn) {
+  const ALPHA = DESIGN_TOKENS.engine.knowledgeAlpha;
+  const knowledge = knowledgeIn ? Object.assign({}, knowledgeIn) : { perArea: defaultPerArea(), weakest:[], strongest:[], readinessForExam: 0.5 };
+  const perArea = Object.assign({}, knowledge.perArea || {});
+  const old = perArea[area] || { accuracy: 0.5, attempts: 0, lastSeen: null, mastery: 0.5 };
+  const newAcc = ALPHA * old.accuracy + (1 - ALPHA) * (correct ? 1 : 0);
+  perArea[area] = {
+    accuracy: clamp(newAcc, 0, 1),
+    attempts: (old.attempts || 0) + 1,
+    lastSeen: nowIso(),
+    mastery: clamp(newAcc, 0, 1)  // for tests we use raw EWMA as mastery (matches test spec)
+  };
+  const report = computeReport(perArea);
+  return {
+    perArea,
+    weakest: report.weakest.slice(0, 2),
+    strongest: report.strongest.slice(0, 2),
+    readinessForExam: report.readinessForExam
+  };
+}
+
+/* ============================================================
+ * 5) getKnowledgeReport — weakest/strongest/readiness.
+ * readinessForExam = 0.6 * mean(mastery) + 0.4 * min(mastery)
+ * ============================================================ */
+function computeReport(perArea) {
+  const areas = perArea || defaultPerArea();
+  const entries = AREAS.map(a => [a, (areas[a] && typeof areas[a].mastery === 'number') ? areas[a].mastery : 0.5]);
+  const sorted = entries.slice().sort((a, b) => a[1] - b[1]);
+  const weakest = sorted.slice(0, 3).map(e => e[0]);   // 3 lowest (top-3 weak per spec)
+  const strongest = sorted.slice(-2).map(e => e[0]).reverse(); // 2 highest
+  const sum = entries.reduce((s, [, v]) => s + v, 0);
+  const mean = entries.length ? sum / entries.length : 0;
+  const min = sorted.length ? sorted[0][1] : 0;
+  const readinessForExam = clamp(0.6 * mean + 0.4 * min, 0, 1);
+  return { areas, weakest, strongest, readinessForExam };
+}
+async function getKnowledgeReport(knowledgeOverride) {
+  if (knowledgeOverride && knowledgeOverride.perArea) {
+    const r = computeReport(knowledgeOverride.perArea);
+    // areas → return objects (per spec) {accuracy, attempts, mastery}
+    const areas = {};
+    for (const a of AREAS) {
+      const k = knowledgeOverride.perArea[a] || {};
+      areas[a] = {
+        accuracy: typeof k.accuracy === 'number' ? k.accuracy : 0.5,
+        attempts: k.attempts || 0,
+        mastery: typeof k.mastery === 'number' ? k.mastery : 0.5
+      };
+    }
+    return { areas, weakest: r.weakest, strongest: r.strongest, readinessForExam: r.readinessForExam };
+  }
+  const cur = await ShellBridge.getState();
+  const perArea = (cur.knowledge && cur.knowledge.perArea) || defaultPerArea();
+  const r = computeReport(perArea);
+  const areas = {};
+  for (const a of AREAS) {
+    const k = perArea[a] || {};
+    areas[a] = {
+      accuracy: typeof k.accuracy === 'number' ? k.accuracy : 0.5,
+      attempts: k.attempts || 0,
+      mastery: typeof k.mastery === 'number' ? k.mastery : 0.5
+    };
+  }
+  return { areas, weakest: r.weakest, strongest: r.strongest, readinessForExam: r.readinessForExam };
+}
+
+/* ============================================================
+ * 6) WORKED EXAMPLES with fading (Sweller 2006)
+ * ============================================================ */
+const WORKED_EXAMPLES = {
+  subnet_calc: {
+    title: 'Obliczanie podsieci /26',
+    topic: 'subnetting',
+    steps: [
+      { label:'Krok 1: bitów hosta', full:'32 - 26 = 6 bitów hosta', scaffold:'32 - 26 = ? bitów', hint:'Maska ma 26 jedynek.' },
+      { label:'Krok 2: pula', full:'2^6 = 64 adresy w podsieci', scaffold:'2^? = ___ adresy', hint:'Każdy bit hosta podwaja liczbę.' },
+      { label:'Krok 3: użytkowe', full:'64 - 2 = 62 hostów', scaffold:'64 - ? = ___ hostów', hint:'Sieć i broadcast nie są używane.' }
+    ]
+  },
+  mask_decimal: {
+    title: 'Maska dziesiętna z CIDR',
+    topic: 'subnetting',
+    steps: [
+      { label:'Krok 1: pełne oktety', full:'/27 → 24+3 → 255.255.255.???', scaffold:'/27 → ?+? → 255.255.255.???', hint:'Pierwsze 24 bity = 3 pełne oktety.' },
+      { label:'Krok 2: 4 oktet binarnie', full:'11100000 (3 jedynki, 5 zer)', scaffold:'111????? — uzupełnij zera', hint:'/27 oznacza 3 jedynki w 4 oktecie.' },
+      { label:'Krok 3: zamień na dec', full:'128+64+32 = 224 → 255.255.255.224', scaffold:'128+64+32 = ?', hint:'Suma wartości pozycyjnych.' }
+    ]
+  }
+};
+async function workedExampleMode(topic) {
+  const cur = await ShellBridge.getState();
+  const c = (cur.workedExampleProgress && cur.workedExampleProgress[topic]) || 0;
+  if (c < 3) return 'full';
+  if (c < 6) return 'scaffold';
+  if (c < 9) return 'hint';
+  return 'solo';
+}
+function renderWorkedExample(key, container, mode) {
+  const ex = WORKED_EXAMPLES[key];
+  if (!ex || !container) { if (container) container.innerHTML = ''; return; }
+  if (mode === 'solo') { container.innerHTML = ''; return; }
+  const m = mode || 'full';
+  const lines = ['<div class="worked-example mode-' + m + '">',
+    '<h4>' + escapeHtml(ex.title) + '</h4>'];
+  ex.steps.forEach(s => {
+    const body = m === 'full' ? s.full : m === 'scaffold' ? s.scaffold : s.hint;
+    lines.push('<div class="we-step"><strong>' + escapeHtml(s.label) + ':</strong> ' + escapeHtml(body) + '</div>');
+  });
+  lines.push('</div>');
+  container.innerHTML = lines.join('');
+}
+async function noteWorkedExampleSuccess(topic) {
+  const cur = await ShellBridge.getState();
+  const wep = Object.assign({}, cur.workedExampleProgress || {});
+  wep[topic] = (wep[topic] || 0) + 1;
+  await ShellBridge.setState({ workedExampleProgress: wep });
+}
+
+/* ============================================================
+ * UI — Onboarding modal (4-step: cel, dailyGoal, examDate, start)
+ * ============================================================ */
+const Onboarding = {
+  state: { step: 1, goal: 'pass', dailyGoalMin: 20, examDate: '', total: 4 },
+  async open() {
+    const cur = await ShellBridge.getState();
+    if (cur.profile) return; // already onboarded
+    const root = document.getElementById('onboarding');
+    root.hidden = false;
+    this.state = { step: 1, goal: 'pass', dailyGoalMin: 20, examDate: '', total: 4 };
+    this.render();
+    const firstFocus = root.querySelector('button, input');
+    if (firstFocus) firstFocus.focus();
+  },
+  close() { document.getElementById('onboarding').hidden = true; },
+  setStep(s) { this.state.step = s; this.render(); },
+  render() {
+    const body = document.getElementById('onboarding-body');
+    const ind  = document.getElementById('steps-ind');
+    const { step, total } = this.state;
+    // Indicator
+    const dots = Array.from(ind.children);
+    dots.forEach((d, i) => {
+      d.className = 'dot' + (i + 1 < step ? ' done' : (i + 1 === step ? ' active' : ''));
+    });
+    if (step === 1) {
+      body.innerHTML = `
+        <h2 id="onb-title">Krok 1 z ${total}: Twój cel</h2>
+        <p class="muted">Pomożemy dopasować trudność i tempo.</p>
+        <div class="radio-group" role="radiogroup" aria-labelledby="onb-title">
+          ${[
+            { v:'pass', t:'Zdaję czerwiec 2026', d:'Cel: ≥50%' },
+            { v:'ace',  t:'Chcę wynik ≥85%',     d:'Praktyka pełna' },
+            { v:'refresh', t:'Tylko ćwiczę',     d:'Powtórka materiału' }
+          ].map(o => `
+            <label class="radio-row ${this.state.goal === o.v ? 'selected' : ''}">
+              <input type="radio" name="goal" value="${o.v}" ${this.state.goal === o.v ? 'checked' : ''} />
+              <div><strong>${escapeHtml(o.t)}</strong><br/><span class="muted">${escapeHtml(o.d)}</span></div>
+            </label>`).join('')}
+        </div>
+        <div class="footer">
+          <button class="ghost" type="button" data-action="cancel">Później</button>
+          <button class="primary" type="button" data-action="next">Dalej →</button>
+        </div>`;
+      body.querySelectorAll('input[name="goal"]').forEach(el =>
+        el.addEventListener('change', e => { this.state.goal = e.target.value; this.render(); }));
+    } else if (step === 2) {
+      body.innerHTML = `
+        <h2 id="onb-title">Krok 2 z ${total}: Czas codzienny</h2>
+        <p class="muted">Realistyczne tempo to klucz powtórek.</p>
+        <div class="slider-block">
+          <label for="dgm">
+            Codziennie: <span class="slider-value" id="dgm-out">${this.state.dailyGoalMin}</span> min
+          </label>
+          <input type="range" id="dgm" min="5" max="60" step="5" value="${this.state.dailyGoalMin}" />
+        </div>
+        <div class="footer">
+          <button class="ghost" type="button" data-action="back">← Wstecz</button>
+          <button class="primary" type="button" data-action="next">Dalej →</button>
+        </div>`;
+      const slider = body.querySelector('#dgm');
+      const out = body.querySelector('#dgm-out');
+      slider.addEventListener('input', e => {
+        this.state.dailyGoalMin = parseInt(e.target.value, 10);
+        out.textContent = this.state.dailyGoalMin;
+      });
+    } else if (step === 3) {
+      body.innerHTML = `
+        <h2 id="onb-title">Krok 3 z ${total}: Termin egzaminu</h2>
+        <p class="muted">Opcjonalnie — pomaga w planowaniu.</p>
+        <input type="date" id="examDate" value="${this.state.examDate || ''}" min="${new Date().toISOString().slice(0,10)}" />
+        <div class="actions">
+          <button class="ghost" type="button" data-action="exam-default">Czerwiec 2026</button>
+          <button class="ghost" type="button" data-action="exam-clear">Bez daty</button>
+        </div>
+        <div class="footer">
+          <button class="ghost" type="button" data-action="back">← Wstecz</button>
+          <button class="primary" type="button" data-action="next">Dalej →</button>
+        </div>`;
+      body.querySelector('#examDate').addEventListener('change', e => this.state.examDate = e.target.value);
+      body.querySelector('[data-action="exam-default"]').addEventListener('click', () => {
+        this.state.examDate = '2026-06-12'; this.render();
+      });
+      body.querySelector('[data-action="exam-clear"]').addEventListener('click', () => {
+        this.state.examDate = ''; this.render();
+      });
+    } else if (step === 4) {
+      body.innerHTML = `
+        <h2 id="onb-title">Krok 4 z ${total}: Diagnoza</h2>
+        <p>Zaczniemy od <strong>12 pytań</strong> z różnych obszarów. Pozwoli to dopasować nauczanie do Twojego poziomu.</p>
+        <ul style="color: var(--color-text-muted); padding-left: var(--sp-lg);">
+          <li>Ok. 8–12 minut</li>
+          <li>Brak ocen — to NIE quiz</li>
+          <li>Wynik = mapa Twojej wiedzy</li>
+        </ul>
+        <div class="footer">
+          <button class="ghost" type="button" data-action="back">← Wstecz</button>
+          <button class="primary" type="button" data-action="finish">Rozpocznij diagnozę</button>
+        </div>`;
+    }
+    body.querySelectorAll('[data-action]').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        const a = e.currentTarget.dataset.action;
+        if (a === 'cancel') { this.close(); return; }
+        if (a === 'next') {
+          if (this.state.step < this.state.total) this.setStep(this.state.step + 1);
+        } else if (a === 'back') {
+          if (this.state.step > 1) this.setStep(this.state.step - 1);
+        } else if (a === 'finish') {
+          await this.commit();
+          this.close();
+          Router.navigate('diagnostic-quiz');
+        }
+      });
+    });
+  },
+  async commit() {
+    const profile = {
+      goal: this.state.goal,
+      dailyGoalMin: this.state.dailyGoalMin,
+      onboardedAt: nowIso()
+    };
+    if (this.state.examDate) profile.examDate = this.state.examDate;
+    await ShellBridge.setState({ profile });
+  }
+};
+
+/* ============================================================
+ * UI — Diagnostic Quiz Runner (12 pyt + optional 15-min timer)
+ * ============================================================ */
+const DiagQuiz = {
+  state: null,
+  async start() {
+    const qbank = await loadQuestionBank();
+    if (!qbank.length) {
+      Router._renderEmptyPool();
+      return;
+    }
+    const questions = selectDiagnosticQuestions(qbank, DESIGN_TOKENS.engine.diagnosticQCount);
+    this.state = {
+      sessionId: uuid4(),
+      questions,
+      answers: [],          // {qid, area, given, correct, elapsedMs}
+      idx: 0,
+      startedAt: Date.now(),
+      tStart: Date.now(),
+      durationLimitSec: 15 * 60,
+      timerEnabled: false,
+      tickHandle: null
+    };
+    this.render();
+  },
+  setTimerEnabled(on) {
+    this.state.timerEnabled = !!on;
+    if (this.state.tickHandle) { clearInterval(this.state.tickHandle); this.state.tickHandle = null; }
+    if (on) {
+      this.state.tickHandle = setInterval(() => this.tick(), 1000);
+    }
+    this.render();
+  },
+  tick() {
+    const remain = this.remainSec();
+    const el = document.getElementById('diag-timer-out');
+    if (el) {
+      el.textContent = formatMmss(remain);
+      el.classList.toggle('warning', remain < 60);
+    }
+    if (remain <= 0) this.finish();
+  },
+  remainSec() {
+    if (!this.state || !this.state.timerEnabled) return Infinity;
+    const elapsed = Math.floor((Date.now() - this.state.tStart) / 1000);
+    return Math.max(0, this.state.durationLimitSec - elapsed);
+  },
+  render() {
+    const root = document.getElementById('view-root');
+    const s = this.state;
+    if (!s) return;
+    if (s.idx >= s.questions.length) { this.finish(); return; }
+    const q = s.questions[s.idx];
+    const total = s.questions.length;
+    const labelArea = (DESIGN_TOKENS.color.areas[q.area] && DESIGN_TOKENS.color.areas[q.area].label) || q.area;
+    const progressPct = Math.round((s.idx / total) * 100);
+    const remain = s.timerEnabled ? formatMmss(this.remainSec()) : '— : —';
+    let optionsHtml = '';
+    if (q.type === 'mcq' && Array.isArray(q.options)) {
+      optionsHtml = `<ul class="options-list" role="radiogroup" aria-label="Opcje odpowiedzi">${
+        q.options.map((opt, i) => `
+          <li>
+            <label class="option-row" data-i="${i}">
+              <input type="radio" name="opt" value="${i}" />
+              <span class="letter">${String.fromCharCode(65 + i)}.</span>
+              <span>${escapeHtml(opt)}</span>
+            </label>
+          </li>`).join('')
+      }</ul>`;
+    } else {
+      optionsHtml = `<input type="text" class="fill-input" id="fill-input" autocomplete="off" spellcheck="false" placeholder="Wpisz odpowiedź..." />`;
+    }
+    root.innerHTML = `
+      <div class="card">
+        <div class="diag-progress">
+          <span class="muted">Pytanie <strong>${s.idx + 1}</strong> / ${total}</span>
+          <div class="bar"><div style="width:${progressPct}%"></div></div>
+          <span class="diag-timer" id="diag-timer-out">${remain}</span>
+          <button type="button" class="ghost" id="toggle-timer" aria-pressed="${s.timerEnabled}">
+            ${s.timerEnabled ? 'Wyłącz timer' : 'Włącz timer (15:00)'}
+          </button>
+        </div>
+        <div class="question-block">
+          <div class="question-meta">
+            <span class="area-chip" data-area="${q.area}">${escapeHtml(q.area)} · ${escapeHtml(labelArea)}</span>
+            <span class="diff-${q.difficulty}">${q.difficulty}</span>
+            <span class="muted">${q.type === 'fill' ? 'Wpisz odpowiedź' : 'Wybierz jedną odpowiedź'}</span>
+          </div>
+          <div class="question-prompt">${escapeHtml(q.q)}</div>
+          ${optionsHtml}
+        </div>
+        <div class="diag-footer">
+          <button class="ghost" type="button" id="skip">Pomiń</button>
+          <button class="primary" type="button" id="confirm" disabled>Potwierdź →</button>
+        </div>
+      </div>
+      <p class="muted" style="margin-top: var(--sp-md); font-size: var(--fs-xs);">
+        Diagnoza nie jest oceniana — wynik tylko Tobie pokaże, gdzie wzmocnić wiedzę.
+      </p>
+    `;
+    document.getElementById('toggle-timer').addEventListener('click', () => this.setTimerEnabled(!s.timerEnabled));
+    document.getElementById('skip').addEventListener('click', () => this.submit(null));
+    const confirmBtn = document.getElementById('confirm');
+    if (q.type === 'mcq') {
+      root.querySelectorAll('.option-row').forEach(row => {
+        row.addEventListener('click', () => {
+          root.querySelectorAll('.option-row').forEach(r => r.classList.remove('selected'));
+          row.classList.add('selected');
+          const inp = row.querySelector('input'); if (inp) inp.checked = true;
+          confirmBtn.disabled = false;
+        });
+      });
+      confirmBtn.addEventListener('click', () => {
+        const sel = root.querySelector('input[name="opt"]:checked');
+        if (!sel) return;
+        this.submit(parseInt(sel.value, 10));
+      });
+    } else {
+      const inp = document.getElementById('fill-input');
+      inp.addEventListener('input', () => { confirmBtn.disabled = !inp.value.trim(); });
+      inp.addEventListener('keydown', e => {
+        if (e.key === 'Enter' && inp.value.trim()) this.submit(inp.value.trim());
+      });
+      confirmBtn.addEventListener('click', () => this.submit(inp.value.trim()));
+      setTimeout(() => inp.focus(), 50);
+    }
+  },
+  submit(given) {
+    const s = this.state;
+    const q = s.questions[s.idx];
+    let isCorrect = false;
+    if (given == null || given === '') {
+      isCorrect = false; // skipped = wrong for diagnostic
+    } else if (q.type === 'mcq') {
+      isCorrect = (given === q.correct);
+    } else {
+      isCorrect = matchAnswer(given, q.correct);
+    }
+    s.answers.push({
+      qid: q.id, area: q.area, given: (given == null) ? '' : given,
+      correct: isCorrect, elapsedMs: Date.now() - s.tStart
+    });
+    s.idx += 1;
+    s.tStart = Date.now();
+    this.render();
+  },
+  async finish() {
+    if (!this.state) return;
+    if (this.state.tickHandle) { clearInterval(this.state.tickHandle); this.state.tickHandle = null; }
+    const results = this.state.answers.map(a => ({ qid: a.qid, area: a.area, correct: a.correct }));
+    // Persist QuizSession to state.sessions
+    const session = {
+      sessionId: this.state.sessionId,
+      mode: 'diagnostic',
+      questionIds: this.state.questions.map(q => q.id),
+      answers: this.state.answers.map(a => ({
+        qid: a.qid,
+        given: typeof a.given === 'number' ? a.given : (a.given || ''),
+        correct: a.correct,
+        elapsedMs: Math.max(0, Math.floor(a.elapsedMs || 0))
+      })),
+      startedAt: new Date(this.state.startedAt).toISOString(),
+      endedAt: nowIso(),
+      score: results.length ? results.filter(r => r.correct).length / results.length : 0,
+      isDiagnostic: true
+    };
+    const cur = await ShellBridge.getState();
+    const sessions = (cur.sessions || []).slice();
+    sessions.push(session);
+    while (sessions.length > 50) sessions.shift();
+    await ShellBridge.setState({ sessions });
+    await markDiagnosisComplete(results);
+    this.state = null;
+    Router.navigate('diagnostic-results');
+  }
+};
+function formatMmss(seconds) {
+  if (!isFinite(seconds)) return '— : —';
+  const s = Math.max(0, Math.floor(seconds));
+  return String(Math.floor(s/60)).padStart(2,'0') + ':' + String(s%60).padStart(2,'0');
+}
+
+/* ============================================================
+ * UI — Knowledge Dashboard (radar + doughnut + bars + recommendations)
+ * ============================================================ */
+const Dashboard = {
+  charts: { radar: null, doughnut: null },
+  destroyCharts() {
+    if (this.charts.radar) { try { this.charts.radar.destroy(); } catch(_) {} this.charts.radar = null; }
+    if (this.charts.doughnut) { try { this.charts.doughnut.destroy(); } catch(_) {} this.charts.doughnut = null; }
+  },
+  async render() {
+    const root = document.getElementById('view-root');
+    const cur = await ShellBridge.getState();
+    const report = await getKnowledgeReport();
+    const onboarded = !!(cur.profile && cur.profile.onboardedAt);
+    const diagnosticDoneAt = (cur.sessions || []).filter(s => s.mode === 'diagnostic').slice(-1)[0];
+    const weakestArea = report.weakest[0];
+    const weakestLabel = weakestArea ? (DESIGN_TOKENS.color.areas[weakestArea].label) : '—';
+
+    const barsHtml = AREAS.map(a => {
+      const k = report.areas[a];
+      const pct = Math.round((k.mastery || 0) * 100);
+      const label = DESIGN_TOKENS.color.areas[a].label;
+      const fg = DESIGN_TOKENS.color.areas[a].fg;
+      return `<div class="area-bar" role="group" aria-label="${escapeHtml(label)}: ${pct}%">
+        <span class="label" data-area-label="${a}">${escapeHtml(a)} · ${escapeHtml(label)}</span>
+        <div class="track" aria-hidden="true">
+          <div class="fill" style="width:${pct}%; background: ${fg};"></div>
+        </div>
+        <span class="pct">${pct}%</span>
+      </div>`;
+    }).join('');
+
+    const top3WeakHtml = report.weakest.slice(0, 3).map(a =>
+      `<span class="area-chip lg" data-area="${a}">${escapeHtml(a)} · ${escapeHtml(DESIGN_TOKENS.color.areas[a].label)}</span>`
+    ).join(' ');
+    const top2StrongHtml = report.strongest.slice(0, 2).map(a =>
+      `<span class="area-chip" data-area="${a}">${escapeHtml(a)} · ${escapeHtml(DESIGN_TOKENS.color.areas[a].label)}</span>`
+    ).join(' ');
+
+    const recommendBanner = `
+      <div class="recommend-banner">
+        <div>
+          <strong>Powtórz: ${escapeHtml(weakestLabel)}</strong>
+          <div class="muted" style="font-size: var(--fs-xs);">Najsłabszy obszar wg diagnozy.</div>
+        </div>
+        <div class="actions" style="margin: 0;">
+          <button class="primary" type="button" id="cta-adaptive">Quiz adaptive (10 pyt)</button>
+        </div>
+      </div>`;
+
+    const replayHtml = diagnosticDoneAt ? `
+      <div class="card" style="margin-top: var(--sp-md);">
+        <p>Diagnoza ukończona <strong>${escapeHtml(formatDate(diagnosticDoneAt.endedAt))}</strong>. Wynik: ${(diagnosticDoneAt.score*100).toFixed(0)}% (${escapeHtml(diagnosticDoneAt.questionIds.length)} pyt).</p>
+        <p>Powtórz diagnozę?</p>
+        <div class="actions">
+          <button class="primary" id="replay-yes" type="button">Tak — zacznij od nowa</button>
+          <button class="ghost"   id="replay-no"  type="button">Nie</button>
+        </div>
+      </div>` : '';
+
+    root.innerHTML = `
+      ${onboarded ? '' : `
+        <div class="card">
+          <h2>Witaj w INF.02 Study Hub</h2>
+          <p>Aby dopasować naukę do Twojego poziomu, zacznijmy od krótkiego onboardingu i 12-pytaniowej diagnozy.</p>
+          <button class="primary" type="button" id="start-onboarding">Rozpocznij onboarding</button>
+        </div>`}
+
+      ${(cur.knowledge && (cur.knowledge.perArea || {})[AREAS[0]] && (cur.knowledge.perArea[AREAS[0]].attempts || 0) > 0)
+        ? recommendBanner : ''}
+
+      <div class="row">
+        <div class="card">
+          <h3>Mapa wiedzy (radar 11 obszarów)</h3>
+          <div class="chart-wrap"><canvas id="radarCanvas" role="img" aria-label="Radar mocnych i słabych stron 11 obszarów"></canvas></div>
+        </div>
+        <div class="card">
+          <h3>Gotowość do egzaminu</h3>
+          <div class="chart-wrap small"><canvas id="readinessCanvas" role="img" aria-label="Gotowość ${(report.readinessForExam*100).toFixed(0)}%"></canvas></div>
+          <p style="text-align:center;font-size:var(--fs-md);margin-top:var(--sp-sm);">
+            <strong>${(report.readinessForExam*100).toFixed(0)}%</strong>
+          </p>
+          <p class="muted" style="text-align:center;font-size:var(--fs-xs);">próg CKE pisemny: 50%</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Słabe punkty</h3>
+        <div class="actions" style="margin-bottom: var(--sp-md);">${top3WeakHtml}</div>
+        <button class="primary" type="button" id="cta-adaptive-2">Naucz się słabych (Quiz adaptive)</button>
+      </div>
+
+      <div class="card">
+        <h3>Mocne strony</h3>
+        <div class="actions">${top2StrongHtml}</div>
+      </div>
+
+      <div class="card">
+        <h3>Postępy (11 obszarów)</h3>
+        <div class="area-bars">${barsHtml}</div>
+      </div>
+
+      ${replayHtml}
+    `;
+
+    this.destroyCharts();
+    this.renderRadar(report);
+    this.renderDoughnut(report.readinessForExam);
+
+    const onCta = () => ShellBridge.navigate('quiz', { mode: 'adaptive', n: 10 });
+    document.getElementById('cta-adaptive')?.addEventListener('click', onCta);
+    document.getElementById('cta-adaptive-2')?.addEventListener('click', onCta);
+    document.getElementById('start-onboarding')?.addEventListener('click', () => Onboarding.open());
+    document.getElementById('replay-yes')?.addEventListener('click', async () => {
+      // Reset knowledge to defaults — keep profile.
+      await ShellBridge.setState({ knowledge: { perArea: defaultPerArea(), weakest: [], strongest: [], readinessForExam: 0.5 } });
+      Router.navigate('diagnostic-quiz');
+    });
+    document.getElementById('replay-no')?.addEventListener('click', () => Router.navigate('home'));
+  },
+  renderRadar(report) {
+    const ctx = document.getElementById('radarCanvas');
+    if (!ctx || typeof Chart === 'undefined') return;
+    const labels = AREAS.map(a => `${a} · ${DESIGN_TOKENS.color.areas[a].label}`);
+    const data = AREAS.map(a => Math.round((report.areas[a].mastery || 0) * 100));
+    this.charts.radar = new Chart(ctx, {
+      type: 'radar',
+      data: {
+        labels,
+        datasets: [{
+          label: 'Mistrzostwo (%)',
+          data,
+          backgroundColor: 'rgba(94,169,255,0.20)',
+          borderColor: '#5EA9FF',
+          borderWidth: 2,
+          pointBackgroundColor: AREAS.map(a => DESIGN_TOKENS.color.areas[a].fg),
+          pointBorderColor: AREAS.map(a => DESIGN_TOKENS.color.areas[a].bg),
+          pointRadius: 5
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { labels: { color: '#F2F4F7' } } },
+        scales: {
+          r: {
+            angleLines: { color: '#2E3340' },
+            grid: { color: '#2E3340' },
+            pointLabels: { color: '#F2F4F7', font: { size: 11 } },
+            ticks: { color: '#A8B0BD', backdropColor: 'rgba(0,0,0,0)', stepSize: 20 },
+            min: 0, max: 100
+          }
+        }
+      }
+    });
+  },
+  renderDoughnut(readiness) {
+    const ctx = document.getElementById('readinessCanvas');
+    if (!ctx || typeof Chart === 'undefined') return;
+    const pct = Math.round(readiness * 100);
+    const color = pct >= 75 ? '#3DDC97' : pct >= 50 ? '#FFB454' : '#FF6B6B';
+    this.charts.doughnut = new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Gotowość', 'Pozostałe'],
+        datasets: [{
+          data: [pct, 100 - pct],
+          backgroundColor: [color, '#252932'],
+          borderColor: ['#0F1115', '#0F1115'],
+          borderWidth: 2
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false, cutout: '70%',
+        plugins: { legend: { display: false }, tooltip: { enabled: true } }
+      }
+    });
+  }
+};
+function formatDate(iso) {
+  try {
+    const d = new Date(iso);
+    const dd = String(d.getDate()).padStart(2,'0');
+    const mm = String(d.getMonth()+1).padStart(2,'0');
+    return `${dd}.${mm}.${d.getFullYear()}`;
+  } catch (_) { return iso; }
+}
+
+/* ============================================================
+ * Router (hash-based, fallback when shell not present)
+ * ============================================================ */
+const Router = {
+  routes: ['home', 'diagnostic', 'diagnostic-quiz', 'diagnostic-results', 'review'],
+  current: 'home',
+  navigate(view, params) {
+    this.current = view;
+    if (!INF02.shell) {
+      const search = params ? '?' + new URLSearchParams(params).toString() : '';
+      history.replaceState(null, '', '#' + view + search);
+    }
+    this.render();
+  },
+  async render() {
+    Dashboard.destroyCharts();
+    const view = this.current;
+    if (view === 'home') {
+      const cur = await ShellBridge.getState();
+      if (!cur.profile) {
+        Onboarding.open();
+        document.getElementById('view-root').innerHTML = `
+          <div class="card"><h2>Witaj!</h2><p>Trwa onboarding...</p></div>`;
+        return;
+      }
+      Dashboard.render();
+      return;
+    }
+    if (view === 'diagnostic-quiz') {
+      DiagQuiz.start();
+      return;
+    }
+    if (view === 'diagnostic-results' || view === 'review') {
+      Dashboard.render();
+      return;
+    }
+    if (view === 'diagnostic') {
+      Dashboard.render();
+      return;
+    }
+    document.getElementById('view-root').innerHTML = `<div class="card"><p>Nieznany widok: ${escapeHtml(view)}</p></div>`;
+  },
+  _renderEmptyPool() {
+    document.getElementById('view-root').innerHTML = `
+      <div class="card flag-bad">
+        <h2>Brak pytań w bazie. Zaimportuj bank.</h2>
+        <p class="muted">Diagnoza nie może wystartować bez pytań. Skontaktuj się z administratorem lub zaimportuj <code>data/questions.json</code>.</p>
+      </div>`;
+  }
+};
+
+/* ============================================================
+ * REGISTER PUBLIC API → window.INF02.diagnostic
+ * ============================================================ */
+INF02.diagnostic = {
+  // Selection
+  selectDiagnosticQuestions,
+  selectQuizQuestions,
+  selectAdaptiveQuestions,
+  // Knowledge
+  markDiagnosisComplete,
+  recordAnswer,
+  updateKnowledge,
+  getKnowledgeReport,
+  // Worked examples
+  WORKED_EXAMPLES,
+  workedExampleMode,
+  renderWorkedExample,
+  noteWorkedExampleSuccess,
+  // UI
+  openOnboarding: () => Onboarding.open(),
+  startDiagnostic: () => Router.navigate('diagnostic-quiz'),
+  showDashboard: () => Router.navigate('diagnostic-results'),
+  // Constants
+  AREAS,
+  DESIGN_TOKENS,
+  // Util
+  matchAnswer,
+  normalizeAnswer
+};
+
+/* ============================================================
+ * BOOTSTRAP
+ * ============================================================ */
+(async function bootstrap() {
+  try {
+    const cur = await ShellBridge.getState();
+    // Wire header actions
+    document.getElementById('header-actions').innerHTML = `
+      <div class="actions" style="margin:0;">
+        <button class="ghost" type="button" id="nav-home">Dashboard</button>
+        <button class="ghost" type="button" id="nav-diag">Diagnoza</button>
+      </div>`;
+    document.getElementById('nav-home').addEventListener('click', () => Router.navigate('home'));
+    document.getElementById('nav-diag').addEventListener('click', () => Router.navigate('diagnostic-quiz'));
+
+    // Initial route — from hash if present
+    const hash = (location.hash || '').replace(/^#/, '').split('?')[0];
+    if (hash && Router.routes.includes(hash)) {
+      Router.navigate(hash);
+    } else if (!cur.profile) {
+      Onboarding.open();
+      document.getElementById('view-root').innerHTML = `
+        <div class="card"><h2>Witaj w INF.02 Study Hub</h2>
+        <p>Trwa onboarding — odpowiedz na 4 krótkie pytania.</p></div>`;
+    } else {
+      Router.navigate('home');
+    }
+    window.addEventListener('hashchange', () => {
+      const h = (location.hash || '').replace(/^#/, '').split('?')[0];
+      if (h && Router.routes.includes(h)) Router.navigate(h);
+    });
+
+    // Self-test if flag set
+    if (location.search.includes('selftest=1')) runSelfTest();
+  } catch (e) {
+    console.error('[BD] bootstrap failed', e);
+    document.getElementById('view-root').innerHTML = `
+      <div class="card flag-bad"><h2>Błąd inicjalizacji</h2><pre>${escapeHtml(e && e.message)}</pre></div>`;
+  }
+})();
+
+/* ============================================================
+ * SELF-TEST — manual trace, runs only with ?selftest=1
+ * Covers 5 P0 + 1 P1 + 1 P2.
+ * ============================================================ */
+async function runSelfTest() {
+  const results = [];
+  const log = (name, pass, note) => results.push({ name, pass, note });
+
+  // T1 — selectDiagnosticQuestions returns 12, balanced
+  try {
+    const qbank = await loadQuestionBank();
+    const out = selectDiagnosticQuestions(qbank, 12);
+    const okCount = out.length === 12 || out.length === Math.min(12, qbank.length);
+    const top4 = ['B','N','W','L'];
+    const top4Ok = top4.every(a => out.some(q => q.area === a));
+    const easy = out.filter(q => q.difficulty === 'easy').length;
+    const med  = out.filter(q => q.difficulty === 'medium').length;
+    const hard = out.filter(q => q.difficulty === 'hard').length;
+    const diffMixOk = easy >= 3 && med >= 3 && hard >= 3;
+    log('TEST-DIAG-01 P0 selectDiagnosticQuestions(12)', okCount && top4Ok && diffMixOk,
+      `count=${out.length}, top4=${top4Ok}, e/m/h=${easy}/${med}/${hard}`);
+  } catch (e) { log('TEST-DIAG-01 P0', false, e.message); }
+
+  // T2 — markDiagnosisComplete state init
+  try {
+    // Reset state
+    ShellBridge._localState = defaultAppState();
+    const fakeResults = [
+      // B 2/3 correct
+      { qid:'Q-0001', area:'B', correct:true }, { qid:'Q-0002', area:'B', correct:true }, { qid:'Q-0003', area:'B', correct:false },
+      // N 1/3 correct
+      { qid:'Q-0007', area:'N', correct:true }, { qid:'Q-0008', area:'N', correct:false }, { qid:'Q-0009', area:'N', correct:false }
+    ];
+    const knowledge = await markDiagnosisComplete(fakeResults);
+    const Bm = knowledge.perArea.B.mastery;
+    const Nm = knowledge.perArea.N.mastery;
+    const Om = knowledge.perArea.O.mastery; // bez pyt → 0.5
+    const ok = Math.abs(Bm - 0.667) < 0.01 && Math.abs(Nm - 0.333) < 0.01 && Om === 0.5;
+    log('TEST-DIAG-02 P0 markDiagnosisComplete', ok, `B=${Bm.toFixed(3)} N=${Nm.toFixed(3)} O=${Om}`);
+  } catch (e) { log('TEST-DIAG-02 P0', false, e.message); }
+
+  // T3 — selectAdaptiveQuestions 70/30 split (10 iteracji × 20 pyt)
+  try {
+    const knowledge = { perArea: defaultPerArea() };
+    knowledge.perArea.B.mastery = 0.2;
+    knowledge.perArea.O.mastery = 0.9;
+    knowledge.perArea.N.mastery = 0.5;
+    const qbank = await loadQuestionBank();
+    let weakSum = 0, total = 0;
+    for (let i = 0; i < 10; i++) {
+      const picks = selectAdaptiveQuestions(qbank, 20, knowledge);
+      total += picks.length;
+      weakSum += picks.filter(q => {
+        const m = knowledge.perArea[q.area] && knowledge.perArea[q.area].mastery;
+        return typeof m === 'number' && m < 0.5;
+      }).length;
+    }
+    const ratio = weakSum / total;
+    const ok = ratio >= 0.55 && ratio <= 0.85; // szerszy margines bo mały bank
+    log('TEST-DIAG-03 P0 selectAdaptiveQuestions 70/30', ok, `weak ratio = ${ratio.toFixed(3)}`);
+  } catch (e) { log('TEST-DIAG-03 P0', false, e.message); }
+
+  // T4 — EWMA update α=0.7
+  try {
+    const k0 = { perArea: defaultPerArea() };
+    k0.perArea.B = { accuracy: 0.5, attempts: 0, lastSeen: null, mastery: 0.5 };
+    const k1 = updateKnowledge('B', true, k0);
+    const v1 = k1.perArea.B.mastery; // 0.7*0.5 + 0.3*1 = 0.65
+    const k2 = updateKnowledge('B', false, k1);
+    const v2 = k2.perArea.B.mastery; // 0.7*0.65 + 0.3*0 = 0.455
+    const ok = Math.abs(v1 - 0.65) < 1e-3 && Math.abs(v2 - 0.455) < 1e-3;
+    log('TEST-DIAG-04 P0 EWMA α=0.7', ok, `v1=${v1} v2=${v2}`);
+  } catch (e) { log('TEST-DIAG-04 P0', false, e.message); }
+
+  // T5 — getKnowledgeReport: 10 areas at 0.8, Z=0.2
+  try {
+    const perArea = {};
+    for (const a of AREAS) perArea[a] = { accuracy: 0.8, attempts: 1, lastSeen: nowIso(), mastery: 0.8 };
+    perArea.Z = { accuracy: 0.2, attempts: 1, lastSeen: nowIso(), mastery: 0.2 };
+    const r = await getKnowledgeReport({ perArea });
+    const meanExp = (10*0.8 + 0.2) / 11; // ≈ 0.745
+    const minExp = 0.2;
+    const readExp = 0.6 * meanExp + 0.4 * minExp;
+    const ok =
+      r.weakest[0] === 'Z' &&
+      Math.abs(r.readinessForExam - readExp) < 0.01 &&
+      r.strongest.length === 2;
+    log('TEST-DIAG-05 P0 getKnowledgeReport', ok,
+      `weak[0]=${r.weakest[0]} ready=${r.readinessForExam.toFixed(3)} expected≈${readExp.toFixed(3)}`);
+  } catch (e) { log('TEST-DIAG-05 P0', false, e.message); }
+
+  // T6 (P1) — Empty pool fallback
+  try {
+    const out = selectDiagnosticQuestions([], 12);
+    log('TEST-DIAG-11 P2 empty pool', out.length === 0, `len=${out.length}`);
+  } catch (e) { log('TEST-DIAG-11 P2', false, e.message); }
+
+  // T7 (P2) — Mastery clamp
+  try {
+    ShellBridge._localState = defaultAppState();
+    const all = Array.from({length: 12}, (_, i) => ({ qid:'Q-XXXX', area:'B', correct: true }));
+    const k = await markDiagnosisComplete(all);
+    const ok = k.perArea.B.mastery === 0.9; // clamp
+    log('TEST-DIAG-12 P2 mastery clamp', ok, `B.mastery=${k.perArea.B.mastery}`);
+  } catch (e) { log('TEST-DIAG-12 P2', false, e.message); }
+
+  const html = results.map(r =>
+    `<div class="${r.pass?'pass':'fail'}">${r.pass?'PASS':'FAIL'} — ${escapeHtml(r.name)} :: ${escapeHtml(r.note || '')}</div>`
+  ).join('');
+  const div = document.createElement('div');
+  div.className = 'selftest-panel';
+  div.innerHTML = `<h3 style="margin-top:0;">Self-test results</h3>${html}`;
+  document.body.appendChild(div);
+  console.table(results);
+}
+</script>
+</body>
+</html>

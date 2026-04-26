@@ -1,0 +1,41 @@
+{
+  "name": "INF.02 Study Hub",
+  "short_name": "INF.02 Study",
+  "description": "Adaptive learning app for Polish IT vocational exam INF.02 — 250+ questions, 11 areas, SM-2 spaced repetition",
+  "start_url": "./shell.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "theme_color": "#5EA9FF",
+  "background_color": "#0F1115",
+  "lang": "pl-PL",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "./icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "./icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "categories": ["education", "productivity"],
+  "prefer_related_applications": false
+}

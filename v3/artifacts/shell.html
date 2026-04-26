@@ -1,0 +1,1702 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>INF.02 Study Hub v3 — Shell</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#5EA9FF">
+<meta name="description" content="INF.02 Study Hub — przygotowanie do egzaminu zawodowego, offline-first PWA.">
+<link rel="manifest" href="./manifest.webmanifest">
+<style>
+:root{
+  --color-bg:#0F1115;
+  --color-surface:#1A1D24;
+  --color-surface-2:#252932;
+  --color-text:#F2F4F7;
+  --color-text-muted:#A8B0BD;
+  --color-border:#2E3340;
+  --color-accent:#5EA9FF;
+  --color-accent-fg:#0F1115;
+  --color-success:#3DDC97;
+  --color-warning:#FFB454;
+  --color-danger:#FF6B6B;
+  --color-focus:#FFD166;
+
+  --area-B-bg:#1F3A5F; --area-B-fg:#A9D5FF;
+  --area-O-bg:#3F2A5F; --area-O-fg:#D5B8FF;
+  --area-N-bg:#1F4F3F; --area-N-fg:#9BEBC9;
+  --area-P-bg:#5F3F1F; --area-P-fg:#FFCC9B;
+  --area-D-bg:#5F1F2F; --area-D-fg:#FFB0B8;
+  --area-L-bg:#4F4F1F; --area-L-fg:#E6E0A8;
+  --area-W-bg:#1F4F5F; --area-W-fg:#A8DCE6;
+  --area-6-bg:#2F1F5F; --area-6-fg:#B8B0FF;
+  --area-V-bg:#1F5F4F; --area-V-fg:#9BD9C7;
+  --area-Z-bg:#5F2F4F; --area-Z-fg:#FFB0DC;
+  --area-R-bg:#3F3F3F; --area-R-fg:#E0E0E0;
+
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "Cascadia Mono", "Roboto Mono", Consolas, monospace;
+
+  --fs-xs:0.8rem; --fs-sm:1rem; --fs-md:1.25rem; --fs-lg:1.563rem;
+  --fs-xl:1.953rem; --fs-2xl:2.441rem;
+
+  --sp-xs:4px; --sp-sm:8px; --sp-md:16px; --sp-lg:24px;
+  --sp-xl:32px; --sp-2xl:48px; --sp-3xl:64px;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 120ms; --dur-base: 200ms; --dur-slow: 320ms;
+
+  --shadow-1: 0 1px 2px rgba(0,0,0,0.4);
+  --shadow-2: 0 4px 12px rgba(0,0,0,0.5);
+  --shadow-3: 0 12px 32px rgba(0,0,0,0.6);
+
+  color-scheme: dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--color-bg);color:var(--color-text);font-family:var(--font-sans);font-size:16px;line-height:1.55}
+body{min-height:100vh;display:flex;flex-direction:column}
+button{font-family:inherit;font-size:inherit;color:inherit;cursor:pointer}
+*:focus-visible{outline:3px solid var(--color-focus);outline-offset:2px;border-radius:4px}
+a{color:var(--color-accent);text-decoration:none}
+a:hover{text-decoration:underline}
+h1,h2,h3,h4{line-height:1.2;margin:0 0 var(--sp-sm) 0;font-weight:600}
+h1{font-size:var(--fs-xl)} h2{font-size:var(--fs-lg)} h3{font-size:var(--fs-md)} h4{font-size:var(--fs-sm)}
+p{margin:0 0 var(--sp-sm) 0}
+.muted{color:var(--color-text-muted)}
+.mono{font-family:var(--font-mono)}
+
+/* Layout */
+.app{display:flex;flex:1;min-height:100vh}
+.sidebar{
+  width:240px;background:var(--color-surface);border-right:1px solid var(--color-border);
+  padding:var(--sp-md) 0;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto;
+  display:flex;flex-direction:column;
+}
+.sidebar h1.brand{font-size:var(--fs-md);margin:0 var(--sp-md) var(--sp-md);color:var(--color-accent)}
+.sidebar h1.brand small{display:block;font-size:var(--fs-xs);color:var(--color-text-muted);font-weight:400;margin-top:2px}
+.sidebar nav{flex:1}
+.sidebar .navbtn{
+  display:flex;align-items:center;gap:var(--sp-sm);width:100%;text-align:left;background:none;
+  border:0;padding:12px var(--sp-md);color:var(--color-text);
+  border-left:3px solid transparent;min-height:44px;transition:background var(--dur-fast) var(--ease-out);
+}
+.sidebar .navbtn:hover{background:var(--color-surface-2)}
+.sidebar .navbtn.active{background:var(--color-surface-2);border-left-color:var(--color-accent);color:var(--color-accent);font-weight:600}
+.sidebar .navbtn .ico{width:20px;text-align:center;font-size:16px}
+.sidebar .footer{padding:var(--sp-sm) var(--sp-md);border-top:1px solid var(--color-border);font-size:var(--fs-xs);color:var(--color-text-muted)}
+
+main{flex:1;padding:var(--sp-lg);max-width:1200px;width:100%;margin:0 auto;padding-bottom:96px}
+
+/* Cards */
+.card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:8px;padding:var(--sp-lg);margin-bottom:var(--sp-md);box-shadow:var(--shadow-1)}
+.row{display:flex;gap:var(--sp-md);flex-wrap:wrap}
+.row > .card{flex:1;min-width:240px;margin-bottom:0}
+
+/* Buttons */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:var(--sp-xs);
+  background:var(--color-accent);color:var(--color-accent-fg);border:0;border-radius:6px;
+  padding:12px var(--sp-md);font-weight:500;font-size:var(--fs-sm);
+  min-height:44px;min-width:44px;
+  transition:background var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+}
+.btn:hover{background:#7DB8FF}
+.btn:active{transform:translateY(1px)}
+.btn.ghost{background:transparent;color:var(--color-accent);border:1px solid var(--color-border)}
+.btn.ghost:hover{background:var(--color-surface-2)}
+.btn.danger{background:var(--color-danger);color:#fff}
+.btn.danger:hover{background:#FF8888}
+.btn.success{background:var(--color-success);color:var(--color-accent-fg)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+
+/* Stats */
+.bigstat{font-size:var(--fs-2xl);font-weight:700;color:var(--color-accent);line-height:1}
+.bigstat small{font-size:var(--fs-sm);font-weight:400;color:var(--color-text-muted);display:block;margin-top:4px}
+
+/* Bars */
+.bar{height:10px;background:var(--color-surface-2);border-radius:99px;overflow:hidden;margin:6px 0}
+.bar > span{display:block;height:100%;background:linear-gradient(90deg,var(--color-accent),#7DB8FF);border-radius:99px;transition:width var(--dur-slow) var(--ease-out)}
+
+/* Area chips */
+.chip{display:inline-block;padding:2px 8px;border-radius:99px;font-size:var(--fs-xs);font-weight:600;background:var(--color-surface-2);color:var(--color-text-muted)}
+.chip.area-B{background:var(--area-B-bg);color:var(--area-B-fg)}
+.chip.area-O{background:var(--area-O-bg);color:var(--area-O-fg)}
+.chip.area-N{background:var(--area-N-bg);color:var(--area-N-fg)}
+.chip.area-P{background:var(--area-P-bg);color:var(--area-P-fg)}
+.chip.area-D{background:var(--area-D-bg);color:var(--area-D-fg)}
+.chip.area-L{background:var(--area-L-bg);color:var(--area-L-fg)}
+.chip.area-W{background:var(--area-W-bg);color:var(--area-W-fg)}
+.chip.area-6{background:var(--area-6-bg);color:var(--area-6-fg)}
+.chip.area-V{background:var(--area-V-bg);color:var(--area-V-fg)}
+.chip.area-Z{background:var(--area-Z-bg);color:var(--area-Z-fg)}
+.chip.area-R{background:var(--area-R-bg);color:var(--area-R-fg)}
+
+/* Area progress row */
+.area-row{display:flex;align-items:center;gap:var(--sp-md);padding:var(--sp-sm) 0;border-bottom:1px solid var(--color-border)}
+.area-row:last-child{border-bottom:0}
+.area-row .name{flex:1;font-weight:500}
+.area-row .pct{color:var(--color-text-muted);font-size:var(--fs-xs);min-width:48px;text-align:right;font-variant-numeric:tabular-nums}
+
+/* Week plan */
+.weekplan{display:grid;grid-template-columns:repeat(6,1fr);gap:var(--sp-sm);margin-top:var(--sp-sm)}
+.weekplan .w{background:var(--color-surface-2);border:1px solid var(--color-border);border-radius:6px;padding:10px;font-size:var(--fs-xs);text-align:center}
+.weekplan .w.now{background:var(--color-bg);border-color:var(--color-accent)}
+.weekplan .w b{display:block;color:var(--color-accent);font-size:var(--fs-xs);margin-bottom:4px}
+
+/* Bottom-nav (mobile) */
+.bottom-nav{
+  display:none;position:fixed;bottom:0;left:0;right:0;
+  background:var(--color-surface);border-top:1px solid var(--color-border);
+  padding:6px 4px;z-index:50;box-shadow:var(--shadow-2);
+}
+.bottom-nav .navbtn{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  flex:1;padding:6px 4px;background:none;border:0;color:var(--color-text-muted);
+  font-size:10px;min-height:48px;border-radius:6px;
+}
+.bottom-nav .navbtn.active{color:var(--color-accent)}
+.bottom-nav .navbtn .ico{font-size:18px;display:block;margin-bottom:2px}
+
+/* Drawer */
+.drawer-backdrop{
+  position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:80;
+  display:none;align-items:flex-end;justify-content:center;
+}
+.drawer-backdrop.open{display:flex}
+.drawer{
+  background:var(--color-surface);border-top:1px solid var(--color-border);
+  border-radius:12px 12px 0 0;width:100%;max-width:480px;padding:var(--sp-md);
+  max-height:70vh;overflow-y:auto;
+}
+.drawer h3{margin-top:0}
+.drawer .navbtn{
+  display:flex;align-items:center;gap:var(--sp-sm);width:100%;
+  background:var(--color-surface-2);border:1px solid var(--color-border);border-radius:6px;
+  padding:12px var(--sp-md);margin-bottom:var(--sp-sm);min-height:44px;color:var(--color-text);
+}
+
+/* SR-only */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+
+/* Toast */
+.toast{
+  position:fixed;bottom:80px;left:50%;transform:translateX(-50%);
+  background:var(--color-surface-2);border:1px solid var(--color-border);
+  color:var(--color-text);padding:12px var(--sp-md);border-radius:8px;
+  box-shadow:var(--shadow-2);z-index:100;font-size:var(--fs-sm);
+  opacity:0;pointer-events:none;transition:opacity var(--dur-base) var(--ease-out);max-width:90vw;
+}
+.toast.show{opacity:1;pointer-events:auto}
+.toast.success{border-color:var(--color-success);color:var(--color-success)}
+.toast.danger{border-color:var(--color-danger);color:var(--color-danger)}
+
+/* Forms */
+input[type="text"],input[type="number"],input[type="date"],select,textarea{
+  background:var(--color-surface-2);border:1px solid var(--color-border);
+  border-radius:6px;padding:10px var(--sp-sm);color:var(--color-text);
+  font-family:inherit;font-size:var(--fs-sm);min-height:44px;width:100%;
+}
+input[type="file"]{color:var(--color-text-muted);font-size:var(--fs-sm)}
+label{display:block;margin-bottom:var(--sp-xs);font-size:var(--fs-xs);color:var(--color-text-muted);font-weight:600}
+
+/* Knowledge bars (vanilla SVG container) */
+.knowledge-bars{display:flex;flex-direction:column;gap:6px}
+.kb-row{display:grid;grid-template-columns:36px 1fr 60px;gap:var(--sp-sm);align-items:center}
+.kb-row .label{font-weight:600;font-size:var(--fs-xs)}
+.kb-row .pct{font-size:var(--fs-xs);color:var(--color-text-muted);text-align:right;font-variant-numeric:tabular-nums}
+.kb-row svg{width:100%;height:14px}
+
+/* Chart container */
+.chart-wrap{position:relative;width:100%;max-width:480px;margin:0 auto}
+
+/* Disclaimer */
+.disclaimer{font-size:var(--fs-xs);color:var(--color-text-muted);font-style:italic;margin-top:var(--sp-md);padding:var(--sp-sm);border-left:3px solid var(--color-warning);background:var(--color-surface-2);border-radius:4px}
+
+/* Empty state */
+.empty{padding:var(--sp-2xl);text-align:center;color:var(--color-text-muted)}
+
+/* Sessions list */
+.sessions-list{list-style:none;padding:0;margin:0}
+.sessions-list li{display:flex;align-items:center;gap:var(--sp-sm);padding:var(--sp-sm) 0;border-bottom:1px solid var(--color-border)}
+.sessions-list li:last-child{border-bottom:0}
+.sessions-list .when{color:var(--color-text-muted);font-size:var(--fs-xs);min-width:84px}
+.sessions-list .mode{flex:1;font-weight:500}
+.sessions-list .score{font-weight:600;font-variant-numeric:tabular-nums}
+.sessions-list .score.pass{color:var(--color-success)}
+.sessions-list .score.fail{color:var(--color-danger)}
+
+/* Streak flame */
+.streak-num{font-size:var(--fs-2xl);font-weight:700;color:var(--color-warning);line-height:1}
+
+/* Settings list */
+.setting-row{display:flex;align-items:center;justify-content:space-between;padding:var(--sp-sm) 0;border-bottom:1px solid var(--color-border);gap:var(--sp-md)}
+.setting-row:last-child{border-bottom:0}
+.setting-row .label{flex:1;font-weight:500}
+.setting-row .desc{font-size:var(--fs-xs);color:var(--color-text-muted);font-weight:400}
+
+/* Toggle (checkbox styled) */
+.toggle{position:relative;display:inline-block;width:48px;height:28px}
+.toggle input{opacity:0;width:0;height:0}
+.toggle .slider{position:absolute;cursor:pointer;inset:0;background:var(--color-surface-2);border:1px solid var(--color-border);border-radius:99px;transition:var(--dur-fast)}
+.toggle .slider::before{content:"";position:absolute;height:20px;width:20px;left:3px;top:3px;background:var(--color-text);border-radius:50%;transition:var(--dur-fast)}
+.toggle input:checked + .slider{background:var(--color-accent)}
+.toggle input:checked + .slider::before{transform:translateX(20px);background:var(--color-accent-fg)}
+.toggle input:focus-visible + .slider{outline:3px solid var(--color-focus);outline-offset:2px}
+
+/* Mobile */
+@media (max-width: 779px){
+  .app{flex-direction:column}
+  .sidebar{display:none}
+  main{padding:var(--sp-md);padding-bottom:96px}
+  .bottom-nav{display:flex}
+  .weekplan{grid-template-columns:repeat(3,1fr)}
+  .row > .card{min-width:100%}
+}
+
+/* Tablet */
+@media (min-width:780px) and (max-width:1023px){
+  .sidebar{width:200px}
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:0ms !important;transition-duration:0ms !important;animation-iteration-count:1 !important;scroll-behavior:auto !important}
+}
+
+/* Hidden helper */
+[hidden]{display:none !important}
+
+/* Exam countdown */
+.exam-countdown { display:flex; flex-direction:column; align-items:center; padding:.5rem 1rem; border-radius:.5rem; font-weight:700; }
+.exam-countdown--danger { background:#fee2e2; color:#dc2626; }
+.exam-countdown--warning { background:#fef3c7; color:#d97706; }
+.exam-countdown--info { background:#dbeafe; color:#1d4ed8; }
+.exam-countdown__number { font-size:2.5rem; line-height:1; }
+.exam-countdown__label { font-size:.75rem; text-transform:uppercase; letter-spacing:.05em; }
+
+/* Daily goal progress */
+.daily-goal { margin:.5rem 0; }
+.daily-goal__label { font-size:.8rem; color:var(--color-text-muted); margin-bottom:.25rem; }
+.daily-goal__bar { height:.5rem; background:var(--color-surface-2); border-radius:9999px; overflow:hidden; }
+.daily-goal__fill { height:100%; background:var(--color-accent); border-radius:9999px; transition:width .3s; }
+</style>
+</head>
+<body>
+
+<div class="app" id="app">
+  <aside class="sidebar" role="navigation" aria-label="Nawigacja główna">
+    <h1 class="brand">INF.02 Hub<small>v3 · Study</small></h1>
+    <nav id="sideNav"></nav>
+    <div class="footer" id="sideFooter">offline-first · pl-PL</div>
+  </aside>
+
+  <main id="mainView" tabindex="-1" aria-live="polite">
+    <div class="empty">Wczytywanie…</div>
+  </main>
+</div>
+
+<nav class="bottom-nav" id="bottomNav" role="navigation" aria-label="Nawigacja mobilna"></nav>
+
+<div class="drawer-backdrop" id="drawerBackdrop" role="dialog" aria-modal="true" aria-label="Więcej opcji">
+  <div class="drawer" id="drawer">
+    <h3>Więcej</h3>
+    <div id="drawerItems"></div>
+    <button class="btn ghost" id="drawerClose" style="width:100%;margin-top:var(--sp-md)">Zamknij</button>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<input type="file" id="importFile" accept="application/json,.json" hidden>
+<a id="exportLink" hidden></a>
+
+<script>
+/* =========================================================================
+ * INF.02 Study Hub v3 — Shell
+ * Builder-Shell artifact (single-writer for artifacts/shell.html).
+ * Vanilla ES2017+, no transpiler, no framework.
+ * ========================================================================= */
+(function(){
+  'use strict';
+
+  /* ---------- Storage adapter (canonical) ----------------------------- */
+  let _storageKind = 'memory';
+  const storage = (function() {
+    if (typeof window !== "undefined" && window.storage && typeof window.storage.getItem === "function") {
+      _storageKind = 'claude';
+      return Object.assign({ kind: "claude" }, window.storage);
+    }
+    try {
+      if (typeof localStorage !== "undefined") {
+        localStorage.setItem("__inf02_test__", "1");
+        localStorage.removeItem("__inf02_test__");
+        _storageKind = 'local';
+        return {
+          kind: "local",
+          getItem: (k) => Promise.resolve(localStorage.getItem(k)),
+          setItem: (k, v) => Promise.resolve(localStorage.setItem(k, v)),
+          removeItem: (k) => Promise.resolve(localStorage.removeItem(k))
+        };
+      }
+    } catch (_) {}
+    const mem = new Map();
+    _storageKind = 'memory';
+    return {
+      kind: "memory",
+      getItem: (k) => Promise.resolve(mem.has(k) ? mem.get(k) : null),
+      setItem: (k, v) => Promise.resolve(void mem.set(k, v)),
+      removeItem: (k) => Promise.resolve(void mem.delete(k))
+    };
+  })();
+
+  /* ---------- Constants ---------------------------------------------- */
+  const STATE_KEY        = 'inf02.v3.state';
+  const QUESTIONS_KEY    = 'inf02.v3.questions';
+  const SCENARIOS_KEY    = 'inf02.v3.scenarios';
+  const LEGACY_KEY_V2    = 'inf02_progress_v2';
+  const LEGACY_ENGINE_V2 = 'inf02_adaptive_state_v2';
+  const STATE_VERSION    = '3.0.0';
+
+  const AREAS = ["B","O","N","P","D","L","W","6","V","Z","R"];
+  const AREA_LABEL = {
+    B:"Budowa komputera", O:"Systemy operacyjne", N:"Sieci komputerowe",
+    P:"Peryferia i sprzęt sieciowy", D:"Diagnostyka", L:"Prawo, BHP, licencje",
+    W:"Windows Server", "6":"IPv6 i routing zaawansowany",
+    V:"Wirtualizacja i backup", Z:"Bezpieczeństwo zaawansowane",
+    R:"Praktyka CKE-style"
+  };
+
+  /* ---------- Utilities ---------------------------------------------- */
+  function nowIso()  { return new Date().toISOString(); }
+  function todayIso(){ return new Date().toISOString().slice(0,10); }
+  function deepClone(o){ try { return structuredClone(o); } catch(_) { return JSON.parse(JSON.stringify(o)); } }
+  function isObj(v){ return v !== null && typeof v === 'object' && !Array.isArray(v); }
+  function clamp(n,lo,hi){ return Math.max(lo, Math.min(hi, n)); }
+
+  function deepFreeze(o) {
+    if (o === null || typeof o !== 'object') return o;
+    Object.freeze(o);
+    Object.getOwnPropertyNames(o).forEach(k => {
+      const v = o[k];
+      if (v !== null && (typeof v === 'object') && !Object.isFrozen(v)) deepFreeze(v);
+    });
+    return o;
+  }
+
+  function deepMerge(target, patch) {
+    if (!isObj(patch)) return patch === undefined ? target : patch;
+    const out = isObj(target) ? Object.assign({}, target) : {};
+    for (const k of Object.keys(patch)) {
+      const pv = patch[k];
+      const tv = out[k];
+      if (isObj(pv) && isObj(tv)) {
+        out[k] = deepMerge(tv, pv);
+      } else if (Array.isArray(pv)) {
+        out[k] = pv.slice();
+      } else {
+        out[k] = pv;
+      }
+    }
+    return out;
+  }
+
+  function uuidv4() {
+    if (typeof crypto !== 'undefined' && crypto.randomUUID) return crypto.randomUUID();
+    const b = new Uint8Array(16);
+    if (typeof crypto !== 'undefined' && crypto.getRandomValues) crypto.getRandomValues(b);
+    else for (let i=0;i<16;i++) b[i] = Math.floor(Math.random()*256);
+    b[6] = (b[6] & 0x0f) | 0x40;
+    b[8] = (b[8] & 0x3f) | 0x80;
+    const h = Array.from(b, x => x.toString(16).padStart(2,'0')).join('');
+    return `${h.slice(0,8)}-${h.slice(8,12)}-${h.slice(12,16)}-${h.slice(16,20)}-${h.slice(20,32)}`;
+  }
+
+  function escapeHtml(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+  }
+
+  function formatDate(iso) {
+    if (!iso) return '—';
+    const d = new Date(iso);
+    if (isNaN(d)) return '—';
+    const pad = (n) => String(n).padStart(2,'0');
+    return `${pad(d.getDate())}.${pad(d.getMonth()+1)}.${d.getFullYear()}`;
+  }
+  function formatRelative(iso) {
+    if (!iso) return 'nigdy';
+    const d = new Date(iso); if (isNaN(d)) return '—';
+    const diff = Date.now() - d.getTime();
+    const days = Math.floor(diff / 86400000);
+    if (days <= 0) return 'dziś';
+    if (days === 1) return 'wczoraj';
+    if (days < 7) return `${days} dni temu`;
+    if (days < 30) return `${Math.floor(days/7)} tyg. temu`;
+    return formatDate(iso);
+  }
+
+  /* ---------- Default state ------------------------------------------ */
+  function defaultPerArea() {
+    const o = {};
+    for (const a of AREAS) {
+      o[a] = { accuracy: 0, attempts: 0, lastSeen: null, mastery: 0.5 };
+    }
+    return o;
+  }
+  function defaultState() {
+    return {
+      version: STATE_VERSION,
+      profile: null,
+      knowledge: {
+        perArea: defaultPerArea(),
+        weakest: [],
+        strongest: [],
+        readinessForExam: 0.0
+      },
+      cards: {},
+      streak: { count: 0, lastActiveDate: null, freezesAvailable: 2, longestStreak: 0 },
+      achievements: [],
+      sessions: [],
+      settings: { theme: "auto", reducedMotion: false, locale: "pl-PL", soundEnabled: false },
+      seq: 0
+    };
+  }
+
+  /* ---------- AppState minimal validator ----------------------------- */
+  function validateAppState(s) {
+    const errors = [];
+    if (!isObj(s)) { errors.push('Nieprawidłowy obiekt state'); return errors; }
+    if (s.version !== STATE_VERSION) errors.push(`version != ${STATE_VERSION}`);
+    if (!isObj(s.knowledge) || !isObj(s.knowledge.perArea)) errors.push('Brak knowledge.perArea');
+    else {
+      for (const a of AREAS) {
+        const k = s.knowledge.perArea[a];
+        if (!isObj(k)) errors.push(`Brak knowledge.perArea.${a}`);
+        else {
+          if (typeof k.accuracy !== 'number' || k.accuracy < 0 || k.accuracy > 1) errors.push(`accuracy ${a} poza [0,1]`);
+          if (typeof k.mastery  !== 'number' || k.mastery  < 0 || k.mastery  > 1) errors.push(`mastery ${a} poza [0,1]`);
+          if (!Number.isInteger(k.attempts) || k.attempts < 0) errors.push(`attempts ${a} nie jest int≥0`);
+          if (!(k.lastSeen === null || typeof k.lastSeen === 'string')) errors.push(`lastSeen ${a} zły typ`);
+        }
+      }
+      if (typeof s.knowledge.readinessForExam !== 'number') errors.push('readinessForExam zły typ');
+    }
+    if (!isObj(s.cards)) errors.push('Brak cards');
+    else {
+      for (const qid of Object.keys(s.cards)) {
+        if (!/^Q-[0-9]{4}$/.test(qid)) errors.push(`cards key ${qid} nie pasuje do Q-NNNN`);
+        const c = s.cards[qid];
+        if (!isObj(c)) { errors.push(`cards[${qid}] nie jest obiektem`); continue; }
+        if (typeof c.ease !== 'number' || c.ease < 1.3 || c.ease > 3.0) errors.push(`ease ${qid} poza [1.3,3.0]`);
+        if (typeof c.interval !== 'number' || c.interval < 0) errors.push(`interval ${qid} <0`);
+        if (!Number.isInteger(c.reps) || c.reps < 0) errors.push(`reps ${qid} bad`);
+        if (!Number.isInteger(c.lapses) || c.lapses < 0) errors.push(`lapses ${qid} bad`);
+        if (typeof c.due !== 'string') errors.push(`due ${qid} bad`);
+        if (!Number.isInteger(c.learnStep) || c.learnStep < 0 || c.learnStep > 3) errors.push(`learnStep ${qid} bad`);
+        if (!Number.isInteger(c.successStreak) || c.successStreak < 0) errors.push(`successStreak ${qid} bad`);
+      }
+    }
+    if (!isObj(s.streak)) errors.push('Brak streak');
+    if (!Array.isArray(s.achievements)) errors.push('achievements not array');
+    if (!Array.isArray(s.sessions)) errors.push('sessions not array');
+    if (!isObj(s.settings)) errors.push('Brak settings');
+    else {
+      if (s.settings.locale !== 'pl-PL') errors.push('locale != pl-PL');
+      if (typeof s.settings.reducedMotion !== 'boolean') errors.push('reducedMotion bad');
+      if (!['auto','light','dark'].includes(s.settings.theme)) errors.push('theme bad');
+    }
+    if (s.profile !== null && !isObj(s.profile)) errors.push('profile bad');
+    if (isObj(s.profile)) {
+      if (!['pass','ace','refresh'].includes(s.profile.goal)) errors.push('profile.goal bad');
+      if (!Number.isInteger(s.profile.dailyGoalMin) || s.profile.dailyGoalMin < 5 || s.profile.dailyGoalMin > 120) errors.push('dailyGoalMin bad');
+      if (typeof s.profile.onboardedAt !== 'string') errors.push('onboardedAt bad');
+    }
+    return errors;
+  }
+
+  /* ---------- State management --------------------------------------- */
+  let _state = defaultState();
+  let _frozenSnapshot = null;
+  const _subscribers = new Set();
+  let _persistChain = Promise.resolve();
+
+  function rebuildSnapshot() { _frozenSnapshot = deepFreeze(deepClone(_state)); }
+  rebuildSnapshot();
+
+  function getState() { return _frozenSnapshot; }
+
+  function notify() {
+    for (const fn of Array.from(_subscribers)) {
+      try { fn(_frozenSnapshot); }
+      catch(e) { console.error('subscriber error', e); }
+    }
+  }
+
+  function setState(patch) {
+    // Sequential persist chain — prevents race when 2 callers awaitless setState
+    _persistChain = _persistChain.then(async () => {
+      const prev = _state;
+      const merged = deepMerge(prev, patch || {});
+      merged.version = STATE_VERSION; // never let patch override
+      // seq bump unless patch explicitly set seq (e.g., import)
+      if (!patch || patch.seq === undefined) {
+        merged.seq = (typeof prev.seq === 'number' ? prev.seq : 0) + 1;
+      }
+      _state = merged;
+      rebuildSnapshot();
+      try {
+        await storage.setItem(STATE_KEY, JSON.stringify(_state));
+      } catch (e) {
+        console.error('Persist failed', e);
+      }
+      try { events.emit('state:changed', { prevState: prev, nextState: _frozenSnapshot, patch }); } catch(_) {}
+      notify();
+      return _frozenSnapshot;
+    }).catch(err => {
+      console.error('setState chain error', err);
+      return _frozenSnapshot;
+    });
+    return _persistChain;
+  }
+
+  function subscribe(fn) {
+    if (typeof fn !== 'function') return () => {};
+    _subscribers.add(fn);
+    return () => { _subscribers.delete(fn); };
+  }
+
+  /* ---------- Event bus ---------------------------------------------- */
+  const events = (function() {
+    const map = new Map();
+    function on(name, fn) {
+      if (!map.has(name)) map.set(name, new Set());
+      map.get(name).add(fn);
+      return () => off(name, fn);
+    }
+    function off(name, fn) {
+      const set = map.get(name); if (set) set.delete(fn);
+    }
+    function emit(name, payload) {
+      const set = map.get(name); if (!set) return;
+      for (const fn of Array.from(set)) {
+        try { fn(payload); } catch(e) { console.error('event handler', name, e); }
+      }
+    }
+    return { on, off, emit };
+  })();
+
+  /* ---------- Migration v2 → v3 (ADR-008 REVISED) -------------------- */
+  async function migrateFromV2() {
+    const v2raw = await storage.getItem(LEGACY_KEY_V2);
+    if (!v2raw) return { migrated: false, fields: [] };
+    let v2;
+    try { v2 = JSON.parse(v2raw); }
+    catch (e) { console.warn('v2 JSON parse failed', e); return { migrated: false, fields: [] }; }
+    if (!isObj(v2)) return { migrated: false, fields: [] };
+
+    const fieldsApplied = [];
+    const next = defaultState();
+
+    // Knowledge mapping: v2 had {B, O, D, S, U} + maybe L/R
+    if (isObj(v2.knowledge)) {
+      const k2 = v2.knowledge;
+      const setMastery = (a, val) => {
+        const v = clamp(Number(val), 0, 1);
+        next.knowledge.perArea[a] = {
+          accuracy: v,
+          attempts: 0,
+          lastSeen: null,
+          mastery: v
+        };
+      };
+      if (typeof k2.B === 'number') setMastery('B', k2.B);
+      if (typeof k2.O === 'number') setMastery('O', k2.O);
+      if (typeof k2.D === 'number') setMastery('D', k2.D);
+      // S → split N, 6, W
+      if (typeof k2.S === 'number') {
+        setMastery('N', k2.S); setMastery('6', k2.S); setMastery('W', k2.S);
+      }
+      // U → split P, V, Z
+      if (typeof k2.U === 'number') {
+        setMastery('P', k2.U); setMastery('V', k2.U); setMastery('Z', k2.U);
+      }
+      if (typeof k2.L === 'number') setMastery('L', k2.L);
+      if (typeof k2.R === 'number') setMastery('R', k2.R);
+      fieldsApplied.push('knowledge');
+    }
+
+    // Cards 1:1 + add successStreak: 0
+    if (isObj(v2.cards)) {
+      const cards = {};
+      for (const qid of Object.keys(v2.cards)) {
+        if (!/^Q-[0-9]{4}$/.test(qid)) {
+          console.info('v2 migrate: drop card with invalid qid', qid);
+          continue;
+        }
+        const c = v2.cards[qid];
+        if (!isObj(c)) continue;
+        const ease = clamp(Number(c.ease ?? 2.5), 1.3, 3.0);
+        const learnStep = (typeof c.learnStep === 'number') ? c.learnStep
+                       : (typeof c.learningStep === 'number') ? c.learningStep
+                       : 0;
+        cards[qid] = {
+          qid: qid,
+          ease: ease,
+          interval: Math.max(0, Number(c.interval ?? 0)),
+          reps: Math.max(0, Number(c.reps ?? 0)|0),
+          lapses: Math.max(0, Number(c.lapses ?? 0)|0),
+          due: typeof c.due === 'string' ? c.due : nowIso(),
+          learnStep: clamp(learnStep|0, 0, 3),
+          successStreak: 0
+        };
+      }
+      next.cards = cards;
+      fieldsApplied.push('cards');
+    }
+
+    // Quiz history: v2 stats.quizzes → v3 sessions
+    let quizzes = [];
+    if (isObj(v2.stats) && Array.isArray(v2.stats.quizzes)) quizzes = v2.stats.quizzes;
+    else if (Array.isArray(v2.quizzes)) quizzes = v2.quizzes;
+    if (quizzes.length) {
+      const sessions = [];
+      for (const q of quizzes.slice(-50)) {
+        if (!isObj(q)) continue;
+        const total = Number(q.total ?? q.questionsTotal ?? 1);
+        const score = (typeof q.score === 'number' && q.score <= 1) ? q.score
+                    : (typeof q.score === 'number' && total > 0) ? clamp(q.score/total, 0, 1)
+                    : 0;
+        sessions.push({
+          sessionId: q.quizId || q.sessionId || uuidv4(),
+          mode: 'exam',
+          questionIds: Array.isArray(q.questionIds) ? q.questionIds.filter(x => /^Q-[0-9]{4}$/.test(x)) : [],
+          answers: [],
+          startedAt: q.startedAt || q.finishedAt || nowIso(),
+          endedAt:   q.endedAt   || q.finishedAt || nowIso(),
+          score: clamp(score, 0, 1),
+          isDiagnostic: false
+        });
+      }
+      // Filter sessions that have at least 1 question id (schema requires minItems:1)
+      next.sessions = sessions.filter(s => s.questionIds.length > 0);
+      if (next.sessions.length) fieldsApplied.push('sessions');
+    }
+
+    // Streak 1:1
+    if (isObj(v2.streak)) {
+      next.streak = {
+        count: Math.max(0, Number(v2.streak.count ?? 0)|0),
+        lastActiveDate: typeof v2.streak.lastActiveDate === 'string' ? v2.streak.lastActiveDate : null,
+        freezesAvailable: clamp(Number(v2.streak.freezesAvailable ?? 0)|0, 0, 2),
+        longestStreak: Math.max(0, Number(v2.streak.longestStreak ?? v2.streak.count ?? 0)|0)
+      };
+      fieldsApplied.push('streak');
+    }
+
+    // Achievements (1:1)
+    if (isObj(v2.achievements) && Array.isArray(v2.achievements.unlocked)) {
+      const ach = [];
+      for (const a of v2.achievements.unlocked.slice(0, 50)) {
+        if (!isObj(a) || !a.id || !a.title) continue;
+        ach.push({
+          id: /^A-/.test(a.id) ? a.id : `A-${String(a.id).toLowerCase().replace(/[^a-z0-9-]/g,'-').slice(0,30)}`,
+          title: String(a.title).slice(0, 60),
+          desc: String(a.desc || a.description || a.title).slice(0, 200),
+          icon: a.icon || 'svg:medal-bronze',
+          criteria: isObj(a.criteria) ? a.criteria : { type: 'quizzes', threshold: 1 },
+          unlockedAt: a.unlockedAt || nowIso()
+        });
+      }
+      next.achievements = ach;
+      if (ach.length) fieldsApplied.push('achievements');
+    }
+
+    // Profile — keep pseudonim only, drop everything else (PII guard)
+    if (isObj(v2.profile)) {
+      next.profile = {
+        pseudonim: typeof v2.profile.pseudonim === 'string' ? v2.profile.pseudonim.slice(0,24) : undefined,
+        goal: ['pass','ace','refresh'].includes(v2.profile.goal) ? v2.profile.goal : 'pass',
+        dailyGoalMin: clamp(Number(v2.profile.dailyGoalMin ?? 20)|0, 5, 120),
+        examDate: typeof v2.profile.examDate === 'string' ? v2.profile.examDate : undefined,
+        onboardedAt: typeof v2.profile.onboardedAt === 'string' ? v2.profile.onboardedAt : nowIso()
+      };
+      // remove undefined keys
+      if (!next.profile.pseudonim) delete next.profile.pseudonim;
+      if (!next.profile.examDate)  delete next.profile.examDate;
+      fieldsApplied.push('profile');
+    }
+
+    // workedExampleProgress / subnettingOk (drop with info)
+    if (v2.workedExampleProgress !== undefined || v2.subnettingOk !== undefined) {
+      console.info('v2 migrate: dropped workedExampleProgress/subnettingOk (no v3 field)');
+    }
+
+    // Settings carry over
+    if (isObj(v2.settings)) {
+      next.settings = {
+        theme: ['auto','light','dark'].includes(v2.settings.theme) ? v2.settings.theme : 'auto',
+        reducedMotion: !!v2.settings.reducedMotion,
+        locale: 'pl-PL',
+        soundEnabled: !!v2.settings.soundEnabled
+      };
+      fieldsApplied.push('settings');
+    }
+
+    next.seq = (_state.seq || 0) + 1;
+    _state = next;
+    rebuildSnapshot();
+    await storage.setItem(STATE_KEY, JSON.stringify(_state));
+    // Backup left intact; do NOT remove LEGACY_KEY_V2.
+    events.emit('state:changed', { prevState: null, nextState: _frozenSnapshot, patch: { _migration: 'v2→v3' }});
+    notify();
+    return { migrated: true, fields: fieldsApplied };
+  }
+
+  /* ---------- Export / Import ---------------------------------------- */
+  function exportState() {
+    const payload = {
+      version: STATE_VERSION,
+      exportedAt: nowIso(),
+      appState: deepClone(_state)
+    };
+    return JSON.stringify(payload, null, 2);
+  }
+
+  async function importState(json) {
+    let parsed;
+    try { parsed = (typeof json === 'string') ? JSON.parse(json) : json; }
+    catch (e) { return { ok: false, errors: [`Niepoprawny JSON: ${e.message}`] }; }
+    if (!isObj(parsed)) return { ok: false, errors: ['Plik musi być obiektem JSON'] };
+
+    let app = parsed.appState;
+    // Allow direct AppState object
+    if (!app && parsed.version && parsed.knowledge) app = parsed;
+    if (!isObj(app)) return { ok: false, errors: ['Brak appState w pliku'] };
+
+    // Version check
+    const ver = String(app.version || parsed.version || '');
+    const major = parseInt(ver.split('.')[0], 10);
+    if (Number.isNaN(major)) return { ok: false, errors: [`Nieprawidłowa wersja: ${ver}`] };
+    if (major === 2) {
+      // backup to legacy slot then run migration
+      try {
+        await storage.setItem(LEGACY_KEY_V2, JSON.stringify(parsed.appState || parsed));
+      } catch(_) {}
+      const r = await migrateFromV2();
+      return r.migrated ? { ok: true, errors: [] } : { ok: false, errors: ['Migracja v2 nieudana'] };
+    }
+    if (major >= 4) return { ok: false, errors: [`Wersja ${ver} jest nowsza niż obsługiwana (3.x)`] };
+
+    // major === 3 → validate
+    const errs = validateAppState(app);
+    if (errs.length) return { ok: false, errors: errs };
+
+    _state = deepMerge(defaultState(), app);
+    _state.version = STATE_VERSION;
+    _state.seq = (typeof _state.seq === 'number' ? _state.seq : 0) + 1;
+    rebuildSnapshot();
+    await storage.setItem(STATE_KEY, JSON.stringify(_state));
+    events.emit('state:changed', { prevState: null, nextState: _frozenSnapshot, patch: { _import: true }});
+    notify();
+    return { ok: true, errors: [] };
+  }
+
+  /* ---------- Routing ------------------------------------------------ */
+  const VIEWS = ['dashboard','diagnostic','quiz','practical','srs','review','achievements','settings'];
+  const VIEW_LABEL = {
+    dashboard:'Dashboard', diagnostic:'Diagnoza', quiz:'Quiz',
+    practical:'Praktyczny', srs:'Powtórki', review:'Przegląd',
+    achievements:'Osiągnięcia', settings:'Ustawienia'
+  };
+  const VIEW_ICON = {
+    dashboard:'◧', diagnostic:'◎', quiz:'?', practical:'⚙',
+    srs:'↻', review:'☑', achievements:'★', settings:'⚙'
+  };
+  const PRIMARY_NAV = ['dashboard','diagnostic','quiz','practical','srs','review','achievements'];
+
+  let _currentView = 'dashboard';
+  let _currentParams = {};
+  const _viewRenderers = {}; // populated by other Builders via INF02.shell.views
+
+  function parseHash() {
+    const h = (location.hash || '#dashboard').replace(/^#/, '');
+    const [view, qs] = h.split('?');
+    const params = {};
+    if (qs) {
+      for (const kv of qs.split('&')) {
+        if (!kv) continue;
+        const [k, v=''] = kv.split('=');
+        params[decodeURIComponent(k)] = decodeURIComponent(v);
+      }
+    }
+    return { view: VIEWS.includes(view) ? view : 'dashboard', params };
+  }
+
+  function navigate(view, params) {
+    if (!VIEWS.includes(view)) view = 'dashboard';
+    let hash = '#' + view;
+    if (params && Object.keys(params).length) {
+      const qs = Object.keys(params).map(k => encodeURIComponent(k)+'='+encodeURIComponent(params[k])).join('&');
+      hash += '?' + qs;
+    }
+    if (location.hash !== hash) location.hash = hash;
+    else handleRoute(); // force re-render same view
+    events.emit('nav:request', { view, params: params || {} });
+  }
+
+  function handleRoute() {
+    const { view, params } = parseHash();
+    _currentView = view;
+    _currentParams = params;
+    renderShell();
+  }
+
+  /* ---------- Streak helper ------------------------------------------ */
+  function bumpStreakIfActiveToday() {
+    const today = todayIso();
+    const s = _state.streak;
+    if (s.lastActiveDate === today) return;
+    let count = s.count;
+    let longest = s.longestStreak;
+    let freezes = s.freezesAvailable;
+    if (s.lastActiveDate) {
+      const diffDays = Math.floor((Date.parse(today) - Date.parse(s.lastActiveDate)) / 86400000);
+      if (diffDays === 1) count = count + 1;
+      else if (diffDays > 1) {
+        if (freezes > 0 && diffDays === 2) { freezes -= 1; count = count + 1; }
+        else count = 1;
+      }
+    } else {
+      count = 1;
+    }
+    if (count > longest) longest = count;
+    setState({ streak: { count, lastActiveDate: today, freezesAvailable: freezes, longestStreak: longest } });
+  }
+
+  /* ---------- Knowledge derivations ---------------------------------- */
+  function computeReadiness(perArea) {
+    const masteries = AREAS.map(a => (perArea[a] && perArea[a].mastery) ?? 0.5);
+    const mean = masteries.reduce((a,b)=>a+b,0) / masteries.length;
+    const min = Math.min.apply(null, masteries);
+    return clamp(0.6*mean + 0.4*min, 0, 1);
+  }
+  function computeWeakStrong(perArea) {
+    const arr = AREAS.map(a => ({ a, m: (perArea[a] && perArea[a].mastery) ?? 0.5 }));
+    arr.sort((x,y) => x.m - y.m);
+    const weakest = arr.slice(0, 3).map(x => x.a);
+    const strongest = arr.slice(-2).map(x => x.a).reverse();
+    return { weakest, strongest };
+  }
+
+  /* ---------- DOM helpers -------------------------------------------- */
+  function el(tag, attrs, children) {
+    const e = document.createElement(tag);
+    if (attrs) for (const k of Object.keys(attrs)) {
+      const v = attrs[k];
+      if (k === 'class') e.className = v;
+      else if (k === 'html') e.innerHTML = v;
+      else if (k.startsWith('on') && typeof v === 'function') e.addEventListener(k.slice(2).toLowerCase(), v);
+      else if (v === true) e.setAttribute(k, '');
+      else if (v === false || v == null) {}
+      else e.setAttribute(k, String(v));
+    }
+    if (children) {
+      for (const c of [].concat(children)) {
+        if (c == null) continue;
+        e.appendChild(typeof c === 'string' ? document.createTextNode(c) : c);
+      }
+    }
+    return e;
+  }
+
+  function showToast(msg, kind) {
+    const t = document.getElementById('toast');
+    if (!t) return;
+    t.textContent = msg;
+    t.className = 'toast show' + (kind ? ' ' + kind : '');
+    clearTimeout(showToast._tid);
+    showToast._tid = setTimeout(() => { t.className = 'toast'; }, 3200);
+  }
+
+  /* ---------- Sidebar / bottom-nav rendering ------------------------- */
+  function renderNav() {
+    const side = document.getElementById('sideNav');
+    if (side) {
+      side.innerHTML = '';
+      for (const v of PRIMARY_NAV.concat(['settings'])) {
+        const b = el('button', {
+          class: 'navbtn' + (v === _currentView ? ' active' : ''),
+          'data-view': v,
+          'aria-current': v === _currentView ? 'page' : null,
+          onClick: () => navigate(v)
+        }, [
+          el('span', { class:'ico', 'aria-hidden':'true' }, VIEW_ICON[v] || '·'),
+          el('span', null, VIEW_LABEL[v])
+        ]);
+        side.appendChild(b);
+      }
+    }
+    const bot = document.getElementById('bottomNav');
+    if (bot) {
+      bot.innerHTML = '';
+      const visible = PRIMARY_NAV.slice(0, 4); // dashboard, diagnostic, quiz, practical
+      for (const v of visible) {
+        const b = el('button', {
+          class: 'navbtn' + (v === _currentView ? ' active' : ''),
+          'data-view': v,
+          'aria-label': VIEW_LABEL[v],
+          'aria-current': v === _currentView ? 'page' : null,
+          onClick: () => navigate(v)
+        }, [
+          el('span', { class:'ico', 'aria-hidden':'true' }, VIEW_ICON[v] || '·'),
+          el('span', null, VIEW_LABEL[v])
+        ]);
+        bot.appendChild(b);
+      }
+      const more = el('button', {
+        class:'navbtn', 'aria-label':'Więcej',
+        onClick: openDrawer
+      }, [
+        el('span', { class:'ico', 'aria-hidden':'true' }, '⋯'),
+        el('span', null, 'Więcej')
+      ]);
+      bot.appendChild(more);
+    }
+  }
+
+  function openDrawer() {
+    const back = document.getElementById('drawerBackdrop');
+    const items = document.getElementById('drawerItems');
+    if (!back || !items) return;
+    items.innerHTML = '';
+    const moreItems = ['srs','review','achievements','settings'];
+    for (const v of moreItems) {
+      const b = el('button', {
+        class:'navbtn', 'data-view': v,
+        onClick: () => { closeDrawer(); navigate(v); }
+      }, [
+        el('span', { class:'ico', 'aria-hidden':'true' }, VIEW_ICON[v] || '·'),
+        el('span', null, VIEW_LABEL[v])
+      ]);
+      items.appendChild(b);
+    }
+    back.classList.add('open');
+    setTimeout(() => { const first = items.querySelector('button'); if (first) first.focus(); }, 50);
+  }
+  function closeDrawer() {
+    const back = document.getElementById('drawerBackdrop');
+    if (back) back.classList.remove('open');
+  }
+
+  /* ---------- Knowledge bars (vanilla SVG) --------------------------- */
+  function renderKnowledgeBars(perArea) {
+    const container = el('div', { class:'knowledge-bars' });
+    for (const a of AREAS) {
+      const m = (perArea[a] && perArea[a].mastery) ?? 0.5;
+      const pct = Math.round(m * 100);
+      const row = el('div', { class:'kb-row' });
+      row.appendChild(el('span', { class:'chip area-'+a, title: AREA_LABEL[a] }, a));
+      const svg = document.createElementNS('http://www.w3.org/2000/svg','svg');
+      svg.setAttribute('viewBox','0 0 100 14');
+      svg.setAttribute('preserveAspectRatio','none');
+      svg.setAttribute('role','img');
+      svg.setAttribute('aria-label', `${AREA_LABEL[a]}: ${pct}%`);
+      const bg = document.createElementNS('http://www.w3.org/2000/svg','rect');
+      bg.setAttribute('x','0'); bg.setAttribute('y','0');
+      bg.setAttribute('width','100'); bg.setAttribute('height','14');
+      bg.setAttribute('rx','3'); bg.setAttribute('fill','#252932');
+      svg.appendChild(bg);
+      const fg = document.createElementNS('http://www.w3.org/2000/svg','rect');
+      fg.setAttribute('x','0'); fg.setAttribute('y','0');
+      fg.setAttribute('width', String(Math.max(0, Math.min(100, pct))));
+      fg.setAttribute('height','14'); fg.setAttribute('rx','3');
+      fg.setAttribute('fill', getComputedStyle(document.documentElement).getPropertyValue('--area-'+a+'-fg').trim() || '#5EA9FF');
+      svg.appendChild(fg);
+      row.appendChild(svg);
+      row.appendChild(el('span', { class:'pct' }, pct + '%'));
+      container.appendChild(row);
+    }
+    return container;
+  }
+
+  /* ---------- Chart.js radar (knowledge per area) -------------------- */
+  let _chartInstance = null;
+  function renderRadar(canvasEl, perArea) {
+    if (typeof window.Chart === 'undefined') return; // CDN not loaded yet
+    if (_chartInstance) { _chartInstance.destroy(); _chartInstance = null; }
+    const labels = AREAS.map(a => `${a} ${AREA_LABEL[a].split(' ')[0]}`);
+    const data = AREAS.map(a => Math.round(((perArea[a] && perArea[a].mastery) ?? 0.5) * 100));
+    _chartInstance = new window.Chart(canvasEl, {
+      type: 'radar',
+      data: {
+        labels,
+        datasets: [{
+          label: 'Mastery (%)',
+          data,
+          backgroundColor: 'rgba(94, 169, 255, 0.20)',
+          borderColor: '#5EA9FF',
+          borderWidth: 2,
+          pointBackgroundColor: '#5EA9FF',
+          pointBorderColor: '#0F1115',
+          pointRadius: 3
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: { legend: { labels: { color: '#F2F4F7' } } },
+        scales: {
+          r: {
+            min: 0, max: 100,
+            ticks: { color: '#A8B0BD', backdropColor: 'transparent', stepSize: 25 },
+            grid: { color: '#2E3340' },
+            angleLines: { color: '#2E3340' },
+            pointLabels: { color: '#F2F4F7', font: { size: 11 } }
+          }
+        },
+        animation: matchMedia('(prefers-reduced-motion: reduce)').matches ? false : { duration: 320 }
+      }
+    });
+  }
+
+  /* ---------- Achievement unlock logic ------------------------------- */
+  function checkAndUnlockAchievements(state) {
+    const defs = [
+      { id: 'A-first-quiz', title: 'Pierwszy Krok', desc: 'Ukończono pierwszy quiz', icon: 'svg:medal-bronze', type: 'quizzes', threshold: 1 },
+      { id: 'A-streak-3', title: 'Trzydniowa Passa', desc: '3-dniowa passa nauki', icon: 'svg:flame', type: 'streak', threshold: 3 },
+      { id: 'A-streak-7', title: 'Tygodniowa Passa', desc: '7-dniowa passa nauki', icon: 'svg:flame-gold', type: 'streak', threshold: 7 },
+      { id: 'A-diag-done', title: 'Samoświadomość', desc: 'Ukończono diagnozę wiedzy', icon: 'svg:chart', type: 'diagnostic', threshold: 1 },
+      { id: 'A-quizzes-10', title: 'Regularny Uczeń', desc: 'Ukończono 10 quizów', icon: 'svg:medal-silver', type: 'quizzes', threshold: 10 },
+      { id: 'A-quizzes-50', title: 'Zaawansowany', desc: 'Ukończono 50 quizów', icon: 'svg:medal-gold', type: 'quizzes', threshold: 50 },
+      { id: 'A-mastery-N', title: 'Mistrz Sieci', desc: 'Opanowano obszar Sieci na 80%', icon: 'svg:network', type: 'mastery', threshold: 0.8, area: 'N' },
+      { id: 'A-mastery-W', title: 'Admin Serwera', desc: 'Opanowano Windows Server na 80%', icon: 'svg:server', type: 'mastery', threshold: 0.8, area: 'W' },
+      { id: 'A-practical-1', title: 'Praktyk', desc: 'Ukończono pierwsze zadanie praktyczne', icon: 'svg:wrench', type: 'practical', threshold: 1 },
+      { id: 'A-exam-ready', title: 'Gotowy na Egzamin', desc: 'Gotowość egzaminacyjna powyżej 75%', icon: 'svg:diploma', type: 'mastery', threshold: 0.75 }
+    ];
+
+    const unlockedIds = new Set((state.achievements || []).map(a => a.id));
+    const newAchievements = [];
+    const sessionCount = (state.sessions || []).length;
+    const streak = state.streak?.count || 0;
+    const knowledge = state.knowledge || {};
+    const practicalCount = (state.sessions || []).filter(s => s.mode === 'practical').length;
+    const diagCount = (state.sessions || []).filter(s => s.isDiagnostic).length;
+
+    for (const def of defs) {
+      if (unlockedIds.has(def.id)) continue;
+      let earned = false;
+      if (def.type === 'quizzes') earned = sessionCount >= def.threshold;
+      else if (def.type === 'streak') earned = streak >= def.threshold;
+      else if (def.type === 'diagnostic') earned = diagCount >= def.threshold;
+      else if (def.type === 'practical') earned = practicalCount >= def.threshold;
+      else if (def.type === 'mastery') {
+        if (def.area) earned = (knowledge.perArea?.[def.area]?.mastery || 0) >= def.threshold;
+        else earned = (knowledge.readinessForExam || 0) >= def.threshold;
+      }
+      if (earned) {
+        newAchievements.push({ id: def.id, title: def.title, desc: def.desc, icon: def.icon,
+          criteria: { type: def.type, threshold: def.threshold, ...(def.area ? {area: def.area} : {}) },
+          unlockedAt: new Date().toISOString() });
+      }
+    }
+    return newAchievements;
+  }
+
+  /* ---------- Daily study minutes helper ----------------------------- */
+  function getTodayStudyMinutes(sessions) {
+    const today = new Date().toISOString().slice(0, 10);
+    return Math.round(sessions
+      .filter(s => s.startedAt?.startsWith(today) && s.endedAt)
+      .reduce((acc, s) => acc + (new Date(s.endedAt) - new Date(s.startedAt)) / 60000, 0));
+  }
+
+  /* ---------- Views: Dashboard --------------------------------------- */
+  function renderDashboard(root) {
+    const s = _state;
+    const perArea = s.knowledge.perArea;
+    const readiness = computeReadiness(perArea);
+    const ws = computeWeakStrong(perArea);
+    const recent = s.sessions.slice(-6).reverse();
+
+    const header = el('div', { class:'card' }, [
+      el('h2', null, s.profile && s.profile.pseudonim ? `Cześć, ${s.profile.pseudonim} 👋` : 'Witaj w INF.02 Hub'),
+      el('p', { class:'muted' }, s.profile
+        ? `Cel: ${s.profile.goal === 'pass' ? 'zdaj egzamin (≥50%)' : s.profile.goal === 'ace' ? 'opanuj na 85%+' : 'powtórka'} · ${s.profile.dailyGoalMin} min/dzień`
+        : 'Wykonaj diagnozę, aby otrzymać spersonalizowany plan.')
+    ]);
+    if (!s.profile) {
+      header.appendChild(el('button', { class:'btn', onClick: () => navigate('diagnostic') }, 'Rozpocznij diagnozę'));
+    }
+    root.appendChild(header);
+
+    // Top stats row
+    const top = el('div', { class:'row' });
+    // Daily goal progress
+    const todayMin = getTodayStudyMinutes(s.sessions || []);
+    const goalMin = s.profile?.dailyGoalMin || 20;
+    const pct = Math.min(100, Math.round(todayMin / goalMin * 100));
+    const streakCard = el('div', { class:'card' }, [
+      el('h3', null, 'Streak'),
+      el('div', { class:'streak-num' }, String(s.streak.count)),
+      el('p', { class:'muted' }, `Najdłuższy: ${s.streak.longestStreak} · Freeze: ${s.streak.freezesAvailable}`)
+    ]);
+    const dailyGoalEl = el('div', { class:'daily-goal', role:'progressbar',
+      'aria-valuenow': String(pct), 'aria-valuemin':'0', 'aria-valuemax':'100',
+      'aria-label': `Dzienny cel: ${todayMin} z ${goalMin} minut` });
+    const dailyLbl = el('div', { class:'daily-goal__label' }, `Dziś: ${todayMin}/${goalMin} min`);
+    const dailyBar = el('div', { class:'daily-goal__bar' });
+    const dailyFill = el('div', { class:'daily-goal__fill' });
+    dailyFill.style.width = pct + '%';
+    dailyBar.appendChild(dailyFill);
+    dailyGoalEl.appendChild(dailyLbl);
+    dailyGoalEl.appendChild(dailyBar);
+    streakCard.appendChild(dailyGoalEl);
+    top.appendChild(streakCard);
+    // Exam countdown
+    const examCountdownEl = (function() {
+      if (!s.profile?.examDate) return null;
+      const today2 = new Date(); today2.setHours(0,0,0,0);
+      const exam = new Date(s.profile.examDate);
+      const days = Math.round((exam - today2) / 86400000);
+      if (days < 0) return null;
+      const cls = days <= 7 ? 'danger' : days <= 14 ? 'warning' : 'info';
+      return el('div', { class: `exam-countdown exam-countdown--${cls}`, role:'status', 'aria-label': `Dni do egzaminu: ${days}` }, [
+        el('span', { class:'exam-countdown__number' }, String(days)),
+        el('span', { class:'exam-countdown__label' }, 'dni do egzaminu')
+      ]);
+    })();
+    const readinessChildren = [
+      el('h3', null, 'Gotowość do egzaminu'),
+      el('div', { class:'bigstat' }, Math.round(readiness*100) + '%'),
+      el('div', { class:'bar' }, [el('span', { style: `width:${Math.round(readiness*100)}%` })]),
+      el('p', { class:'muted' }, readiness >= 0.7 ? 'Świetnie. Trzymaj formę.' : readiness >= 0.5 ? 'Dobrze. Skup się na słabych.' : 'Potrzeba pracy nad podstawami.')
+    ];
+    if (examCountdownEl) readinessChildren.push(examCountdownEl);
+    top.appendChild(el('div', { class:'card' }, readinessChildren));
+    top.appendChild(el('div', { class:'card' }, [
+      el('h3', null, 'Sesje (ogółem)'),
+      el('div', { class:'bigstat' }, String(s.sessions.length)),
+      el('p', { class:'muted' }, `Osiągnięcia: ${s.achievements.length}`)
+    ]));
+    root.appendChild(top);
+
+    // Charts row
+    const chartsCard = el('div', { class:'card' }, [
+      el('h2', null, 'Mapa wiedzy (11 obszarów)'),
+      el('p', { class:'muted' }, 'EWMA mastery (α=0.7) — paski + radar.')
+    ]);
+    const chartsRow = el('div', { class:'row', style:'align-items:stretch' });
+    const barsWrap = el('div', { class:'card', style:'flex:1;min-width:280px' }, [
+      el('h3', null, 'Paski'), renderKnowledgeBars(perArea)
+    ]);
+    const radarWrap = el('div', { class:'card', style:'flex:1;min-width:280px' }, [el('h3', null, 'Radar')]);
+    const canvas = el('canvas', { id:'knowledgeRadar', 'aria-label':'Wykres radarowy wiedzy' });
+    const wrap = el('div', { class:'chart-wrap' }, [canvas]);
+    radarWrap.appendChild(wrap);
+    chartsRow.appendChild(barsWrap);
+    chartsRow.appendChild(radarWrap);
+    chartsCard.appendChild(chartsRow);
+    root.appendChild(chartsCard);
+
+    // Defer radar render to allow Chart.js to load
+    setTimeout(() => {
+      try { renderRadar(canvas, perArea); }
+      catch(e) { console.warn('radar render error', e); }
+    }, 100);
+
+    // TOP 3 weak
+    const weakCard = el('div', { class:'card' }, [el('h2', null, 'TOP 3 słabe obszary')]);
+    if (ws.weakest.length === 0) {
+      weakCard.appendChild(el('p', { class:'muted' }, 'Brak danych. Wykonaj diagnozę.'));
+    } else {
+      for (const a of ws.weakest) {
+        const m = (perArea[a] && perArea[a].mastery) ?? 0.5;
+        const row = el('div', { class:'area-row' }, [
+          el('span', { class:'chip area-'+a }, a),
+          el('span', { class:'name' }, AREA_LABEL[a]),
+          el('span', { class:'pct' }, Math.round(m*100)+'%'),
+          el('button', { class:'btn ghost', onClick: () => navigate('quiz', { mode:'topic', area:a }) }, 'Ćwicz')
+        ]);
+        weakCard.appendChild(row);
+      }
+    }
+    root.appendChild(weakCard);
+
+    // Recent sessions
+    const sessCard = el('div', { class:'card' }, [el('h2', null, 'Ostatnie sesje')]);
+    if (recent.length === 0) {
+      sessCard.appendChild(el('p', { class:'muted' }, 'Brak sesji. Rozpocznij quiz.'));
+    } else {
+      const ul = el('ul', { class:'sessions-list' });
+      for (const q of recent) {
+        const score = typeof q.score === 'number' ? Math.round(q.score*100) : null;
+        const passed = score != null && score >= 50;
+        ul.appendChild(el('li', null, [
+          el('span', { class:'when' }, formatRelative(q.endedAt || q.startedAt)),
+          el('span', { class:'mode' }, `${q.mode}${q.topicArea ? ' · '+q.topicArea : ''}`),
+          el('span', { class:'score ' + (score == null ? '' : passed ? 'pass' : 'fail') }, score == null ? '—' : score+'%')
+        ]));
+      }
+      sessCard.appendChild(ul);
+    }
+    root.appendChild(sessCard);
+
+    // 6-week plan (simple visualization)
+    const planCard = el('div', { class:'card' }, [
+      el('h2', null, 'Plan 6 tygodni'),
+      el('p', { class:'muted' }, 'Faza nauki, oparta na słabych obszarach.')
+    ]);
+    const week = el('div', { class:'weekplan' });
+    const phases = [
+      { t:'T1', d:'Diagnoza + B/O' },
+      { t:'T2', d:'Sieci + IPv6' },
+      { t:'T3', d:'WinServer + V' },
+      { t:'T4', d:'Diagnostyka + P' },
+      { t:'T5', d:'Praktyka CKE' },
+      { t:'T6', d:'Powtórki + egzamin' }
+    ];
+    const today = new Date();
+    const onboarded = s.profile && s.profile.onboardedAt ? new Date(s.profile.onboardedAt) : today;
+    const weeksSince = Math.max(0, Math.floor((today - onboarded) / (7*86400000)));
+    for (let i=0;i<phases.length;i++) {
+      const w = el('div', { class:'w' + (i === Math.min(weeksSince,5) ? ' now' : '') }, [
+        el('b', null, phases[i].t),
+        el('div', null, phases[i].d)
+      ]);
+      week.appendChild(w);
+    }
+    planCard.appendChild(week);
+    root.appendChild(planCard);
+
+    root.appendChild(el('p', { class:'disclaimer' }, 'Pytania w stylu CKE własnego autorstwa. Nie są kopią arkuszy egzaminacyjnych.'));
+  }
+
+  /* ---------- Views: Settings (export/import) ------------------------ */
+  function renderSettings(root) {
+    const s = _state;
+    const card = el('div', { class:'card' }, [el('h2', null, 'Ustawienia')]);
+
+    // Profile section
+    const profCard = el('div', { class:'card' }, [el('h3', null, 'Profil')]);
+    if (s.profile) {
+      profCard.appendChild(el('p', null, `Pseudonim: ${escapeHtml(s.profile.pseudonim || '—')}`));
+      profCard.appendChild(el('p', null, `Cel: ${s.profile.goal} · ${s.profile.dailyGoalMin} min/dzień`));
+      if (s.profile.examDate) profCard.appendChild(el('p', null, `Egzamin: ${formatDate(s.profile.examDate + 'T00:00:00Z')}`));
+    } else {
+      profCard.appendChild(el('p', { class:'muted' }, 'Brak profilu. Wykonaj diagnozę.'));
+    }
+
+    // Preferences (theme, reduced motion)
+    const prefCard = el('div', { class:'card' }, [el('h3', null, 'Preferencje')]);
+
+    // Reduced motion toggle
+    const rmRow = el('div', { class:'setting-row' }, [
+      el('div', { class:'label' }, [
+        el('div', null, 'Ograniczone animacje'),
+        el('div', { class:'desc' }, 'Wyłącza przejścia i animacje.')
+      ])
+    ]);
+    const rmLbl = el('label', { class:'toggle' });
+    const rmInp = el('input', { type:'checkbox' });
+    rmInp.checked = !!s.settings.reducedMotion;
+    rmInp.addEventListener('change', () => {
+      setState({ settings: { reducedMotion: rmInp.checked } });
+    });
+    rmLbl.appendChild(rmInp);
+    rmLbl.appendChild(el('span', { class:'slider' }));
+    rmRow.appendChild(rmLbl);
+    prefCard.appendChild(rmRow);
+
+    // Sound toggle
+    const sndRow = el('div', { class:'setting-row' }, [
+      el('div', { class:'label' }, [
+        el('div', null, 'Dźwięki'),
+        el('div', { class:'desc' }, 'Krótkie potwierdzenia.')
+      ])
+    ]);
+    const sndLbl = el('label', { class:'toggle' });
+    const sndInp = el('input', { type:'checkbox' });
+    sndInp.checked = !!s.settings.soundEnabled;
+    sndInp.addEventListener('change', () => {
+      setState({ settings: { soundEnabled: sndInp.checked } });
+    });
+    sndLbl.appendChild(sndInp);
+    sndLbl.appendChild(el('span', { class:'slider' }));
+    sndRow.appendChild(sndLbl);
+    prefCard.appendChild(sndRow);
+
+    // Theme
+    const thRow = el('div', { class:'setting-row' }, [
+      el('div', { class:'label' }, [
+        el('div', null, 'Motyw'),
+        el('div', { class:'desc' }, 'auto / jasny / ciemny')
+      ])
+    ]);
+    const thSel = el('select');
+    for (const t of ['auto','light','dark']) {
+      const o = el('option', { value:t }, t);
+      if (t === s.settings.theme) o.setAttribute('selected','');
+      thSel.appendChild(o);
+    }
+    thSel.style.maxWidth = '160px';
+    thSel.addEventListener('change', () => {
+      setState({ settings: { theme: thSel.value } });
+    });
+    thRow.appendChild(thSel);
+    prefCard.appendChild(thRow);
+
+    // Export/Import
+    const ioCard = el('div', { class:'card' }, [el('h3', null, 'Postęp — eksport / import')]);
+    const expBtn = el('button', { class:'btn', id:'btnExport' }, 'Eksportuj postępy');
+    expBtn.addEventListener('click', () => {
+      try {
+        const json = exportState();
+        const blob = new Blob([json], { type:'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.getElementById('exportLink');
+        a.href = url;
+        a.download = `inf02-progress-${todayIso()}.json`;
+        a.removeAttribute('hidden');
+        a.click();
+        a.setAttribute('hidden','');
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+        showToast('Wyeksportowano postępy', 'success');
+      } catch (e) {
+        showToast('Błąd eksportu: ' + e.message, 'danger');
+      }
+    });
+    const impBtn = el('button', { class:'btn ghost', id:'btnImport' }, 'Importuj postępy…');
+    impBtn.addEventListener('click', () => {
+      const f = document.getElementById('importFile');
+      f.value = '';
+      f.click();
+    });
+    const impDesc = el('p', { class:'muted', style:'margin-top:var(--sp-sm);font-size:var(--fs-xs)' },
+      'Wczytaj plik JSON wcześniej wyeksportowany. Aktualne dane zostaną zastąpione.');
+    ioCard.appendChild(expBtn);
+    ioCard.appendChild(document.createTextNode(' '));
+    ioCard.appendChild(impBtn);
+    ioCard.appendChild(impDesc);
+
+    // Migration trigger (manual)
+    const migCard = el('div', { class:'card' }, [el('h3', null, 'Migracja z v2')]);
+    migCard.appendChild(el('p', { class:'muted' }, 'Jeśli istnieje stary postęp z v2 (klucz inf02_progress_v2), możesz go zaimportować.'));
+    const migBtn = el('button', { class:'btn ghost' }, 'Sprawdź i migruj');
+    migBtn.addEventListener('click', async () => {
+      const r = await migrateFromV2();
+      if (r.migrated) showToast(`Zmigrowano: ${r.fields.join(', ')}`, 'success');
+      else showToast('Brak danych v2 do migracji', 'danger');
+    });
+    migCard.appendChild(migBtn);
+
+    // Reset
+    const dangerCard = el('div', { class:'card' }, [el('h3', null, 'Reset')]);
+    const resetBtn = el('button', { class:'btn danger' }, 'Wyczyść wszystkie dane');
+    resetBtn.addEventListener('click', async () => {
+      if (!confirm('Na pewno usunąć cały postęp v3? (kopia v2 pozostanie)')) return;
+      _state = defaultState();
+      _state.seq = 0;
+      rebuildSnapshot();
+      await storage.setItem(STATE_KEY, JSON.stringify(_state));
+      events.emit('state:changed', { prevState: null, nextState: _frozenSnapshot, patch: { _reset: true }});
+      notify();
+      showToast('Stan zresetowany', 'success');
+      navigate('dashboard');
+    });
+    dangerCard.appendChild(resetBtn);
+
+    // Storage info
+    const infoCard = el('div', { class:'card' }, [
+      el('h3', null, 'Informacje techniczne'),
+      el('p', null, [el('span', { class:'muted' }, 'Storage backend: '), el('span', { class:'mono' }, _storageKind)]),
+      el('p', null, [el('span', { class:'muted' }, 'State seq: '), el('span', { class:'mono' }, String(s.seq))]),
+      el('p', null, [el('span', { class:'muted' }, 'Wersja: '), el('span', { class:'mono' }, s.version)])
+    ]);
+
+    root.appendChild(card);
+    root.appendChild(profCard);
+    root.appendChild(prefCard);
+    root.appendChild(ioCard);
+    root.appendChild(migCard);
+    root.appendChild(dangerCard);
+    root.appendChild(infoCard);
+  }
+
+  /* ---------- View: Achievements ------------------------------------- */
+  function renderAchievements(root) {
+    const s = _state;
+    root.appendChild(el('div', { class:'card' }, [el('h2', null, 'Osiągnięcia')]));
+    if (s.achievements.length === 0) {
+      root.appendChild(el('div', { class:'card empty' }, 'Brak odblokowanych osiągnięć. Ucz się i zdobywaj!'));
+      return;
+    }
+    const grid = el('div', { class:'row' });
+    for (const a of s.achievements) {
+      grid.appendChild(el('div', { class:'card', style:'min-width:240px' }, [
+        el('h3', null, a.title),
+        el('p', { class:'muted' }, a.desc),
+        el('p', { class:'mono', style:'font-size:var(--fs-xs)' }, `Odblokowano: ${a.unlockedAt ? formatRelative(a.unlockedAt) : '—'}`)
+      ]));
+    }
+    root.appendChild(grid);
+  }
+
+  /* ---------- View: Review (recent sessions full) -------------------- */
+  function renderReview(root) {
+    const s = _state;
+    root.appendChild(el('div', { class:'card' }, [
+      el('h2', null, 'Przegląd sesji'),
+      el('p', { class:'muted' }, `Ostatnie ${Math.min(50, s.sessions.length)} sesji.`)
+    ]));
+    if (s.sessions.length === 0) {
+      root.appendChild(el('div', { class:'card empty' }, 'Brak sesji.'));
+      return;
+    }
+    const ul = el('ul', { class:'sessions-list' });
+    for (const q of s.sessions.slice().reverse()) {
+      const score = typeof q.score === 'number' ? Math.round(q.score*100) : null;
+      const passed = score != null && score >= 50;
+      ul.appendChild(el('li', null, [
+        el('span', { class:'when' }, formatRelative(q.endedAt || q.startedAt)),
+        el('span', { class:'mode' }, `${q.mode}${q.topicArea ? ' · '+q.topicArea : ''} · ${q.questionIds.length} pyt.`),
+        el('span', { class:'score ' + (score == null ? '' : passed ? 'pass' : 'fail') }, score == null ? '—' : score+'%')
+      ]));
+    }
+    root.appendChild(el('div', { class:'card' }, [ul]));
+  }
+
+  /* ---------- Render shell ------------------------------------------- */
+  function renderShell() {
+    renderNav();
+    const main = document.getElementById('mainView');
+    if (!main) return;
+    main.innerHTML = '';
+    main.setAttribute('data-view', _currentView);
+
+    // Other-Builder views
+    const renderer = _viewRenderers[_currentView];
+    if (typeof renderer === 'function' && _currentView !== 'dashboard' && _currentView !== 'settings'
+        && _currentView !== 'review' && _currentView !== 'achievements') {
+      try {
+        renderer(main, { params: _currentParams, state: _frozenSnapshot, events, navigate });
+        return;
+      } catch (e) {
+        console.error('view renderer error', _currentView, e);
+        main.appendChild(el('div', { class:'card empty' }, 'Błąd renderowania widoku.'));
+        return;
+      }
+    }
+
+    // Default views (Shell-owned)
+    if (_currentView === 'dashboard') return renderDashboard(main);
+    if (_currentView === 'settings')  return renderSettings(main);
+    if (_currentView === 'achievements') return renderAchievements(main);
+    if (_currentView === 'review')    return renderReview(main);
+
+    // Other views — placeholder if Builder not yet loaded
+    main.appendChild(el('div', { class:'card' }, [
+      el('h2', null, VIEW_LABEL[_currentView] || _currentView),
+      el('p', { class:'muted' }, 'Ten widok zostanie dostarczony przez moduł Buildera. Wczytaj odpowiedni artefakt (quiz.html / diagnostic.html / practical.html / srs.html) lub wróć do Dashboard.'),
+      el('button', { class:'btn ghost', onClick: () => navigate('dashboard') }, '← Dashboard')
+    ]));
+  }
+
+  /* ---------- Bootstrap ---------------------------------------------- */
+  async function bootstrap() {
+    // 1. Try hydrate
+    let raw = null;
+    try { raw = await storage.getItem(STATE_KEY); }
+    catch(e) { console.warn('storage.getItem failed', e); }
+
+    if (raw) {
+      try {
+        const parsed = JSON.parse(raw);
+        const errs = validateAppState(parsed);
+        if (errs.length === 0) {
+          _state = deepMerge(defaultState(), parsed);
+          _state.version = STATE_VERSION;
+        } else {
+          console.warn('Stored state invalid, resetting:', errs);
+          _state = defaultState();
+        }
+      } catch (e) {
+        console.warn('Stored state parse failed, resetting', e);
+        _state = defaultState();
+      }
+      rebuildSnapshot();
+    } else {
+      // 2. Try v2 migration
+      const v2 = await storage.getItem(LEGACY_KEY_V2);
+      if (v2) {
+        try {
+          const r = await migrateFromV2();
+          if (!r.migrated) {
+            _state = defaultState();
+            rebuildSnapshot();
+            await storage.setItem(STATE_KEY, JSON.stringify(_state));
+          } else {
+            showToast('Zmigrowano dane z v2', 'success');
+          }
+        } catch (e) {
+          console.warn('v2 migration failed', e);
+          _state = defaultState();
+          rebuildSnapshot();
+          await storage.setItem(STATE_KEY, JSON.stringify(_state));
+        }
+      } else {
+        _state = defaultState();
+        rebuildSnapshot();
+        await storage.setItem(STATE_KEY, JSON.stringify(_state));
+      }
+    }
+
+    // Recompute knowledge derivations on bootstrap
+    const ws = computeWeakStrong(_state.knowledge.perArea);
+    const r = computeReadiness(_state.knowledge.perArea);
+    _state.knowledge.weakest = ws.weakest.slice(0,2);
+    _state.knowledge.strongest = ws.strongest;
+    _state.knowledge.readinessForExam = r;
+    rebuildSnapshot();
+
+    // Ensure "today" streak isn't decayed mistakenly — leave streak as-is on boot
+
+    // 3. Apply reduced-motion preference at OS-level (mirror to settings)
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches && !_state.settings.reducedMotion) {
+      _state.settings.reducedMotion = true;
+      rebuildSnapshot();
+    }
+
+    // 3b. Warn user if running in memory-only mode (private browsing / blocked storage)
+    if (storage.kind === 'memory') {
+      setTimeout(() => {
+        const banner = document.createElement('div');
+        banner.setAttribute('role', 'alert');
+        banner.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:9999;background:#fef3c7;color:#92400e;padding:.75rem 1rem;text-align:center;font-size:.875rem;';
+        banner.innerHTML = '⚠️ Tryb prywatny — Twoje postępy <strong>nie będą zapisane</strong> po zamknięciu karty. <button onclick="this.parentElement.remove()" style="margin-left:1rem;padding:.25rem .5rem;border:1px solid #92400e;border-radius:.25rem;background:transparent;cursor:pointer;">Rozumiem</button>';
+        document.body.prepend(banner);
+      }, 1000);
+    }
+
+    // 4. Setup routing
+    window.addEventListener('hashchange', handleRoute);
+    handleRoute();
+
+    // 5. PWA registration
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js').then(reg => {
+        console.info('SW registered', reg.scope);
+      }).catch(err => {
+        console.info('SW registration deferred / unavailable', err && err.message);
+      });
+    }
+
+    // 6. Listen for nav:request from sub-modules
+    events.on('nav:request', (p) => {
+      if (p && p.view && p.view !== _currentView) navigate(p.view, p.params);
+    });
+
+    // 7. Streak bump on quiz/practical end + achievement unlock
+    events.on('quiz:ended', () => {
+      bumpStreakIfActiveToday();
+      const newAch = checkAndUnlockAchievements(_state);
+      if (newAch.length > 0) {
+        setState({ achievements: [...(_state.achievements || []), ...newAch] });
+        newAch.forEach(a => showToast('🏆 Osiągnięcie odblokowane: ' + a.title));
+      }
+    });
+    events.on('practical:ended', () => {
+      bumpStreakIfActiveToday();
+      const newAch = checkAndUnlockAchievements(_state);
+      if (newAch.length > 0) {
+        setState({ achievements: [...(_state.achievements || []), ...newAch] });
+        newAch.forEach(a => showToast('🏆 Osiągnięcie odblokowane: ' + a.title));
+      }
+    });
+    events.on('srs:rated', () => bumpStreakIfActiveToday());
+    events.on('diag:completed', (payload) => {
+      if (payload && payload.knowledge) {
+        setState({ knowledge: payload.knowledge });
+      }
+      bumpStreakIfActiveToday();
+      const newAch = checkAndUnlockAchievements(_state);
+      if (newAch.length > 0) {
+        setState({ achievements: [...(_state.achievements || []), ...newAch] });
+        newAch.forEach(a => showToast('🏆 Osiągnięcie odblokowane: ' + a.title));
+      }
+    });
+
+    // 8. Wire import file input
+    const fileInput = document.getElementById('importFile');
+    if (fileInput) {
+      fileInput.addEventListener('change', async (ev) => {
+        const f = ev.target.files && ev.target.files[0];
+        if (!f) return;
+        try {
+          const text = await f.text();
+          const r = await importState(text);
+          if (r.ok) { showToast('Zaimportowano postępy', 'success'); navigate('dashboard'); }
+          else showToast('Błąd importu: ' + (r.errors[0] || 'nieznany'), 'danger');
+        } catch (e) {
+          showToast('Błąd odczytu pliku: ' + e.message, 'danger');
+        }
+      });
+    }
+
+    // 9. Drawer wiring
+    const back = document.getElementById('drawerBackdrop');
+    if (back) {
+      back.addEventListener('click', (e) => { if (e.target === back) closeDrawer(); });
+      const closeBtn = document.getElementById('drawerClose');
+      if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
+    }
+
+    // 10. Esc closes drawer
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeDrawer();
+    });
+
+    return _frozenSnapshot;
+  }
+
+  /* ---------- Public API --------------------------------------------- */
+  const shellApi = {
+    getState,
+    setState,
+    subscribe,
+    navigate,
+    events,
+    exportState,
+    importState,
+    migrateFromV2,
+    storage,
+    views: _viewRenderers,
+    init: bootstrap,
+    // Debug accessors (tests)
+    _storageKind: undefined,  // populated post-init via getter
+    _state: undefined
+  };
+  Object.defineProperty(shellApi, '_storageKind', { get: () => _storageKind, enumerable: true });
+  Object.defineProperty(shellApi, '_state',       { get: () => _state, enumerable: false });
+
+  window.INF02 = window.INF02 || {};
+  window.INF02.shell = shellApi;
+
+  // Auto-init
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => bootstrap().catch(console.error));
+  } else {
+    bootstrap().catch(console.error);
+  }
+})();
+</script>
+
+<!-- Chart.js v4.5.0 (CDN whitelisted, SRI per design-tokens.cdn.allowed[0]) -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.js"
+        integrity="sha384-iU8HYtnGQ8Cy4zl7gbNMOhsDTTKX02BTXptVP/vqAWIaTfM7isw76iyZCsjL2eVi"
+        crossorigin="anonymous"
+        defer></script>
+
+</body>
+</html>

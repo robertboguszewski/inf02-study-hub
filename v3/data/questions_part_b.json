@@ -1,0 +1,3138 @@
+[
+  {
+    "id": "Q-0119",
+    "area": "D",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "Jakie narzędzie w systemie Windows służy do przeglądania szczegółowych logów systemowych według daty i priorytetu?",
+    "options": [
+      "Task Manager",
+      "Podgląd Zdarzeń (eventvwr.msc)",
+      "Defragmentator dysków",
+      "Menedżer urządzeń"
+    ],
+    "correct": 1,
+    "explanation": "Podgląd Zdarzeń (eventvwr.msc) umożliwia przeglądanie logów Application, System i Security z informacjami o błędach i ostrzeżeniach według daty i poziomu priorytetu.",
+    "ckeRef": "INF.02.4.2",
+    "tags": [
+      "diagnostyka",
+      "event-viewer",
+      "windows"
+    ]
+  },
+  {
+    "id": "Q-0120",
+    "area": "D",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Komputer wydaje podczas POST ciągły sygnał dźwiękowy bez przerwy. Co to wskazuje według kodów AMI BIOS?",
+    "options": [
+      "Brak dysku twardego",
+      "Problem z pamięcią RAM",
+      "Błąd karty graficznej",
+      "Awaria zasilacza"
+    ],
+    "correct": 1,
+    "explanation": "Ciągły sygnał dźwiękowy podczas POST w AMI BIOS oznacza problem z pamięcią RAM — brak modułów lub moduły są uszkodzone lub nieprawidłowo osadzone.",
+    "ckeRef": "INF.02.4.1",
+    "tags": [
+      "post",
+      "beep-codes",
+      "ram",
+      "diagnostyka"
+    ]
+  },
+  {
+    "id": "Q-0121",
+    "area": "D",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Dysk w CrystalDiskInfo ma wartość atrybutu C5 (Current Pending Sector Count) wynoszącą 47. Co należy zrobić?",
+    "options": [
+      "Nic — wartość jest normalna",
+      "Uruchomić defragmentację dysku",
+      "Natychmiast wykonać kopię zapasową i planować wymianę dysku",
+      "Sformatować dysk i sprawdzić ponownie"
+    ],
+    "correct": 2,
+    "explanation": "Atrybut C5 (Current Pending Sector Count) oznacza sektory oczekujące na realokację — dysk próbuje je odczytać, ale nie może. Wartość 47 to poważny sygnał awarii. Należy natychmiast wykonać backup i wymienić dysk.",
+    "ckeRef": "INF.02.4.3",
+    "tags": [
+      "crystaldiskinfo",
+      "smart",
+      "hdd",
+      "diagnostyka"
+    ]
+  },
+  {
+    "id": "Q-0122",
+    "area": "D",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "Do czego służy narzędzie CPU-Z?",
+    "options": [
+      "Testowania stabilności procesora pod obciążeniem",
+      "Wyświetlania szczegółowych informacji o CPU, RAM i płycie głównej",
+      "Monitorowania temperatury GPU",
+      "Analizy logów systemowych"
+    ],
+    "correct": 1,
+    "explanation": "CPU-Z to narzędzie diagnostyczne wyświetlające szczegółowe informacje o procesorze (model, taktowanie, cache), pamięci RAM (typ, częstotliwość, timingі) oraz płycie głównej.",
+    "ckeRef": "INF.02.4.1",
+    "tags": [
+      "cpu-z",
+      "diagnostyka",
+      "hardware"
+    ]
+  },
+  {
+    "id": "Q-0123",
+    "area": "D",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "W AMI BIOS słyszysz sekwencję: 1 długi + 3 krótkie sygnały POST. Co to oznacza?",
+    "options": [
+      "Test zakończony sukcesem",
+      "Błąd karty graficznej / pamięci wideo",
+      "Brak klawiatury",
+      "Awaria dysku twardego"
+    ],
+    "correct": 1,
+    "explanation": "Sekwencja 1 długi + 3 krótkie sygnały w AMI BIOS wskazuje na błąd karty graficznej lub pamięci wideo (VRAM). Komputer nie może zainicjować wyświetlania.",
+    "ckeRef": "INF.02.4.1",
+    "tags": [
+      "post",
+      "beep-codes",
+      "gpu",
+      "bios"
+    ]
+  },
+  {
+    "id": "Q-0124",
+    "area": "D",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Jakie narzędzie systemu Linux wyświetla bufor komunikatów jądra systemu, w tym informacje o wykrytym sprzęcie podczas rozruchu?",
+    "options": [
+      "journalctl",
+      "dmesg",
+      "syslog",
+      "lsblk"
+    ],
+    "correct": 1,
+    "explanation": "Polecenie dmesg wyświetla bufor komunikatów jądra (kernel ring buffer), zawierający informacje o inicjalizacji sprzętu, błędach sterowników i zdarzeniach systemowych od momentu uruchomienia.",
+    "ckeRef": "INF.02.4.2",
+    "tags": [
+      "linux",
+      "dmesg",
+      "diagnostyka",
+      "kernel"
+    ]
+  },
+  {
+    "id": "Q-0125",
+    "area": "D",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "Do testowania stabilności pamięci RAM służy narzędzie:",
+    "options": [
+      "Prime95",
+      "MemTest86",
+      "CrystalDiskInfo",
+      "HWiNFO64"
+    ],
+    "correct": 1,
+    "explanation": "MemTest86 to specjalizowane narzędzie do testowania pamięci RAM. Uruchamia się przed systemem operacyjnym i przeprowadza wielokrotne testy odczytu/zapisu w celu wykrycia błędów.",
+    "ckeRef": "INF.02.4.1",
+    "tags": [
+      "memtest86",
+      "ram",
+      "diagnostyka"
+    ]
+  },
+  {
+    "id": "Q-0126",
+    "area": "D",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Temperatura procesora pod pełnym obciążeniem wynosi 96°C. Jakie jest właściwe działanie?",
+    "options": [
+      "Jest to normalna temperatura — brak potrzeby działania",
+      "Wymienić procesor na nowszy model",
+      "Wymienić pastę termoprzewodzącą i wyczyścić układ chłodzenia",
+      "Podkręcić procesor (overclocking) w BIOS"
+    ],
+    "correct": 2,
+    "explanation": "Temperatura CPU powyżej 90°C pod obciążeniem wskazuje na problem z odprowadzaniem ciepła. Należy wymienić pastę termoprzewodzącą (użyć ilości wielkości ziarna grochu) i wyczyścić chłodnicę ze sprężonym powietrzem.",
+    "ckeRef": "INF.02.4.3",
+    "tags": [
+      "temperatura",
+      "pasta termoprzewodząca",
+      "cpu",
+      "diagnostyka"
+    ]
+  },
+  {
+    "id": "Q-0127",
+    "area": "D",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Polecenie `smartctl -a /dev/sda` wyświetla atrybut C7 (Ultra DMA CRC Error Count) z wartością 134. Co to oznacza?",
+    "options": [
+      "Dysk działa prawidłowo — ta wartość jest normalna",
+      "Błędy transmisji danych przez interfejs SATA — problem z kablem lub złączem",
+      "Dysk ma uszkodzone sektory i wymaga wymiany",
+      "Błędy zapisu w buforze dysku"
+    ],
+    "correct": 1,
+    "explanation": "Atrybut C7 (Ultra DMA CRC Error Count) zlicza błędy transmisji przez interfejs. Wysoka wartość sugeruje problem z kablem SATA, złączem lub kontrolerem — należy wymienić kabel SATA i sprawdzić połączenia.",
+    "ckeRef": "INF.02.4.3",
+    "tags": [
+      "smartctl",
+      "smart",
+      "sata",
+      "diagnostyka",
+      "linux"
+    ]
+  },
+  {
+    "id": "Q-0128",
+    "area": "D",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "Jakie polecenie Windows służy do śledzenia trasy pakietów sieciowych do celu?",
+    "options": [
+      "ping",
+      "netstat",
+      "tracert",
+      "nslookup"
+    ],
+    "correct": 2,
+    "explanation": "Polecenie tracert (trace route) śledzi trasę pakietów ICMP do docelowego hosta, wyświetlając każdy router (hop) na drodze wraz z czasem odpowiedzi. W Linux odpowiednikiem jest traceroute.",
+    "ckeRef": "INF.02.4.2",
+    "tags": [
+      "tracert",
+      "siec",
+      "diagnostyka",
+      "windows"
+    ]
+  },
+  {
+    "id": "Q-0129",
+    "area": "D",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Narzędzie Reliability Monitor (Monitor niezawodności) w Windows uruchamia się poleceniem:",
+    "options": [
+      "perfmon",
+      "perfmon /rel",
+      "resmon",
+      "msinfo32"
+    ],
+    "correct": 1,
+    "explanation": "Monitor niezawodności uruchamia się poleceniem perfmon /rel. Wyświetla historyczny wykres stabilności systemu oraz listę zdarzeń (awarie aplikacji, błędy systemu, aktualizacje) w przejrzystej osi czasu.",
+    "ckeRef": "INF.02.4.2",
+    "tags": [
+      "reliability-monitor",
+      "windows",
+      "diagnostyka"
+    ]
+  },
+  {
+    "id": "Q-0130",
+    "area": "D",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Podczas pracy z podzespołami elektronicznymi należy używać opaski antyelektrostatycznej. Dlaczego?",
+    "options": [
+      "Dla wygody przy montażu",
+      "Aby odprowadzić ładunek elektrostatyczny i chronić podzespoły przed ESD",
+      "Aby zabezpieczyć się przed porażeniem prądem 230V",
+      "Aby mierzyć napięcie na płycie głównej"
+    ],
+    "correct": 1,
+    "explanation": "Wyładowanie elektrostatyczne (ESD) może zniszczyć wrażliwe podzespoły elektroniczne nawet przy napięciach niezauważalnych dla człowieka (8 kV). Opaska antyelektrostatyczna odprowadza ładunek do masy.",
+    "ckeRef": "INF.02.4.3",
+    "tags": [
+      "esd",
+      "bezpieczenstwo",
+      "diagnostyka",
+      "hardware"
+    ]
+  },
+  {
+    "id": "Q-0131",
+    "area": "D",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Jakie polecenie Linux wyświetla aktywne połączenia sieciowe wraz z numerami portów i stanami?",
+    "options": [
+      "ifconfig -a",
+      "netstat -an",
+      "ip addr show",
+      "lsblk"
+    ],
+    "correct": 1,
+    "explanation": "Polecenie netstat -an wyświetla wszystkie aktywne połączenia sieciowe (-a) z numerycznymi adresami i portami (-n) zamiast nazw. Pokazuje stany połączeń TCP (ESTABLISHED, LISTEN, TIME_WAIT itp.).",
+    "ckeRef": "INF.02.4.2",
+    "tags": [
+      "netstat",
+      "siec",
+      "linux",
+      "diagnostyka"
+    ]
+  },
+  {
+    "id": "Q-0132",
+    "area": "D",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "Jakie narzędzie Windows służy do monitorowania użycia zasobów (CPU, RAM, dysk, sieć) w czasie rzeczywistym?",
+    "options": [
+      "eventvwr.msc",
+      "resmon (Resource Monitor)",
+      "msconfig",
+      "regedit"
+    ],
+    "correct": 1,
+    "explanation": "Resource Monitor (resmon) wyświetla szczegółowe informacje o zużyciu CPU, pamięci RAM, dysku i sieci w czasie rzeczywistym, z podziałem na procesy. Można go uruchomić z Menedżera zadań lub poleceniem resmon.",
+    "ckeRef": "INF.02.4.2",
+    "tags": [
+      "resource-monitor",
+      "windows",
+      "diagnostyka"
+    ]
+  },
+  {
+    "id": "Q-0133",
+    "area": "D",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Bezpieczna maksymalna temperatura dysku twardego HDD podczas pracy wynosi:",
+    "options": [
+      "Poniżej 30°C",
+      "Poniżej 50°C",
+      "Poniżej 70°C",
+      "Poniżej 90°C"
+    ],
+    "correct": 1,
+    "explanation": "Dyski twarde HDD powinny pracować w temperaturze poniżej 50°C. Wyższe temperatury przyśpieszają degradację elementów mechanicznych i magnetycznych, skracając żywotność dysku.",
+    "ckeRef": "INF.02.4.3",
+    "tags": [
+      "temperatura",
+      "hdd",
+      "diagnostyka"
+    ]
+  },
+  {
+    "id": "Q-0134",
+    "area": "D",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Podczas POST komputer nie wydaje żadnych sygnałów dźwiękowych i nie wyświetla niczego na ekranie. Co jest najbardziej prawdopodobną przyczyną?",
+    "options": [
+      "Uszkodzona karta graficzna",
+      "Uszkodzona pamięć RAM",
+      "Martwy zasilacz lub uszkodzona płyta główna",
+      "Brak dysku twardego"
+    ],
+    "correct": 2,
+    "explanation": "Brak jakiegokolwiek sygnału dźwiękowego i brak aktywności POST wskazuje na brak zasilania lub brak możliwości uruchomienia BIOS. Najczęstsze przyczyny to martwy zasilacz (PSU) lub uszkodzona płyta główna.",
+    "ckeRef": "INF.02.4.1",
+    "tags": [
+      "post",
+      "psu",
+      "plyta-glowna",
+      "diagnostyka"
+    ]
+  },
+  {
+    "id": "Q-0135",
+    "area": "D",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Do testowania stabilności procesora pod długotrwałym obciążeniem (stress test) używa się narzędzia:",
+    "options": [
+      "CPU-Z",
+      "Prime95",
+      "GPU-Z",
+      "CrystalDiskMark"
+    ],
+    "correct": 1,
+    "explanation": "Prime95 to narzędzie do stress testowania procesora poprzez obliczenia liczb pierwszych (Mersenne prime). Obciąża procesor w 100%, co pozwala wykryć niestabilność, błędy obliczeń i problemy z chłodzeniem.",
+    "ckeRef": "INF.02.4.1",
+    "tags": [
+      "prime95",
+      "stress-test",
+      "cpu",
+      "diagnostyka"
+    ]
+  },
+  {
+    "id": "Q-0136",
+    "area": "D",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Polecenie `journalctl -xe` w systemie Linux służy do:",
+    "options": [
+      "Wyświetlenia listy procesów i ich zużycia zasobów",
+      "Wyświetlenia ostatnich wpisów dziennika systemd z wyjaśnieniami błędów",
+      "Zarządzania usługami systemowymi",
+      "Sprawdzenia stanu dysków SMART"
+    ],
+    "correct": 1,
+    "explanation": "Polecenie journalctl -xe wyświetla ostatnie wpisy dziennika systemd (-x dodaje wyjaśnienia tekstowe do wpisów, -e przewija na koniec). Przydatne do diagnostyki błędów usług i awarii systemu.",
+    "ckeRef": "INF.02.4.2",
+    "tags": [
+      "journalctl",
+      "linux",
+      "systemd",
+      "diagnostyka"
+    ]
+  },
+  {
+    "id": "Q-0137",
+    "area": "L",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "Jaka jest zalecana minimalna odległość oczu od monitora komputerowego?",
+    "options": [
+      "30–40 cm",
+      "50–70 cm",
+      "80–100 cm",
+      "ponad 100 cm"
+    ],
+    "correct": 1,
+    "explanation": "Według zasad ergonomii stanowiska pracy z monitorem, zalecana odległość oczu od ekranu wynosi 50–70 cm. Zbyt mała odległość nadmiernie obciąża wzrok, zbyt duża utrudnia odczytanie tekstu.",
+    "ckeRef": "INF.02.1",
+    "tags": [
+      "bhp",
+      "ergonomia",
+      "monitor"
+    ]
+  },
+  {
+    "id": "Q-0138",
+    "area": "L",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "Jakie minimalne natężenie oświetlenia jest wymagane na stanowisku pracy z komputerem według normy PN-EN 12464-1?",
+    "options": [
+      "200 luksów",
+      "300 luksów",
+      "500 luksów",
+      "1000 luksów"
+    ],
+    "correct": 2,
+    "explanation": "Norma PN-EN 12464-1 określa minimalne natężenie oświetlenia na poziomie 500 luksów dla stanowisk biurowych i komputerowych. Zbyt słabe oświetlenie prowadzi do nadmiernego zmęczenia wzroku.",
+    "ckeRef": "INF.02.1",
+    "tags": [
+      "bhp",
+      "oswietlenie",
+      "ergonomia",
+      "norma"
+    ]
+  },
+  {
+    "id": "Q-0139",
+    "area": "L",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Jak powinno być ustawione górne krawędź monitora względem oczu operatora?",
+    "options": [
+      "Znacznie powyżej poziomu oczu",
+      "Na poziomie oczu lub nieznacznie poniżej",
+      "Znacznie poniżej poziomu oczu",
+      "Poziom nie ma znaczenia"
+    ],
+    "correct": 1,
+    "explanation": "Górna krawędź monitora powinna znajdować się na poziomie oczu lub nieznacznie poniżej. Taka pozycja zapewnia naturalną, lekko pochyloną ku dołowi pozycję głowy, redukując napięcie mięśni szyi i karku.",
+    "ckeRef": "INF.02.1",
+    "tags": [
+      "bhp",
+      "ergonomia",
+      "monitor",
+      "pozycja"
+    ]
+  },
+  {
+    "id": "Q-0140",
+    "area": "L",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Dlaczego nie wolno otwierać obudowy monitora CRT (kineskopowego) bez odpowiedniego przeszkolenia?",
+    "options": [
+      "Monitory CRT zawierają szkodliwe substancje chemiczne",
+      "Kondensatory monitora CRT mogą przechowywać napięcie do 25 kV nawet po odłączeniu",
+      "Jest to zabronione prawem autorskim producenta",
+      "Monitory CRT emitują szkodliwe promieniowanie rentgenowskie"
+    ],
+    "correct": 1,
+    "explanation": "Monitory CRT przechowują ładunek elektryczny w kondensatorach wysokiego napięcia (do 25 kV lub więcej) nawet długo po odłączeniu od zasilania. Dotknięcie może spowodować śmiertelne porażenie prądem.",
+    "ckeRef": "INF.02.1",
+    "tags": [
+      "bhp",
+      "crt",
+      "bezpieczenstwo-elektryczne",
+      "kondensator"
+    ]
+  },
+  {
+    "id": "Q-0141",
+    "area": "L",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "Jak powinno być ułożone przedramię podczas pracy z klawiaturą pod kątem ergonomii?",
+    "options": [
+      "Skierowane ku górze pod kątem 45°",
+      "Równolegle do podłogi, nadgarstek w pozycji neutralnej",
+      "Opuszczone ku dołowi, dłonie poniżej łokci",
+      "Uniesione powyżej poziomu biurka"
+    ],
+    "correct": 1,
+    "explanation": "Prawidłowa pozycja podczas pisania wymaga, aby przedramiona były równoległe do podłogi, a nadgarstki znajdowały się w pozycji neutralnej (nie zgięte ku górze ani ku dołowi). Zmniejsza to ryzyko RSI (urazów przeciążeniowych).",
+    "ckeRef": "INF.02.1",
+    "tags": [
+      "bhp",
+      "ergonomia",
+      "klawiatura",
+      "nadgarstek"
+    ]
+  },
+  {
+    "id": "Q-0142",
+    "area": "L",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Jaki kolor ma przewód ochronny PE (uziemiający) w instalacjach elektrycznych?",
+    "options": [
+      "Brązowy",
+      "Niebieski",
+      "Żółto-zielony",
+      "Czarny"
+    ],
+    "correct": 2,
+    "explanation": "Przewód ochronny PE (Protection Earth) ma standardowo kolor żółto-zielony zgodnie z normami IEC/PN. Przewód fazowy jest brązowy lub czarny, neutralny (N) — niebieski. Uziemienie chroni przed porażeniem prądem.",
+    "ckeRef": "INF.02.1",
+    "tags": [
+      "bhp",
+      "elektrycznosc",
+      "uziemienie",
+      "pe"
+    ]
+  },
+  {
+    "id": "Q-0143",
+    "area": "L",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Jak powinny być ustawione stopy operatora siedzącego przy komputerze?",
+    "options": [
+      "Swobodnie zwisające nad podłogą",
+      "Płasko na podłodze, kolana ugięte pod kątem 90°",
+      "Skrzyżowane pod krzesłem",
+      "Na podnóżku pod kątem 45°"
+    ],
+    "correct": 1,
+    "explanation": "Prawidłowa pozycja siedząca wymaga, aby stopy były płasko oparte na podłodze lub podnóżku, a kolana ugięte pod kątem zbliżonym do 90°. Zapobiega to zaburzeniom krążenia i bólom pleców.",
+    "ckeRef": "INF.02.1",
+    "tags": [
+      "bhp",
+      "ergonomia",
+      "pozycja-siedzaca"
+    ]
+  },
+  {
+    "id": "Q-0144",
+    "area": "L",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Co oznacza skrót RSI w kontekście BHP stanowisk pracy z komputerem?",
+    "options": [
+      "Remote System Interface — interfejs zdalnego systemu",
+      "Repetitive Strain Injury — uraz przeciążeniowy wywołany powtarzalnymi ruchami",
+      "Random Security Incident — incydent bezpieczeństwa",
+      "Reduced Screen Illumination — ograniczone oświetlenie ekranu"
+    ],
+    "correct": 1,
+    "explanation": "RSI (Repetitive Strain Injury) to urazy przeciążeniowe wywołane powtarzalnymi ruchami, np. zespół cieśni nadgarstka. Profilaktyka obejmuje ergonomiczne wyposażenie, podkładki pod nadgarstki i regularne przerwy.",
+    "ckeRef": "INF.02.1",
+    "tags": [
+      "bhp",
+      "rsi",
+      "ergonomia",
+      "uraz"
+    ]
+  },
+  {
+    "id": "Q-0145",
+    "area": "L",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "Jakiego rodzaju gaśnicy należy użyć w przypadku pożaru sprzętu elektrycznego?",
+    "options": [
+      "Gaśnicy wodnej",
+      "Gaśnicy pianowej",
+      "Gaśnicy CO2 (śniegowej) lub proszkowej",
+      "Gaśnicy halonowej (niedostępnej)"
+    ],
+    "correct": 2,
+    "explanation": "Przy pożarze sprzętu elektrycznego stosuje się gaśnice CO2 (dwutlenek węgla) lub proszkowe. Woda i piana przewodzą prąd elektryczny — użycie ich na urządzeniach pod napięciem grozi porażeniem prądem.",
+    "ckeRef": "INF.02.1",
+    "tags": [
+      "bhp",
+      "pozar",
+      "gasnica",
+      "co2"
+    ]
+  },
+  {
+    "id": "Q-0146",
+    "area": "L",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Jaka jest pierwsza czynność podczas ewakuacji w przypadku pożaru w serwerowni?",
+    "options": [
+      "Ugasić pożar dostępną gaśnicą",
+      "Odłączyć zasilanie i powiadomić straż pożarną",
+      "Wynieść serwery i nośniki danych",
+      "Zamknąć okna i drzwi"
+    ],
+    "correct": 1,
+    "explanation": "Pierwszą czynnością jest odłączenie zasilania (jeśli bezpiecznie możliwe) i powiadomienie straży pożarnej (998 lub 112). Gaszenie sprzętu elektrycznego bez odłączenia zasilania jest niebezpieczne. Nie należy ryzykować życia dla ratowania sprzętu.",
+    "ckeRef": "INF.02.1",
+    "tags": [
+      "bhp",
+      "ewakuacja",
+      "pozar",
+      "serwerownia"
+    ]
+  },
+  {
+    "id": "Q-0147",
+    "area": "L",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Do jakiej klasy pożarów zalicza się pożary cieczy palnych (np. oleju)?",
+    "options": [
+      "Klasa A",
+      "Klasa B",
+      "Klasa C",
+      "Klasa D"
+    ],
+    "correct": 1,
+    "explanation": "Klasa B obejmuje pożary cieczy palnych i substancji ulegających stopieniu (benzyna, oleje, lakiery, tłuszcze). Klasa A to materiały stałe, C to gazy, D to metale, F to oleje spożywcze.",
+    "ckeRef": "INF.02.1",
+    "tags": [
+      "bhp",
+      "pozar",
+      "klasy-pozaru"
+    ]
+  },
+  {
+    "id": "Q-0148",
+    "area": "L",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Dlaczego podczas ewakuacji budynku nie wolno korzystać z windy?",
+    "options": [
+      "Windy są zarezerwowane dla straży pożarnej",
+      "Pożar lub awaria zasilania może unieruchomić windę z osobami w środku",
+      "Windy są zbyt wolne podczas ewakuacji",
+      "Windy nie mieszczą wystarczającej liczby osób"
+    ],
+    "correct": 1,
+    "explanation": "Podczas pożaru nie wolno używać windy, ponieważ pożar lub odcięcie zasilania może unieruchomić windę, a szyk ewakuacyjny musi zapewnić sprawne zejście. Schody są zawsze bezpieczną drogą ewakuacyjną.",
+    "ckeRef": "INF.02.1",
+    "tags": [
+      "bhp",
+      "ewakuacja",
+      "winda",
+      "pozar"
+    ]
+  },
+  {
+    "id": "Q-0149",
+    "area": "L",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "Jaka jest pierwsza czynność przy udzielaniu pomocy osobie porażonej prądem elektrycznym?",
+    "options": [
+      "Natychmiast dotknąć poszkodowanego i odciągnąć",
+      "Odłączyć zasilanie lub odciągnąć poszkodowanego izolującym przedmiotem",
+      "Oblać poszkodowanego wodą",
+      "Wezwać straż pożarną i czekać"
+    ],
+    "correct": 1,
+    "explanation": "Przed dotknięciem osoby porażonej prądem należy bezwzględnie odłączyć zasilanie lub użyć izolującego przedmiotu do odciągnięcia poszkodowanego. Dotknięcie osoby pozostającej w kontakcie z prądem grozi porażeniem ratownika.",
+    "ckeRef": "INF.02.1",
+    "tags": [
+      "pierwsza-pomoc",
+      "porazenie-pradem",
+      "bhp"
+    ]
+  },
+  {
+    "id": "Q-0150",
+    "area": "L",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Jak długo należy przemywać wodą oparzenie chemiczne skóry?",
+    "options": [
+      "2–3 minuty",
+      "5–7 minut",
+      "15–20 minut",
+      "30–40 minut"
+    ],
+    "correct": 2,
+    "explanation": "Oparzenie chemiczne skóry należy przemywać dużą ilością bieżącej wody przez co najmniej 15–20 minut. Szybkie i dokładne płukanie zmniejsza stężenie substancji i głębokość oparzenia. Nie stosować neutralizatorów chemicznych.",
+    "ckeRef": "INF.02.1",
+    "tags": [
+      "pierwsza-pomoc",
+      "oparzenie-chemiczne",
+      "bhp"
+    ]
+  },
+  {
+    "id": "Q-0151",
+    "area": "L",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Co należy zrobić w przypadku dostania się substancji chemicznej do oka?",
+    "options": [
+      "Przetrzeć oko chusteczką i udać się do lekarza",
+      "Nie dotykać oka i natychmiast wezwać pomoc",
+      "Płukać oko bieżącą wodą przez 15–20 minut, nie trzeć",
+      "Założyć opatrunek na oko"
+    ],
+    "correct": 2,
+    "explanation": "W przypadku kontaktu substancji chemicznej z okiem należy natychmiast i obficie płukać je bieżącą wodą przez 15–20 minut, trzymając powiekę otwartą. Nie wolno trzeć oka — pogłębia to uszkodzenia. Następnie skierować do okulisty.",
+    "ckeRef": "INF.02.1",
+    "tags": [
+      "pierwsza-pomoc",
+      "oko",
+      "substancja-chemiczna",
+      "bhp"
+    ]
+  },
+  {
+    "id": "Q-0152",
+    "area": "L",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "Jaki jest standardowy wymiar czasu pracy określony w Kodeksie Pracy (art. 129 KP)?",
+    "options": [
+      "6 godzin dziennie, 36 godzin tygodniowo",
+      "7 godzin dziennie, 35 godzin tygodniowo",
+      "8 godzin dziennie, 40 godzin tygodniowo",
+      "10 godzin dziennie, 50 godzin tygodniowo"
+    ],
+    "correct": 2,
+    "explanation": "Art. 129 Kodeksu Pracy stanowi, że czas pracy nie może przekraczać 8 godzin na dobę i przeciętnie 40 godzin w przeciętnie pięciodniowym tygodniu pracy w przyjętym okresie rozliczeniowym.",
+    "ckeRef": "INF.02.10.1",
+    "tags": [
+      "prawo-pracy",
+      "kodeks-pracy",
+      "czas-pracy"
+    ]
+  },
+  {
+    "id": "Q-0153",
+    "area": "L",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Jaki jest maksymalny roczny wymiar godzin nadliczbowych pracownika zgodnie z Kodeksem Pracy?",
+    "options": [
+      "100 godzin",
+      "150 godzin",
+      "200 godzin",
+      "416 godzin"
+    ],
+    "correct": 1,
+    "explanation": "Kodeks Pracy (art. 151³) określa limit 150 godzin nadliczbowych na rok jako standard. Za zgodą pracodawcy i pracownika oraz w regulaminie pracy można ustalić wyższy limit, jednak przepisy nie pozwalają przekroczyć 416 godzin.",
+    "ckeRef": "INF.02.10.1",
+    "tags": [
+      "prawo-pracy",
+      "godziny-nadliczbowe",
+      "kodeks-pracy"
+    ]
+  },
+  {
+    "id": "Q-0154",
+    "area": "L",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Jaki jest maksymalny okres trwania umowy o pracę na okres próbny?",
+    "options": [
+      "1 miesiąc",
+      "2 miesiące",
+      "3 miesiące",
+      "6 miesięcy"
+    ],
+    "correct": 2,
+    "explanation": "Umowa o pracę na okres próbny może być zawarta na czas nieprzekraczający 3 miesięcy (art. 25 § 2 KP). Jej celem jest sprawdzenie kwalifikacji pracownika i możliwości jego zatrudnienia do wykonywania określonej pracy.",
+    "ckeRef": "INF.02.10.1",
+    "tags": [
+      "prawo-pracy",
+      "umowa-o-prace",
+      "okres-probny"
+    ]
+  },
+  {
+    "id": "Q-0155",
+    "area": "L",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Pracownik jest zatrudniony od 4 lat. Jaki jest okres wypowiedzenia umowy o pracę zawartej na czas nieokreślony?",
+    "options": [
+      "2 tygodnie",
+      "1 miesiąc",
+      "3 miesiące",
+      "6 miesięcy"
+    ],
+    "correct": 2,
+    "explanation": "Zgodnie z art. 36 KP, okres wypowiedzenia wynosi: 2 tygodnie (do 6 miesięcy stażu), 1 miesiąc (6 miesięcy – 3 lata), 3 miesiące (powyżej 3 lat stażu). Przy 4-letnim stażu obowiązuje 3-miesięczny okres wypowiedzenia.",
+    "ckeRef": "INF.02.10.1",
+    "tags": [
+      "prawo-pracy",
+      "wypowiedzenie",
+      "okres-wypowiedzenia"
+    ]
+  },
+  {
+    "id": "Q-0156",
+    "area": "L",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Osoba wykonująca zlecenie na podstawie umowy zlecenia to:",
+    "options": [
+      "Pracownik",
+      "Zleceniobiorca",
+      "Wykonawca dzieła",
+      "Podwykonawca"
+    ],
+    "correct": 1,
+    "explanation": "Na podstawie umowy zlecenia (art. 734 KC) osoba wykonująca zlecenie to zleceniobiorca, a zlecający to zleceniodawca. Umowa zlecenia nie jest umową o pracę — zleceniobiorca nie ma takich samych praw jak pracownik etatowy.",
+    "ckeRef": "INF.02.10.1",
+    "tags": [
+      "prawo-pracy",
+      "umowa-zlecenie",
+      "zleceniobiorca"
+    ]
+  },
+  {
+    "id": "Q-0157",
+    "area": "L",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "Co oznacza skrót RODO?",
+    "options": [
+      "Rejestr Operatorów Danych Osobowych",
+      "Rozporządzenie o Ochronie Danych Osobowych (GDPR 2016/679)",
+      "Rządowy Organ Danych Obywatelskich",
+      "Regulamin Ochrony Danych Organizacji"
+    ],
+    "correct": 1,
+    "explanation": "RODO to polskie określenie unijnego Rozporządzenia o Ochronie Danych Osobowych (GDPR — General Data Protection Regulation, 2016/679/UE). Obowiązuje od 25 maja 2018 roku we wszystkich krajach UE.",
+    "ckeRef": "INF.02.10.2",
+    "tags": [
+      "rodo",
+      "gdpr",
+      "prawo",
+      "dane-osobowe"
+    ]
+  },
+  {
+    "id": "Q-0158",
+    "area": "L",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "W jakim czasie od wykrycia naruszenia ochrony danych osobowych administrator musi powiadomić organ nadzorczy (UODO)?",
+    "options": [
+      "W ciągu 24 godzin",
+      "W ciągu 48 godzin",
+      "W ciągu 72 godzin",
+      "W ciągu 7 dni"
+    ],
+    "correct": 2,
+    "explanation": "Art. 33 RODO nakłada obowiązek zgłoszenia naruszenia ochrony danych osobowych do organu nadzorczego (w Polsce — UODO) w ciągu 72 godzin od stwierdzenia naruszenia, jeśli nie jest mało prawdopodobne, że naruszenie spowoduje ryzyko dla praw osób.",
+    "ckeRef": "INF.02.10.2",
+    "tags": [
+      "rodo",
+      "naruszenie-danych",
+      "uodo",
+      "72-godziny"
+    ]
+  },
+  {
+    "id": "Q-0159",
+    "area": "L",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Które z poniższych danych zalicza się do szczególnych kategorii danych osobowych wymagających wyraźnej zgody (art. 9 RODO)?",
+    "options": [
+      "Imię i nazwisko",
+      "Adres e-mail",
+      "Dane biometryczne i dotyczące zdrowia",
+      "Numer telefonu"
+    ],
+    "correct": 2,
+    "explanation": "Art. 9 RODO wymienia szczególne kategorie danych, których przetwarzanie jest co do zasady zakazane bez wyraźnej zgody: dane dotyczące zdrowia, dane biometryczne, genetyczne, rasowe, dotyczące seksualności, poglądów politycznych i religijnych.",
+    "ckeRef": "INF.02.10.2",
+    "tags": [
+      "rodo",
+      "dane-wrazliwe",
+      "szczegolne-kategorie"
+    ]
+  },
+  {
+    "id": "Q-0160",
+    "area": "L",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Kiedy mianowanie Inspektora Ochrony Danych (IOD/DPO) jest obowiązkowe?",
+    "options": [
+      "W każdej firmie zatrudniającej ponad 10 pracowników",
+      "W podmiotach publicznych oraz firmach przetwarzających dane na dużą skalę jako działalność podstawowa",
+      "Wyłącznie w bankach i firmach ubezpieczeniowych",
+      "Tylko gdy firma przetwarza dane osób nieletnich"
+    ],
+    "correct": 1,
+    "explanation": "Art. 37 RODO nakłada obowiązek wyznaczenia Inspektora Ochrony Danych (DPO) dla: organów i podmiotów publicznych, podmiotów dokonujących regularnego i systematycznego monitorowania osób na dużą skalę, podmiotów przetwarzających szczególne kategorie danych na dużą skalę.",
+    "ckeRef": "INF.02.10.2",
+    "tags": [
+      "rodo",
+      "iod",
+      "dpo",
+      "obowiazek"
+    ]
+  },
+  {
+    "id": "Q-0161",
+    "area": "L",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Prawo do usunięcia danych osobowych (prawo do bycia zapomnianym) jest określone w:",
+    "options": [
+      "Art. 15 RODO — prawo dostępu",
+      "Art. 17 RODO — prawo do usunięcia danych",
+      "Art. 20 RODO — prawo do przenoszenia danych",
+      "Art. 22 RODO — zautomatyzowane decyzje"
+    ],
+    "correct": 1,
+    "explanation": "Art. 17 RODO przyznaje osobom fizycznym prawo do żądania usunięcia dotyczących ich danych osobowych (prawo do bycia zapomnianym). Administrator musi spełnić żądanie, o ile nie zachodzą wyjątki prawne (np. obowiązek archiwizacji).",
+    "ckeRef": "INF.02.10.2",
+    "tags": [
+      "rodo",
+      "prawo-do-usuniecia",
+      "art17"
+    ]
+  },
+  {
+    "id": "Q-0162",
+    "area": "L",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "Czym charakteryzuje się licencja OEM oprogramowania?",
+    "options": [
+      "Można ją swobodnie przenosić między komputerami",
+      "Jest powiązana ze sprzętem, na którym została zainstalowana i tańsza od BOX",
+      "Zawiera pełne wsparcie techniczne producenta",
+      "Pozwala na instalację na dowolnej liczbie urządzeń"
+    ],
+    "correct": 1,
+    "explanation": "Licencja OEM (Original Equipment Manufacturer) jest powiązana z konkretnym sprzętem — nie można jej przenieść na inny komputer. Jest tańsza od wersji BOX/Retail, ale często ma ograniczone wsparcie producenta oprogramowania.",
+    "ckeRef": "INF.02.10.2",
+    "tags": [
+      "licencjonowanie",
+      "oem",
+      "oprogramowanie"
+    ]
+  },
+  {
+    "id": "Q-0163",
+    "area": "L",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Co to jest licencja CAL (Client Access License) w kontekście Windows Server?",
+    "options": [
+      "Licencja na instalację systemu Windows Server",
+      "Licencja wymagana dla każdego użytkownika lub urządzenia uzyskującego dostęp do usług Windows Server",
+      "Licencja open-source dla klientów korporacyjnych",
+      "Certyfikat szyfrowania dla klientów sieci"
+    ],
+    "correct": 1,
+    "explanation": "CAL (Client Access License) to licencja wymagana dla każdego użytkownika (User CAL) lub urządzenia (Device CAL) uzyskującego dostęp do usług Windows Server (np. pliki, druk, RDS). Sama licencja serwera nie obejmuje klientów.",
+    "ckeRef": "INF.02.10.2",
+    "tags": [
+      "licencjonowanie",
+      "cal",
+      "windows-server"
+    ]
+  },
+  {
+    "id": "Q-0164",
+    "area": "L",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Licencja GPL (GNU General Public License) zobowiązuje do:",
+    "options": [
+      "Udostępnienia kodu źródłowego wyłącznie na żądanie",
+      "Udostępnienia kodu źródłowego i wydania pochodnych na tej samej licencji GPL (copyleft)",
+      "Zakazu komercyjnego użycia oprogramowania",
+      "Uiszczenia opłaty licencyjnej na rzecz Free Software Foundation"
+    ],
+    "correct": 1,
+    "explanation": "GPL to licencja copyleft — każde oprogramowanie oparte na kodzie GPL musi być dystrybuowane na tej samej licencji GPL z dostępem do kodu źródłowego. Zmuszą to do otwartości pochodnych projektów.",
+    "ckeRef": "INF.02.10.2",
+    "tags": [
+      "licencjonowanie",
+      "gpl",
+      "open-source",
+      "copyleft"
+    ]
+  },
+  {
+    "id": "Q-0165",
+    "area": "L",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Firma chce użyć biblioteki open-source z licencją LGPL w komercyjnym oprogramowaniu. Co to oznacza?",
+    "options": [
+      "Jest to całkowicie zabronione — LGPL nie zezwala na użycie komercyjne",
+      "Można użyć biblioteki, a własny kod nie musi być na licencji GPL, ale modyfikacje samej biblioteki muszą być otwarte",
+      "Cały projekt musi zostać opublikowany na LGPL",
+      "Wymaga uiszczenia opłaty licencyjnej"
+    ],
+    "correct": 1,
+    "explanation": "LGPL (Lesser GPL) jest słabszym copyleft — pozwala linkować bibliotekę do własnego (w tym komercyjnego) kodu bez konieczności publikowania go. Jednak modyfikacje samej biblioteki LGPL muszą być opublikowane na LGPL.",
+    "ckeRef": "INF.02.10.2",
+    "tags": [
+      "licencjonowanie",
+      "lgpl",
+      "open-source"
+    ]
+  },
+  {
+    "id": "Q-0166",
+    "area": "L",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Czym różni się Device CAL od User CAL?",
+    "options": [
+      "Device CAL jest droższy od User CAL",
+      "Device CAL upoważnia jedno urządzenie (wielu użytkowników), User CAL — jednego użytkownika (wiele urządzeń)",
+      "Device CAL obejmuje licencję na oprogramowanie klienckie",
+      "Nie ma różnicy funkcjonalnej"
+    ],
+    "correct": 1,
+    "explanation": "Device CAL licencjonuje jedno urządzenie, z którego może korzystać dowolna liczba użytkowników — opłacalny przy urządzeniach współdzielonych (np. kasy, kioski). User CAL licencjonuje jednego użytkownika, który może korzystać z wielu urządzeń.",
+    "ckeRef": "INF.02.10.2",
+    "tags": [
+      "licencjonowanie",
+      "cal",
+      "device-cal",
+      "user-cal"
+    ]
+  },
+  {
+    "id": "Q-0167",
+    "area": "L",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "Co oznacza symbol przekreślonego pojemnika na kółkach (przekreśony kosz) na sprzęcie elektronicznym?",
+    "options": [
+      "Sprzęt jest odporny na wilgoć",
+      "Sprzętu nie wolno wyrzucać razem z odpadami komunalnymi — ZSEE",
+      "Sprzęt jest przystosowany do recyklingu plastiku",
+      "Gwarancja producenta nie obejmuje mechanicznych uszkodzeń"
+    ],
+    "correct": 1,
+    "explanation": "Symbol przekreślonego kosza na kółkach (WEEE symbol) oznacza, że sprzęt jest Zużytym Sprzętem Elektrycznym i Elektronicznym (ZSEE) i musi być przekazany do selektywnej zbiórki — nie wolno go wyrzucać do zwykłych odpadów komunalnych.",
+    "ckeRef": "INF.02.10.2",
+    "tags": [
+      "zsee",
+      "weee",
+      "ekologia",
+      "recykling"
+    ]
+  },
+  {
+    "id": "Q-0168",
+    "area": "L",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Dyrektywa WEEE (2012/19/UE) nakłada odpowiedzialność za właściwy recykling sprzętu elektronicznego na:",
+    "options": [
+      "Wyłącznie użytkownika końcowego",
+      "Producenta i importera sprzętu (rozszerzona odpowiedzialność producenta)",
+      "Samorządy lokalne",
+      "Firmy transportowe"
+    ],
+    "correct": 1,
+    "explanation": "Dyrektywa WEEE (odpowiednik polskiej ustawy o ZSEE) wprowadza zasadę rozszerzonej odpowiedzialności producenta (EPR) — producenci i importerzy sprzętu elektrycznego są odpowiedzialni za organizację i finansowanie selektywnej zbiórki i recyklingu.",
+    "ckeRef": "INF.02.10.2",
+    "tags": [
+      "zsee",
+      "weee",
+      "producent",
+      "recykling"
+    ]
+  },
+  {
+    "id": "Q-0169",
+    "area": "L",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Firma chce zarejestrować jednoosobową działalność gospodarczą w Polsce. W jakim rejestrze to robi?",
+    "options": [
+      "KRS (Krajowy Rejestr Sądowy)",
+      "CEIDG (Centralna Ewidencja i Informacja o Działalności Gospodarczej)",
+      "REGON (Rejestr Podmiotów Gospodarki Narodowej)",
+      "BDO (Baza Danych Odpadowych)"
+    ],
+    "correct": 1,
+    "explanation": "Jednoosobowa działalność gospodarcza (JDG) jest rejestrowana w CEIDG (Centralna Ewidencja i Informacja o Działalności Gospodarczej). KRS dotyczy spółek. Rejestracja w CEIDG jest bezpłatna i możliwa online.",
+    "ckeRef": "INF.02.10.2",
+    "tags": [
+      "bpro",
+      "ceidg",
+      "jdg",
+      "rejestracja"
+    ]
+  },
+  {
+    "id": "Q-0170",
+    "area": "L",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Technik serwisowy sporządził protokół serwisowy. Co powinien on zawierać?",
+    "options": [
+      "Tylko opis usterki i zastosowane naprawy",
+      "Opis usterki, wykonane czynności, wymienione części, wyniki testów i zalecenia dla klienta",
+      "Wyłącznie cennik usług i kosztorys",
+      "Dane kontaktowe technika i logo firmy"
+    ],
+    "correct": 1,
+    "explanation": "Protokół serwisowy jest dokumentem formalnym opisującym: opis zgłoszonej usterki, wykonane czynności diagnostyczne i naprawcze, wymienione części i materiały, wyniki testów po naprawie oraz zalecenia dla klienta. Stanowi podstawę rozliczeń i gwarancji.",
+    "ckeRef": "INF.02.10.2",
+    "tags": [
+      "bpro",
+      "protokol-serwisowy",
+      "komunikacja-zawodowa"
+    ]
+  },
+  {
+    "id": "Q-0171",
+    "area": "W",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "Jaka jest hierarchia struktury Active Directory od najszerszej do najwęższej?",
+    "options": [
+      "Domain > Forest > Tree > OU > Object",
+      "Forest > Tree > Domain > OU > Object",
+      "Tree > Forest > Domain > OU > Object",
+      "Domain > OU > Tree > Forest > Object"
+    ],
+    "correct": 1,
+    "explanation": "Hierarchia Active Directory: Las (Forest) → Drzewo (Tree) → Domena (Domain) → Jednostka Organizacyjna (OU) → Obiekty (użytkownicy, komputery, grupy). Las to najwyższy poziom — zawiera jedno lub więcej drzew domen.",
+    "ckeRef": "INF.02.7.1",
+    "tags": [
+      "active-directory",
+      "ad-ds",
+      "hierarchia",
+      "windows-server"
+    ]
+  },
+  {
+    "id": "Q-0172",
+    "area": "W",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Ile ról FSMO istnieje łącznie w lesie Active Directory i jak są rozmieszczone?",
+    "options": [
+      "3 role — wszystkie na poziomie lasu",
+      "5 ról — 2 na poziomie lasu, 3 na poziomie domeny",
+      "5 ról — wszystkie na poziomie domeny",
+      "7 ról — 3 na poziomie lasu, 4 na poziomie domeny"
+    ],
+    "correct": 1,
+    "explanation": "W Active Directory istnieje 5 ról FSMO: 2 na poziomie lasu (Schema Master, Domain Naming Master) i 3 na poziomie domeny (RID Master, PDC Emulator, Infrastructure Master). Każda rola może być pełniona przez tylko jeden kontroler domeny.",
+    "ckeRef": "INF.02.7.1",
+    "tags": [
+      "active-directory",
+      "fsmo",
+      "windows-server"
+    ]
+  },
+  {
+    "id": "Q-0173",
+    "area": "W",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Jaka jest rola PDC Emulator w Active Directory?",
+    "options": [
+      "Zarządza schematem lasu AD",
+      "Synchronizuje czas, obsługuje blokady kont i zmiany haseł w czasie rzeczywistym",
+      "Przydziela pule identyfikatorów RID innym kontrolerom domeny",
+      "Zawiera pełną kopię wszystkich obiektów lasu"
+    ],
+    "correct": 1,
+    "explanation": "PDC Emulator (Primary Domain Controller Emulator) pełni kilka ról: jest autorytatywnym źródłem czasu w domenie, obsługuje zmiany haseł i blokady kont w czasie rzeczywistym, a także zapewnia zgodność z klientami Windows NT.",
+    "ckeRef": "INF.02.7.1",
+    "tags": [
+      "active-directory",
+      "fsmo",
+      "pdc-emulator",
+      "windows-server"
+    ]
+  },
+  {
+    "id": "Q-0174",
+    "area": "W",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "Czym różni się domena od grupy roboczej (Workgroup)?",
+    "options": [
+      "Grupy robocze obsługują więcej komputerów niż domeny",
+      "Domena zapewnia scentralizowane uwierzytelnianie i zarządzanie; Workgroup = peer-to-peer, max ~20 PC",
+      "Domeny są bezpłatne, Workgroup wymaga licencji",
+      "Nie ma różnicy funkcjonalnej między domeną a Workgroup"
+    ],
+    "correct": 1,
+    "explanation": "Domena (Windows Server) zapewnia scentralizowane uwierzytelnianie, zasady grupowe i zarządzanie — skaluje się do tysięcy komputerów. Workgroup to sieć równorzędna (peer-to-peer) bez centralnego uwierzytelniania, praktyczna do ~20 komputerów.",
+    "ckeRef": "INF.02.7.1",
+    "tags": [
+      "active-directory",
+      "workgroup",
+      "domena",
+      "windows-server"
+    ]
+  },
+  {
+    "id": "Q-0175",
+    "area": "W",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Co to jest Global Catalog w Active Directory i kiedy jest wymagany?",
+    "options": [
+      "Baza danych wszystkich drukarek w sieci",
+      "Serwer przechowujący pełną kopię wszystkich obiektów lasu — wymagany do logowania w środowiskach wielu domen",
+      "Rejestr licencji Windows Server",
+      "Kopia zapasowa bazy danych AD DS"
+    ],
+    "correct": 1,
+    "explanation": "Global Catalog (GC) przechowuje pełną kopię obiektów z własnej domeny i częściową z pozostałych domen lasu. Jest wymagany podczas logowania użytkownika (weryfikacja przynależności do grup Universal) w środowiskach wielu domen.",
+    "ckeRef": "INF.02.7.1",
+    "tags": [
+      "active-directory",
+      "global-catalog",
+      "multi-domain",
+      "windows-server"
+    ]
+  },
+  {
+    "id": "Q-0176",
+    "area": "W",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Jaki jest przykład poprawnego FQDN (Fully Qualified Domain Name) kontrolera domeny?",
+    "options": [
+      "dc01",
+      "szkola.local",
+      "dc01.szkola.local",
+      "\\\\dc01\\NETLOGON"
+    ],
+    "correct": 2,
+    "explanation": "FQDN (Fully Qualified Domain Name) to pełna nazwa hosta zawierająca nazwę hosta i domenę, np. dc01.szkola.local. Sama nazwa hosta (dc01) to hostname, a sama domena (szkola.local) to nazwa domeny DNS.",
+    "ckeRef": "INF.02.7.1",
+    "tags": [
+      "active-directory",
+      "fqdn",
+      "dns",
+      "windows-server"
+    ]
+  },
+  {
+    "id": "Q-0177",
+    "area": "W",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Jakie są dwa typy grup w Active Directory pod względem przeznaczenia?",
+    "options": [
+      "Lokalne i globalne",
+      "Zabezpieczeń (Security) i dystrybucyjne (Distribution)",
+      "Statyczne i dynamiczne",
+      "Wewnętrzne i zewnętrzne"
+    ],
+    "correct": 1,
+    "explanation": "Grupy AD mają dwa typy: Security (zabezpieczeń) — używane do przyznawania uprawnień do zasobów, mogą też być listami dystrybucyjnymi; Distribution (dystrybucyjne) — wyłącznie do list e-mail, nie można ich używać do uprawnień.",
+    "ckeRef": "INF.02.7.2",
+    "tags": [
+      "active-directory",
+      "grupy",
+      "security-group",
+      "distribution-group"
+    ]
+  },
+  {
+    "id": "Q-0178",
+    "area": "W",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Który zasięg grupy AD jest widoczny i może być używany w całym lesie Active Directory?",
+    "options": [
+      "Domain Local",
+      "Global",
+      "Universal",
+      "Local"
+    ],
+    "correct": 2,
+    "explanation": "Grupy Universal są widoczne i mogą być przypisywane do zasobów w całym lesie AD. Grupy Global mają zasięg domeny (mogą być używane w zasobach całego lasu, ale zawierają tylko użytkowników z tej samej domeny). Domain Local — tylko zasoby w tej samej domenie.",
+    "ckeRef": "INF.02.7.2",
+    "tags": [
+      "active-directory",
+      "grupy",
+      "universal-group",
+      "zasieg"
+    ]
+  },
+  {
+    "id": "Q-0179",
+    "area": "W",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Polecenie PowerShell do wyłączenia konta użytkownika w Active Directory to:",
+    "options": [
+      "Remove-ADUser",
+      "Disable-ADAccount",
+      "Lock-ADUser",
+      "Set-ADUser -Enabled $false"
+    ],
+    "correct": 1,
+    "explanation": "Disable-ADAccount wyłącza konto użytkownika lub komputera w Active Directory bez jego usuwania. Użytkownik nie będzie mógł się zalogować. Można też użyć Set-ADUser -Enabled $false jako alternatywy.",
+    "ckeRef": "INF.02.7.2",
+    "tags": [
+      "active-directory",
+      "powershell",
+      "konto-uzytkownika",
+      "disable"
+    ]
+  },
+  {
+    "id": "Q-0180",
+    "area": "W",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "Która domyślna grupa AD daje pełną kontrolę administracyjną nad całą domeną?",
+    "options": [
+      "Administrators",
+      "Domain Admins",
+      "Enterprise Admins",
+      "Schema Admins"
+    ],
+    "correct": 1,
+    "explanation": "Grupa Domain Admins ma pełne uprawnienia administracyjne w obrębie domeny. Enterprise Admins ma uprawnienia w całym lesie. Schema Admins może modyfikować schemat AD. Administrators (lokalna) daje prawa lokalnego admina.",
+    "ckeRef": "INF.02.7.2",
+    "tags": [
+      "active-directory",
+      "domain-admins",
+      "grupy",
+      "windows-server"
+    ]
+  },
+  {
+    "id": "Q-0181",
+    "area": "W",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "W jakiej kolejności stosowane są zasady grupowe GPO (od najniższego priorytetu do najwyższego)?",
+    "options": [
+      "OU > Domain > Site > Local",
+      "Local > Site > Domain > OU",
+      "Domain > OU > Site > Local",
+      "Site > Domain > Local > OU"
+    ],
+    "correct": 1,
+    "explanation": "Kolejność stosowania GPO (LSDOU): Local (lokalne) → Site → Domain → OU. Każda kolejna warstwa nadpisuje poprzednią — OU ma najwyższy priorytet i nadpisuje ustawienia domeny, ta nadpisuje site, a site — lokalne.",
+    "ckeRef": "INF.02.7.2",
+    "tags": [
+      "gpo",
+      "group-policy",
+      "lsdou",
+      "windows-server"
+    ]
+  },
+  {
+    "id": "Q-0182",
+    "area": "W",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "Jakie polecenie wymusza natychmiastowe zastosowanie zasad grupowych na stacji roboczej?",
+    "options": [
+      "gpedit.msc",
+      "gpresult /r",
+      "gpupdate /force",
+      "rsop.msc"
+    ],
+    "correct": 2,
+    "explanation": "Polecenie gpupdate /force wymusza natychmiastowe pobranie i zastosowanie wszystkich zasad grupowych (User i Computer) bez oczekiwania na standardowy interwał odświeżania (domyślnie 90 minut ± 30 minut).",
+    "ckeRef": "INF.02.7.2",
+    "tags": [
+      "gpo",
+      "gpupdate",
+      "group-policy",
+      "windows-server"
+    ]
+  },
+  {
+    "id": "Q-0183",
+    "area": "W",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Do czego służy narzędzie rsop.msc?",
+    "options": [
+      "Edycji lokalnych zasad grupowych",
+      "Wyświetlenia wynikowego zestawu zasad grupowych (Resultant Set of Policy) dla użytkownika/komputera",
+      "Tworzenia nowych obiektów GPO w domenie",
+      "Synchronizacji zasad grupowych z kontrolerem domeny"
+    ],
+    "correct": 1,
+    "explanation": "rsop.msc (Resultant Set of Policy) wyświetla graficznie wynikowe zasady grupowe zastosowane dla bieżącego użytkownika i komputera, pokazując jakie ustawienia obowiązują i z którego GPO pochodzą. Alternatywą jest gpresult /r z wiersza poleceń.",
+    "ckeRef": "INF.02.7.2",
+    "tags": [
+      "gpo",
+      "rsop",
+      "group-policy",
+      "windows-server"
+    ]
+  },
+  {
+    "id": "Q-0184",
+    "area": "W",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Co to jest Loopback Processing Mode w zasadach grupowych?",
+    "options": [
+      "Mechanizm stosowania GPO wyłącznie dla komputerów serwerowych",
+      "Tryb wymuszający stosowanie zasad użytkownika zdefiniowanych w GPO powiązanych z lokalizacją komputera, a nie użytkownika",
+      "Metoda odtwarzania poprzednich ustawień GPO",
+      "Ochrona przed pętlą nieskończoną w przetwarzaniu GPO"
+    ],
+    "correct": 1,
+    "explanation": "Loopback Processing pozwala stosować ustawienia zasad użytkownika z GPO przypisanych do OU komputera (np. kiosku), a nie OU użytkownika. Przydatne w środowiskach terminalowych i kiosk komputerach, gdzie polityki mają dotyczyć lokalizacji maszyny.",
+    "ckeRef": "INF.02.7.2",
+    "tags": [
+      "gpo",
+      "loopback",
+      "group-policy",
+      "windows-server"
+    ]
+  },
+  {
+    "id": "Q-0185",
+    "area": "W",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Polecenie `gpresult /r` służy do:",
+    "options": [
+      "Zresetowania ustawień zasad grupowych",
+      "Wyświetlenia raportu o zastosowanych GPO dla bieżącego użytkownika i komputera",
+      "Usunięcia wszystkich lokalnych zasad grupowych",
+      "Wymuszenia synchronizacji z kontrolerem domeny"
+    ],
+    "correct": 1,
+    "explanation": "gpresult /r wyświetla podsumowanie zastosowanych zasad grupowych (Resultant Set of Policy) w trybie tekstowym, pokazując listę GPO dla komputera i użytkownika, wraz z datami stosowania i sumami kontrolnymi.",
+    "ckeRef": "INF.02.7.2",
+    "tags": [
+      "gpo",
+      "gpresult",
+      "group-policy",
+      "windows-server"
+    ]
+  },
+  {
+    "id": "Q-0186",
+    "area": "W",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Administrator chce zablokować portom USB na wszystkich komputerach w dziale Finanse. Jak to zrobić przez GPO?",
+    "options": [
+      "Edytować rejestr na każdym komputerze osobno",
+      "Skonfigurować GPO: Computer Configuration > Administrative Templates > System > Removable Storage Access i powiązać z OU Finanse",
+      "Odinstalować sterowniki USB przez Center Update",
+      "Użyć narzędzia BitLocker To Go"
+    ],
+    "correct": 1,
+    "explanation": "Blokadę USB przez GPO konfiguruje się w: Computer Configuration → Administrative Templates → System → Removable Storage Access. Można odmówić dostępu do odczytu i zapisu. GPO powiązane z OU Finanse zastosuje się do wszystkich komputerów w tym OU.",
+    "ckeRef": "INF.02.7.2",
+    "tags": [
+      "gpo",
+      "usb",
+      "bezpieczenstwo",
+      "windows-server"
+    ]
+  },
+  {
+    "id": "Q-0187",
+    "area": "W",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "Jaki rekord DNS odpowiada za mapowanie nazwy hosta na adres IPv4?",
+    "options": [
+      "AAAA",
+      "PTR",
+      "A",
+      "CNAME"
+    ],
+    "correct": 2,
+    "explanation": "Rekord A (Address) mapuje nazwę hosta na adres IPv4, np. serwer.szkola.local → 192.168.1.10. Rekord AAAA mapuje na IPv6. Rekord PTR to odwrotne mapowanie (IP → nazwa). CNAME to alias.",
+    "ckeRef": "INF.02.7.1",
+    "tags": [
+      "dns",
+      "rekord-a",
+      "windows-server"
+    ]
+  },
+  {
+    "id": "Q-0188",
+    "area": "W",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Do czego służy strefa wyszukiwania wstecznego (Reverse Lookup Zone) w DNS?",
+    "options": [
+      "Szybszego wyszukiwania nazw domen",
+      "Mapowania adresów IP na nazwy hostów (rekordy PTR)",
+      "Przechowywania rekordów MX dla poczty",
+      "Replikacji stref DNS między serwerami"
+    ],
+    "correct": 1,
+    "explanation": "Strefa wyszukiwania wstecznego (Reverse Lookup Zone) zawiera rekordy PTR, które mapują adresy IP na nazwy hostów. Jest używana do weryfikacji tożsamości serwerów (np. sprawdzenie, czy IP 192.168.1.10 należy do serwer.szkola.local).",
+    "ckeRef": "INF.02.7.1",
+    "tags": [
+      "dns",
+      "ptr",
+      "reverse-lookup",
+      "windows-server"
+    ]
+  },
+  {
+    "id": "Q-0189",
+    "area": "W",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Jaki rekord DNS jest wymagany przez Active Directory do lokalizowania usług (np. Kerberos, LDAP)?",
+    "options": [
+      "A",
+      "MX",
+      "SRV",
+      "NS"
+    ],
+    "correct": 2,
+    "explanation": "Rekord SRV (Service) umożliwia klientom zlokalizowanie usług sieciowych, np. _kerberos._tcp.szkola.local lub _ldap._tcp.szkola.local. Active Directory wymaga prawidłowych rekordów SRV do funkcjonowania — bez nich klienci nie mogą znaleźć kontrolerów domeny.",
+    "ckeRef": "INF.02.7.1",
+    "tags": [
+      "dns",
+      "srv",
+      "active-directory",
+      "windows-server"
+    ]
+  },
+  {
+    "id": "Q-0190",
+    "area": "W",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Co to jest warunkowa usługa przekazywania (Conditional Forwarder) w DNS Windows Server?",
+    "options": [
+      "Przekazywanie wszystkich zapytań DNS do serwera nadrzędnego",
+      "Przekazywanie zapytań dla określonej domeny do wskazanego serwera DNS",
+      "Automatyczna aktualizacja rekordów DNS przez klientów DHCP",
+      "Replikacja stref DNS między kontrolerami domeny"
+    ],
+    "correct": 1,
+    "explanation": "Conditional Forwarder (warunkowe przekierowanie) konfiguruje serwer DNS do przekazywania zapytań dla konkretnej domeny (np. partner.com) do określonego serwera DNS zamiast do korzenia. Używane do rozwiązywania nazw między domenami bez pełnej integracji.",
+    "ckeRef": "INF.02.7.1",
+    "tags": [
+      "dns",
+      "conditional-forwarder",
+      "windows-server"
+    ]
+  },
+  {
+    "id": "Q-0191",
+    "area": "W",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Jaki rekord DNS wskazuje serwer poczty elektronicznej dla domeny?",
+    "options": [
+      "A",
+      "PTR",
+      "MX",
+      "SOA"
+    ],
+    "correct": 2,
+    "explanation": "Rekord MX (Mail Exchanger) wskazuje serwer poczty elektronicznej odpowiedzialny za odbieranie maili dla danej domeny. Każdy rekord MX ma priorytet — niższa liczba = wyższy priorytet. Serwery pocztowe używają rekordów MX do dostarczania wiadomości.",
+    "ckeRef": "INF.02.7.1",
+    "tags": [
+      "dns",
+      "mx",
+      "poczta",
+      "windows-server"
+    ]
+  },
+  {
+    "id": "Q-0192",
+    "area": "W",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "Jaka jest różnica między wykluczeniem (Exclusion) a rezerwacją (Reservation) w DHCP?",
+    "options": [
+      "Nie ma różnicy — oba blokują adres IP przed przydzieleniem",
+      "Wykluczenie wyjmuje zakres IP ze puli (statyczne urządzenia), rezerwacja przypisuje stały IP do konkretnego MAC",
+      "Rezerwacja jest tymczasowa, wykluczenie permanentne",
+      "Wykluczenie dotyczy komputerów, rezerwacja — drukarek"
+    ],
+    "correct": 1,
+    "explanation": "Wykluczenie (Exclusion) usuwa zakres adresów ze puli DHCP — serwer ich nie przydziela (dla urządzeń ze statycznym IP). Rezerwacja (Reservation) trwale przypisuje konkretny adres IP do konkretnego adresu MAC urządzenia — DHCP zawsze przydziela ten sam IP.",
+    "ckeRef": "INF.02.7.1",
+    "tags": [
+      "dhcp",
+      "wykluczenie",
+      "rezerwacja",
+      "windows-server"
+    ]
+  },
+  {
+    "id": "Q-0193",
+    "area": "W",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Jaka jest wartość opcji DHCP 003?",
+    "options": [
+      "Adres serwera DNS",
+      "Adres bramy domyślnej (Default Gateway)",
+      "Sufiks domeny DNS",
+      "Adres serwera WINS"
+    ],
+    "correct": 1,
+    "explanation": "Opcja DHCP 003 to adres bramy domyślnej (Default Gateway / Router). Opcja 006 to adresy serwerów DNS, 015 to sufiks domeny DNS, 044 to serwery WINS. Klienci używają tych opcji do konfiguracji sieci bez ręcznej interwencji.",
+    "ckeRef": "INF.02.7.1",
+    "tags": [
+      "dhcp",
+      "opcje-dhcp",
+      "brama",
+      "windows-server"
+    ]
+  },
+  {
+    "id": "Q-0194",
+    "area": "W",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Co to jest DHCP Failover i jakie ma tryby pracy?",
+    "options": [
+      "Mechanizm automatycznego tworzenia kopii zapasowej bazy DHCP",
+      "Mechanizm wysokiej dostępności DHCP z trybami Hot Standby i Load Balance",
+      "Funkcja automatycznego przedłużania dzierżaw",
+      "Metoda filtrowania klientów DHCP po adresie MAC"
+    ],
+    "correct": 1,
+    "explanation": "DHCP Failover zapewnia wysoką dostępność usługi DHCP przez parowanie dwóch serwerów. Tryb Hot Standby: jeden aktywny, drugi gotowy do przejęcia. Tryb Load Balance: oba serwery aktywnie obsługują klientów dzieląc pulę adresów.",
+    "ckeRef": "INF.02.7.1",
+    "tags": [
+      "dhcp",
+      "failover",
+      "ha",
+      "windows-server"
+    ]
+  },
+  {
+    "id": "Q-0195",
+    "area": "W",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Dlaczego serwer DHCP w środowisku Active Directory musi być autoryzowany?",
+    "options": [
+      "Aby szyfrować komunikację DHCP przez Kerberos",
+      "Aby zapobiec uruchamianiu nieautoryzowanych serwerów DHCP fałszywych, które mogłyby zakłócić sieć",
+      "Aby umożliwić rejestrację dynamicznych rekordów DNS",
+      "Autoryzacja jest wymagana tylko dla serwerów DHCP IPv6"
+    ],
+    "correct": 1,
+    "explanation": "Autoryzacja serwera DHCP w AD (polecenie: Add-DhcpServerInDC) zapobiega działaniu nieautoryzowanych (fałszywych) serwerów DHCP w sieci, które mogłyby przydzielać błędne adresy IP i konfigurację, naruszając bezpieczeństwo i działanie sieci.",
+    "ckeRef": "INF.02.7.1",
+    "tags": [
+      "dhcp",
+      "autoryzacja",
+      "active-directory",
+      "windows-server"
+    ]
+  },
+  {
+    "id": "Q-0196",
+    "area": "W",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Co to jest DFS (Distributed File System) w Windows Server?",
+    "options": [
+      "System szyfrowania plików rozproszonych",
+      "Mechanizm udostępniania przestrzeni nazw folderów rozproszonych na wielu serwerach",
+      "Protokół transferu plików FTP dla domen",
+      "Narzędzie do defragmentacji dysków na serwerach"
+    ],
+    "correct": 1,
+    "explanation": "DFS (Distributed File System) składa się z dwóch elementów: DFS Namespaces (wirtualna struktura folderów łącząca udziały sieciowe z różnych serwerów w jedną spójną przestrzeń) oraz DFS Replication (replikacja danych między serwerami).",
+    "ckeRef": "INF.02.7.2",
+    "tags": [
+      "dfs",
+      "file-server",
+      "windows-server"
+    ]
+  },
+  {
+    "id": "Q-0197",
+    "area": "W",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Jakie licencje CAL są wymagane dla użytkowników korzystających z Remote Desktop Services (RDS)?",
+    "options": [
+      "Tylko licencja Windows Server wystarczy",
+      "Windows Server CAL + RDS CAL (User lub Device) dla każdego użytkownika/urządzenia",
+      "Tylko RDS CAL bez Windows Server CAL",
+      "RDS jest objęty standardową licencją OEM Windows"
+    ],
+    "correct": 1,
+    "explanation": "Dostęp do Remote Desktop Services wymaga dwóch licencji: Windows Server CAL (uprawnienie dostępu do serwera) oraz RDS CAL (uprawnienie do sesji RDS). Oba typy RDS CAL: User CAL (na użytkownika) i Device CAL (na urządzenie).",
+    "ckeRef": "INF.02.7.2",
+    "tags": [
+      "rds",
+      "cal",
+      "licencjonowanie",
+      "windows-server"
+    ]
+  },
+  {
+    "id": "Q-0198",
+    "area": "W",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Jakie typy przełączników wirtualnych oferuje Hyper-V?",
+    "options": [
+      "Publiczny, Prywatny, Izolowany",
+      "Zewnętrzny (External), Wewnętrzny (Internal), Prywatny (Private)",
+      "LAN, WAN, DMZ",
+      "Bridged, NAT, Host-Only"
+    ],
+    "correct": 1,
+    "explanation": "Hyper-V oferuje 3 typy vSwitch: External (podłączony do fizycznej karty sieciowej — dostęp do Internetu), Internal (komunikacja host↔VM, brak dostępu zewnętrznego), Private (tylko VM↔VM, host nie ma dostępu — pełna izolacja).",
+    "ckeRef": "INF.02.7.2",
+    "tags": [
+      "hyper-v",
+      "vswitch",
+      "wirtualizacja",
+      "windows-server"
+    ]
+  },
+  {
+    "id": "Q-0199",
+    "area": "W",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "Jaką rolę pełni IIS (Internet Information Services) w Windows Server?",
+    "options": [
+      "Serwer DHCP dla sieci Windows",
+      "Serwer WWW i aplikacji webowych",
+      "Serwer DNS dla domeny AD",
+      "Serwer plików z protokołem SMB"
+    ],
+    "correct": 1,
+    "explanation": "IIS (Internet Information Services) to serwer WWW firmy Microsoft wbudowany w Windows Server. Obsługuje protokoły HTTP, HTTPS, FTP. Umożliwia hostowanie stron internetowych, aplikacji ASP.NET i serwisów REST w środowisku Windows.",
+    "ckeRef": "INF.02.7.2",
+    "tags": [
+      "iis",
+      "web-server",
+      "windows-server"
+    ]
+  },
+  {
+    "id": "Q-0200",
+    "area": "W",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "Jakie polecenie Linux uruchamia usługę i ustawia ją do automatycznego startowania przy restarcie systemu?",
+    "options": [
+      "service apache2 start && chkconfig apache2 on",
+      "systemctl start apache2 && systemctl enable apache2",
+      "init.d apache2 start --boot",
+      "service enable apache2"
+    ],
+    "correct": 1,
+    "explanation": "W systemd: systemctl start apache2 uruchamia usługę natychmiast, a systemctl enable apache2 tworzy dowiązanie symboliczne, dzięki czemu usługa startuje automatycznie po restarcie systemu.",
+    "ckeRef": "INF.02.7.2",
+    "tags": [
+      "linux",
+      "systemd",
+      "systemctl",
+      "uslugi"
+    ]
+  },
+  {
+    "id": "Q-0201",
+    "area": "W",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Jakie polecenie Linux dodaje użytkownika 'jan' do grupy 'sudo'?",
+    "options": [
+      "adduser jan sudo",
+      "usermod -aG sudo jan",
+      "chmod +s jan sudo",
+      "gpasswd -a jan"
+    ],
+    "correct": 1,
+    "explanation": "usermod -aG sudo jan dodaje użytkownika 'jan' do grupy 'sudo' bez usuwania go z innych grup (-a = append, -G = grupy dodatkowe). Po tej operacji użytkownik może wykonywać polecenia z uprawnieniami root używając sudo.",
+    "ckeRef": "INF.02.7.2",
+    "tags": [
+      "linux",
+      "usermod",
+      "sudo",
+      "zarzadzanie-uzytkownikami"
+    ]
+  },
+  {
+    "id": "Q-0202",
+    "area": "W",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "W pliku /etc/ssh/sshd_config administrator zmienia 'PermitRootLogin yes' na 'PermitRootLogin no'. Jaki jest cel tej zmiany?",
+    "options": [
+      "Wyłączenie usługi SSH",
+      "Zabezpieczenie serwera przed bezpośrednim logowaniem jako root przez SSH",
+      "Ograniczenie liczby połączeń SSH",
+      "Zmiana portu nasłuchiwania SSH"
+    ],
+    "correct": 1,
+    "explanation": "Wyłączenie PermitRootLogin blokuje bezpośrednie logowanie użytkownika root przez SSH. To ważna praktyka bezpieczeństwa — administratorzy logują się jako zwykły użytkownik, a następnie używają sudo lub su. Utrudnia to ataki brute-force na konto root.",
+    "ckeRef": "INF.02.7.2",
+    "tags": [
+      "linux",
+      "ssh",
+      "bezpieczenstwo",
+      "root"
+    ]
+  },
+  {
+    "id": "Q-0203",
+    "area": "W",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Co robi polecenie `chmod 755 /var/www/html`?",
+    "options": [
+      "Zmienia właściciela katalogu na www-data",
+      "Nadaje właścicielowi prawa rwx, a grupie i pozostałym r-x",
+      "Usuwa wszystkie uprawnienia z katalogu",
+      "Szyfruje katalog z kluczem 755-bitowym"
+    ],
+    "correct": 1,
+    "explanation": "chmod 755 ustawia: właściciel (7=rwx: odczyt+zapis+wykonanie), grupa (5=r-x: odczyt+wykonanie), pozostali (5=r-x: odczyt+wykonanie). To typowe uprawnienia dla katalogów serwera WWW — właściciel może modyfikować, inni mogą odczytywać.",
+    "ckeRef": "INF.02.7.2",
+    "tags": [
+      "linux",
+      "chmod",
+      "uprawnienia",
+      "serwer"
+    ]
+  },
+  {
+    "id": "Q-0204",
+    "area": "W",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Samba na Linux służy do:",
+    "options": [
+      "Udostępniania plików przez protokół NFS",
+      "Implementacji protokołu SMB/CIFS — udostępniania plików i drukarek dla klientów Windows",
+      "Zarządzania kontenerami Docker",
+      "Konfiguracji zapory sieciowej iptables"
+    ],
+    "correct": 1,
+    "explanation": "Samba implementuje protokół SMB/CIFS (Server Message Block), umożliwiając komputerom Linux/Unix udostępnianie plików i drukarek dla klientów Windows (i macOS). Konfiguracja w /etc/samba/smb.conf. Może też pełnić rolę kontrolera domeny AD.",
+    "ckeRef": "INF.02.7.2",
+    "tags": [
+      "linux",
+      "samba",
+      "smb",
+      "plikowy-serwer"
+    ]
+  },
+  {
+    "id": "Q-0205",
+    "area": "6",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "Ile bitów ma adres IPv6?",
+    "options": [
+      "32 bity",
+      "64 bity",
+      "128 bitów",
+      "256 bitów"
+    ],
+    "correct": 2,
+    "explanation": "Adres IPv6 ma 128 bitów, zapisanych jako 8 grup po 4 cyfry szesnastkowe oddzielone dwukropkami, np. 2001:0db8:85a3:0000:0000:8a2e:0370:7334. Dla porównania IPv4 ma 32 bity.",
+    "ckeRef": "INF.02.5.3",
+    "tags": [
+      "ipv6",
+      "adresowanie",
+      "siec"
+    ]
+  },
+  {
+    "id": "Q-0206",
+    "area": "6",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "Jaki adres IPv6 jest odpowiednikiem adresu pętli zwrotnej 127.0.0.1 z IPv4?",
+    "options": [
+      "::0",
+      "::1",
+      "FE80::1",
+      "FF00::1"
+    ],
+    "correct": 1,
+    "explanation": "Adres ::1/128 to adres pętli zwrotnej (loopback) w IPv6, odpowiednik IPv4 127.0.0.1. Służy do testowania stosu sieciowego lokalnego hosta bez wysyłania pakietów przez sieć.",
+    "ckeRef": "INF.02.5.3",
+    "tags": [
+      "ipv6",
+      "loopback",
+      "adresowanie"
+    ]
+  },
+  {
+    "id": "Q-0207",
+    "area": "6",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Skróć poprawnie adres IPv6: 2001:0db8:0000:0000:0000:0000:0000:0001",
+    "options": [
+      "2001:db8:0:0:0:0:0:1",
+      "2001:db8::1",
+      "2001:DB8::0001",
+      "2001:db8::/1"
+    ],
+    "correct": 1,
+    "explanation": "Kompresja IPv6: (1) usuń wiodące zera w każdej grupie: 2001:db8:0:0:0:0:0:1, (2) zastąp najdłuższy ciąg grup samych zer przez :: (tylko raz): 2001:db8::1. Wynik: 2001:db8::1.",
+    "ckeRef": "INF.02.5.3",
+    "tags": [
+      "ipv6",
+      "kompresja",
+      "adresowanie"
+    ]
+  },
+  {
+    "id": "Q-0208",
+    "area": "6",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Adresy Link-local w IPv6 zaczynają się od prefiksu:",
+    "options": [
+      "FC00::/7",
+      "FE80::/10",
+      "FF00::/8",
+      "2000::/3"
+    ],
+    "correct": 1,
+    "explanation": "Adresy Link-local mają prefiks FE80::/10. Są automatycznie konfigurowane na każdym interfejsie IPv6 i służą do komunikacji w obrębie jednego segmentu sieci (łącza). Nie są routowane poza łącze.",
+    "ckeRef": "INF.02.5.3",
+    "tags": [
+      "ipv6",
+      "link-local",
+      "fe80"
+    ]
+  },
+  {
+    "id": "Q-0209",
+    "area": "6",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Adresy Unique Local (ULA) w IPv6 są odpowiednikiem prywatnych adresów IPv4 (RFC 1918). Jaki mają prefiks?",
+    "options": [
+      "FE80::/10",
+      "FF00::/8",
+      "FC00::/7 (w praktyce FD00::/8)",
+      "2001::/32"
+    ],
+    "correct": 2,
+    "explanation": "Adresy Unique Local Address (ULA) mają prefiks FC00::/7. W praktyce stosuje się FD00::/8 (bit L=1), co odpowiada prywatnym adresom IPv4 (10.x, 172.16.x, 192.168.x). Nie są globalnie routowane.",
+    "ckeRef": "INF.02.5.3",
+    "tags": [
+      "ipv6",
+      "ula",
+      "prywatne",
+      "fc00"
+    ]
+  },
+  {
+    "id": "Q-0210",
+    "area": "6",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Co to jest SLAAC (Stateless Address Autoconfiguration) w IPv6?",
+    "options": [
+      "Protokół przydzielania adresów IPv6 przez serwer centralny",
+      "Mechanizm automatycznej konfiguracji adresu przez hosta na podstawie prefiksu z Router Advertisement i EUI-64",
+      "Protokół routingu IPv6 między domenami",
+      "Mechanizm translacji IPv6 na IPv4"
+    ],
+    "correct": 1,
+    "explanation": "SLAAC pozwala hostom IPv6 automatycznie konfigurować swój adres bez serwera DHCP. Host odbiera Router Advertisement (RA) z prefiksem sieci, a następnie generuje identyfikator interfejsu metodą EUI-64 z adresu MAC.",
+    "ckeRef": "INF.02.5.3",
+    "tags": [
+      "ipv6",
+      "slaac",
+      "autoconfiguration",
+      "ra"
+    ]
+  },
+  {
+    "id": "Q-0211",
+    "area": "6",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Adres MAC 00:1A:2B:3C:4D:5E. Jaki będzie identyfikator interfejsu EUI-64?",
+    "options": [
+      "001A:2BFF:FE3C:4D5E",
+      "021A:2BFF:FE3C:4D5E",
+      "FF1A:2B3C:4D5E:FFFE",
+      "001A:2B3C:4D5E:FF00"
+    ],
+    "correct": 1,
+    "explanation": "EUI-64: (1) podziel MAC: 00:1A:2B | 3C:4D:5E, (2) wstaw FF:FE: 00:1A:2B:FF:FE:3C:4D:5E, (3) odwróć bit U/L (bit 7 pierwszego oktetu): 00 → 02. Wynik: 02:1A:2B:FF:FE:3C:4D:5E = 021A:2BFF:FE3C:4D5E.",
+    "ckeRef": "INF.02.5.3",
+    "tags": [
+      "ipv6",
+      "eui-64",
+      "mac",
+      "identyfikator"
+    ]
+  },
+  {
+    "id": "Q-0212",
+    "area": "6",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Jakie rozwiązanie w IPv6 zastępuje protokół ARP z IPv4?",
+    "options": [
+      "DHCPv6",
+      "NDP (Neighbor Discovery Protocol) z ICMPv6",
+      "IGMP",
+      "OSPF"
+    ],
+    "correct": 1,
+    "explanation": "NDP (Neighbor Discovery Protocol) używa komunikatów ICMPv6 do zastąpienia ARP. Neighbor Solicitation (NS) odpowiada ARP Request, a Neighbor Advertisement (NA) — ARP Reply. NDP jest bardziej bezpieczny i wielofunkcyjny.",
+    "ckeRef": "INF.02.5.4",
+    "tags": [
+      "ipv6",
+      "ndp",
+      "icmpv6",
+      "arp"
+    ]
+  },
+  {
+    "id": "Q-0213",
+    "area": "6",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "Jaki prefiks używają adresy multicast IPv6?",
+    "options": [
+      "FE80::/10",
+      "FC00::/7",
+      "FF00::/8",
+      "2000::/3"
+    ],
+    "correct": 2,
+    "explanation": "Adresy multicast IPv6 zaczynają się od FF00::/8. W IPv6 nie ma broadcastu — multicast pełni tę rolę (np. FF02::1 = wszystkie hosty, FF02::2 = wszystkie routery, FF02::1:2 = agenty DHCP).",
+    "ckeRef": "INF.02.5.3",
+    "tags": [
+      "ipv6",
+      "multicast",
+      "ff00"
+    ]
+  },
+  {
+    "id": "Q-0214",
+    "area": "6",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Protokół RIP ma ograniczenie maksymalnej liczby skoków (hops). Ile wynosi?",
+    "options": [
+      "8 skoków",
+      "15 skoków",
+      "30 skoków",
+      "255 skoków"
+    ],
+    "correct": 1,
+    "explanation": "RIP (Routing Information Protocol) ma maksymalny limit 15 skoków (hops). Trasa o odległości 16 skoków jest uznawana za nieosiągalną (infinity). To ogranicza RIP do małych sieci. Aktualizacje routingu wysyłane są co 30 sekund.",
+    "ckeRef": "INF.02.5.4",
+    "tags": [
+      "routing",
+      "rip",
+      "hop-count"
+    ]
+  },
+  {
+    "id": "Q-0215",
+    "area": "6",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Protokół OSPF używa metryki opartej na koszcie (cost). Jaki koszt ma łącze 100 Mbps?",
+    "options": [
+      "1",
+      "10",
+      "100",
+      "1000"
+    ],
+    "correct": 0,
+    "explanation": "W OSPF koszt = 100 Mbps / przepustowość_łącza. Dla 100 Mbps: 100/100 = 1. Dla 10 Mbps: 100/10 = 10. Dla 1 Gbps: 100/1000 = 0,1 → zaokrąglone do 1 (problem — dlatego w praktyce zmienia się Reference Bandwidth).",
+    "ckeRef": "INF.02.5.4",
+    "tags": [
+      "routing",
+      "ospf",
+      "koszt",
+      "metrika"
+    ]
+  },
+  {
+    "id": "Q-0216",
+    "area": "6",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Czym różni się DHCPv6 stanowy (stateful) od bezstanowego (stateless)?",
+    "options": [
+      "DHCPv6 stanowy przydziela adresy i opcje; bezstanowy przydziela tylko opcje (np. DNS), adresy z SLAAC",
+      "DHCPv6 stanowy działa tylko z IPv6, bezstanowy — z IPv4 i IPv6",
+      "Nie ma różnicy funkcjonalnej",
+      "DHCPv6 bezstanowy wymaga serwera RADIUS"
+    ],
+    "correct": 0,
+    "explanation": "DHCPv6 stanowy (stateful) przydziela adresy IPv6 i opcje konfiguracyjne (jak DNS). DHCPv6 bezstanowy (stateless) przydziela tylko opcje (DNS, NTP), a adresy host konfiguruje samodzielnie przez SLAAC.",
+    "ckeRef": "INF.02.5.3",
+    "tags": [
+      "ipv6",
+      "dhcpv6",
+      "stateful",
+      "stateless",
+      "slaac"
+    ]
+  },
+  {
+    "id": "Q-0217",
+    "area": "6",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "Jakie polecenie Linux dodaje trasę statyczną IPv6 do sieci 2001:db8:2::/64 przez brame 2001:db8:1::1?",
+    "options": [
+      "route add -6 2001:db8:2::/64 gw 2001:db8:1::1",
+      "ip route add 2001:db8:2::/64 via 2001:db8:1::1",
+      "ipv6 route 2001:db8:2::/64 2001:db8:1::1",
+      "netsh interface ipv6 add route 2001:db8:2::/64"
+    ],
+    "correct": 1,
+    "explanation": "Polecenie ip route add 2001:db8:2::/64 via 2001:db8:1::1 dodaje trasę statyczną IPv6 w Linux. Jest częścią nowoczesnego zestawu narzędzi iproute2 (zastępuje przestarzałe route). Analogicznie dla IPv4: ip route add 192.168.2.0/24 via 192.168.1.1.",
+    "ckeRef": "INF.02.5.4",
+    "tags": [
+      "ipv6",
+      "routing",
+      "linux",
+      "ip-route"
+    ]
+  },
+  {
+    "id": "Q-0218",
+    "area": "6",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Protokół BGP (Border Gateway Protocol) używa numerów AS. Co oznacza AS?",
+    "options": [
+      "Address Subnet — podsieć adresowa",
+      "Autonomous System — autonomiczny system zarządzany przez jedną organizację",
+      "Authentication Service — usługa uwierzytelniania",
+      "Active State — stan aktywny trasy BGP"
+    ],
+    "correct": 1,
+    "explanation": "AS (Autonomous System) to zbiór sieci IP zarządzanych przez jedną organizację z jednolitą polityką routingu. BGP (Border Gateway Protocol) jest protokołem routingu między systemami autonomicznymi (EGP) używanym w Internecie. Numery AS: 1-64511 (publiczne), 64512-65535 (prywatne).",
+    "ckeRef": "INF.02.5.4",
+    "tags": [
+      "routing",
+      "bgp",
+      "as",
+      "siec"
+    ]
+  },
+  {
+    "id": "Q-0219",
+    "area": "6",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Które adresy IPv6 są globalnie rutowalne (Global Unicast)?",
+    "options": [
+      "FE80::/10",
+      "FC00::/7",
+      "FF00::/8",
+      "2000::/3"
+    ],
+    "correct": 3,
+    "explanation": "Globalne adresy unicast IPv6 mają prefiks 2000::/3 (pierwsze 3 bity: 001). Są globalnie rutowalne — odpowiadają publicznym adresom IPv4. Przydzielane przez IANA/RIR. Prefiks dokumentacyjny (nie do użytku): 2001:db8::/32.",
+    "ckeRef": "INF.02.5.3",
+    "tags": [
+      "ipv6",
+      "global-unicast",
+      "2000",
+      "adresowanie"
+    ]
+  },
+  {
+    "id": "Q-0220",
+    "area": "6",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Co to jest anycast w IPv6 i jak różni się od unicast i multicast?",
+    "options": [
+      "Anycast wysyła pakiet do wszystkich węzłów w grupie, unicast — do jednego, multicast — do grupy",
+      "Anycast przypisuje jeden adres do wielu interfejsów — pakiet trafia do najbliższego; unicast — do jednego; multicast — do grupy subskrybentów",
+      "Anycast jest tożsamy z broadcast z IPv4",
+      "Anycast wymaga specjalnego protokołu routingu"
+    ],
+    "correct": 1,
+    "explanation": "Anycast przypisuje ten sam adres do wielu węzłów — router kieruje pakiet do najbliższego (zgodnie z metryką routingu). Używany dla serwerów DNS (np. 8.8.8.8 to anycast) i CDN. Unicast: jeden nadawca → jeden odbiorca. Multicast: jeden → wielu subskrybentów.",
+    "ckeRef": "INF.02.5.3",
+    "tags": [
+      "ipv6",
+      "anycast",
+      "unicast",
+      "multicast"
+    ]
+  },
+  {
+    "id": "Q-0221",
+    "area": "V",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "Czym różni się hypervisor Typu 1 od Typu 2?",
+    "options": [
+      "Typ 1 działa na systemie operacyjnym hosta; Typ 2 bezpośrednio na sprzęcie",
+      "Typ 1 (bare-metal) działa bezpośrednio na sprzęcie; Typ 2 (hosted) działa jako aplikacja na systemie operacyjnym",
+      "Typ 1 obsługuje tylko Windowsa; Typ 2 — tylko Linux",
+      "Nie ma różnicy funkcjonalnej"
+    ],
+    "correct": 1,
+    "explanation": "Hypervisor Typ 1 (bare-metal): Hyper-V, VMware ESXi, KVM — instalowany bezpośrednio na sprzęcie, lepsze osiągi. Typ 2 (hosted): VirtualBox, VMware Workstation, Parallels — działa jako aplikacja na istniejącym OS. Typ 1 używany w produkcji, Typ 2 — do testów/desktop.",
+    "ckeRef": "INF.02.8.1",
+    "tags": [
+      "wirtualizacja",
+      "hypervisor",
+      "typ1",
+      "typ2"
+    ]
+  },
+  {
+    "id": "Q-0222",
+    "area": "V",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Jaka jest maksymalna pojemność dysku wirtualnego VHDX w Hyper-V?",
+    "options": [
+      "2 TB",
+      "16 TB",
+      "32 TB",
+      "64 TB"
+    ],
+    "correct": 3,
+    "explanation": "Format VHDX obsługuje dyski wirtualne do 64 TB (starszy format VHD tylko do 2 TB). VHDX ma też większy rozmiar bloku (dla lepszej wydajności), jest odporny na awarie zasilania i obsługuje wyrównanie 4K.",
+    "ckeRef": "INF.02.8.1",
+    "tags": [
+      "hyper-v",
+      "vhdx",
+      "vhd",
+      "wirtualizacja"
+    ]
+  },
+  {
+    "id": "Q-0223",
+    "area": "V",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Jakie wymagania sprzętowe są niezbędne do uruchomienia Hyper-V?",
+    "options": [
+      "Wyłącznie 64-bitowy procesor Intel",
+      "Procesor z obsługą wirtualizacji (Intel VT-x lub AMD-V) oraz SLAT (EPT lub RVI)",
+      "Karta graficzna z obsługą DirectX 12",
+      "Minimum 32 GB RAM i dysk SSD"
+    ],
+    "correct": 1,
+    "explanation": "Hyper-V wymaga: procesora z wirtualizacją sprzętową (Intel VT-x lub AMD-V) — musi być włączona w BIOS/UEFI, oraz SLAT (Second Level Address Translation: Intel EPT lub AMD RVI) dla pełnej funkcjonalności. SLAT to wymaganie dla Windows 8+/Server 2012+.",
+    "ckeRef": "INF.02.8.1",
+    "tags": [
+      "hyper-v",
+      "wymagania",
+      "vt-x",
+      "slat"
+    ]
+  },
+  {
+    "id": "Q-0224",
+    "area": "V",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "Czym jest Docker image (obraz Docker)?",
+    "options": [
+      "Działająca instancja kontenera",
+      "Szablon tylko do odczytu zawierający system plików i konfigurację aplikacji",
+      "Plik konfiguracyjny serwera Docker",
+      "Kopia zapasowa kontenera"
+    ],
+    "correct": 1,
+    "explanation": "Docker image (obraz) to szablon tylko do odczytu zawierający system plików warstwy bazowej, aplikację i jej zależności. Z jednego obrazu można uruchomić wiele kontenerów. Kontenery dodają warstwę zapisu na szczycie niezmiennego obrazu.",
+    "ckeRef": "INF.02.8.1",
+    "tags": [
+      "docker",
+      "image",
+      "kontener",
+      "wirtualizacja"
+    ]
+  },
+  {
+    "id": "Q-0225",
+    "area": "V",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Minimum ile dysków jest wymaganych dla RAID 5 i ile dysków może ulec awarii bez utraty danych?",
+    "options": [
+      "Minimum 2 dyski; 1 awaria tolerowana",
+      "Minimum 3 dyski; 1 awaria tolerowana",
+      "Minimum 4 dyski; 2 awarie tolerowane",
+      "Minimum 5 dysków; 2 awarie tolerowane"
+    ],
+    "correct": 1,
+    "explanation": "RAID 5 wymaga minimum 3 dysków. Używa rozproszonych informacji parzystości (distributed parity). Toleruje awarię 1 dysku — dane można odtworzyć z parzystości. Pojemność użyteczna: (n-1) × pojemność_dysku.",
+    "ckeRef": "INF.02.8.2",
+    "tags": [
+      "raid",
+      "raid5",
+      "parzystosc",
+      "backup"
+    ]
+  },
+  {
+    "id": "Q-0226",
+    "area": "V",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Jaka jest zasada 3-2-1 tworzenia kopii zapasowych?",
+    "options": [
+      "3 kopie, 2 tygodnie retencji, 1 test miesięcznie",
+      "3 kopie danych, na 2 różnych nośnikach, 1 kopia poza siedzibą (offsite)",
+      "3 pełne backupy, 2 przyrostowe, 1 różnicowy tygodniowo",
+      "3 serwery backupu, 2 lokalizacje, 1 system chmurowy"
+    ],
+    "correct": 1,
+    "explanation": "Reguła 3-2-1: posiadaj co najmniej 3 kopie danych (oryginał + 2 backup), przechowuj na 2 różnych rodzajach nośników (np. dysk + taśma), a 1 kopię przechowuj poza główną lokalizacją (offsite: chmura, inna siedziba). Chroni przed każdym typem awarii.",
+    "ckeRef": "INF.02.8.2",
+    "tags": [
+      "backup",
+      "3-2-1",
+      "strategia-backup"
+    ]
+  },
+  {
+    "id": "Q-0227",
+    "area": "V",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Która strategia backupu oferuje najszybsze tworzenie kopii, ale najwolniejsze odtwarzanie?",
+    "options": [
+      "Backup pełny (Full)",
+      "Backup różnicowy (Differential)",
+      "Backup przyrostowy (Incremental)",
+      "Backup migawkowy (Snapshot)"
+    ],
+    "correct": 2,
+    "explanation": "Backup przyrostowy (Incremental) zapisuje tylko zmiany od ostatniego backupu (pełnego lub przyrostowego) — najszybszy zapis. Odtwarzanie wymaga pełnego + wszystkich przyrostowych po kolei — najwolniejsze. Backup różnicowy: zapis wolniejszy od przyrostowego, odtwarzanie szybsze.",
+    "ckeRef": "INF.02.8.2",
+    "tags": [
+      "backup",
+      "przyrostowy",
+      "incremental",
+      "strategia"
+    ]
+  },
+  {
+    "id": "Q-0228",
+    "area": "V",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Co oznacza skrót RPO w kontekście ciągłości działania?",
+    "options": [
+      "Recovery Point Objective — maksymalny akceptowalny czas utraty danych",
+      "Recovery Process Order — kolejność procedur odtwarzania",
+      "Redundant Power Option — opcja zasilania redundantnego",
+      "Remote Processing Operations — operacje zdalnego przetwarzania"
+    ],
+    "correct": 0,
+    "explanation": "RPO (Recovery Point Objective) to maksymalny akceptowalny okres utraty danych — określa, jak stara kopia danych jest dopuszczalna po awarii. Np. RPO = 4 godziny oznacza, że backup musi być tworzony co najmniej co 4 godziny. RTO to maksymalny czas niedostępności systemu.",
+    "ckeRef": "INF.02.8.2",
+    "tags": [
+      "backup",
+      "rpo",
+      "rto",
+      "ciaglosc-dzialania"
+    ]
+  },
+  {
+    "id": "Q-0229",
+    "area": "V",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "RAID 0 (striping) oferuje następujące cechy:",
+    "options": [
+      "Pełną redundancję danych, dobra wydajność",
+      "Zwiększoną wydajność odczytu/zapisu, brak redundancji — utrata 1 dysku = utrata wszystkich danych",
+      "Minimalną wydajność, maksymalną bezpieczeństwo",
+      "Redundancję na poziomie 50% pojemności"
+    ],
+    "correct": 1,
+    "explanation": "RAID 0 (striping) dzieli dane równomiernie między dyski, zwiększając wydajność odczytu i zapisu proporcjonalnie do liczby dysków. Nie zapewnia żadnej redundancji — awaria jednego dysku powoduje utratę wszystkich danych. Używany tam, gdzie wydajność > bezpieczeństwo danych.",
+    "ckeRef": "INF.02.8.2",
+    "tags": [
+      "raid",
+      "raid0",
+      "striping",
+      "wydajnosc"
+    ]
+  },
+  {
+    "id": "Q-0230",
+    "area": "V",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Firma ma 4 dyski po 2 TB i potrzebuje maksymalnej odporności na awarie przy zachowaniu możliwości pracy. Jaki RAID wybrać?",
+    "options": [
+      "RAID 0 — 8 TB, brak odporności",
+      "RAID 5 — 6 TB, toleruje 1 awarię",
+      "RAID 6 — 4 TB, toleruje 2 awarie",
+      "RAID 10 — 4 TB, toleruje 1 awarię na każdą parę"
+    ],
+    "correct": 2,
+    "explanation": "RAID 6 z 4 dyskami 2TB daje 4 TB użytecznej pojemności i toleruje awarię 2 dysków jednocześnie — maksymalna odporność wśród standardowych RAID. RAID 5 toleruje tylko 1 awarię. RAID 10 ma 4TB i toleruje 1 awarię na parę (ale nie 2 awarie z tej samej pary).",
+    "ckeRef": "INF.02.8.2",
+    "tags": [
+      "raid",
+      "raid6",
+      "odpornosc",
+      "wybor"
+    ]
+  },
+  {
+    "id": "Q-0231",
+    "area": "V",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Co to jest VSS (Volume Shadow Copy Service) w Windows?",
+    "options": [
+      "Usługa wirtualnych sieci prywatnych",
+      "Usługa tworzenia spójnych migawek woluminów podczas działania systemu — używana przez backupy i Poprzednie wersje",
+      "Narzędzie do zarządzania dyskami wirtualnymi VHDX",
+      "System replikacji danych między serwerami"
+    ],
+    "correct": 1,
+    "explanation": "VSS (Volume Shadow Copy Service) koordynuje tworzenie spójnych migawek woluminów podczas działania systemu. Aplikacje (np. SQL Server) zamrażają zapisy na chwilę, migawka jest tworzona, a potem zapis wznawia się. Używana przez Windows Server Backup i funkcję Poprzednie wersje.",
+    "ckeRef": "INF.02.8.2",
+    "tags": [
+      "vss",
+      "shadow-copy",
+      "backup",
+      "windows"
+    ]
+  },
+  {
+    "id": "Q-0232",
+    "area": "V",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Czym różni się checkpoint (migawka) Hyper-V produkcyjny od standardowego?",
+    "options": [
+      "Nie ma różnicy — oba zapisują pełny stan VM",
+      "Standardowy zapisuje stan RAM i dysk; produkcyjny używa VSS/Linux freeze do spójności aplikacji bez zapisu stanu RAM",
+      "Produkcyjny działa tylko z VM Windows Server 2019+",
+      "Standardowy wymaga zatrzymania VM przed wykonaniem"
+    ],
+    "correct": 1,
+    "explanation": "Standardowy checkpoint Hyper-V zapisuje pełny stan VM (RAM + dysk) — jak pauza. Produkcyjny checkpoint używa VSS (Windows) lub fsfreeze (Linux) do spójności aplikacji i nie zapisuje stanu RAM — VM pozostaje uruchomiona. Produkcyjny jest bezpieczniejszy dla baz danych.",
+    "ckeRef": "INF.02.8.1",
+    "tags": [
+      "hyper-v",
+      "checkpoint",
+      "vss",
+      "wirtualizacja"
+    ]
+  },
+  {
+    "id": "Q-0233",
+    "area": "V",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Rotacja kopii zapasowych GFS (Grandfather-Father-Son) polega na:",
+    "options": [
+      "Tworzeniu 3 typów backupów: pełnego, przyrostowego i różnicowego",
+      "Hierarchicznym systemie retencji: dzienny (Son), tygodniowy (Father), miesięczny (Grandfather) — Grandfather przechowywany najdłużej",
+      "Tworzeniu kopii na 3 różnych rodzajach nośników",
+      "Rotacji między 3 serwerami backupu"
+    ],
+    "correct": 1,
+    "explanation": "GFS (Grandfather-Father-Son) to schemat rotacji taśm/backupów: Son = dzienny backup (nadpisywany co tydzień), Father = tygodniowy (nadpisywany co miesiąc), Grandfather = miesięczny (przechowywany przez rok lub dłużej). Optymalizuje koszt przechowywania przy zachowaniu historii.",
+    "ckeRef": "INF.02.8.2",
+    "tags": [
+      "backup",
+      "gfs",
+      "rotacja",
+      "retencja"
+    ]
+  },
+  {
+    "id": "Q-0234",
+    "area": "Z",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "BitLocker wymaga do działania układu TPM. Jaka jest minimalna wersja TPM wymagana przez Windows 11?",
+    "options": [
+      "TPM 1.0",
+      "TPM 1.2",
+      "TPM 2.0",
+      "TPM nie jest wymagany"
+    ],
+    "correct": 2,
+    "explanation": "Windows 11 wymaga TPM 2.0 jako obowiązkowego wymagania sprzętowego. BitLocker korzysta z TPM do przechowywania kluczy szyfrowania — zapewnia, że zaszyfrowany dysk można odczytać tylko na tym samym komputerze (bez klucza odzyskiwania).",
+    "ckeRef": "INF.02.9.1",
+    "tags": [
+      "bitlocker",
+      "tpm",
+      "szyfrowanie",
+      "windows"
+    ]
+  },
+  {
+    "id": "Q-0235",
+    "area": "Z",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Jaka jest różnica między IDS a IPS w kontekście bezpieczeństwa sieci?",
+    "options": [
+      "IDS i IPS to te same urządzenia — różna nazwa producenta",
+      "IDS wykrywa i alertuje (pasywny); IPS wykrywa i blokuje (aktywny)",
+      "IDS blokuje ruch; IPS tylko monitoruje i raportuje",
+      "IDS chroni sieć wewnętrzną; IPS — sieć zewnętrzną"
+    ],
+    "correct": 1,
+    "explanation": "IDS (Intrusion Detection System) pasywnie monitoruje ruch i generuje alerty o podejrzanych zdarzeniach — nie blokuje. IPS (Intrusion Prevention System) aktywnie blokuje podejrzany ruch w czasie rzeczywistym. Oba mogą używać sygnatur lub analizy anomalii.",
+    "ckeRef": "INF.02.9.2",
+    "tags": [
+      "ids",
+      "ips",
+      "bezpieczenstwo",
+      "siec"
+    ]
+  },
+  {
+    "id": "Q-0236",
+    "area": "Z",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Pracownik uzyskuje dostęp do zasobu sieciowego przez sieć. Jakie uprawnienia faktycznie obowiązują przy połączeniu przez udział sieciowy?",
+    "options": [
+      "Uprawnienia NTFS mają zawsze pierwszeństwo",
+      "Uprawnienia udziału sieciowego mają zawsze pierwszeństwo",
+      "Obowiązują bardziej restrykcyjne z uprawnienia NTFS i uprawnień udziału sieciowego",
+      "Suma uprawnień NTFS i sieciowych"
+    ],
+    "correct": 2,
+    "explanation": "Przy dostępie przez sieć efektywne uprawnienia to PRZECIĘCIE (AND) uprawnień NTFS i uprawnień udziału sieciowego — stosuje się bardziej restrykcyjne. Np. jeśli udział daje Pełna kontrola, a NTFS daje Odczyt — użytkownik ma tylko Odczyt. Lokalnie obowiązują wyłącznie uprawnienia NTFS.",
+    "ckeRef": "INF.02.9.1",
+    "tags": [
+      "ntfs",
+      "uprawnienia",
+      "udzial-sieciowy",
+      "bezpieczenstwo"
+    ]
+  },
+  {
+    "id": "Q-0237",
+    "area": "Z",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "Zasada najmniejszych uprawnień (Principle of Least Privilege) mówi, że:",
+    "options": [
+      "Administratorzy powinni mieć pełne uprawnienia do wszystkich zasobów",
+      "Użytkownicy i procesy powinni mieć tylko minimalne uprawnienia niezbędne do wykonania zadania",
+      "Wszystkie zasoby powinny być publicznie dostępne domyślnie",
+      "Hasła powinny być zmieniane co 30 dni"
+    ],
+    "correct": 1,
+    "explanation": "Zasada najmniejszych uprawnień (PoLP/Least Privilege) stanowi, że użytkownicy, procesy i systemy powinny mieć tylko te uprawnienia, które są niezbędne do wykonania ich zadań. Minimalizuje ryzyko nadużyć, błędów i skutki ataków.",
+    "ckeRef": "INF.02.9.1",
+    "tags": [
+      "bezpieczenstwo",
+      "zasada-minimalna",
+      "uprawnienia"
+    ]
+  },
+  {
+    "id": "Q-0238",
+    "area": "Z",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "TOTP (Time-based One-Time Password) używany w Google Authenticator działa w oparciu o:",
+    "options": [
+      "Szyfrowanie RSA z kluczem prywatnym użytkownika",
+      "Wspólny sekret + aktualny czas (HMAC-SHA1, okno 30 sekund)",
+      "Jednorazowe hasło wysyłane SMS-em",
+      "Certyfikat X.509 przechowywany w urządzeniu"
+    ],
+    "correct": 1,
+    "explanation": "TOTP (RFC 6238) generuje jednorazowe hasło na podstawie wspólnego sekretu i aktualnego czasu (podzielonego na przedziały 30s) używając funkcji HMAC-SHA1. Serwer i aplikacja mobilna generują ten sam kod w tym samym oknie czasowym.",
+    "ckeRef": "INF.02.9.1",
+    "tags": [
+      "totp",
+      "mfa",
+      "uwierzytelnianie",
+      "google-authenticator"
+    ]
+  },
+  {
+    "id": "Q-0239",
+    "area": "Z",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Który profil zapory Windows Defender Firewall stosowany jest w sieciach publicznych (np. kawiarnia, lotnisko)?",
+    "options": [
+      "Domain Profile",
+      "Private Profile",
+      "Public Profile",
+      "Guest Profile"
+    ],
+    "correct": 2,
+    "explanation": "Public Profile (profil publiczny) jest stosowany dla sieci niezaufanych, np. hotspot w kawiarni lub na lotnisku. Stosuje najbardziej restrykcyjne reguły. Domain Profile — dla sieci domenowych. Private Profile — dla sieci domowych/zaufanych.",
+    "ckeRef": "INF.02.9.2",
+    "tags": [
+      "firewall",
+      "profil",
+      "public",
+      "windows"
+    ]
+  },
+  {
+    "id": "Q-0240",
+    "area": "Z",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Jaki jest główny wektor ataku ransomware i skuteczna metoda ochrony?",
+    "options": [
+      "Fizyczny atak na sprzęt; ochrona: monitoring CCTV",
+      "Phishing e-mail z załącznikiem lub exploit podatności; ochrona: regularne backupy + aktualizacje + edukacja",
+      "Atak przez Bluetooth; ochrona: wyłączanie Bluetooth",
+      "Sniffing sieci WiFi; ochrona: VPN"
+    ],
+    "correct": 1,
+    "explanation": "Ransomware (np. WannaCry, Ryuk) najczęściej wnika przez wiadomości phishingowe lub exploity niezałatanych podatności (np. EternalBlue/SMB). Szyfruje pliki i żąda okupu. Kluczowa ochrona: regularne backupy offline (3-2-1), aktualizacje systemu i edukacja użytkowników.",
+    "ckeRef": "INF.02.9.2",
+    "tags": [
+      "ransomware",
+      "phishing",
+      "bezpieczenstwo",
+      "backup"
+    ]
+  },
+  {
+    "id": "Q-0241",
+    "area": "Z",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Co to jest IPsec Tunnel Mode i kiedy się go używa?",
+    "options": [
+      "Tryb szyfrujący wyłącznie nagłówek IP pakietu, używany lokalnie",
+      "Tryb enkapsulujący cały oryginalny pakiet IP w nowym pakiecie IP — używany w VPN między sieciami (site-to-site)",
+      "Tryb uwierzytelniający bez szyfrowania, dla sieci wewnętrznych",
+      "Tryb IPsec przeznaczony wyłącznie dla IPv6"
+    ],
+    "correct": 1,
+    "explanation": "IPsec Tunnel Mode enkapsuluje cały oryginalny pakiet IP (nagłówek + dane) w nowym pakiecie IP z nagłówkami IPsec. Używany głównie w VPN site-to-site między routerami/bramami. Transport Mode chroni tylko ładunek (payload) i jest używany między hostami.",
+    "ckeRef": "INF.02.9.2",
+    "tags": [
+      "ipsec",
+      "vpn",
+      "tunnel-mode",
+      "bezpieczenstwo"
+    ]
+  },
+  {
+    "id": "Q-0242",
+    "area": "Z",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Atakujący przechwytuje komunikację między klientem a serwerem podszywając się pod oba. Jak nazywa się ten typ ataku?",
+    "options": [
+      "DDoS (Distributed Denial of Service)",
+      "MITM (Man-in-the-Middle)",
+      "SQL Injection",
+      "Ransomware"
+    ],
+    "correct": 1,
+    "explanation": "MITM (Man-in-the-Middle) polega na przechwyceniu i ewentualnej modyfikacji komunikacji między dwoma stronami, które nie są tego świadome. Ochrona: HTTPS/TLS z walidacją certyfikatów, certificate pinning, VPN.",
+    "ckeRef": "INF.02.9.2",
+    "tags": [
+      "mitm",
+      "atak",
+      "bezpieczenstwo",
+      "siec"
+    ]
+  },
+  {
+    "id": "Q-0243",
+    "area": "Z",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "EFS (Encrypting File System) w Windows szyfruje pliki przy użyciu:",
+    "options": [
+      "Klucza BitLocker powiązanego z TPM",
+      "Certyfikatu użytkownika — klucz prywatny przechowywany w profilu",
+      "Hasła systemowego Windows",
+      "Klucza współdzielonego dla wszystkich użytkowników domeny"
+    ],
+    "correct": 1,
+    "explanation": "EFS (Encrypting File System) szyfruje pliki NTFS z użyciem certyfikatu użytkownika. Klucz prywatny jest przechowywany w profilu użytkownika. Jeśli profil lub certyfikat zostanie utracony, dane są niedostępne bez certyfikatu agenta odzyskiwania (DRA).",
+    "ckeRef": "INF.02.9.1",
+    "tags": [
+      "efs",
+      "szyfrowanie",
+      "certyfikat",
+      "ntfs"
+    ]
+  },
+  {
+    "id": "Q-0244",
+    "area": "Z",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Standard 802.1X w bezpieczeństwie sieci służy do:",
+    "options": [
+      "Szyfrowania danych w sieci WiFi protokołem WPA3",
+      "Uwierzytelniania urządzeń przed dostępem do sieci (NAC) z użyciem serwera RADIUS",
+      "Definiowania standardów sieci Ethernet 10 Gbps",
+      "Zarządzania adresami MAC w przełącznikach"
+    ],
+    "correct": 1,
+    "explanation": "IEEE 802.1X to standard kontroli dostępu do sieci (NAC — Network Access Control). Urządzenie musi uwierzytelnić się (przez certyfikat lub dane logowania) do serwera RADIUS przed uzyskaniem dostępu do portów sieciowych przełącznika lub sieci WiFi.",
+    "ckeRef": "INF.02.9.2",
+    "tags": [
+      "802.1x",
+      "nac",
+      "radius",
+      "bezpieczenstwo"
+    ]
+  },
+  {
+    "id": "Q-0245",
+    "area": "Z",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Które rekomendacje NIST SP 800-63B dotyczące haseł są aktualne (2023)?",
+    "options": [
+      "Wymuszaj zmianę hasła co 90 dni i wymagaj wielkich liter, cyfr i znaków specjalnych",
+      "Preferuj długość (min 8, zalecane 15+) nad złożonością; nie wymuszaj cyklicznej zmiany; blokuj znane skompromitowane hasła",
+      "Blokuj konto po 3 błędnych próbach i wymagaj hasła złożonego min. z 12 znaków",
+      "Przechowuj hasła w postaci MD5 z solą"
+    ],
+    "correct": 1,
+    "explanation": "NIST SP 800-63B (2023) rekomenduje: preferować długość (min 8, zalecane 15+) nad złożonością, nie wymuszać cyklicznej zmiany haseł (chyba że naruszenie), blokować hasła z listy znanych skompromitowanych, i nie wymagać arbitralnych reguł złożoności.",
+    "ckeRef": "INF.02.9.1",
+    "tags": [
+      "hasla",
+      "nist",
+      "polityka-hasel",
+      "bezpieczenstwo"
+    ]
+  },
+  {
+    "id": "Q-0246",
+    "area": "Z",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Jaki jest najsłabszy element MFA (Multi-Factor Authentication) i dlaczego?",
+    "options": [
+      "Klucz FIDO2/WebAuthn — może być zgubiony",
+      "Uwierzytelnianie biometryczne — odcisk palca można skopiować",
+      "SMS/OTP przez wiadomość tekstową — podatny na SIM swapping",
+      "Aplikacja TOTP — można zinfekować telefon malware"
+    ],
+    "correct": 2,
+    "explanation": "SMS jako drugi czynnik uwierzytelniania jest najsłabszym ogniwem MFA — atakujący może przejąć numer telefonu przez SIM swapping (przekonanie operatora do przeniesienia numeru na swoją kartę SIM) lub przechwycić SMS przez SS7. FIDO2 i TOTP są bezpieczniejsze.",
+    "ckeRef": "INF.02.9.1",
+    "tags": [
+      "mfa",
+      "sms",
+      "sim-swapping",
+      "bezpieczenstwo"
+    ]
+  },
+  {
+    "id": "Q-0247",
+    "area": "R",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Firma wdraża 100 identycznych stacji Windows 11 z dostępem do Windows Server 2022 dla udostępniania plików. Jaką licencję CAL należy zakupić dla każdej stacji?",
+    "options": [
+      "Windows 11 Pro OEM — zawiera dostęp do serwera",
+      "Windows Server 2022 CAL (Device CAL × 100)",
+      "Żadnej — Windows Server 2022 Standard obejmuje nieograniczoną liczbę klientów",
+      "Remote Desktop Services CAL × 100"
+    ],
+    "correct": 1,
+    "explanation": "Każde urządzenie uzyskujące dostęp do usług Windows Server (pliki, druk, AD) wymaga oddzielnego Windows Server CAL. Przy 100 identycznych stacjach roboczych (1 użytkownik/urządzenie) Device CAL × 100 jest właściwy. RDS CAL jest potrzebny dodatkowo tylko przy korzystaniu z Remote Desktop.",
+    "ckeRef": "INF.02.11",
+    "tags": [
+      "licencjonowanie",
+      "cal",
+      "windows-server",
+      "praktyka-cke"
+    ]
+  },
+  {
+    "id": "Q-0248",
+    "area": "R",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Sieć 10.10.0.0/21 — ile hostów można zaadresować (hosty użyteczne)?",
+    "options": [
+      "510 hostów",
+      "1022 hosty",
+      "2046 hostów",
+      "4094 hosty"
+    ],
+    "correct": 2,
+    "explanation": "Maska /21 = 21 bitów sieci, 11 bitów hosta. Liczba adresów: 2^11 = 2048. Hosty użyteczne: 2048 - 2 = 2046 (odejmuje adres sieci i broadcast). Zakres: 10.10.0.0 – 10.10.7.255, broadcast: 10.10.7.255.",
+    "ckeRef": "INF.02.11",
+    "tags": [
+      "subnetting",
+      "vlsm",
+      "ipv4",
+      "praktyka-cke"
+    ]
+  },
+  {
+    "id": "Q-0249",
+    "area": "R",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Administrator wykrywa, że CPU serwera osiąga 95°C pod pełnym obciążeniem. Jakie jest właściwe pierwsze działanie?",
+    "options": [
+      "Wymienić procesor na szybszy",
+      "Zmniejszyć obciążenie serwera przez migrację maszyn wirtualnych",
+      "Wyczyścić układ chłodzenia ze sprężonym powietrzem i wymienić pastę termoprzewodzącą",
+      "Zwiększyć prędkość obrotową wentylatorów przez BIOS"
+    ],
+    "correct": 2,
+    "explanation": "Temperatura 95°C to wartość krytyczna dla CPU. Pierwszym działaniem powinna być diagnostyka chłodzenia: wyczyszczenie radiatora ze sprężonym powietrzem (kurz izoluje ciepło) i wymiana pasty termoprzewodzącej (twardnieje po 2-5 latach). Dopiero jeśli to nie pomaga — inne działania.",
+    "ckeRef": "INF.02.11",
+    "tags": [
+      "diagnostyka",
+      "temperatura",
+      "chłodzenie",
+      "praktyka-cke"
+    ]
+  },
+  {
+    "id": "Q-0250",
+    "area": "R",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Firma przechowuje numery PESEL klientów w CRM. Baza danych zostaje zhakowana. Co administrator musi zrobić zgodnie z RODO?",
+    "options": [
+      "Naprawić lukę bezpieczeństwa i nie informować nikogo, jeśli dane nie zostały ujawnione publicznie",
+      "Powiadomić UODO w ciągu 72 godzin; jeśli ryzyko jest wysokie — powiadomić również osoby, których dane dotyczą",
+      "Powiadomić wyłącznie poszkodowanych klientów w ciągu 30 dni",
+      "Nie ma obowiązku zgłaszania naruszeń dotyczących numerów PESEL"
+    ],
+    "correct": 1,
+    "explanation": "Art. 33-34 RODO: naruszenie należy zgłosić do UODO w ciągu 72 godzin od stwierdzenia. PESEL to dane osobowe (umożliwia identyfikację). Przy wysokim ryzyku dla praw osób — obowiązkowe powiadomienie osób, których dane dotyczą bez zbędnej zwłoki.",
+    "ckeRef": "INF.02.11",
+    "tags": [
+      "rodo",
+      "naruszenie-danych",
+      "pesel",
+      "uodo",
+      "praktyka-cke"
+    ]
+  },
+  {
+    "id": "Q-0251",
+    "area": "R",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Użytkownik zgłasza brak dostępu do folderu sieciowego na serwerze. Jaka jest właściwa kolejność diagnostyki?",
+    "options": [
+      "Sprawdź uprawnienia NTFS → sprawdź uprawnienia udziału → sprawdź połączenie sieciowe",
+      "Sprawdź połączenie sieciowe (ping) → sprawdź uprawnienia udziału → sprawdź uprawnienia NTFS",
+      "Zresetuj konto użytkownika → sprawdź sieć → sprawdź uprawnienia",
+      "Sprawdź serwer DNS → sprawdź DHCP → sprawdź uprawnienia"
+    ],
+    "correct": 1,
+    "explanation": "Prawidłowa kolejność diagnostyki: (1) Weryfikacja warstwy fizycznej i sieciowej (ping serwera — czy jest połączenie?), (2) Czy udział sieciowy jest widoczny i prawa udziału pozwalają na dostęp?, (3) Sprawdź uprawnienia NTFS. Eliminacja od podstaw oszczędza czas.",
+    "ckeRef": "INF.02.11",
+    "tags": [
+      "diagnostyka",
+      "siec",
+      "uprawnienia",
+      "praktyka-cke"
+    ]
+  },
+  {
+    "id": "Q-0252",
+    "area": "R",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Firma potrzebuje podsieci dla 50 hostów. Który prefiks VLSM jest minimalnym wystarczającym?",
+    "options": [
+      "/26 (62 hosty)",
+      "/27 (30 hostów)",
+      "/25 (126 hostów)",
+      "/24 (254 hosty)"
+    ],
+    "correct": 0,
+    "explanation": "/26 = 6 bitów hosta → 2^6 = 64 adresy → 62 hosty użyteczne. /27 daje tylko 30 hostów — za mało dla 50. Minimalny prefiks to /26, ponieważ jest najmniejszy (najbardziej efektywny) zapewniający co najmniej 50 hostów.",
+    "ckeRef": "INF.02.11",
+    "tags": [
+      "subnetting",
+      "vlsm",
+      "ipv4",
+      "praktyka-cke"
+    ]
+  },
+  {
+    "id": "Q-0253",
+    "area": "R",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Firma potrzebuje macierzy RAID zapewniającej zarówno wysoką wydajność jak i redundancję danych przy 4 dyskach. Które rozwiązanie jest optymalne?",
+    "options": [
+      "RAID 0 — maksymalna wydajność, brak redundancji",
+      "RAID 1 — pełna redundancja, bez poprawy wydajności odczytu sekwencyjnego",
+      "RAID 5 — dobra wydajność + 1 dysk parzystości",
+      "RAID 10 — striping lustrzany: wydajność RAID 0 + redundancja RAID 1"
+    ],
+    "correct": 3,
+    "explanation": "RAID 10 (1+0) łączy zalety RAID 1 (mirroring) i RAID 0 (striping): oferuje wysoką wydajność odczytu i zapisu (striping) oraz redundancję (każdy dysk jest lustrzany). Przy 4 dyskach daje 50% użytecznej pojemności i toleruje awarię 1 dysku w każdej parze.",
+    "ckeRef": "INF.02.11",
+    "tags": [
+      "raid",
+      "raid10",
+      "wydajnosc",
+      "praktyka-cke"
+    ]
+  },
+  {
+    "id": "Q-0254",
+    "area": "R",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Po dołączeniu komputera do domeny AD użytkownik nie może się zalogować domenowym kontem. Jakie jest najbardziej prawdopodobne pierwsze sprawdzenie?",
+    "options": [
+      "Reinstalacja systemu Windows",
+      "Sprawdzenie czy czas komputera jest zsynchronizowany z kontrolerem domeny (Kerberos wymaga różnicy <5 minut)",
+      "Zmiana hasła użytkownika w AD",
+      "Dezaktywacja Windows Defender"
+    ],
+    "correct": 1,
+    "explanation": "Kerberos (protokół uwierzytelniania AD) jest wrażliwy na rozbieżności czasu. Różnica powyżej 5 minut powoduje błąd KRB_AP_ERR_SKEW i uniemożliwia logowanie. Należy sprawdzić czy komputer synchronizuje czas z PDC Emulator domeny (domyślnie przez W32tm).",
+    "ckeRef": "INF.02.11",
+    "tags": [
+      "active-directory",
+      "kerberos",
+      "czas",
+      "praktyka-cke"
+    ]
+  },
+  {
+    "id": "Q-0255",
+    "area": "R",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Pracownik rozwiązuje stosunek pracy po 2 latach zatrudnienia. Ile wynosi jego okres wypowiedzenia?",
+    "options": [
+      "2 tygodnie",
+      "1 miesiąc",
+      "3 miesiące",
+      "6 miesięcy"
+    ],
+    "correct": 1,
+    "explanation": "Zgodnie z art. 36 Kodeksu Pracy: przy stażu 6 miesięcy – 3 lata, okres wypowiedzenia wynosi 1 miesiąc. Pracownik zatrudniony 2 lata mieści się w tym przedziale — obowiązuje 1-miesięczny okres wypowiedzenia.",
+    "ckeRef": "INF.02.11",
+    "tags": [
+      "prawo-pracy",
+      "wypowiedzenie",
+      "praktyka-cke"
+    ]
+  },
+  {
+    "id": "Q-0256",
+    "area": "R",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Firma testuje nowe oprogramowanie i potrzebuje środowiska izolowanego od sieci produkcyjnej, ale z komunikacją między maszynami wirtualnymi. Jaki przełącznik Hyper-V należy wybrać?",
+    "options": [
+      "External — połączenie z fizyczną kartą sieciową",
+      "Internal — komunikacja host↔VM i VM↔VM, bez dostępu zewnętrznego",
+      "Private — tylko VM↔VM, bez dostępu hosta i sieci zewnętrznej",
+      "Bridged — mostkowany z siecią fizyczną"
+    ],
+    "correct": 2,
+    "explanation": "Przełącznik Private (Prywatny) Hyper-V zapewnia komunikację wyłącznie między maszynami wirtualnymi — host nie ma dostępu do tej sieci, a maszyny nie mają dostępu do sieci zewnętrznej. Idealne dla izolowanych środowisk testowych.",
+    "ckeRef": "INF.02.11",
+    "tags": [
+      "hyper-v",
+      "vswitch",
+      "private",
+      "wirtualizacja",
+      "praktyka-cke"
+    ]
+  },
+  {
+    "id": "Q-0257",
+    "area": "R",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Technik naprawia komputer klienta i wymienia dysk twardy. Jak poprawnie udokumentować tę naprawę?",
+    "options": [
+      "Wystarczy paragon fiskalny za nowy dysk",
+      "Sporządzić protokół serwisowy z opisem usterki, wykonanych czynności, wymienionego dysku, wyników testów i zaleceń",
+      "Poinformować ustnie klienta o wykonanej naprawie",
+      "Wypełnić tylko kartę gwarancyjną nowego dysku"
+    ],
+    "correct": 1,
+    "explanation": "Protokół serwisowy to obowiązkowy dokument potwierdzający wykonaną usługę. Powinien zawierać: opis zgłoszonej usterki, diagnostykę, wykonane czynności, wymienione części (z numerami seryjnymi), wyniki testów po naprawie i zalecenia. Jest podstawą rozliczeń i ewentualnych reklamacji.",
+    "ckeRef": "INF.02.11",
+    "tags": [
+      "protokol-serwisowy",
+      "dokumentacja",
+      "praktyka-cke"
+    ]
+  },
+  {
+    "id": "Q-0258",
+    "area": "R",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Serwer DNS w domenie nie odpowiada. Jakie usługi Active Directory będą niesprawne?",
+    "options": [
+      "Tylko przeglądanie stron internetowych przez użytkowników",
+      "Logowanie do domeny, zasady grupowe GPO, lokalizacja kontrolerów i wszystkie usługi zależne od AD",
+      "Wyłącznie serwer DHCP",
+      "Tylko replikacja między kontrolerami domeny"
+    ],
+    "correct": 1,
+    "explanation": "Active Directory jest ściśle zintegrowane z DNS. Bez działającego DNS: klienci nie mogą zlokalizować kontrolerów domeny (rekordy SRV), logowanie domenowe jest niemożliwe, GPO nie stosowane, replikacja AD zakłócona, usługi Kerberos nie działają. DNS to fundament AD.",
+    "ckeRef": "INF.02.11",
+    "tags": [
+      "dns",
+      "active-directory",
+      "diagnostyka",
+      "praktyka-cke"
+    ]
+  },
+  {
+    "id": "Q-0259",
+    "area": "R",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Klient prosi o zainstalowanie pirackiej kopii systemu operacyjnego. Jakie jest prawidłowe postępowanie technika?",
+    "options": [
+      "Zainstalować, jeśli klient podpisze oświadczenie o odpowiedzialności",
+      "Odmówić — instalacja nielicencjonowanego oprogramowania jest naruszeniem prawa autorskiego i grozi sankcjami",
+      "Zainstalować wersję próbną i poinformować klienta",
+      "Zainstalować i nie wystawiać faktury za usługę"
+    ],
+    "correct": 1,
+    "explanation": "Instalacja pirackiego oprogramowania narusza prawa autorskie (ustawa o prawie autorskim i prawach pokrewnych) i może stanowić współsprawstwo. Technik powinien odmówić i zaproponować legalne alternatywy (np. Windows 11 Home/Pro z legalną licencją lub Linux).",
+    "ckeRef": "INF.02.11",
+    "tags": [
+      "licencjonowanie",
+      "prawo-autorskie",
+      "etyka",
+      "praktyka-cke"
+    ]
+  },
+  {
+    "id": "Q-0260",
+    "area": "R",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Administrator konfiguruje DHCP dla sieci 192.168.10.0/24. Routery i serwery mają statyczne IP 192.168.10.1–192.168.10.20. Jak prawidłowo skonfigurować pulę DHCP?",
+    "options": [
+      "Zakres: 192.168.10.1–192.168.10.254, bez wykluczeń",
+      "Zakres: 192.168.10.1–192.168.10.254, wykluczenie: 192.168.10.1–192.168.10.20",
+      "Zakres: 192.168.10.21–192.168.10.254 bez wykluczeń",
+      "Zakres: 192.168.10.0–192.168.10.255, bez wykluczeń"
+    ],
+    "correct": 1,
+    "explanation": "Prawidłowa konfiguracja: zakres obejmuje pełną podsieć (192.168.10.1–254), a statyczne adresy (192.168.10.1–20) są wykluczone z puli. Alternatywnie można ustawić zakres od 192.168.10.21. Wykluczenie jest wyraźniejsze i dokumentuje intencję. Adres .0 to adres sieci, .255 to broadcast — nie do użycia.",
+    "ckeRef": "INF.02.11",
+    "tags": [
+      "dhcp",
+      "konfiguracja",
+      "wykluczenie",
+      "praktyka-cke"
+    ]
+  },
+  {
+    "id": "Q-0261",
+    "area": "R",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Zużyty komputer biurowy zawierający dysk z danymi osobowymi klientów musi zostać zutylizowany. Co należy zrobić?",
+    "options": [
+      "Wyrzucić komputer do pojemnika na elektrośmieci bez dodatkowych czynności",
+      "Sformatować dysk i oddać do ZSEE — format nie gwarantuje usunięcia danych",
+      "Bezpowrotnie zniszczyć lub wymazać (DBAN/degauss) dysk przed utylizacją, a sprzęt oddać do ZSEE",
+      "Sprzedać sprzęt na giełdzie komputerowej"
+    ],
+    "correct": 2,
+    "explanation": "RODO wymaga, aby dane osobowe były bezpowrotnie usunięte przed utylizacją sprzętu. Samo formatowanie nie gwarantuje usunięcia — dane można odzyskać. Należy użyć narzędzia do bezpiecznego wymazania (DBAN) lub fizycznie zniszczyć dysk. Sprzęt trafia do selektywnej zbiórki ZSEE.",
+    "ckeRef": "INF.02.11",
+    "tags": [
+      "rodo",
+      "zsee",
+      "utylizacja",
+      "dane-osobowe",
+      "praktyka-cke"
+    ]
+  },
+  {
+    "id": "Q-0262",
+    "area": "R",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Administrator chce zweryfikować, które zasady GPO są faktycznie stosowane na konkretnej stacji roboczej dla konkretnego użytkownika. Jakie narzędzie i polecenie jest najbardziej odpowiednie?",
+    "options": [
+      "gpedit.msc — edytor lokalnych zasad",
+      "gpresult /r lub gpresult /h raport.html na stacji roboczej",
+      "rsop.msc na kontrolerze domeny",
+      "Active Directory Users and Computers → właściwości użytkownika"
+    ],
+    "correct": 1,
+    "explanation": "gpresult /r (tryb tekstowy) lub gpresult /h raport.html (raport HTML) uruchomione bezpośrednio na stacji roboczej jako dany użytkownik pokazują które GPO są faktycznie zastosowane, z jakiego poziomu (Site/Domain/OU) i z jakim rezultatem. To najbardziej dokładna metoda weryfikacji GPO per user/per computer.",
+    "ckeRef": "INF.02.11",
+    "tags": [
+      "gpo",
+      "gpresult",
+      "diagnostyka",
+      "praktyka-cke"
+    ]
+  }
+]

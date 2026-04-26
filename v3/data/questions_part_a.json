@@ -1,0 +1,2602 @@
+[
+  {
+    "id": "Q-0001",
+    "area": "B",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "Jaki socket jest używany przez procesory AMD Ryzen serii 5000?",
+    "options": [
+      "LGA1700",
+      "AM4",
+      "LGA1200",
+      "AM5"
+    ],
+    "correct": 1,
+    "explanation": "Procesory AMD Ryzen serii 5000 (Zen 3) używają gniazda AM4, które jest kompatybilne z płytami głównymi B450, X470, B550 i X570.",
+    "ckeRef": "INF.02.2.1",
+    "tags": [
+      "cpu",
+      "socket",
+      "amd"
+    ]
+  },
+  {
+    "id": "Q-0002",
+    "area": "B",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "Który socket jest stosowany w procesorach Intel 12. i 13. generacji (Alder Lake / Raptor Lake)?",
+    "options": [
+      "LGA1200",
+      "LGA1700",
+      "LGA1851",
+      "AM4"
+    ],
+    "correct": 1,
+    "explanation": "Procesory Intel 12. generacji (Alder Lake) i 13. generacji (Raptor Lake) korzystają z gniazda LGA1700 na płytach głównych z chipsetami serii 600 i 700.",
+    "ckeRef": "INF.02.2.1",
+    "tags": [
+      "cpu",
+      "socket",
+      "intel"
+    ]
+  },
+  {
+    "id": "Q-0003",
+    "area": "B",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Co oznacza skrót TDP w kontekście procesorów?",
+    "options": [
+      "Total Data Processing",
+      "Thermal Design Power",
+      "Turbo Dynamic Performance",
+      "Transfer Data Protocol"
+    ],
+    "correct": 1,
+    "explanation": "TDP (Thermal Design Power) to maksymalna ilość ciepła w watach, którą układ chłodzenia musi odprowadzić, aby procesor działał w nominalnych warunkach temperaturowych.",
+    "ckeRef": "INF.02.2.1",
+    "tags": [
+      "cpu",
+      "tdp",
+      "chłodzenie"
+    ]
+  },
+  {
+    "id": "Q-0004",
+    "area": "B",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "Która pamięć podręczna procesora ma największą pojemność, ale najdłuższy czas dostępu?",
+    "options": [
+      "L1",
+      "L2",
+      "L3",
+      "Rejestr"
+    ],
+    "correct": 2,
+    "explanation": "Pamięć L3 (cache trzeciego poziomu) ma największą pojemność spośród pamięci podręcznych procesora, ale charakteryzuje się najdłuższym czasem dostępu. L1 jest najszybsza, ale najmniejsza.",
+    "ckeRef": "INF.02.2.1",
+    "tags": [
+      "cpu",
+      "cache",
+      "l1",
+      "l2",
+      "l3"
+    ]
+  },
+  {
+    "id": "Q-0005",
+    "area": "B",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Technologia Hyper-Threading firmy Intel pozwala jednemu rdzeniu fizycznemu CPU pracować jako ile rdzeni logicznych?",
+    "options": [
+      "1",
+      "2",
+      "4",
+      "8"
+    ],
+    "correct": 1,
+    "explanation": "Technologia Hyper-Threading (HT) firmy Intel umożliwia jednemu rdzeniu fizycznemu wykonywanie dwóch wątków jednocześnie, prezentując się systemowi operacyjnemu jako dwa rdzenie logiczne.",
+    "ckeRef": "INF.02.2.1",
+    "tags": [
+      "cpu",
+      "hyperthreading",
+      "wątki",
+      "rdzenie"
+    ]
+  },
+  {
+    "id": "Q-0006",
+    "area": "B",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Jaka jest standardowa maksymalna częstotliwość dla pamięci DDR4 według specyfikacji JEDEC?",
+    "options": [
+      "2133 MHz",
+      "3200 MHz",
+      "4800 MHz",
+      "6400 MHz"
+    ],
+    "correct": 1,
+    "explanation": "Specyfikacja JEDEC definiuje standardową maksymalną częstotliwość DDR4 na poziomie 3200 MHz. Wyższe wartości (np. 3600, 4000 MHz) są osiągane przez overclocking w ramach profili XMP/EXPO.",
+    "ckeRef": "INF.02.2.2",
+    "tags": [
+      "ram",
+      "ddr4",
+      "częstotliwość",
+      "jedec"
+    ]
+  },
+  {
+    "id": "Q-0007",
+    "area": "B",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Od jakiej częstotliwości bazowej zaczyna się standard pamięci DDR5?",
+    "options": [
+      "3200 MHz",
+      "4000 MHz",
+      "4800 MHz",
+      "6000 MHz"
+    ],
+    "correct": 2,
+    "explanation": "Standard DDR5 według specyfikacji JEDEC zaczyna się od częstotliwości 4800 MHz, co stanowi znaczący wzrost w porównaniu do DDR4 (max 3200 MHz w standardzie JEDEC).",
+    "ckeRef": "INF.02.2.2",
+    "tags": [
+      "ram",
+      "ddr5",
+      "częstotliwość"
+    ]
+  },
+  {
+    "id": "Q-0008",
+    "area": "B",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Jaką metodę korekcji błędów stosuje pamięć ECC?",
+    "options": [
+      "Prosty bit parzystości (odd/even parity)",
+      "Kod Hamminga SEC-DED",
+      "Cykliczny kod nadmiarowy CRC-32",
+      "Algorytm Reed-Solomon"
+    ],
+    "correct": 1,
+    "explanation": "Pamięć ECC (Error-Correcting Code) używa kodu Hamminga SEC-DED (Single Error Correction, Double Error Detection), który potrafi automatycznie poprawić 1-bitowy błąd i wykryć 2-bitowy. Nie jest to prosty bit parzystości.",
+    "ckeRef": "INF.02.2.2",
+    "tags": [
+      "ram",
+      "ecc",
+      "hamming",
+      "korekcja błędów"
+    ]
+  },
+  {
+    "id": "Q-0009",
+    "area": "B",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "Jaki format modułów RAM jest stosowany w laptopach?",
+    "options": [
+      "DIMM",
+      "SO-DIMM",
+      "RIMM",
+      "FB-DIMM"
+    ],
+    "correct": 1,
+    "explanation": "Laptopy używają modułów SO-DIMM (Small Outline DIMM), które są mniejsze od standardowych modułów DIMM stosowanych w komputerach stacjonarnych.",
+    "ckeRef": "INF.02.2.2",
+    "tags": [
+      "ram",
+      "so-dimm",
+      "laptop"
+    ]
+  },
+  {
+    "id": "Q-0010",
+    "area": "B",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Jaka jest maksymalna prędkość odczytu sekwencyjnego typowego dysku NVMe PCIe 3.0?",
+    "options": [
+      "550 MB/s",
+      "1000 MB/s",
+      "3500 MB/s",
+      "7000 MB/s"
+    ],
+    "correct": 2,
+    "explanation": "Dyski NVMe na interfejsie PCIe 3.0 x4 osiągają prędkości odczytu sekwencyjnego rzędu 3000–3500 MB/s, co jest wielokrotnie szybsze od dysków SATA SSD (max ~550 MB/s).",
+    "ckeRef": "INF.02.2.2",
+    "tags": [
+      "storage",
+      "nvme",
+      "pcie",
+      "ssd"
+    ]
+  },
+  {
+    "id": "Q-0011",
+    "area": "B",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "Jaka jest maksymalna przepustowość interfejsu SATA III stosowanego w dyskach SSD?",
+    "options": [
+      "150 MB/s",
+      "300 MB/s",
+      "600 MB/s",
+      "1200 MB/s"
+    ],
+    "correct": 2,
+    "explanation": "Interfejs SATA III (6 Gbps) ma teoretyczną przepustowość 6 Gbps, co przekłada się na praktyczną prędkość transferu do ~600 MB/s. Jest to ograniczenie dla dysków SATA SSD.",
+    "ckeRef": "INF.02.2.2",
+    "tags": [
+      "storage",
+      "sata",
+      "ssd",
+      "przepustowość"
+    ]
+  },
+  {
+    "id": "Q-0012",
+    "area": "B",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Dysk M.2 2280 – co oznaczają cyfry w tej nazwie?",
+    "options": [
+      "Prędkość w MB/s i numer wersji",
+      "Szerokość 22 mm i długość 80 mm",
+      "Numer slotu i pojemność w GB",
+      "Generacja PCIe i liczba linii"
+    ],
+    "correct": 1,
+    "explanation": "W oznaczeniu M.2 2280 cyfry oznaczają wymiary modułu: 22 mm szerokości i 80 mm długości. Inne popularne rozmiary to 2242 (22×42 mm) i 2260 (22×60 mm).",
+    "ckeRef": "INF.02.2.2",
+    "tags": [
+      "storage",
+      "m2",
+      "form-factor"
+    ]
+  },
+  {
+    "id": "Q-0013",
+    "area": "B",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Który klucz (key) złącza M.2 obsługuje wyłącznie urządzenia NVMe (PCIe), a nie SATA?",
+    "options": [
+      "B-key",
+      "M-key",
+      "B+M key",
+      "A-key"
+    ],
+    "correct": 1,
+    "explanation": "Złącze M.2 M-key obsługuje wyłącznie interfejs PCIe (NVMe). Złącze B+M key obsługuje zarówno SATA jak i PCIe. Dyski NVMe PCIe mogą być fizycznie B+M lub M-key, ale slot M-key nie obsługuje SATA.",
+    "ckeRef": "INF.02.2.2",
+    "tags": [
+      "storage",
+      "m2",
+      "nvme",
+      "key"
+    ]
+  },
+  {
+    "id": "Q-0014",
+    "area": "B",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "Ile watów (W) gwarantuje certyfikat 80 PLUS Gold przy obciążeniu 50%?",
+    "options": [
+      "80%",
+      "87%",
+      "90%",
+      "92%"
+    ],
+    "correct": 2,
+    "explanation": "Certyfikat 80 PLUS Gold gwarantuje sprawność co najmniej 87% przy obciążeniu 20%, 90% przy 50% i 87% przy 100% obciążeniu zasilacza.",
+    "ckeRef": "INF.02.2.3",
+    "tags": [
+      "psu",
+      "80plus",
+      "gold",
+      "sprawność"
+    ]
+  },
+  {
+    "id": "Q-0015",
+    "area": "B",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Ile pinów ma standardowe złącze ATX zasilające płytę główną?",
+    "options": [
+      "20",
+      "24",
+      "28",
+      "20+4"
+    ],
+    "correct": 1,
+    "explanation": "Standardowe złącze ATX zasilające płytę główną ma 24 piny (20+4). Starsze zasilacze miały 20-pinowe złącze, które nadal pasuje do nowszych płyt, ale nie zasila wszystkich linii.",
+    "ckeRef": "INF.02.2.3",
+    "tags": [
+      "psu",
+      "atx",
+      "złącze",
+      "24pin"
+    ]
+  },
+  {
+    "id": "Q-0016",
+    "area": "B",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Jakie złącze zasilające jest dedykowane dla procesora (EPS) w nowoczesnych płytach głównych?",
+    "options": [
+      "6-pin PCIe",
+      "4-pin Molex",
+      "8-pin EPS (4+4)",
+      "24-pin ATX"
+    ],
+    "correct": 2,
+    "explanation": "Procesory zasilane są przez złącze EPS 8-pin (często w formie 4+4 pin), które dostarcza napięcie 12V bezpośrednio do CPU. Złącze PCIe 6+2 pin jest przeznaczone dla kart graficznych.",
+    "ckeRef": "INF.02.2.3",
+    "tags": [
+      "psu",
+      "eps",
+      "cpu",
+      "złącze"
+    ]
+  },
+  {
+    "id": "Q-0017",
+    "area": "B",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Jaka jest przepustowość magistrali PCIe 5.0 x16?",
+    "options": [
+      "16 GB/s",
+      "32 GB/s",
+      "64 GB/s",
+      "128 GB/s"
+    ],
+    "correct": 2,
+    "explanation": "PCIe 5.0 x16 oferuje przepustowość 64 GB/s (w jednym kierunku). Dla porównania: PCIe 3.0 x16 = 16 GB/s, PCIe 4.0 x16 = 32 GB/s. Każda generacja podwaja przepustowość poprzedniej.",
+    "ckeRef": "INF.02.2.3",
+    "tags": [
+      "pcie",
+      "przepustowość",
+      "generacja"
+    ]
+  },
+  {
+    "id": "Q-0018",
+    "area": "B",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Karta graficzna PCIe 4.0 x16 jest zainstalowana w slocie PCIe 3.0 x16. Jak będzie działać?",
+    "options": [
+      "Nie uruchomi się — niezgodność standardów",
+      "Uruchomi się z prędkością PCIe 3.0 x16",
+      "Uruchomi się z prędkością PCIe 4.0 x16",
+      "Uruchomi się jako PCIe 3.0 x8"
+    ],
+    "correct": 1,
+    "explanation": "Złącza PCIe są wstecznie kompatybilne. Karta PCIe 4.0 x16 w slocie PCIe 3.0 x16 będzie działać poprawnie, ale z prędkością PCIe 3.0 x16 (16 GB/s zamiast 32 GB/s).",
+    "ckeRef": "INF.02.2.3",
+    "tags": [
+      "pcie",
+      "kompatybilność",
+      "wsteczna"
+    ]
+  },
+  {
+    "id": "Q-0019",
+    "area": "B",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "Jaka jest prędkość transferu danych standardu USB 3.0 (USB 3.1 Gen 1)?",
+    "options": [
+      "480 Mbps",
+      "5 Gbps",
+      "10 Gbps",
+      "20 Gbps"
+    ],
+    "correct": 1,
+    "explanation": "USB 3.0 (przemianowany na USB 3.1 Gen 1) oferuje prędkość transferu 5 Gbps (SuperSpeed). USB 2.0 to 480 Mbps, USB 3.1 Gen 2 to 10 Gbps, a USB 3.2 Gen 2×2 to 20 Gbps.",
+    "ckeRef": "INF.02.2.3",
+    "tags": [
+      "usb",
+      "prędkość",
+      "3.0"
+    ]
+  },
+  {
+    "id": "Q-0020",
+    "area": "B",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Jaka jest maksymalna prędkość transferu USB4?",
+    "options": [
+      "10 Gbps",
+      "20 Gbps",
+      "40 Gbps",
+      "80 Gbps"
+    ],
+    "correct": 2,
+    "explanation": "USB4 (oparty na Thunderbolt 3) oferuje maksymalną prędkość 40 Gbps. Jest kompatybilny wstecznie z USB 3.2, USB 2.0 i Thunderbolt 3.",
+    "ckeRef": "INF.02.2.3",
+    "tags": [
+      "usb",
+      "usb4",
+      "thunderbolt",
+      "prędkość"
+    ]
+  },
+  {
+    "id": "Q-0021",
+    "area": "B",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "Jakie są wymiary płyty głównej w standardzie ATX?",
+    "options": [
+      "170×170 mm",
+      "244×244 mm",
+      "305×244 mm",
+      "330×305 mm"
+    ],
+    "correct": 2,
+    "explanation": "Płyta główna ATX ma wymiary 305×244 mm. Micro-ATX to 244×244 mm, a Mini-ITX to 170×170 mm. ATX to najpopularniejszy format w komputerach stacjonarnych.",
+    "ckeRef": "INF.02.2.3",
+    "tags": [
+      "motherboard",
+      "atx",
+      "wymiary",
+      "form-factor"
+    ]
+  },
+  {
+    "id": "Q-0022",
+    "area": "B",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Która z wymienionych funkcji jest dostępna wyłącznie w UEFI, a NIE w tradycyjnym BIOS-ie?",
+    "options": [
+      "Ustawianie priorytetu bootowania",
+      "Obsługa GPT i dysków >2 TB",
+      "Zmiana częstotliwości CPU",
+      "Monitorowanie temperatury"
+    ],
+    "correct": 1,
+    "explanation": "UEFI obsługuje tablicę partycji GPT (dyski powyżej 2 TB), Secure Boot i szybszy POST. Tradycyjny BIOS wspiera tylko MBR (max 2 TB). Pozostałe funkcje były dostępne także w BIOS.",
+    "ckeRef": "INF.02.2.3",
+    "tags": [
+      "bios",
+      "uefi",
+      "gpt",
+      "secure-boot"
+    ]
+  },
+  {
+    "id": "Q-0023",
+    "area": "B",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "W konfiguracji RAID 5 z 4 dyskami po 2 TB każdy, jaka jest użyteczna pojemność macierzy?",
+    "options": [
+      "4 TB",
+      "6 TB",
+      "8 TB",
+      "2 TB"
+    ],
+    "correct": 1,
+    "explanation": "RAID 5 używa jednego dysku na parzystość (niezależnie od liczby dysków). Przy 4 dyskach po 2 TB: pojemność użyteczna = (4-1) × 2 TB = 6 TB. Macierz może przeżyć awarię jednego dysku.",
+    "ckeRef": "INF.02.2.3",
+    "tags": [
+      "raid",
+      "raid5",
+      "pojemność",
+      "parzystość"
+    ]
+  },
+  {
+    "id": "Q-0024",
+    "area": "B",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Ile dysków minimalnie potrzeba do zbudowania macierzy RAID 10?",
+    "options": [
+      "2",
+      "3",
+      "4",
+      "5"
+    ],
+    "correct": 2,
+    "explanation": "RAID 10 (mirror + stripe) wymaga minimum 4 dysków: dwie pary lustrzane (RAID 1) połączone w RAID 0. Oferuje 50% efektywność i może przeżyć awarię jednego dysku w każdej parze lustrzanej.",
+    "ckeRef": "INF.02.2.3",
+    "tags": [
+      "raid",
+      "raid10",
+      "mirror",
+      "stripe"
+    ]
+  },
+  {
+    "id": "Q-0025",
+    "area": "B",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "Co zapewnia konfiguracja RAID 0 w porównaniu do pojedynczego dysku?",
+    "options": [
+      "Redundancję danych",
+      "Większą pojemność i wyższą wydajność bez redundancji",
+      "Automatyczne kopie zapasowe",
+      "Korekcję błędów"
+    ],
+    "correct": 1,
+    "explanation": "RAID 0 (striping) dzieli dane na paski zapisywane naprzemiennie na dyskach, co zwiększa wydajność i łączną pojemność. Nie zapewnia jednak żadnej redundancji — awaria jednego dysku oznacza utratę wszystkich danych.",
+    "ckeRef": "INF.02.2.3",
+    "tags": [
+      "raid",
+      "raid0",
+      "wydajność",
+      "striping"
+    ]
+  },
+  {
+    "id": "Q-0026",
+    "area": "B",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Gdzie w nowoczesnych procesorach (Intel Core, AMD Ryzen) znajduje się kontroler pamięci RAM (IMC)?",
+    "options": [
+      "W układzie Northbridge na płycie głównej",
+      "Bezpośrednio na kości procesora (on-die)",
+      "W module RAM (na PCB pamięci)",
+      "W układzie Southbridge na płycie głównej"
+    ],
+    "correct": 1,
+    "explanation": "Nowoczesne procesory (Intel od Nehalem 2008, AMD od Athlon 64 2003) mają zintegrowany kontroler pamięci (IMC – Integrated Memory Controller) bezpośrednio na kości CPU. Układ Northbridge jest przestarzały i nie jest już stosowany.",
+    "ckeRef": "INF.02.2.1",
+    "tags": [
+      "cpu",
+      "imc",
+      "northbridge",
+      "ram"
+    ]
+  },
+  {
+    "id": "Q-0027",
+    "area": "B",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Procesor ma TDP 125W. Jaki minimalny TDP chłodzenia powinieneś wybrać?",
+    "options": [
+      "65W",
+      "95W",
+      "125W lub więcej",
+      "Dowolny, bo TDP nie ma znaczenia"
+    ],
+    "correct": 2,
+    "explanation": "Chłodzenie powinno mieć TDP co najmniej równy wartości TDP procesora. Dla CPU 125W należy wybrać cooler certyfikowany na min. 125W. Dla stabilności i overclockingu zaleca się chłodzenie z zapasem.",
+    "ckeRef": "INF.02.2.1",
+    "tags": [
+      "cpu",
+      "tdp",
+      "chłodzenie",
+      "kompatybilność"
+    ]
+  },
+  {
+    "id": "Q-0028",
+    "area": "B",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Jaki socket jest używany przez procesory Intel Core Ultra (seria 200, Meteor Lake / Arrow Lake)?",
+    "options": [
+      "LGA1700",
+      "LGA1200",
+      "LGA1851",
+      "AM5"
+    ],
+    "correct": 2,
+    "explanation": "Procesory Intel Core Ultra serii 200 (Arrow Lake) i wybrane Meteor Lake używają gniazda LGA1851, które zastępuje LGA1700. LGA1851 nie jest kompatybilne wstecznie z poprzednimi generacjami.",
+    "ckeRef": "INF.02.2.1",
+    "tags": [
+      "cpu",
+      "socket",
+      "intel",
+      "lga1851",
+      "core-ultra"
+    ]
+  },
+  {
+    "id": "Q-0029",
+    "area": "B",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Czy moduł DDR4 można zainstalować w slocie DDR5 na płycie głównej?",
+    "options": [
+      "Tak, oba standardy są kompatybilne",
+      "Nie, DDR4 i DDR5 mają różne gniazda i nie są fizycznie kompatybilne",
+      "Tak, ale trzeba zmienić ustawienia w BIOS",
+      "Tak, ale prędkość zostanie ograniczona do DDR4"
+    ],
+    "correct": 1,
+    "explanation": "DDR4 i DDR5 są fizycznie niekompatybilne — mają różną liczbę pinów i inaczej umieszczone wcięcie (notch). Płyta główna obsługuje albo DDR4 albo DDR5, nigdy obie jednocześnie (z wyjątkiem nielicznych płyt z osobnymi slotami).",
+    "ckeRef": "INF.02.2.2",
+    "tags": [
+      "ram",
+      "ddr4",
+      "ddr5",
+      "kompatybilność"
+    ]
+  },
+  {
+    "id": "Q-0030",
+    "area": "B",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Co to jest CAS Latency (CL) w kontekście pamięci RAM?",
+    "options": [
+      "Pojemność modułu RAM",
+      "Opóźnienie między komendą a pierwszymi danymi (w cyklach zegara)",
+      "Częstotliwość taktowania pamięci",
+      "Liczba kanałów pamięci"
+    ],
+    "correct": 1,
+    "explanation": "CAS Latency (Column Address Strobe Latency, CL) to liczba cykli zegarowych między wysłaniem komendy odczytu a pierwszymi dostarczonymi danymi. Niższa wartość CL = mniejsze opóźnienia = szybsza pamięć.",
+    "ckeRef": "INF.02.2.2",
+    "tags": [
+      "ram",
+      "cas-latency",
+      "opóźnienie",
+      "timing"
+    ]
+  },
+  {
+    "id": "Q-0031",
+    "area": "B",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "Jaki certyfikat 80 PLUS zapewnia najwyższą sprawność zasilacza?",
+    "options": [
+      "80 PLUS Gold",
+      "80 PLUS Platinum",
+      "80 PLUS Titanium",
+      "80 PLUS Silver"
+    ],
+    "correct": 2,
+    "explanation": "Hierarchia certyfikatów 80 PLUS od najniższego do najwyższego: White, Bronze, Silver, Gold, Platinum, Titanium. Titanium jest najwyższym certyfikatem, wymagającym min. 90% sprawności przy 20% obciążeniu.",
+    "ckeRef": "INF.02.2.3",
+    "tags": [
+      "psu",
+      "80plus",
+      "titanium",
+      "sprawność"
+    ]
+  },
+  {
+    "id": "Q-0032",
+    "area": "B",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Jaka jest maksymalna pojemność woluminu NTFS przy użyciu klastrów 64 KB?",
+    "options": [
+      "16 TB",
+      "64 TB",
+      "256 TB",
+      "1 EB"
+    ],
+    "correct": 2,
+    "explanation": "NTFS z klastrami 64 KB obsługuje maksymalny wolumin 256 TB. Przy domyślnych klastrach 4 KB limit to 16 TB. Teoretyczny maksimum NTFS to 16 EB, ale praktyczne ograniczenia Windowsa to 256 TB.",
+    "ckeRef": "INF.02.2.3",
+    "tags": [
+      "ntfs",
+      "wolumin",
+      "klastry",
+      "pojemność"
+    ]
+  },
+  {
+    "id": "Q-0033",
+    "area": "B",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Który standard USB zapewnia prędkość 10 Gbps?",
+    "options": [
+      "USB 2.0",
+      "USB 3.0 (USB 3.1 Gen 1)",
+      "USB 3.1 Gen 2",
+      "USB 3.2 Gen 2×2"
+    ],
+    "correct": 2,
+    "explanation": "USB 3.1 Gen 2 (SuperSpeed+) oferuje prędkość 10 Gbps. USB 2.0 = 480 Mbps, USB 3.0/3.1 Gen 1 = 5 Gbps, USB 3.2 Gen 2×2 = 20 Gbps.",
+    "ckeRef": "INF.02.2.3",
+    "tags": [
+      "usb",
+      "prędkość",
+      "3.1",
+      "gen2"
+    ]
+  },
+  {
+    "id": "Q-0034",
+    "area": "B",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "W trybie dual-channel RAM, procesor ma dwa moduły DDR4 4GB każdy. Jaka jest łączna przepustowość pamięci w porównaniu do single-channel?",
+    "options": [
+      "Taka sama, dual-channel nie wpływa na przepustowość",
+      "Około 2× większa niż single-channel",
+      "4× większa niż single-channel",
+      "Zależy wyłącznie od częstotliwości"
+    ],
+    "correct": 1,
+    "explanation": "Tryb dual-channel podwaja efektywną szerokość magistrali pamięci z 64 bitów (single) do 128 bitów. Oznacza to około 2-krotny wzrost przepustowości, co ma szczególne znaczenie dla zintegrowanych GPU i procesorów AMD.",
+    "ckeRef": "INF.02.2.2",
+    "tags": [
+      "ram",
+      "dual-channel",
+      "przepustowość",
+      "magistrala"
+    ]
+  },
+  {
+    "id": "Q-0035",
+    "area": "O",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "Ile GB RAM wymaga system Windows 11 jako minimum?",
+    "options": [
+      "1 GB",
+      "2 GB",
+      "4 GB",
+      "8 GB"
+    ],
+    "correct": 2,
+    "explanation": "Windows 11 wymaga minimum 4 GB RAM, 64 GB miejsca na dysku, procesora 1 GHz z 2 rdzeniami, TPM 2.0, Secure Boot i karty graficznej obsługującej DirectX 12.",
+    "ckeRef": "INF.02.3.1",
+    "tags": [
+      "windows11",
+      "wymagania",
+      "ram",
+      "instalacja"
+    ]
+  },
+  {
+    "id": "Q-0036",
+    "area": "O",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Które wymaganie sprzętowe jest NOWE i wymagane przez Windows 11, a nie przez Windows 10?",
+    "options": [
+      "Karta sieciowa Ethernet",
+      "Moduł TPM 2.0",
+      "Procesor x86-64",
+      "Karta graficzna DirectX 9"
+    ],
+    "correct": 1,
+    "explanation": "Windows 11 wprowadził obowiązkowe wymaganie TPM 2.0 (Trusted Platform Module) i UEFI Secure Boot, których Windows 10 nie wymagał. TPM jest używany do szyfrowania BitLocker i zabezpieczeń systemowych.",
+    "ckeRef": "INF.02.3.1",
+    "tags": [
+      "windows11",
+      "tpm",
+      "wymagania",
+      "secure-boot"
+    ]
+  },
+  {
+    "id": "Q-0037",
+    "area": "O",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "Jakie jest minimalne wymaganie dotyczące miejsca na dysku dla instalacji Ubuntu 22.04?",
+    "options": [
+      "8 GB",
+      "15 GB",
+      "25 GB",
+      "50 GB"
+    ],
+    "correct": 2,
+    "explanation": "Ubuntu 22.04 (Jammy Jellyfish) wymaga minimum 25 GB miejsca na dysku oraz 4 GB RAM dla pełnej instalacji desktopowej. Minimalna instalacja serwera może działać na mniejszej przestrzeni.",
+    "ckeRef": "INF.02.3.1",
+    "tags": [
+      "ubuntu",
+      "wymagania",
+      "dysk",
+      "instalacja"
+    ]
+  },
+  {
+    "id": "Q-0038",
+    "area": "O",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Jakie jest maksymalne ograniczenie rozmiaru pliku w systemie plików FAT32?",
+    "options": [
+      "2 GB",
+      "4 GB - 1 bajt",
+      "16 GB",
+      "32 GB"
+    ],
+    "correct": 1,
+    "explanation": "FAT32 ogranicza rozmiar pojedynczego pliku do 4 GB minus 1 bajt (2^32 - 1 bajtów). Jest to wynik 32-bitowego pola rozmiaru pliku. Dla większych plików należy użyć NTFS lub exFAT.",
+    "ckeRef": "INF.02.3.2",
+    "tags": [
+      "fat32",
+      "plik",
+      "ograniczenie",
+      "rozmiar"
+    ]
+  },
+  {
+    "id": "Q-0039",
+    "area": "O",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Który system plików jest domyślny w Ubuntu/Debian dla partycji głównej?",
+    "options": [
+      "NTFS",
+      "FAT32",
+      "ext4",
+      "btrfs"
+    ],
+    "correct": 2,
+    "explanation": "ext4 (Fourth Extended Filesystem) jest domyślnym systemem plików w dystrybucjach Linux (Ubuntu, Debian, Fedora). Obsługuje journaling, co chroni dane przy nagłym wyłączeniu systemu.",
+    "ckeRef": "INF.02.3.2",
+    "tags": [
+      "ext4",
+      "linux",
+      "system-plików",
+      "ubuntu"
+    ]
+  },
+  {
+    "id": "Q-0040",
+    "area": "O",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Jakie jest maksymalne ograniczenie rozmiaru partycji w schemacie MBR?",
+    "options": [
+      "1 TB",
+      "2 TB",
+      "4 TB",
+      "8 TB"
+    ],
+    "correct": 1,
+    "explanation": "MBR (Master Boot Record) obsługuje maksymalny rozmiar dysku/partycji 2 TB ze względu na 32-bitowe adresy sektorów (2^32 × 512 B = 2 TB). Dla większych dysków należy używać GPT.",
+    "ckeRef": "INF.02.3.2",
+    "tags": [
+      "mbr",
+      "partycja",
+      "ograniczenie",
+      "2tb"
+    ]
+  },
+  {
+    "id": "Q-0041",
+    "area": "O",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Ile partycji podstawowych (primary) można maksymalnie utworzyć w schemacie MBR?",
+    "options": [
+      "2",
+      "4",
+      "8",
+      "16"
+    ],
+    "correct": 1,
+    "explanation": "MBR umożliwia tworzenie maksymalnie 4 partycji podstawowych (primary). Aby ominąć to ograniczenie, jedną z nich można zamienić na rozszerzoną (extended), w której tworzy się logiczne (logical) partycje.",
+    "ckeRef": "INF.02.3.2",
+    "tags": [
+      "mbr",
+      "partycja",
+      "primary",
+      "extended"
+    ]
+  },
+  {
+    "id": "Q-0042",
+    "area": "O",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Ile partycji obsługuje standard GPT?",
+    "options": [
+      "16",
+      "64",
+      "128",
+      "256"
+    ],
+    "correct": 2,
+    "explanation": "GPT (GUID Partition Table) obsługuje do 128 partycji w systemie Windows (specyfikacja GPT pozwala na więcej). Każda partycja ma unikalny GUID. GPT wymaga UEFI do uruchamiania systemu.",
+    "ckeRef": "INF.02.3.2",
+    "tags": [
+      "gpt",
+      "partycja",
+      "uefi",
+      "128"
+    ]
+  },
+  {
+    "id": "Q-0043",
+    "area": "O",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "Jakie polecenie Linux dodaje istniejącego użytkownika 'jan' do grupy 'sudo'?",
+    "options": [
+      "useradd -G sudo jan",
+      "usermod -aG sudo jan",
+      "adduser sudo jan",
+      "groupadd sudo jan"
+    ],
+    "correct": 1,
+    "explanation": "Polecenie 'usermod -aG sudo jan' dodaje użytkownika jan do grupy sudo bez usuwania go z innych grup (-a = append, -G = group). Bez flagi -a użytkownik zostałby usunięty z innych grup dodatkowych.",
+    "ckeRef": "INF.02.3.3",
+    "tags": [
+      "linux",
+      "usermod",
+      "sudo",
+      "grupa",
+      "użytkownik"
+    ]
+  },
+  {
+    "id": "Q-0044",
+    "area": "O",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Co oznacza polecenie 'useradd -m anna' w systemie Linux?",
+    "options": [
+      "Tworzy użytkownika anna bez katalogu domowego",
+      "Tworzy użytkownika anna z katalogiem domowym /home/anna",
+      "Modyfikuje hasło użytkownika anna",
+      "Usuwa użytkownika anna"
+    ],
+    "correct": 1,
+    "explanation": "Flaga -m w poleceniu useradd powoduje automatyczne utworzenie katalogu domowego użytkownika (np. /home/anna). Bez -m katalog domowy nie jest tworzony, co może powodować problemy z logowaniem.",
+    "ckeRef": "INF.02.3.3",
+    "tags": [
+      "linux",
+      "useradd",
+      "katalog-domowy",
+      "użytkownik"
+    ]
+  },
+  {
+    "id": "Q-0045",
+    "area": "O",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Jakie uprawnienia opisuje zapis chmod 755 dla pliku wykonywalnego?",
+    "options": [
+      "rwxr-xr-x (właściciel: pełne, grupa: odczyt+wykonanie, pozostali: odczyt+wykonanie)",
+      "rwxrwxr-x (właściciel: pełne, grupa: pełne, pozostali: odczyt+wykonanie)",
+      "rwxr--r-- (właściciel: pełne, grupa: odczyt, pozostali: odczyt)",
+      "rw-r--r-- (właściciel: odczyt+zapis, reszta: odczyt)"
+    ],
+    "correct": 0,
+    "explanation": "Chmod 755: 7=rwx (właściciel), 5=r-x (grupa), 5=r-x (pozostali). Oznacza to rwxr-xr-x. Właściciel może czytać, pisać i wykonywać; grupa i pozostali mogą czytać i wykonywać.",
+    "ckeRef": "INF.02.3.3",
+    "tags": [
+      "linux",
+      "chmod",
+      "uprawnienia",
+      "755"
+    ]
+  },
+  {
+    "id": "Q-0046",
+    "area": "O",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Co oznacza wartość umask 022 w systemie Linux?",
+    "options": [
+      "Pliki tworzone z uprawnieniami 022",
+      "Nowe pliki mają uprawnienia 644, katalogi 755",
+      "Nowe pliki mają uprawnienia 777",
+      "Blokuje dostęp dla grupy i innych"
+    ],
+    "correct": 1,
+    "explanation": "Umask 022 odejmuje uprawnienia od wartości bazowych: pliki=666-022=644 (rw-r--r--), katalogi=777-022=755 (rwxr-xr-x). Umask 022 blokuje zapis dla grupy i pozostałych użytkowników.",
+    "ckeRef": "INF.02.3.3",
+    "tags": [
+      "linux",
+      "umask",
+      "uprawnienia",
+      "022"
+    ]
+  },
+  {
+    "id": "Q-0047",
+    "area": "O",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Które polecenie Windows sprawdza i naprawia błędy systemu plików na dysku C:?",
+    "options": [
+      "sfc /scannow",
+      "chkdsk C: /f",
+      "diskpart /repair",
+      "bcdedit /fix"
+    ],
+    "correct": 1,
+    "explanation": "Polecenie 'chkdsk C: /f' sprawdza i naprawia błędy systemu plików na dysku C. Flaga /f powoduje naprawę wykrytych błędów. Bez /f chkdsk tylko raportuje błędy bez naprawy. sfc sprawdza pliki systemowe Windows.",
+    "ckeRef": "INF.02.3.4",
+    "tags": [
+      "windows",
+      "chkdsk",
+      "napraw",
+      "dysk"
+    ]
+  },
+  {
+    "id": "Q-0048",
+    "area": "O",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Jakie polecenie PowerShell wyświetla wszystkich użytkowników Active Directory?",
+    "options": [
+      "Get-User -All",
+      "Get-ADUser -Filter *",
+      "List-ADUsers",
+      "Show-ADAccounts"
+    ],
+    "correct": 1,
+    "explanation": "Polecenie 'Get-ADUser -Filter *' z modułu ActiveDirectory dla PowerShell wyświetla wszystkich użytkowników domeny. Filtr * oznacza wszystkich. Można dodać -Properties * aby zobaczyć wszystkie atrybuty.",
+    "ckeRef": "INF.02.3.4",
+    "tags": [
+      "powershell",
+      "active-directory",
+      "get-aduser",
+      "użytkownik"
+    ]
+  },
+  {
+    "id": "Q-0049",
+    "area": "O",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "Które polecenie Linux wyświetla użycie miejsca na dysku w czytelnym formacie (GB, MB)?",
+    "options": [
+      "du -sh",
+      "df -h",
+      "ls -lh",
+      "free -h"
+    ],
+    "correct": 1,
+    "explanation": "Polecenie 'df -h' (disk free) wyświetla użycie miejsca na wszystkich zamontowanych systemach plików w czytelnym formacie (human-readable: KB, MB, GB). 'du -sh' pokazuje rozmiar konkretnego katalogu.",
+    "ckeRef": "INF.02.3.4",
+    "tags": [
+      "linux",
+      "df",
+      "dysk",
+      "miejsce"
+    ]
+  },
+  {
+    "id": "Q-0050",
+    "area": "O",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Jakie polecenie Linux wyszukuje rekurencyjnie wzorzec 'error' we wszystkich plikach .log w katalogu /var/log?",
+    "options": [
+      "find /var/log -name '*.log' | grep error",
+      "grep -r 'error' /var/log/*.log",
+      "grep -rl 'error' /var/log",
+      "grep -r 'error' /var/log/"
+    ],
+    "correct": 3,
+    "explanation": "Polecenie 'grep -r error /var/log/' rekurencyjnie przeszukuje wszystkie pliki w /var/log i podkatalogach. Flaga -r oznacza recursive. Dla plików .log można dodać '--include=*.log'.",
+    "ckeRef": "INF.02.3.4",
+    "tags": [
+      "linux",
+      "grep",
+      "rekurencyjnie",
+      "log"
+    ]
+  },
+  {
+    "id": "Q-0051",
+    "area": "O",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Co robi polecenie 'systemctl enable nginx' w systemie Linux z systemd?",
+    "options": [
+      "Uruchamia usługę nginx natychmiast",
+      "Konfiguruje nginx do automatycznego uruchamiania przy starcie systemu",
+      "Sprawdza status usługi nginx",
+      "Instaluje pakiet nginx"
+    ],
+    "correct": 1,
+    "explanation": "Polecenie 'systemctl enable' tworzy dowiązania symboliczne powodujące automatyczne uruchomienie usługi przy starcie systemu. Samo 'enable' nie uruchamia usługi — do tego służy 'systemctl start nginx'.",
+    "ckeRef": "INF.02.3.4",
+    "tags": [
+      "linux",
+      "systemctl",
+      "systemd",
+      "enable",
+      "autostart"
+    ]
+  },
+  {
+    "id": "Q-0052",
+    "area": "O",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "W którym pliku Linux przechowuje podstawowe informacje o kontach użytkowników (nazwa, UID, GID, shell)?",
+    "options": [
+      "/etc/shadow",
+      "/etc/passwd",
+      "/etc/users",
+      "/etc/login.conf"
+    ],
+    "correct": 1,
+    "explanation": "Plik /etc/passwd zawiera podstawowe informacje o użytkownikach w formacie: login:x:UID:GID:komentarz:katalog_domowy:shell. Zaszyfrowane hasła przechowywane są w /etc/shadow (dostępnym tylko dla roota).",
+    "ckeRef": "INF.02.3.3",
+    "tags": [
+      "linux",
+      "passwd",
+      "użytkownik",
+      "uid",
+      "gid"
+    ]
+  },
+  {
+    "id": "Q-0053",
+    "area": "O",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Jakie polecenie Windows wyświetla konfigurację startową systemu i umożliwia zarządzanie wpisami boot?",
+    "options": [
+      "msconfig /boot",
+      "bootcfg /query",
+      "bcdedit",
+      "diskpart /boot"
+    ],
+    "correct": 2,
+    "explanation": "Narzędzie 'bcdedit' (Boot Configuration Data Editor) umożliwia wyświetlanie i modyfikowanie wpisów BCD (Boot Configuration Data) systemu Windows. Zastąpiło ono bootcfg i boot.ini z Windows XP.",
+    "ckeRef": "INF.02.3.4",
+    "tags": [
+      "windows",
+      "bcdedit",
+      "boot",
+      "bcd"
+    ]
+  },
+  {
+    "id": "Q-0054",
+    "area": "O",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Który system plików Linux obsługuje Copy-on-Write (CoW) i snapshoty?",
+    "options": [
+      "ext4",
+      "ext3",
+      "btrfs",
+      "FAT32"
+    ],
+    "correct": 2,
+    "explanation": "Btrfs (B-tree filesystem) obsługuje Copy-on-Write (CoW), snapshoty, kompresję i kontrolę integralności danych. CoW oznacza, że przy modyfikacji pliku nowe dane zapisywane są w nowym miejscu, zachowując poprzednią wersję.",
+    "ckeRef": "INF.02.3.2",
+    "tags": [
+      "btrfs",
+      "cow",
+      "snapshot",
+      "linux"
+    ]
+  },
+  {
+    "id": "Q-0055",
+    "area": "O",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Co robi polecenie 'sfc /scannow' w systemie Windows?",
+    "options": [
+      "Skanuje dysk w poszukiwaniu wirusów",
+      "Sprawdza i przywraca uszkodzone pliki systemowe Windows",
+      "Defragmentuje dysk systemowy",
+      "Sprawdza błędy systemu plików NTFS"
+    ],
+    "correct": 1,
+    "explanation": "SFC (System File Checker) /scannow skanuje wszystkie chronione pliki systemowe Windows i przywraca uszkodzone kopie z cache'u. Wymaga uprawnień administratora. Do sprawdzenia systemu plików służy chkdsk.",
+    "ckeRef": "INF.02.3.4",
+    "tags": [
+      "windows",
+      "sfc",
+      "pliki-systemowe",
+      "naprawa"
+    ]
+  },
+  {
+    "id": "Q-0056",
+    "area": "O",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Jaka jest składnia polecenia sed do zamiany WSZYSTKICH wystąpień 'foo' na 'bar' w pliku plik.txt?",
+    "options": [
+      "sed 's/foo/bar/' plik.txt",
+      "sed 's/foo/bar/g' plik.txt",
+      "sed -r 's/foo/bar/' plik.txt",
+      "sed 'replace/foo/bar/all' plik.txt"
+    ],
+    "correct": 1,
+    "explanation": "Polecenie 'sed s/foo/bar/g' zastępuje wszystkie wystąpienia (flaga g = global) wzorca 'foo' na 'bar'. Bez flagi g sed zamienia tylko pierwsze wystąpienie w każdej linii. Aby zapisać zmiany w pliku: sed -i.",
+    "ckeRef": "INF.02.3.4",
+    "tags": [
+      "linux",
+      "sed",
+      "zamiana",
+      "regex"
+    ]
+  },
+  {
+    "id": "Q-0057",
+    "area": "O",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "Jakie polecenie Windows wyświetla szczegółowe informacje o wszystkich interfejsach sieciowych, w tym adres MAC?",
+    "options": [
+      "ipconfig",
+      "ipconfig /all",
+      "netstat -an",
+      "arp -a"
+    ],
+    "correct": 1,
+    "explanation": "Polecenie 'ipconfig /all' wyświetla szczegółowe informacje o wszystkich adapterach sieciowych: adres IP, maskę podsieci, bramę, DNS, adres MAC (Physical Address), DHCP enabled/disabled.",
+    "ckeRef": "INF.02.3.4",
+    "tags": [
+      "windows",
+      "ipconfig",
+      "sieć",
+      "mac",
+      "all"
+    ]
+  },
+  {
+    "id": "Q-0058",
+    "area": "O",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Które polecenie PowerShell zmienia politykę wykonywania skryptów, umożliwiając uruchamianie lokalnych skryptów?",
+    "options": [
+      "Set-Policy RemoteSigned",
+      "Set-ExecutionPolicy RemoteSigned",
+      "Enable-Scripts RemoteSigned",
+      "Allow-Execution RemoteSigned"
+    ],
+    "correct": 1,
+    "explanation": "Polecenie 'Set-ExecutionPolicy RemoteSigned' ustawia politykę, która pozwala na uruchamianie lokalnych skryptów bez podpisu, a skryptów pobranych z Internetu — tylko z podpisem cyfrowym. Wymaga uprawnień administratora.",
+    "ckeRef": "INF.02.3.4",
+    "tags": [
+      "powershell",
+      "executionpolicy",
+      "remotesigned",
+      "skrypt"
+    ]
+  },
+  {
+    "id": "Q-0059",
+    "area": "O",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Jakie jest zastosowanie bitu SUID (Set User ID) na pliku wykonywalnym w Linux?",
+    "options": [
+      "Plik jest widoczny tylko dla właściciela",
+      "Program uruchamia się z uprawnieniami właściciela pliku, nie uruchamiającego",
+      "Plik nie może być usunięty bez uprawnień roota",
+      "Program jest automatycznie uruchamiany przy starcie"
+    ],
+    "correct": 1,
+    "explanation": "Bit SUID powoduje, że program wykonywany jest z prawami właściciela pliku (np. roota), a nie użytkownika, który go uruchamia. Przykład: polecenie passwd ma SUID roota, bo musi modyfikować /etc/shadow.",
+    "ckeRef": "INF.02.3.3",
+    "tags": [
+      "linux",
+      "suid",
+      "uprawnienia",
+      "setuid"
+    ]
+  },
+  {
+    "id": "Q-0060",
+    "area": "O",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Jakie polecenie Linux wyświetla informacje o grupach, do których należy użytkownik 'jan'?",
+    "options": [
+      "ls -la /home/jan",
+      "groups jan",
+      "usermod -l jan",
+      "cat /etc/group | grep jan"
+    ],
+    "correct": 1,
+    "explanation": "Polecenie 'groups jan' wyświetla listę grup, do których należy użytkownik jan. Alternatywnie można użyć 'id jan', które pokazuje UID, GID i wszystkie grupy użytkownika.",
+    "ckeRef": "INF.02.3.3",
+    "tags": [
+      "linux",
+      "groups",
+      "użytkownik",
+      "grupa"
+    ]
+  },
+  {
+    "id": "Q-0061",
+    "area": "N",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "Która kategoria kabla UTP obsługuje prędkość 10 Gbps na odcinku do 100 metrów?",
+    "options": [
+      "Cat 5e",
+      "Cat 6",
+      "Cat 6A",
+      "Cat 7"
+    ],
+    "correct": 2,
+    "explanation": "Cat 6A (Augmented Category 6) obsługuje 10 Gbps na odległość do 100 metrów. Cat 6 osiąga 10 Gbps tylko do 55 metrów, a Cat 5e obsługuje maksymalnie 1 Gbps.",
+    "ckeRef": "INF.02.5.1",
+    "tags": [
+      "kabel",
+      "cat6a",
+      "10gbps",
+      "utp"
+    ]
+  },
+  {
+    "id": "Q-0062",
+    "area": "N",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Jaka jest kolejność par w standardzie T568B dla złącza RJ-45?",
+    "options": [
+      "GW-G-OW-B-BW-O-BrW-Br",
+      "OW-O-GW-B-BW-G-BrW-Br",
+      "BW-B-OW-O-GW-G-BrW-Br",
+      "OW-O-BW-B-GW-G-BrW-Br"
+    ],
+    "correct": 1,
+    "explanation": "Standard T568B: pin 1=Pomarańczowo-biały (OW), 2=Pomarańczowy (O), 3=Zielono-biały (GW), 4=Niebieski (B), 5=Niebiesko-biały (BW), 6=Zielony (G), 7=Brązowo-biały (BrW), 8=Brązowy (Br).",
+    "ckeRef": "INF.02.5.1",
+    "tags": [
+      "kabel",
+      "t568b",
+      "rj45",
+      "okablowanie"
+    ]
+  },
+  {
+    "id": "Q-0063",
+    "area": "N",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Kiedy stosuje się kabel krosowany (crossover) w sieciach Ethernet?",
+    "options": [
+      "Zawsze przy połączeniu komputera ze switchem",
+      "Przy bezpośrednim połączeniu dwóch komputerów bez switcha (na starszych kartach)",
+      "Przy połączeniu routera z Internetem",
+      "Przy połączeniu switcha z punktem dostępowym Wi-Fi"
+    ],
+    "correct": 1,
+    "explanation": "Kabel krosowany (crossover) łączy dwa urządzenia tego samego typu (np. komputer-komputer, switch-switch) bez pośredniczącego urządzenia sieciowego. Nowoczesne karty sieciowe z Auto-MDI/MDIX automatycznie wykrywają typ kabla.",
+    "ckeRef": "INF.02.5.1",
+    "tags": [
+      "kabel",
+      "crossover",
+      "mdix",
+      "ethernet"
+    ]
+  },
+  {
+    "id": "Q-0064",
+    "area": "N",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "Jakie włókno optyczne jest używane do przesyłania danych na długie dystanse (kilometry)?",
+    "options": [
+      "Multimode OM1 (pomarańczowe)",
+      "Multimode OM4 (niebieskie/aqua)",
+      "Single-mode OS2 (żółte)",
+      "Multimode OM3 (aqua)"
+    ],
+    "correct": 2,
+    "explanation": "Światłowód jednomodowy (single-mode, OS1/OS2, żółty) używa lasera 1310/1550 nm i przesyła dane na odległości kilkudziesięciu kilometrów. Multimode (OM1-OM4, pomarańczowy/aqua) jest przeznaczony do krótszych odcinków (do 550 m dla OM4).",
+    "ckeRef": "INF.02.5.1",
+    "tags": [
+      "fiber",
+      "single-mode",
+      "os2",
+      "długodystansowy"
+    ]
+  },
+  {
+    "id": "Q-0065",
+    "area": "N",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Sieć 192.168.1.0/26 — ile hostów można zaadresować w tej podsieci?",
+    "options": [
+      "30",
+      "62",
+      "126",
+      "254"
+    ],
+    "correct": 1,
+    "explanation": "Maska /26 = 255.255.255.192, blok = 64 adresy. Użyteczne hosty = 64 - 2 = 62 (odjąć adres sieci 192.168.1.0 i broadcast 192.168.1.63). Pierwszy host: 192.168.1.1, ostatni: 192.168.1.62.",
+    "ckeRef": "INF.02.5.2",
+    "tags": [
+      "subnetting",
+      "ipv4",
+      "/26",
+      "hosty"
+    ]
+  },
+  {
+    "id": "Q-0066",
+    "area": "N",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Jaki jest adres broadcast sieci 192.168.1.0/26?",
+    "options": [
+      "192.168.1.64",
+      "192.168.1.255",
+      "192.168.1.63",
+      "192.168.1.62"
+    ],
+    "correct": 2,
+    "explanation": "Dla sieci 192.168.1.0/26: blok = 64 adresy (0-63). Adres broadcast = 192.168.1.63 (ostatni adres w bloku). Adres sieci = 192.168.1.0, pierwszy host = 192.168.1.1, ostatni host = 192.168.1.62.",
+    "ckeRef": "INF.02.5.2",
+    "tags": [
+      "subnetting",
+      "broadcast",
+      "/26",
+      "ipv4"
+    ]
+  },
+  {
+    "id": "Q-0067",
+    "area": "N",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Sieć 10.0.0.0/22 — ile hostów można zaadresować?",
+    "options": [
+      "510",
+      "1022",
+      "2046",
+      "4094"
+    ],
+    "correct": 1,
+    "explanation": "Maska /22 = 255.255.252.0, blok = 1024 adresy (2^10). Użyteczne hosty = 1024 - 2 = 1022. Adres sieci: 10.0.0.0, broadcast: 10.0.3.255 (obejmuje 4 podsieci klasy C: .0.0, .1.0, .2.0, .3.0).",
+    "ckeRef": "INF.02.5.2",
+    "tags": [
+      "subnetting",
+      "ipv4",
+      "/22",
+      "hosty"
+    ]
+  },
+  {
+    "id": "Q-0068",
+    "area": "N",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Jaka jest maska podsieci dla sieci 172.16.0.0/20?",
+    "options": [
+      "255.255.128.0",
+      "255.255.240.0",
+      "255.255.248.0",
+      "255.255.252.0"
+    ],
+    "correct": 1,
+    "explanation": "Maska /20: pierwsze 20 bitów to jedynki. Trzeci oktet: 11110000 = 240. Maska = 255.255.240.0. Sieć 172.16.0.0/20 obejmuje adresy 172.16.0.0 - 172.16.15.255 (4096 adresów, 4094 hostów).",
+    "ckeRef": "INF.02.5.2",
+    "tags": [
+      "subnetting",
+      "maska",
+      "/20",
+      "ipv4"
+    ]
+  },
+  {
+    "id": "Q-0069",
+    "area": "N",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Ile hostów obsługuje podsieć 192.168.5.0/28?",
+    "options": [
+      "6",
+      "14",
+      "30",
+      "62"
+    ],
+    "correct": 1,
+    "explanation": "Maska /28 = 255.255.255.240, blok = 16 adresów (2^4). Hosty = 16 - 2 = 14. Adres sieci: 192.168.5.0, broadcast: 192.168.5.15, hosty: 192.168.5.1 - 192.168.5.14.",
+    "ckeRef": "INF.02.5.2",
+    "tags": [
+      "subnetting",
+      "ipv4",
+      "/28",
+      "hosty"
+    ]
+  },
+  {
+    "id": "Q-0070",
+    "area": "N",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Potrzebujesz podsieci dla 50 hostów. Jaka jest najmniejsza maska podsieci, która spełni wymaganie?",
+    "options": [
+      "/27 (30 hostów)",
+      "/26 (62 hosty)",
+      "/25 (126 hostów)",
+      "/24 (254 hosty)"
+    ],
+    "correct": 1,
+    "explanation": "Dla 50 hostów potrzeba co najmniej 52 adresów (50 + sieć + broadcast). /27 = 30 hostów (za mało). /26 = 62 hosty — to wystarczy. Minimalna odpowiednia maska to /26 (255.255.255.192).",
+    "ckeRef": "INF.02.5.2",
+    "tags": [
+      "subnetting",
+      "hosty",
+      "/26",
+      "/27",
+      "projektowanie"
+    ]
+  },
+  {
+    "id": "Q-0071",
+    "area": "N",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "Który rekord DNS służy do zamiany nazwy domenowej na adres IPv4?",
+    "options": [
+      "AAAA",
+      "CNAME",
+      "A",
+      "PTR"
+    ],
+    "correct": 2,
+    "explanation": "Rekord A (Address) mapuje nazwę domenową na adres IPv4. Rekord AAAA mapuje na adres IPv6, CNAME to alias do innej nazwy, a PTR służy do odwrotnego wyszukiwania (IP → nazwa).",
+    "ckeRef": "INF.02.5.3",
+    "tags": [
+      "dns",
+      "rekord-a",
+      "ipv4",
+      "rozwiązywanie"
+    ]
+  },
+  {
+    "id": "Q-0072",
+    "area": "N",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Co oznacza niższy numer priorytetu (np. 10 vs 20) w rekordzie MX w DNS?",
+    "options": [
+      "Serwer pocztowy jest mniej preferowany",
+      "Serwer pocztowy jest bardziej preferowany (wyższy priorytet)",
+      "Priorytety MX nie mają znaczenia dla dostarczania poczty",
+      "Serwer obsługuje tylko połączenia zaszyfrowane"
+    ],
+    "correct": 1,
+    "explanation": "W rekordach MX niższy numer oznacza wyższy priorytet. Serwer z MX 10 będzie użyty przed serwerem z MX 20. Jeśli główny serwer (MX 10) jest niedostępny, poczta jest kierowana do serwera z MX 20 (backup).",
+    "ckeRef": "INF.02.5.3",
+    "tags": [
+      "dns",
+      "mx",
+      "priorytet",
+      "poczta"
+    ]
+  },
+  {
+    "id": "Q-0073",
+    "area": "N",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Jaka jest pełna sekwencja DORA w protokole DHCP?",
+    "options": [
+      "Discover→Request→Offer→Acknowledge",
+      "Discover→Offer→Request→Acknowledge",
+      "Request→Offer→Discover→Acknowledge",
+      "Offer→Discover→Request→Acknowledge"
+    ],
+    "correct": 1,
+    "explanation": "DHCP DORA: 1) Discover (klient broadcast: szukam serwera DHCP), 2) Offer (serwer unicast: proponuję adres IP), 3) Request (klient broadcast: akceptuję ofertę), 4) Acknowledge (serwer unicast: potwierdza przyznanie adresu).",
+    "ckeRef": "INF.02.5.3",
+    "tags": [
+      "dhcp",
+      "dora",
+      "discover",
+      "offer",
+      "request",
+      "acknowledge"
+    ]
+  },
+  {
+    "id": "Q-0074",
+    "area": "N",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Który numer opcji DHCP przekazuje klientowi adres domyślnej bramy (default gateway)?",
+    "options": [
+      "003",
+      "006",
+      "015",
+      "044"
+    ],
+    "correct": 0,
+    "explanation": "Opcja DHCP 003 = Default Gateway (brama domyślna). Opcja 006 = DNS Server, opcja 015 = Domain Name (nazwa domeny), opcja 044 = WINS Server. Te opcje są wysyłane klientowi w odpowiedzi DHCP Offer/Acknowledge.",
+    "ckeRef": "INF.02.5.3",
+    "tags": [
+      "dhcp",
+      "opcje",
+      "gateway",
+      "003"
+    ]
+  },
+  {
+    "id": "Q-0075",
+    "area": "N",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Co to jest VLAN i na jakiej warstwie modelu OSI działa?",
+    "options": [
+      "Wirtualna sieć LAN — warstwa 1 (fizyczna)",
+      "Wirtualna sieć LAN — warstwa 2 (łącza danych)",
+      "Wirtualna sieć LAN — warstwa 3 (sieciowa)",
+      "Wirtualna sieć LAN — warstwa 4 (transportowa)"
+    ],
+    "correct": 1,
+    "explanation": "VLAN (Virtual LAN) działa na warstwie 2 (łącza danych) modelu OSI i pozwala na logiczne segmentowanie sieci niezależnie od fizycznej topologii. VLAN-y są definiowane przez standard IEEE 802.1Q.",
+    "ckeRef": "INF.02.5.4",
+    "tags": [
+      "vlan",
+      "802.1q",
+      "warstwa2",
+      "segmentacja"
+    ]
+  },
+  {
+    "id": "Q-0076",
+    "area": "N",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Ile bitów zajmuje znacznik 802.1Q VLAN w ramce Ethernet i ile VLAN-ów można zdefiniować?",
+    "options": [
+      "2 bajty, 1024 VLAN-y",
+      "4 bajty (TPID+TCI), 4096 VLAN-y",
+      "8 bajtów, 65536 VLAN-y",
+      "4 bajty, 256 VLAN-y"
+    ],
+    "correct": 1,
+    "explanation": "Tag 802.1Q ma 4 bajty: TPID (2 bajty, 0x8100) + TCI zawierający PCP (3 bity), DEI (1 bit) i VID (12 bitów). 12-bitowy VID (VLAN ID) pozwala na 2^12 = 4096 VLAN-ów (0-4095, gdzie 0 i 4095 są zarezerwowane).",
+    "ckeRef": "INF.02.5.4",
+    "tags": [
+      "vlan",
+      "802.1q",
+      "tag",
+      "4096"
+    ]
+  },
+  {
+    "id": "Q-0077",
+    "area": "N",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Jaka jest różnica między portem trunk a portem access w konfiguracji VLAN?",
+    "options": [
+      "Trunk obsługuje jeden VLAN bez tagowania, access wiele VLAN-ów z tagowaniem",
+      "Trunk przenosi wiele VLAN-ów (tagowane), access obsługuje jeden VLAN (nietagowany)",
+      "Nie ma różnicy — oba typy portów działają identycznie",
+      "Trunk łączy switch z routerem, access łączy switch z switchem"
+    ],
+    "correct": 1,
+    "explanation": "Port trunk przenosi ruch wielu VLAN-ów — ramki są tagowane znacznikiem 802.1Q. Port access należy do jednego VLAN-u — ruch jest nietagowany (tag jest dodawany/usuwany przez switch). VLAN natywny na trunk jest nietagowany.",
+    "ckeRef": "INF.02.5.4",
+    "tags": [
+      "vlan",
+      "trunk",
+      "access",
+      "tagowanie"
+    ]
+  },
+  {
+    "id": "Q-0078",
+    "area": "N",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "W protokole STP, jak wyznaczany jest root bridge?",
+    "options": [
+      "Switch z najwyższym adresem MAC",
+      "Switch z najniższym Bridge ID (priorytet + MAC)",
+      "Switch z największą liczbą portów",
+      "Switch skonfigurowany ręcznie przez administratora"
+    ],
+    "correct": 1,
+    "explanation": "Root bridge w STP to switch z najniższym Bridge ID. Bridge ID = priorytet (domyślnie 32768) + adres MAC. Jeśli priorytety są równe, wygrywa najniższy adres MAC. Administrator może ustawić priorytet 0 aby wybrać root bridge.",
+    "ckeRef": "INF.02.5.4",
+    "tags": [
+      "stp",
+      "root-bridge",
+      "bridge-id",
+      "priorytet"
+    ]
+  },
+  {
+    "id": "Q-0079",
+    "area": "N",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Ile czasu zajmuje konwergencja STP w stanie blocking→forwarding (stany pośrednie)?",
+    "options": [
+      "10 sekund",
+      "20 sekund",
+      "30 sekund",
+      "50 sekund"
+    ],
+    "correct": 2,
+    "explanation": "STP przechodzi przez stany: blocking → listening (15s) → learning (15s) → forwarding. Konwergencja trwa łącznie 30 sekund. RSTP (Rapid STP) znacznie skraca ten czas do sekund poprzez aktywne negocjacje.",
+    "ckeRef": "INF.02.5.4",
+    "tags": [
+      "stp",
+      "konwergencja",
+      "stany",
+      "30s"
+    ]
+  },
+  {
+    "id": "Q-0080",
+    "area": "N",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "Standard 802.11ac (Wi-Fi 5) działa na którym paśmie częstotliwości?",
+    "options": [
+      "Wyłącznie 2.4 GHz",
+      "Wyłącznie 5 GHz",
+      "Zarówno 2.4 GHz jak i 5 GHz",
+      "6 GHz"
+    ],
+    "correct": 1,
+    "explanation": "IEEE 802.11ac (Wi-Fi 5) działa wyłącznie na paśmie 5 GHz i oferuje prędkości do 3.5 Gbps. Pasmo 2.4 GHz obsługuje 802.11b/g/n. Wi-Fi 6 (802.11ax) obsługuje oba pasma, a Wi-Fi 6E dodaje 6 GHz.",
+    "ckeRef": "INF.02.5.5",
+    "tags": [
+      "wifi",
+      "802.11ac",
+      "5ghz",
+      "wifi5"
+    ]
+  },
+  {
+    "id": "Q-0081",
+    "area": "N",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Który standard Wi-Fi osiąga maksymalną prędkość teoretyczną 600 Mbps?",
+    "options": [
+      "802.11a",
+      "802.11g",
+      "802.11n (Wi-Fi 4)",
+      "802.11ac (Wi-Fi 5)"
+    ],
+    "correct": 2,
+    "explanation": "IEEE 802.11n (Wi-Fi 4) osiąga do 600 Mbps dzięki technologii MIMO (Multiple Input Multiple Output) i łączeniu kanałów (channel bonding). Działa na 2.4 i 5 GHz. 802.11a i 802.11g to max 54 Mbps.",
+    "ckeRef": "INF.02.5.5",
+    "tags": [
+      "wifi",
+      "802.11n",
+      "600mbps",
+      "mimo"
+    ]
+  },
+  {
+    "id": "Q-0082",
+    "area": "N",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Protokół WPA3 używa jakiego mechanizmu do uwierzytelniania i wymiany kluczy?",
+    "options": [
+      "PSK (Pre-Shared Key)",
+      "SAE (Simultaneous Authentication of Equals)",
+      "TKIP",
+      "WEP RC4"
+    ],
+    "correct": 1,
+    "explanation": "WPA3 używa SAE (Simultaneous Authentication of Equals), zwanego też Dragonfly. SAE zastępuje podatny na ataki słownikowe PSK z WPA2. SAE zapewnia Perfect Forward Secrecy — nawet złamanie hasła nie ujawnia wcześniejszej komunikacji.",
+    "ckeRef": "INF.02.5.5",
+    "tags": [
+      "wpa3",
+      "sae",
+      "bezpieczeństwo",
+      "wifi"
+    ]
+  },
+  {
+    "id": "Q-0083",
+    "area": "N",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "Który zakres adresów IPv4 jest prywatny klasy C?",
+    "options": [
+      "10.0.0.0/8",
+      "172.16.0.0/12",
+      "192.168.0.0/16",
+      "169.254.0.0/16"
+    ],
+    "correct": 2,
+    "explanation": "Prywatne zakresy IPv4 (RFC 1918): klasa A = 10.0.0.0/8, klasa B = 172.16.0.0/12 (172.16.0.0–172.31.255.255), klasa C = 192.168.0.0/16 (192.168.0.0–192.168.255.255). Adresy 169.254.x.x to APIPA.",
+    "ckeRef": "INF.02.5.2",
+    "tags": [
+      "ipv4",
+      "prywatne",
+      "192.168",
+      "rfc1918"
+    ]
+  },
+  {
+    "id": "Q-0084",
+    "area": "N",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Co to jest APIPA i kiedy jest używany?",
+    "options": [
+      "Protokół routingu dynamicznego",
+      "Automatyczny adres 169.254.x.x przydzielany gdy brak serwera DHCP",
+      "Protokół zabezpieczania Wi-Fi",
+      "Adres multicast dla routerów"
+    ],
+    "correct": 1,
+    "explanation": "APIPA (Automatic Private IP Addressing) przydziela adres z zakresu 169.254.0.0/16 gdy komputer nie może uzyskać adresu od serwera DHCP. Urządzenie z APIPA może komunikować się tylko z innymi urządzeniami APIPA w tej samej sieci lokalnej.",
+    "ckeRef": "INF.02.5.2",
+    "tags": [
+      "apipa",
+      "dhcp",
+      "169.254",
+      "automatyczny"
+    ]
+  },
+  {
+    "id": "Q-0085",
+    "area": "N",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Jaki rekord DNS zawiera informacje o serwerze poczty dla domeny?",
+    "options": [
+      "A",
+      "CNAME",
+      "MX",
+      "TXT"
+    ],
+    "correct": 2,
+    "explanation": "Rekord MX (Mail eXchange) wskazuje serwer(y) pocztowy dla domeny. Zawiera priorytet i nazwę hosta serwera SMTP. Rekord TXT może zawierać rekordy SPF i DKIM używane do uwierzytelniania poczty.",
+    "ckeRef": "INF.02.5.3",
+    "tags": [
+      "dns",
+      "mx",
+      "poczta",
+      "smtp"
+    ]
+  },
+  {
+    "id": "Q-0086",
+    "area": "N",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Jaki jest zakres prywatnych adresów IPv4 klasy B?",
+    "options": [
+      "172.0.0.0/8",
+      "172.16.0.0/12",
+      "172.16.0.0/16",
+      "172.0.0.0/12"
+    ],
+    "correct": 1,
+    "explanation": "Prywatny zakres klasy B (RFC 1918) to 172.16.0.0/12, co obejmuje adresy od 172.16.0.0 do 172.31.255.255. Maska /12 = 255.240.0.0. Często używany w dużych sieciach korporacyjnych.",
+    "ckeRef": "INF.02.5.2",
+    "tags": [
+      "ipv4",
+      "prywatne",
+      "172.16",
+      "rfc1918",
+      "klasa-b"
+    ]
+  },
+  {
+    "id": "Q-0087",
+    "area": "N",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Jaka jest maksymalna prędkość kabla Cat 8?",
+    "options": [
+      "10 Gbps",
+      "25 Gbps",
+      "40 Gbps",
+      "100 Gbps"
+    ],
+    "correct": 2,
+    "explanation": "Kabel Cat 8 obsługuje prędkości do 40 Gbps na odległość do 30 metrów. Jest używany głównie w centrach danych. Cat 8.1 (RJ-45) i Cat 8.2 (TERA) to dwa warianty tego standardu.",
+    "ckeRef": "INF.02.5.1",
+    "tags": [
+      "kabel",
+      "cat8",
+      "40gbps",
+      "centrum-danych"
+    ]
+  },
+  {
+    "id": "Q-0088",
+    "area": "N",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "Jaki rekord DNS służy do odwrotnego wyszukiwania (z adresu IP na nazwę domenową)?",
+    "options": [
+      "A",
+      "AAAA",
+      "PTR",
+      "NS"
+    ],
+    "correct": 2,
+    "explanation": "Rekord PTR (Pointer) służy do odwrotnego rozwiązywania nazw (reverse DNS lookup) — zamiany adresu IP na nazwę domenową. Używany m.in. do weryfikacji serwerów pocztowych i diagnostyki sieci.",
+    "ckeRef": "INF.02.5.3",
+    "tags": [
+      "dns",
+      "ptr",
+      "reverse-lookup",
+      "rdns"
+    ]
+  },
+  {
+    "id": "Q-0089",
+    "area": "N",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Co to jest CNAME w DNS?",
+    "options": [
+      "Rekord IP kamery sieciowej",
+      "Alias wskazujący na inną nazwę domenową (kanoniczną)",
+      "Rekord IPv6",
+      "Rekord certyfikatu SSL"
+    ],
+    "correct": 1,
+    "explanation": "Rekord CNAME (Canonical Name) jest aliasem — wskazuje jedną nazwę domenową na inną (kanoniczną). Na przykład www.przyklad.pl może być CNAME do przyklad.pl. Nie można ustawić CNAME dla domeny z innymi rekordami (np. MX).",
+    "ckeRef": "INF.02.5.3",
+    "tags": [
+      "dns",
+      "cname",
+      "alias",
+      "kanoniczny"
+    ]
+  },
+  {
+    "id": "Q-0090",
+    "area": "N",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "W standardzie 802.11a, jakie pasmo i maksymalna prędkość są używane?",
+    "options": [
+      "2.4 GHz, 11 Mbps",
+      "5 GHz, 54 Mbps",
+      "2.4 GHz, 54 Mbps",
+      "5 GHz, 600 Mbps"
+    ],
+    "correct": 1,
+    "explanation": "IEEE 802.11a działa na paśmie 5 GHz i oferuje maksymalną prędkość 54 Mbps. 802.11b to 2.4 GHz/11 Mbps, 802.11g to 2.4 GHz/54 Mbps, a 802.11n to 2.4+5 GHz/600 Mbps.",
+    "ckeRef": "INF.02.5.5",
+    "tags": [
+      "wifi",
+      "802.11a",
+      "5ghz",
+      "54mbps"
+    ]
+  },
+  {
+    "id": "Q-0091",
+    "area": "N",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Jakie są trzy prywatne zakresy adresów IPv4 (RFC 1918)?",
+    "options": [
+      "10.0.0.0/8, 192.168.0.0/16, 172.16.0.0/12",
+      "10.0.0.0/8, 172.0.0.0/8, 192.168.0.0/24",
+      "127.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16",
+      "10.0.0.0/24, 172.16.0.0/16, 192.168.0.0/16"
+    ],
+    "correct": 0,
+    "explanation": "RFC 1918 definiuje trzy zakresy prywatnych adresów IPv4: 10.0.0.0/8 (16 mln adresów), 172.16.0.0/12 (1 mln adresów), 192.168.0.0/16 (65 tys. adresów). Adres 127.x.x.x to loopback — nie prywatny.",
+    "ckeRef": "INF.02.5.2",
+    "tags": [
+      "ipv4",
+      "prywatne",
+      "rfc1918",
+      "zakres"
+    ]
+  },
+  {
+    "id": "Q-0092",
+    "area": "N",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Jaka jest różnica między switchem zarządzalnym a niezarządzalnym?",
+    "options": [
+      "Switch zarządzalny jest szybszy, ale droższy",
+      "Switch zarządzalny obsługuje VLAN, QoS, SNMP, STP; niezarządzalny to plug-and-play",
+      "Switch niezarządzalny obsługuje więcej portów",
+      "Nie ma różnicy funkcjonalnej"
+    ],
+    "correct": 1,
+    "explanation": "Switch zarządzalny (managed) oferuje zaawansowane funkcje: VLAN 802.1Q, QoS (priorytetyzacja ruchu), SNMP (monitoring), STP (zapobieganie pętlom), port mirroring, statystyki. Switch niezarządzalny (unmanaged) działa plug-and-play bez konfiguracji.",
+    "ckeRef": "INF.02.5.6",
+    "tags": [
+      "switch",
+      "zarządzalny",
+      "vlan",
+      "qos",
+      "snmp"
+    ]
+  },
+  {
+    "id": "Q-0093",
+    "area": "N",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "Co to jest RSTP i jaką przewagę ma nad STP?",
+    "options": [
+      "Rapid STP — szybsza konwergencja (sekundy zamiast 30 s)",
+      "Remote STP — działa przez Internet",
+      "Redundant STP — duplikuje mosty",
+      "Routing STP — łączy warstwy 2 i 3"
+    ],
+    "correct": 0,
+    "explanation": "RSTP (Rapid Spanning Tree Protocol, 802.1w) zapewnia znacznie szybszą konwergencję niż STP (802.1D) — sekundy zamiast 30 sekund. Osiąga to przez aktywne negocjacje między switchami zamiast pasywnego czekania na timery.",
+    "ckeRef": "INF.02.5.4",
+    "tags": [
+      "rstp",
+      "stp",
+      "konwergencja",
+      "szybki"
+    ]
+  },
+  {
+    "id": "Q-0094",
+    "area": "N",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Komputer ma adres 10.0.1.50/22. Jaki jest adres sieci i broadcast?",
+    "options": [
+      "Sieć: 10.0.0.0, Broadcast: 10.0.3.255",
+      "Sieć: 10.0.1.0, Broadcast: 10.0.1.255",
+      "Sieć: 10.0.0.0, Broadcast: 10.0.0.255",
+      "Sieć: 10.0.0.0, Broadcast: 10.0.1.255"
+    ],
+    "correct": 0,
+    "explanation": "Maska /22 = 255.255.252.0. Trzeci oktet: 252 = 11111100. Dla 10.0.1.50: 1 AND 252 = 0 (00000001 AND 11111100 = 00000000). Sieć: 10.0.0.0, broadcast: 10.0.3.255 (blok 4 suble klasy C: .0.0-.3.255).",
+    "ckeRef": "INF.02.5.2",
+    "tags": [
+      "subnetting",
+      "/22",
+      "adres-sieci",
+      "broadcast"
+    ]
+  },
+  {
+    "id": "Q-0095",
+    "area": "N",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Który standard 802.11 jako pierwszy wprowadził obsługę pasma 6 GHz (Wi-Fi 6E)?",
+    "options": [
+      "802.11ac (Wi-Fi 5)",
+      "802.11ax (Wi-Fi 6E)",
+      "802.11be (Wi-Fi 7)",
+      "802.11n (Wi-Fi 4)"
+    ],
+    "correct": 1,
+    "explanation": "Wi-Fi 6E jest rozszerzeniem 802.11ax (Wi-Fi 6) o pasmo 6 GHz. Oferuje więcej kanałów bez zakłóceń od starszych urządzeń (tylko Wi-Fi 6E obsługuje 6 GHz). Wi-Fi 7 (802.11be) to kolejny standard obsługujący 6 GHz.",
+    "ckeRef": "INF.02.5.5",
+    "tags": [
+      "wifi",
+      "wifi6e",
+      "6ghz",
+      "802.11ax"
+    ]
+  },
+  {
+    "id": "Q-0096",
+    "area": "N",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Co to jest native VLAN na porcie trunk?",
+    "options": [
+      "VLAN o numerze 1 — zawsze domyślny, nie można zmienić",
+      "VLAN, którego ramki na porcie trunk przesyłane są BEZ znacznika 802.1Q",
+      "VLAN obsługujący tylko ruch zarządzania switchem",
+      "VLAN wymagający specjalnego okablowania"
+    ],
+    "correct": 1,
+    "explanation": "Native VLAN to VLAN, którego ruch na porcie trunk jest przesyłany bez tagowania 802.1Q. Domyślnie jest to VLAN 1, ale zaleca się zmianę dla bezpieczeństwa (VLAN hopping attack). Oba końce trunk muszą mieć skonfigurowany ten sam native VLAN.",
+    "ckeRef": "INF.02.5.4",
+    "tags": [
+      "vlan",
+      "native-vlan",
+      "trunk",
+      "802.1q"
+    ]
+  },
+  {
+    "id": "Q-0097",
+    "area": "N",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "Jaką prędkość obsługuje kabel Cat 5e?",
+    "options": [
+      "100 Mbps / 100 m",
+      "1 Gbps / 100 m",
+      "10 Gbps / 55 m",
+      "10 Gbps / 100 m"
+    ],
+    "correct": 1,
+    "explanation": "Kabel Cat 5e (Enhanced Category 5) obsługuje prędkości do 1 Gbps na odległość do 100 metrów. Jest to najczęściej stosowany kabel w istniejących instalacjach. Dla 10 GbE wymagany jest Cat 6 (55 m) lub Cat 6A (100 m).",
+    "ckeRef": "INF.02.5.1",
+    "tags": [
+      "kabel",
+      "cat5e",
+      "1gbps",
+      "ethernet"
+    ]
+  },
+  {
+    "id": "Q-0098",
+    "area": "N",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Jaki rekord DNS zawiera informacje o autorytecie dla strefy DNS?",
+    "options": [
+      "NS",
+      "SOA",
+      "TXT",
+      "A"
+    ],
+    "correct": 1,
+    "explanation": "Rekord SOA (Start of Authority) zawiera podstawowe informacje o strefie DNS: główny nameserver, email administratora, numer seryjny strefy, interwały odświeżania i TTL. Jest to obowiązkowy rekord dla każdej strefy DNS.",
+    "ckeRef": "INF.02.5.3",
+    "tags": [
+      "dns",
+      "soa",
+      "strefa",
+      "autorytet"
+    ]
+  },
+  {
+    "id": "Q-0099",
+    "area": "N",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Jaka prędkość i na jakiej odległości obsługuje kabel Cat 6?",
+    "options": [
+      "1 Gbps / 55 m oraz 10 Gbps / 55 m, lub 1 Gbps / 100 m",
+      "10 Gbps / 100 m",
+      "1 Gbps / 100 m tylko",
+      "40 Gbps / 30 m"
+    ],
+    "correct": 0,
+    "explanation": "Cat 6 obsługuje 1 Gbps na 100 m lub 10 Gbps na do 55 m. Dla 10 GbE na pełnych 100 m wymagany jest Cat 6A. Cat 6 ma lepsze ekranowanie niż Cat 5e, ale gorsze niż Cat 6A.",
+    "ckeRef": "INF.02.5.1",
+    "tags": [
+      "kabel",
+      "cat6",
+      "10gbps",
+      "55m"
+    ]
+  },
+  {
+    "id": "Q-0100",
+    "area": "N",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "W protokole STP, co to jest root port?",
+    "options": [
+      "Port na root bridge wysyłający BPDU do sieci",
+      "Port na przełączniku nieroot z najniższym kosztem ścieżki do root bridge",
+      "Port zablokowany przez STP",
+      "Port łączący dwa switche w trybie trunk"
+    ],
+    "correct": 1,
+    "explanation": "Root port to port na każdym przełączniku (nie-root) z najniższym kosztem ścieżki (path cost) do root bridge. Każdy switch (poza root bridge) ma dokładnie jeden root port. Niższy koszt = szybszy link (100 Mbps=19, 1 Gbps=4, 10 Gbps=2).",
+    "ckeRef": "INF.02.5.4",
+    "tags": [
+      "stp",
+      "root-port",
+      "koszt",
+      "ścieżka"
+    ]
+  },
+  {
+    "id": "Q-0101",
+    "area": "N",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Co to jest rekord TXT w DNS i do czego jest używany?",
+    "options": [
+      "Rekord przechowujący tekst opisujący domenę — tylko informacyjny",
+      "Rekord tekstowy używany do SPF, DKIM, DMARC i weryfikacji domeny",
+      "Rekord przechowujący certyfikat SSL",
+      "Rekord translacji nazwy na adres IPv6"
+    ],
+    "correct": 1,
+    "explanation": "Rekord TXT przechowuje dowolny tekst i jest używany do: SPF (autoryzacja serwerów poczty), DKIM (podpisy cyfrowe maili), DMARC (polityka odrzucania maili), weryfikacji własności domeny przez usługi (Google, Microsoft). Nie jest tylko informacyjny.",
+    "ckeRef": "INF.02.5.3",
+    "tags": [
+      "dns",
+      "txt",
+      "spf",
+      "dkim",
+      "dmarc"
+    ]
+  },
+  {
+    "id": "Q-0102",
+    "area": "N",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Jaki standard 802.11 działa wyłącznie na paśmie 2.4 GHz z prędkością 11 Mbps?",
+    "options": [
+      "802.11a",
+      "802.11b",
+      "802.11g",
+      "802.11n"
+    ],
+    "correct": 1,
+    "explanation": "IEEE 802.11b działa wyłącznie na paśmie 2.4 GHz i oferuje max prędkość 11 Mbps. Był to jeden z pierwszych popularnych standardów Wi-Fi. 802.11g (2.4 GHz, 54 Mbps) zastąpił 802.11b, zachowując wsteczną kompatybilność.",
+    "ckeRef": "INF.02.5.5",
+    "tags": [
+      "wifi",
+      "802.11b",
+      "2.4ghz",
+      "11mbps"
+    ]
+  },
+  {
+    "id": "Q-0103",
+    "area": "P",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "Jaka jest prawidłowa kolejność etapów procesu druku laserowego?",
+    "options": [
+      "Ładowanie→Naświetlanie→Wywoływanie→Przenoszenie→Utrwalanie→Czyszczenie",
+      "Naświetlanie→Ładowanie→Wywoływanie→Utrwalanie→Przenoszenie→Czyszczenie",
+      "Ładowanie→Naświetlanie→Przenoszenie→Wywoływanie→Utrwalanie→Czyszczenie",
+      "Wywoływanie→Ładowanie→Naświetlanie→Przenoszenie→Utrwalanie→Czyszczenie"
+    ],
+    "correct": 0,
+    "explanation": "Proces druku laserowego: 1) Ładowanie (charging, bęben ~-600V), 2) Naświetlanie (exposure, laser zapisuje obraz), 3) Wywoływanie (developing, toner przyciągany), 4) Przenoszenie (transfer, toner→papier), 5) Utrwalanie (fusing, ciepło+ciśnienie), 6) Czyszczenie (cleaning, reszta tonera).",
+    "ckeRef": "INF.02.6.1",
+    "tags": [
+      "drukarka-laserowa",
+      "proces-druku",
+      "ładowanie",
+      "utrwalanie"
+    ]
+  },
+  {
+    "id": "Q-0104",
+    "area": "P",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Który producent drukarek atramentowych stosuje technologię piezoelektryczną (piezo) zamiast termicznej?",
+    "options": [
+      "HP",
+      "Canon",
+      "Epson",
+      "Brother"
+    ],
+    "correct": 2,
+    "explanation": "Epson używa technologii piezoelektrycznej w głowicach drukujących — kryształy piezo pod napięciem odkształcają się i wyrzucają atrament. HP i Canon stosują technologię termiczną (bubble jet) — grzałka tworzy bańkę pary wyrzucającą atrament.",
+    "ckeRef": "INF.02.6.1",
+    "tags": [
+      "drukarka-atramentowa",
+      "piezo",
+      "epson",
+      "termiczna"
+    ]
+  },
+  {
+    "id": "Q-0105",
+    "area": "P",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "Jakie minimalne rozdzielczość DPI jest zalecana do skanowania dokumentów i OCR?",
+    "options": [
+      "72 DPI",
+      "150 DPI",
+      "300 DPI",
+      "600 DPI"
+    ],
+    "correct": 2,
+    "explanation": "Minimalna rozdzielczość do skanowania dokumentów i OCR (rozpoznawanie tekstu) to 300 DPI. Przy niższej rozdzielczości jakość OCR znacznie spada. Do zdjęć zaleca się 600 DPI, do slajdów i negatywów ponad 1200 DPI.",
+    "ckeRef": "INF.02.6.2",
+    "tags": [
+      "skaner",
+      "dpi",
+      "ocr",
+      "rozdzielczość"
+    ]
+  },
+  {
+    "id": "Q-0106",
+    "area": "P",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Jaki interfejs wyświetlacza obsługuje jednocześnie sygnał audio i wideo z przepustowością do 48 Gbps (HDMI 2.1)?",
+    "options": [
+      "DisplayPort 1.4",
+      "DVI-D Dual Link",
+      "HDMI 2.1",
+      "VGA"
+    ],
+    "correct": 2,
+    "explanation": "HDMI 2.1 oferuje przepustowość 48 Gbps i obsługuje rozdzielczości do 10K oraz odświeżanie 4K@120Hz. HDMI przesyła jednocześnie audio i wideo. DisplayPort 2.0 oferuje 77.4 Gbps, ale HDMI 2.1 to max dla standardu HDMI.",
+    "ckeRef": "INF.02.6.2",
+    "tags": [
+      "hdmi",
+      "interface",
+      "audio-wideo",
+      "48gbps"
+    ]
+  },
+  {
+    "id": "Q-0107",
+    "area": "P",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Jaki typ panelu monitora zapewnia najlepsze czasy reakcji (1 ms) i jest preferowany przez graczy?",
+    "options": [
+      "IPS",
+      "VA",
+      "TN",
+      "OLED"
+    ],
+    "correct": 2,
+    "explanation": "Panele TN (Twisted Nematic) mają najkrótsze czasy reakcji (~1 ms), co jest ważne w grach. Ich wadą jest ograniczony kąt widzenia i słabsza reprodukcja kolorów. IPS oferuje lepsze kolory, ale wolniejszy czas reakcji (~4 ms). VA ma najlepszy kontrast.",
+    "ckeRef": "INF.02.6.2",
+    "tags": [
+      "monitor",
+      "tn",
+      "ips",
+      "czas-reakcji",
+      "gaming"
+    ]
+  },
+  {
+    "id": "Q-0108",
+    "area": "P",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Technologia DLP w projektorach wykorzystuje jakiś element do tworzenia obrazu?",
+    "options": [
+      "Trzy panele ciekłokrystaliczne (3LCD)",
+      "Mikrolustra na chipie DMD i koło barwne (color wheel)",
+      "Laser z modulatorem LCOS",
+      "Matrycę LED z filtrem kolorów"
+    ],
+    "correct": 1,
+    "explanation": "DLP (Digital Light Processing) używa chipu DMD (Digital Micromirror Device) z milionami mikroskopijnych luster, które kierują światło przez koło barwne (color wheel). Efektem ubocznym jest 'efekt tęczy' widoczny przy szybkich ruchach gałek ocznych.",
+    "ckeRef": "INF.02.6.2",
+    "tags": [
+      "projektor",
+      "dlp",
+      "dmd",
+      "color-wheel"
+    ]
+  },
+  {
+    "id": "Q-0109",
+    "area": "P",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "Ile lumenów minimalnie potrzebuje projektor do prezentacji w jasno oświetlonym pomieszczeniu?",
+    "options": [
+      "500 lumenów",
+      "1500 lumenów",
+      "3000 lumenów",
+      "5000 lumenów"
+    ],
+    "correct": 2,
+    "explanation": "Do prezentacji w jasno oświetlonym pomieszczeniu wymagane jest minimum 3000 lumenów. W zaciemnionym pomieszczeniu wystarczy 1500 lumenów. Do dużych sal konferencyjnych w pełnym oświetleniu zaleca się 5000+ lumenów.",
+    "ckeRef": "INF.02.6.2",
+    "tags": [
+      "projektor",
+      "lumeny",
+      "jasność",
+      "oświetlenie"
+    ]
+  },
+  {
+    "id": "Q-0110",
+    "area": "P",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Jaki standard umożliwia drukowanie z urządzeń Apple (iPhone, iPad, Mac) bez instalowania sterowników?",
+    "options": [
+      "Mopria",
+      "AirPrint",
+      "Google Cloud Print",
+      "IPP Everywhere"
+    ],
+    "correct": 1,
+    "explanation": "AirPrint to technologia firmy Apple umożliwiająca drukowanie z iPhone, iPad i Mac na kompatybilnych drukarkach bez konieczności instalowania dodatkowych sterowników. Mopria to analogiczny standard dla Androida.",
+    "ckeRef": "INF.02.6.1",
+    "tags": [
+      "drukarka",
+      "airprint",
+      "apple",
+      "wireless"
+    ]
+  },
+  {
+    "id": "Q-0111",
+    "area": "P",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Jaki standard umożliwia bezprzewodowe drukowanie z urządzeń Android?",
+    "options": [
+      "AirPrint",
+      "Mopria",
+      "Wi-Fi Direct only",
+      "Bluetooth RFCOMM"
+    ],
+    "correct": 1,
+    "explanation": "Mopria Print Service to standard dla Androida umożliwiający drukowanie bez sterowników, podobny do AirPrint dla Apple. Jest obsługiwany przez większość producentów drukarek i wbudowany w nowsze wersje Androida.",
+    "ckeRef": "INF.02.6.1",
+    "tags": [
+      "drukarka",
+      "mopria",
+      "android",
+      "wireless"
+    ]
+  },
+  {
+    "id": "Q-0112",
+    "area": "P",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Jaki typ skanera jest najlepszy do masowego skanowania dokumentów wielostronicowych?",
+    "options": [
+      "Flatbed (płaski)",
+      "ADF (Automatic Document Feeder)",
+      "Drum (bębenkowy)",
+      "Handheld (ręczny)"
+    ],
+    "correct": 1,
+    "explanation": "Skaner ADF (Automatic Document Feeder) automatycznie pobiera kolejne strony dokumentu, umożliwiając skanowanie dziesiątek stron bez ręcznego przekładania. Idealny do biur. Flatbed wymaga ręcznego kładzenia każdej strony, drum zapewnia najwyższą jakość.",
+    "ckeRef": "INF.02.6.2",
+    "tags": [
+      "skaner",
+      "adf",
+      "dokumenty",
+      "automatyczny"
+    ]
+  },
+  {
+    "id": "Q-0113",
+    "area": "P",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Jaki interfejs wyświetlacza obsługuje najwyższą przepustowość w standardzie DisplayPort 2.0?",
+    "options": [
+      "25 Gbps",
+      "48 Gbps",
+      "77.4 Gbps",
+      "100 Gbps"
+    ],
+    "correct": 2,
+    "explanation": "DisplayPort 2.0 (UHBR — Ultra High Bit Rate) oferuje przepustowość do 77.4 Gbps, co pozwala na wyświetlanie 8K@60Hz lub 4K@240Hz z HDR. Jest to znaczny wzrost względem DP 1.4 (32.4 Gbps) i HDMI 2.1 (48 Gbps).",
+    "ckeRef": "INF.02.6.2",
+    "tags": [
+      "displayport",
+      "przepustowość",
+      "77gbps",
+      "dp2.0"
+    ]
+  },
+  {
+    "id": "Q-0114",
+    "area": "P",
+    "difficulty": "easy",
+    "type": "mcq",
+    "q": "Który typ złącza wyświetlacza jest analogowy (nie cyfrowy)?",
+    "options": [
+      "DVI-D",
+      "HDMI",
+      "DisplayPort",
+      "VGA"
+    ],
+    "correct": 3,
+    "explanation": "VGA (Video Graphics Array) jest interfejsem analogowym — przesyła sygnał analogowy RGB. DVI-D, HDMI i DisplayPort to interfejsy cyfrowe. VGA jest przestarzały, ale nadal spotykany w starszych monitorach i projektorach.",
+    "ckeRef": "INF.02.6.2",
+    "tags": [
+      "vga",
+      "analogowy",
+      "interfejs",
+      "wyświetlacz"
+    ]
+  },
+  {
+    "id": "Q-0115",
+    "area": "P",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Co dzieje się na etapie 'fusing' (utrwalania) w drukarce laserowej?",
+    "options": [
+      "Bęben ładowany jest ładunkiem elektrostatycznym",
+      "Toner jest przenoszony z bębna na papier przez pole elektrostatyczne",
+      "Toner jest trwale wtapiany w papier przez ciepło i ciśnienie",
+      "Laser wypisuje obraz na bębnie selenowym"
+    ],
+    "correct": 2,
+    "explanation": "Etap fusing (utrwalania) to ostatni etap przed czyszczeniem. Zespół utrwalający (fuser) używa wałka grzewczego i wałka dociskowego, by przy wysokiej temperaturze (~200°C) i ciśnieniu trwale wtopić cząstki tonera w papier.",
+    "ckeRef": "INF.02.6.1",
+    "tags": [
+      "drukarka-laserowa",
+      "fusing",
+      "utrwalanie",
+      "toner"
+    ]
+  },
+  {
+    "id": "Q-0116",
+    "area": "P",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Jaki typ panelu monitora zapewnia najlepszą reprodukcję kolorów i szerokie kąty widzenia?",
+    "options": [
+      "TN (Twisted Nematic)",
+      "VA (Vertical Alignment)",
+      "IPS (In-Plane Switching)",
+      "CRT"
+    ],
+    "correct": 2,
+    "explanation": "Panele IPS (In-Plane Switching) zapewniają najlepszą reprodukcję kolorów (pełne sRGB/P3) i kąty widzenia do 178°, bez znaczącego przesunięcia barw. Są preferowane przez grafików i fotografów. Wadą jest wyższy koszt i potencjalny 'glow' (poświata).",
+    "ckeRef": "INF.02.6.2",
+    "tags": [
+      "monitor",
+      "ips",
+      "kolory",
+      "kąt-widzenia"
+    ]
+  },
+  {
+    "id": "Q-0117",
+    "area": "P",
+    "difficulty": "hard",
+    "type": "mcq",
+    "q": "Jakie napięcie jest stosowane do ładowania bębna fotoprzewodnikowego w drukarce laserowej?",
+    "options": [
+      "+600V",
+      "-600V",
+      "-12V",
+      "+5V"
+    ],
+    "correct": 1,
+    "explanation": "Bęben fotoprzewodnikowy jest ładowany ujemnym ładunkiem elektrostatycznym ok. -600V przez drut koronowy lub wałek ładujący (PCR). Laser neutralizuje ładunek w miejscach, gdzie ma być toner, tworząc obraz elektrostatyczny (utajony).",
+    "ckeRef": "INF.02.6.1",
+    "tags": [
+      "drukarka-laserowa",
+      "ładowanie",
+      "bęben",
+      "-600v"
+    ]
+  },
+  {
+    "id": "Q-0118",
+    "area": "P",
+    "difficulty": "medium",
+    "type": "mcq",
+    "q": "Jakie złącze sieciowe RJ-45 jest stosowane do podłączenia drukarki do sieci Ethernet?",
+    "options": [
+      "RJ-11 (telefon)",
+      "RJ-45 (Ethernet 8P8C)",
+      "USB-B",
+      "IEEE 1284 (Centronics)"
+    ],
+    "correct": 1,
+    "explanation": "Drukarki sieciowe używają złącza RJ-45 (8P8C) do połączenia z siecią Ethernet (TCP/IP). Złącze RJ-11 to telefon (4P4C lub 6P2C), USB-B to popularne złącze USB drukarek, a IEEE 1284 (Centronics) to przestarzały port równoległy.",
+    "ckeRef": "INF.02.6.1",
+    "tags": [
+      "drukarka",
+      "rj45",
+      "ethernet",
+      "sieć"
+    ]
+  }
+]

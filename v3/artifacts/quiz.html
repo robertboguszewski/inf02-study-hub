@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="pl-PL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>INF.02 Study Hub — Quiz</title>
+<style>
+/* ============================================================
+   Design tokens (mirror of contracts/design-tokens.json v1.0.0)
+   Single-file constraint per ADR-001.
+   ============================================================ */
+:root {
+  --color-bg: #0F1115;
+  --color-surface: #1A1D24;
+  --color-surface-2: #252932;
+  --color-text: #F2F4F7;
+  --color-text-muted: #A8B0BD;
+  --color-border: #2E3340;
+  --color-accent: #5EA9FF;
+  --color-accent-fg: #0F1115;
+  --color-success: #3DDC97;
+  --color-warning: #FFB454;
+  --color-danger: #FF6B6B;
+  --color-focus: #FFD166;
+
+  --area-B-bg:#1F3A5F;--area-B-fg:#A9D5FF;
+  --area-O-bg:#3F2A5F;--area-O-fg:#D5B8FF;
+  --area-N-bg:#1F4F3F;--area-N-fg:#9BEBC9;
+  --area-P-bg:#5F3F1F;--area-P-fg:#FFCC9B;
+  --area-D-bg:#5F1F2F;--area-D-fg:#FFB0B8;
+  --area-L-bg:#4F4F1F;--area-L-fg:#E6E0A8;
+  --area-W-bg:#1F4F5F;--area-W-fg:#A8DCE6;
+  --area-6-bg:#2F1F5F;--area-6-fg:#B8B0FF;
+  --area-V-bg:#1F5F4F;--area-V-fg:#9BD9C7;
+  --area-Z-bg:#5F2F4F;--area-Z-fg:#FFB0DC;
+  --area-R-bg:#3F3F3F;--area-R-fg:#E0E0E0;
+
+  --fs-xs:0.8rem; --fs-sm:1rem; --fs-md:1.25rem; --fs-lg:1.563rem; --fs-xl:1.953rem; --fs-2xl:2.441rem;
+  --lh-body:1.55; --lh-heading:1.2;
+  --sp-xs:4px; --sp-sm:8px; --sp-md:16px; --sp-lg:24px; --sp-xl:32px; --sp-2xl:48px; --sp-3xl:64px;
+  --ease-out:cubic-bezier(0.16,1,0.3,1);
+  --ease-in-out:cubic-bezier(0.65,0,0.35,1);
+  --dur-fast:120ms; --dur-base:200ms; --dur-slow:320ms;
+  --shadow-1:0 1px 2px rgba(0,0,0,0.4);
+  --shadow-2:0 4px 12px rgba(0,0,0,0.5);
+  --shadow-3:0 12px 32px rgba(0,0,0,0.6);
+
+  --font-stack: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "Cascadia Mono", "Roboto Mono", Consolas, monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin:0; padding:0; }
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-stack);
+  font-size: var(--fs-sm);
+  line-height: var(--lh-body);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+button { font: inherit; color: inherit; cursor: pointer; }
+input { font: inherit; }
+
+/* ----- Layout ----- */
+.quiz-root {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: var(--sp-md);
+  position: relative;
+}
+.quiz-header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-md);
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--sp-md);
+}
+.quiz-meta { display: flex; gap: var(--sp-sm); align-items: center; flex-wrap: wrap; font-size: var(--fs-xs); color: var(--color-text-muted); }
+.quiz-meta strong { color: var(--color-text); font-weight: 600; }
+.qid-tag { font-family: var(--font-mono); color: var(--color-text-muted); font-size: var(--fs-xs); }
+
+.area-chip {
+  display: inline-flex; align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  background: var(--color-surface-2);
+  color: var(--color-text);
+}
+
+/* ----- Timer ----- */
+.timer {
+  position: sticky;
+  top: var(--sp-sm);
+  z-index: 5;
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-xs);
+  padding: 8px 14px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--fs-md);
+  font-weight: 600;
+  color: var(--color-text);
+  box-shadow: var(--shadow-1);
+}
+.timer--warn  { border-color: var(--color-warning); color: var(--color-warning); }
+.timer--crit  { border-color: var(--color-danger);  color: var(--color-danger); animation: pulse 1s var(--ease-in-out) infinite; }
+@keyframes pulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(255,107,107,0.5); }
+  50%     { box-shadow: 0 0 0 8px rgba(255,107,107,0); }
+}
+
+/* ----- Progress ----- */
+.progress-wrap {
+  margin: var(--sp-md) 0 var(--sp-lg);
+  display: flex; flex-direction: column; gap: var(--sp-xs);
+}
+.progress-bar {
+  height: 8px; width: 100%;
+  background: var(--color-surface-2);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-accent), var(--color-success));
+  border-radius: 999px;
+  transition: width var(--dur-base) var(--ease-out);
+}
+.progress-label { font-size: var(--fs-xs); color: var(--color-text-muted); }
+
+/* ----- Question ----- */
+.question-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  padding: var(--sp-lg);
+  box-shadow: var(--shadow-1);
+}
+.q-text {
+  font-size: var(--fs-md);
+  line-height: 1.55;
+  max-width: 60ch;
+  margin: 0 0 var(--sp-lg);
+}
+.q-media-hint { font-size: var(--fs-xs); color: var(--color-text-muted); margin-bottom: var(--sp-md); font-style: italic; }
+
+.options { list-style:none; margin:0; padding:0; display:grid; gap: var(--sp-sm); }
+.option {
+  position: relative;
+  display: flex; align-items: stretch;
+  width: 100%;
+  background: var(--color-surface-2);
+  border: 2px solid var(--color-border);
+  border-radius: 12px;
+  padding: var(--sp-md);
+  text-align: left;
+  min-height: 56px;
+  color: var(--color-text);
+  transition: background var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+  font-size: var(--fs-sm);
+  line-height: 1.5;
+}
+.option:hover:not(:disabled) { background: #2c313c; border-color: var(--color-accent); }
+.option:active:not(:disabled) { transform: scale(0.99); }
+.option--selected { border-color: var(--color-accent); background: #2c3850; }
+.option--correct { border-color: var(--color-success); background: rgba(61,220,151,0.12); }
+.option--wrong { border-color: var(--color-danger); background: rgba(255,107,107,0.12); }
+.option:disabled { cursor: default; }
+.option-letter {
+  flex: 0 0 auto;
+  width: 32px; height: 32px;
+  display: inline-flex; align-items: center; justify-content: center;
+  margin-right: var(--sp-md);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+}
+.option--selected .option-letter { background: var(--color-accent); color: var(--color-accent-fg); border-color: var(--color-accent); }
+.option--correct .option-letter { background: var(--color-success); color: var(--color-bg); border-color: var(--color-success); }
+.option--wrong .option-letter { background: var(--color-danger); color: var(--color-bg); border-color: var(--color-danger); }
+.option-text { flex: 1 1 auto; align-self: center; }
+
+/* ----- Fill input ----- */
+.fill-input {
+  width: 100%;
+  background: var(--color-surface-2);
+  color: var(--color-text);
+  border: 2px solid var(--color-border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-md);
+  min-height: 56px;
+}
+.fill-input:focus { border-color: var(--color-accent); outline: none; }
+.fill-feedback { margin-top: var(--sp-sm); font-size: var(--fs-sm); }
+.fill-feedback--ok { color: var(--color-success); }
+.fill-feedback--bad { color: var(--color-danger); }
+
+/* ----- Explanation ----- */
+.explanation {
+  margin-top: var(--sp-lg);
+  padding: var(--sp-md);
+  background: var(--color-bg);
+  border-left: 3px solid var(--color-accent);
+  border-radius: 6px;
+  font-size: var(--fs-sm);
+  color: var(--color-text-muted);
+}
+.explanation strong { color: var(--color-text); }
+
+/* ----- Nav ----- */
+.nav-row {
+  display: flex; gap: var(--sp-sm);
+  margin-top: var(--sp-lg);
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 44px; min-width: 44px;
+  padding: 12px 18px;
+  border-radius: 10px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-2);
+  color: var(--color-text);
+  font-weight: 600;
+  font-size: var(--fs-sm);
+  transition: background var(--dur-fast), border-color var(--dur-fast), transform var(--dur-fast);
+}
+.btn:hover:not(:disabled) { background: #2c313c; border-color: var(--color-accent); }
+.btn:active:not(:disabled) { transform: scale(0.98); }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn--primary { background: var(--color-accent); color: var(--color-accent-fg); border-color: var(--color-accent); }
+.btn--primary:hover:not(:disabled) { background: #7ebbff; border-color: #7ebbff; }
+.btn--success { background: var(--color-success); color: var(--color-bg); border-color: var(--color-success); }
+.btn--ghost { background: transparent; }
+
+/* ----- Picker (mode entry) ----- */
+.picker-wrap { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 16px; padding: var(--sp-lg); }
+.picker-wrap h2 { margin: 0 0 var(--sp-md); font-size: var(--fs-lg); line-height: var(--lh-heading); }
+.picker-grid { display: grid; gap: var(--sp-sm); }
+.picker-grid--areas { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
+.picker-area-btn {
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-2);
+  color: var(--color-text);
+  padding: var(--sp-md);
+  border-radius: 12px;
+  text-align: left;
+  cursor: pointer;
+  transition: transform var(--dur-fast), border-color var(--dur-fast);
+  min-height: 64px;
+}
+.picker-area-btn:hover { transform: translateY(-2px); border-color: var(--color-accent); }
+.picker-area-btn .code { font-family: var(--font-mono); font-weight: 700; font-size: var(--fs-md); }
+.picker-area-btn .label { display:block; color: var(--color-text-muted); font-size: var(--fs-xs); margin-top: 2px; }
+
+/* ----- Result screen ----- */
+.result-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 20px;
+  padding: var(--sp-xl);
+  text-align: center;
+  box-shadow: var(--shadow-2);
+}
+.result-pct {
+  font-size: var(--fs-2xl);
+  font-weight: 700;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  margin: 0;
+  line-height: 1.1;
+}
+.result-pct--passed { color: var(--color-success); }
+.result-pct--failed { color: var(--color-danger); }
+.result-verdict {
+  display: inline-block;
+  margin-top: var(--sp-md);
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: var(--fs-sm);
+}
+.result-verdict.exam-result--passed { background: rgba(61,220,151,0.12); color: var(--color-success); border:1px solid var(--color-success); }
+.result-verdict.exam-result--failed { background: rgba(255,107,107,0.12); color: var(--color-danger); border:1px solid var(--color-danger); }
+.result-stats { display:flex; gap: var(--sp-lg); justify-content: center; margin: var(--sp-lg) 0; flex-wrap: wrap; }
+.result-stats > div { min-width: 80px; }
+.result-stats .num { font-size: var(--fs-lg); font-weight: 700; font-family: var(--font-mono); }
+.result-stats .lbl { color: var(--color-text-muted); font-size: var(--fs-xs); }
+
+.wrong-list { margin-top: var(--sp-xl); text-align: left; }
+.wrong-list h3 { font-size: var(--fs-md); margin: 0 0 var(--sp-md); }
+.wrong-item { background: var(--color-surface-2); border-radius: 10px; padding: var(--sp-md); margin-bottom: var(--sp-sm); border: 1px solid var(--color-border); }
+.wrong-item summary { cursor: pointer; font-weight: 600; padding: 4px 0; }
+.wrong-item summary::marker { color: var(--color-accent); }
+.wrong-item p { margin: var(--sp-sm) 0 0; color: var(--color-text-muted); font-size: var(--fs-sm); }
+.wrong-item .ans-line { font-size: var(--fs-xs); margin-top: 6px; }
+.wrong-item .ans-line .bad { color: var(--color-danger); }
+.wrong-item .ans-line .ok { color: var(--color-success); }
+
+/* ----- ARIA live region (visually hidden, but readable) ----- */
+.sr-only {
+  position: absolute !important;
+  width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+}
+
+/* ----- Banner / alerts ----- */
+.banner {
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-left: 3px solid var(--color-accent);
+  border-radius: 8px;
+  padding: var(--sp-md);
+  margin-bottom: var(--sp-md);
+  font-size: var(--fs-sm);
+}
+.banner--warn { border-left-color: var(--color-warning); }
+
+@media (max-width: 600px) {
+  .quiz-header { flex-direction: column; align-items: flex-start; }
+  .timer { margin-left: 0; align-self: flex-end; }
+  .nav-row .btn { flex: 1 1 calc(50% - var(--sp-sm)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+</style>
+</head>
+<body>
+<div id="quiz-app" class="quiz-root" role="main"></div>
+<div id="quiz-live" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+<script>
+/* ============================================================
+   INF02.quiz — Builder-Quiz artifact (v3)
+   Single writer per ADR-001. Consumes INF02.shell for state.
+   ============================================================ */
+(function () {
+  'use strict';
+
+  /* -------- Storage adapter (per Architecture sec 1.2) -------- */
+  const storage = (function () {
+    if (typeof window !== "undefined" && window.storage && window.storage.getItem) {
+      return Object.assign({ kind: "claude" }, window.storage);
+    }
+    try {
+      if (typeof localStorage !== "undefined") {
+        localStorage.setItem("__test__", "1"); localStorage.removeItem("__test__");
+        return {
+          kind: "local",
+          getItem: (k) => Promise.resolve(localStorage.getItem(k)),
+          setItem: (k, v) => Promise.resolve(localStorage.setItem(k, v))
+        };
+      }
+    } catch (_) {}
+    const mem = new Map();
+    return {
+      kind: "memory",
+      getItem: (k) => Promise.resolve(mem.get(k) || null),
+      setItem: (k, v) => Promise.resolve(void mem.set(k, v))
+    };
+  })();
+
+  /* -------- Engine constants (mirror design-tokens.engine) -------- */
+  const ENGINE = {
+    examQCount: 40,
+    examDurationSec: 3600,
+    examPassPct: 0.5,
+    weakSlotShare: 0.7,
+    strongSlotShare: 0.3
+  };
+
+  const AREA_CODES = ["B", "O", "N", "P", "D", "L", "W", "6", "V", "Z", "R"];
+  const AREA_LABELS = {
+    B: "Budowa komputera", O: "Systemy operacyjne", N: "Sieci komputerowe",
+    P: "Peryferia", D: "Diagnostyka", L: "Prawo, BHP, licencje",
+    W: "Windows Server", "6": "IPv6 i routing", V: "Wirtualizacja, backup",
+    Z: "Bezpieczeństwo", R: "Praktyka CKE"
+  };
+  const OPT_LETTERS = ["A", "B", "C", "D"];
+
+  /* -------- Utilities -------- */
+  function uuidv4() {
+    if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+    // fallback RFC4122 v4
+    const b = new Uint8Array(16);
+    (window.crypto || {}).getRandomValues
+      ? crypto.getRandomValues(b)
+      : Array.from({length:16}, () => Math.floor(Math.random()*256)).forEach((v,i)=>b[i]=v);
+    b[6] = (b[6] & 0x0f) | 0x40; b[8] = (b[8] & 0x3f) | 0x80;
+    const h = Array.from(b, x => x.toString(16).padStart(2,'0')).join('');
+    return `${h.slice(0,8)}-${h.slice(8,12)}-${h.slice(12,16)}-${h.slice(16,20)}-${h.slice(20)}`;
+  }
+  function nowIso() { return new Date().toISOString(); }
+  function clamp(x, lo, hi) { return Math.max(lo, Math.min(hi, x)); }
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+  function fmtMmSs(totalSec) {
+    if (totalSec < 0) totalSec = 0;
+    const m = Math.floor(totalSec / 60);
+    const s = totalSec % 60;
+    return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  }
+  function escapeHtml(s) {
+    if (s == null) return '';
+    return String(s)
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+  }
+  function nfcLower(s) {
+    if (s == null) return '';
+    return String(s).normalize('NFC').toLowerCase().trim();
+  }
+  function stripDiacritics(s) {
+    // For "tolerant" fallback per Architecture 1.4 polskie znaki
+    return String(s).normalize('NFD').replace(/[̀-ͯ]/g, '')
+      .replace(/ł/g,'l').replace(/Ł/g,'L');
+  }
+  /**
+   * Tolerant fill answer matcher.
+   * - Normalizes NFC, lowercase, trims
+   * - Collapses internal whitespace (so "255 255 255 224" matches "255.255.255.224")
+   * - Falls back to no-diacritic comparison
+   */
+  function matchFillAnswer(given, accepted) {
+    if (given == null) return false;
+    const list = Array.isArray(accepted) ? accepted : [accepted];
+    const norm = (s) => nfcLower(s).replace(/\s+/g, '');
+    const normDots = (s) => norm(s).replace(/[.\-_,;]/g, '');
+    const g1 = norm(given);
+    const g2 = stripDiacritics(g1);
+    const g3 = normDots(given);
+    for (const a of list) {
+      if (a == null) continue;
+      const a1 = norm(a);
+      if (g1 === a1) return true;
+      if (g2 === stripDiacritics(a1)) return true;
+      if (g3 === normDots(a)) return true;
+    }
+    return false;
+  }
+
+  /* -------- Shell stubs (graceful when shell missing) -------- */
+  function getShell() {
+    return (window.INF02 && window.INF02.shell) || null;
+  }
+  function shellGetState() {
+    const sh = getShell();
+    return (sh && typeof sh.getState === 'function') ? sh.getState() : null;
+  }
+  async function shellSetState(patch) {
+    const sh = getShell();
+    if (sh && typeof sh.setState === 'function') {
+      try { return await sh.setState(patch); } catch (e) { console.warn('[quiz] setState failed', e); }
+    }
+    return null;
+  }
+  function shellEmit(event, payload) {
+    const sh = getShell();
+    if (sh && sh.events && typeof sh.events.emit === 'function') {
+      sh.events.emit(event, payload);
+    }
+  }
+  function shellRoute(view, params) {
+    const sh = getShell();
+    if (sh && typeof sh.route === 'function') sh.route(view, params);
+    else console.info('[quiz] route', view, params);
+  }
+
+  /* -------- Question source -------- */
+  async function getQuestions() {
+    if (window.INF02 && Array.isArray(window.INF02.questions) && window.INF02.questions.length) {
+      return window.INF02.questions;
+    }
+    try {
+      const res = await fetch('../data/questions.json');
+      if (res.ok) {
+        const data = await res.json();
+        return Array.isArray(data) ? data : (Array.isArray(data.questions) ? data.questions : []);
+      }
+    } catch (e) { console.warn('[quiz] fetch questions.json failed', e); }
+    return [];
+  }
+
+  /* -------- Question selection per mode -------- */
+  function selectExam(pool, n) {
+    // Random sample, but try to keep area proportions roughly even
+    if (pool.length <= n) return shuffle(pool).slice(0, n);
+    return shuffle(pool).slice(0, n);
+  }
+  function selectTopic(pool, area, n) {
+    const filtered = pool.filter(q => q.area === area);
+    return shuffle(filtered).slice(0, Math.min(n, filtered.length));
+  }
+  function selectAdaptive(pool, n, knowledge) {
+    // Try external diagnostic engine first
+    const diag = window.INF02 && window.INF02.diagnostic;
+    if (diag && typeof diag.selectAdaptiveQuestions === 'function' && knowledge) {
+      try {
+        const out = diag.selectAdaptiveQuestions(pool, n, knowledge);
+        if (Array.isArray(out) && out.length) return out.slice(0, n);
+      } catch (e) { console.warn('[quiz] diagnostic.selectAdaptiveQuestions failed', e); }
+    }
+    if (window.INF02 && window.INF02.diagnostic && typeof window.INF02.diagnostic.selectQuizQuestions === 'function') {
+      try {
+        const out = window.INF02.diagnostic.selectQuizQuestions(n);
+        if (Array.isArray(out) && out.length) return out.slice(0, n);
+      } catch (e) {}
+    }
+    // Fallback: weighted by inverse mastery (ADR-005)
+    const perArea = (knowledge && knowledge.perArea) || {};
+    const weak = []; const strong = [];
+    for (const q of pool) {
+      const m = (perArea[q.area] && typeof perArea[q.area].mastery === 'number') ? perArea[q.area].mastery : 0.5;
+      if (m < 0.5) weak.push(q); else strong.push(q);
+    }
+    const nWeak = Math.round(n * ENGINE.weakSlotShare);
+    const nStrong = n - nWeak;
+    const weakPick = shuffle(weak).slice(0, Math.min(nWeak, weak.length));
+    const strongPick = shuffle(strong).slice(0, Math.min(nStrong, strong.length));
+    let combined = weakPick.concat(strongPick);
+    if (combined.length < n) {
+      const remainingPool = pool.filter(q => !combined.includes(q));
+      combined = combined.concat(shuffle(remainingPool).slice(0, n - combined.length));
+    }
+    return shuffle(combined).slice(0, n);
+  }
+  function selectReview(pool, sessions, sessionIds) {
+    const wrongQids = new Set();
+    const allSessions = sessions || [];
+    const filtered = (Array.isArray(sessionIds) && sessionIds.length)
+      ? allSessions.filter(s => sessionIds.includes(s.sessionId))
+      : allSessions;
+    for (const s of filtered) {
+      for (const a of (s.answers || [])) {
+        if (a && a.correct === false && a.qid) wrongQids.add(a.qid);
+      }
+    }
+    const set = new Set(wrongQids);
+    return pool.filter(q => set.has(q.id));
+  }
+
+  /* -------- Answer evaluation -------- */
+  function isAnswerCorrect(q, given) {
+    if (!q) return false;
+    if (q.type === 'mcq') {
+      const idx = (typeof given === 'number') ? given : parseInt(given, 10);
+      return Number.isInteger(idx) && idx === q.correct;
+    }
+    if (q.type === 'fill') {
+      return matchFillAnswer(given, q.correct);
+    }
+    return false;
+  }
+
+  /* ============================================================
+     Core engine state (per-session, in-memory)
+     ============================================================ */
+  const RUN = {
+    questions: [],         // full pool
+    questionsById: {},
+    session: null,         // active QuizSession
+    mode: null,
+    queue: [],             // ordered Question[] for this session
+    idx: 0,                // current question index
+    given: {},             // qid -> given
+    startTimes: {},        // qid -> ms timestamp for elapsedMs
+    timerHandle: null,
+    deadlineMs: null,      // when timer hits 0 (epoch ms) — null if no limit
+    startedAtMs: null,
+    rootEl: null,
+    isFinished: false,
+    showInline: true,      // false in exam mode
+    isDiagnostic: false
+  };
+
+  function paramsForMode(mode, params) {
+    params = params || {};
+    if (mode === 'exam') {
+      return {
+        nQuestions: params.nQuestions || ENGINE.examQCount,
+        durationSec: params.durationSec || ENGINE.examDurationSec,
+        isDiagnostic: !!params.isDiagnostic,
+        showInline: false
+      };
+    }
+    if (mode === 'adaptive') {
+      return { nQuestions: params.n || params.nQuestions || 20, durationSec: params.durationSec || 0, showInline: true };
+    }
+    if (mode === 'topic') {
+      return { area: params.area, nQuestions: params.n || params.nQuestions || 10, durationSec: params.durationSec || 0, showInline: true };
+    }
+    if (mode === 'review') {
+      return { sessionIds: params.sessionIds || [], nQuestions: params.n || params.nQuestions || 0, durationSec: params.durationSec || 0, showInline: true };
+    }
+    return params;
+  }
+
+  /* -------- Public API (per Architecture sec 1.2) -------- */
+  async function startSession(mode, params) {
+    if (!RUN.questions.length) {
+      RUN.questions = await getQuestions();
+      RUN.questionsById = {};
+      RUN.questions.forEach(q => { RUN.questionsById[q.id] = q; });
+    }
+    if (!RUN.questions.length) {
+      renderEmpty('Brak pytań w banku — sprawdź data/questions.json.');
+      return null;
+    }
+    const p = paramsForMode(mode, params || {});
+    const state = shellGetState();
+    let queue = [];
+    if (mode === 'exam') {
+      queue = selectExam(RUN.questions, p.nQuestions);
+    } else if (mode === 'adaptive') {
+      queue = selectAdaptive(RUN.questions, p.nQuestions, state ? state.knowledge : null);
+    } else if (mode === 'topic') {
+      if (!p.area || !AREA_CODES.includes(p.area)) { renderTopicPicker(); return null; }
+      queue = selectTopic(RUN.questions, p.area, p.nQuestions);
+    } else if (mode === 'review') {
+      const sessions = (state && state.sessions) || [];
+      queue = selectReview(RUN.questions, sessions, p.sessionIds);
+      if (!queue.length) {
+        renderEmpty('Brak błędnych pytań do powtórzenia. Najpierw zrób quiz.');
+        return null;
+      }
+    } else {
+      renderEmpty('Nieznany tryb quizu: ' + mode);
+      return null;
+    }
+    if (!queue.length) {
+      renderEmpty('Brak pytań pasujących do tego trybu.');
+      return null;
+    }
+
+    const sessionId = uuidv4();
+    const startedAt = nowIso();
+    const session = {
+      sessionId,
+      mode,
+      questionIds: queue.map(q => q.id),
+      answers: [],
+      startedAt,
+      isDiagnostic: !!p.isDiagnostic,
+      durationLimitSec: p.durationSec || undefined
+    };
+    if (mode === 'topic' && p.area) session.topicArea = p.area;
+
+    RUN.session = session;
+    RUN.mode = mode;
+    RUN.queue = queue;
+    RUN.idx = 0;
+    RUN.given = {};
+    RUN.startTimes = {};
+    RUN.startedAtMs = Date.now();
+    RUN.startTimes[queue[0].id] = RUN.startedAtMs;
+    RUN.isFinished = false;
+    RUN.showInline = p.showInline;
+    RUN.isDiagnostic = !!p.isDiagnostic;
+    RUN.deadlineMs = p.durationSec ? (RUN.startedAtMs + p.durationSec * 1000) : null;
+
+    startTimerLoop();
+    renderQuiz();
+    announce(`Rozpoczęto quiz: ${labelForMode(mode)}, ${queue.length} pytań.`);
+    return session;
+  }
+
+  function submitAnswer(sessionId, qid, given) {
+    if (!RUN.session || RUN.session.sessionId !== sessionId) return null;
+    const q = RUN.questionsById[qid];
+    if (!q) return null;
+    const start = RUN.startTimes[qid] || RUN.startedAtMs || Date.now();
+    const elapsedMs = Math.max(0, Date.now() - start);
+    const correct = isAnswerCorrect(q, given);
+    // Replace prior answer for this qid if any
+    const existing = RUN.session.answers.findIndex(a => a.qid === qid);
+    const ans = { qid, given, correct, elapsedMs };
+    if (existing >= 0) RUN.session.answers[existing] = ans;
+    else RUN.session.answers.push(ans);
+    RUN.given[qid] = given;
+    return ans;
+  }
+
+  async function endSession(sessionId) {
+    if (!RUN.session || RUN.session.sessionId !== sessionId) return null;
+    if (RUN.isFinished) {
+      // already ended; recompute
+    }
+    RUN.isFinished = true;
+    stopTimerLoop();
+
+    // Materialize any unanswered questions as wrong
+    for (const q of RUN.queue) {
+      if (!RUN.session.answers.find(a => a.qid === q.id)) {
+        RUN.session.answers.push({ qid: q.id, given: -1, correct: false, elapsedMs: 0 });
+      }
+    }
+
+    const total = RUN.queue.length;
+    const correctCount = RUN.session.answers.filter(a => a.correct).length;
+    const score = total > 0 ? +(correctCount / total).toFixed(4) : 0;
+    const endedAtMs = Date.now();
+    const durationActual = endedAtMs - RUN.startedAtMs;
+
+    RUN.session.endedAt = new Date(endedAtMs).toISOString();
+    RUN.session.score = score;
+
+    // perArea breakdown
+    const perArea = {};
+    for (const a of RUN.session.answers) {
+      const q = RUN.questionsById[a.qid];
+      if (!q) continue;
+      const k = q.area;
+      if (!perArea[k]) perArea[k] = { attempts: 0, correct: 0 };
+      perArea[k].attempts += 1;
+      if (a.correct) perArea[k].correct += 1;
+    }
+
+    // Persist via shell — append session, FIFO 50
+    const state = shellGetState();
+    const oldSessions = (state && Array.isArray(state.sessions)) ? state.sessions : [];
+    const nextSessions = oldSessions.concat([RUN.session]);
+    while (nextSessions.length > 50) nextSessions.shift();
+    await shellSetState({ sessions: nextSessions });
+
+    // Emit
+    shellEmit('quiz:ended', {
+      sessionId: RUN.session.sessionId,
+      mode: RUN.mode,
+      score,
+      total,
+      perArea,
+      durationSec: Math.round(durationActual / 1000),
+      isDiagnostic: !!RUN.isDiagnostic
+    });
+
+    renderResult({ score, total, correctCount, perArea, durationActual });
+    announce(`Zakończono quiz. Wynik ${(score*100).toFixed(0)} procent.`);
+    return { score, perArea, durationActual };
+  }
+
+  function getActiveSession() {
+    return RUN.session && !RUN.isFinished ? RUN.session : null;
+  }
+
+  function abort() {
+    stopTimerLoop();
+    RUN.session = null; RUN.queue = []; RUN.idx = 0;
+    RUN.isFinished = false; RUN.deadlineMs = null;
+    if (RUN.rootEl) RUN.rootEl.innerHTML = '';
+  }
+
+  function resume(sessionId) {
+    // Light implementation: we cannot re-hydrate an in-flight quiz from storage in v3
+    // (sessions persist only after end). Show a friendly message.
+    renderEmpty('Wznawianie sesji nie jest obsługiwane w v3. Rozpocznij nowy quiz.');
+    console.info('[quiz] resume requested for', sessionId);
+  }
+
+  /* ============================================================
+     Timer
+     ============================================================ */
+  function startTimerLoop() {
+    stopTimerLoop();
+    if (!RUN.deadlineMs) return; // no limit
+    RUN.timerHandle = setInterval(() => {
+      const remainingMs = RUN.deadlineMs - Date.now();
+      const secs = Math.ceil(remainingMs / 1000);
+      updateTimerUI(secs);
+      if (remainingMs <= 0) {
+        stopTimerLoop();
+        announce('Czas minął. Quiz został zakończony.');
+        endSession(RUN.session.sessionId);
+      }
+    }, 250);
+    // Also call once immediately so UI doesn't jump
+    const remaining = Math.ceil((RUN.deadlineMs - Date.now()) / 1000);
+    updateTimerUI(remaining);
+  }
+  function stopTimerLoop() {
+    if (RUN.timerHandle) { clearInterval(RUN.timerHandle); RUN.timerHandle = null; }
+  }
+  function updateTimerUI(secs) {
+    const el = document.getElementById('quiz-timer');
+    if (!el) return;
+    const safe = Math.max(0, secs);
+    el.textContent = fmtMmSs(safe);
+    el.classList.remove('timer--warn','timer--crit');
+    if (safe < 300) el.classList.add('timer--crit');
+    else if (safe < 600) el.classList.add('timer--warn');
+  }
+
+  /* ============================================================
+     Rendering
+     ============================================================ */
+  function root() {
+    if (!RUN.rootEl) RUN.rootEl = document.getElementById('quiz-app');
+    return RUN.rootEl;
+  }
+  function announce(text) {
+    const live = document.getElementById('quiz-live');
+    if (live) live.textContent = text;
+  }
+  function labelForMode(m) {
+    return ({ exam: 'Egzamin', adaptive: 'Adaptywny', topic: 'Obszar', review: 'Powtórka', diagnostic: 'Diagnoza' })[m] || m;
+  }
+
+  function renderEmpty(msg) {
+    const r = root();
+    r.innerHTML = `
+      <section class="picker-wrap">
+        <h2>Quiz</h2>
+        <p>${escapeHtml(msg)}</p>
+        <div class="nav-row">
+          <button class="btn" id="back-dash">Dashboard</button>
+        </div>
+      </section>`;
+    const b = document.getElementById('back-dash');
+    if (b) b.addEventListener('click', () => shellRoute('dashboard'));
+  }
+
+  function renderModePicker() {
+    const r = root();
+    r.innerHTML = `
+      <section class="picker-wrap">
+        <h2>Wybierz tryb quizu</h2>
+        <div class="picker-grid">
+          <button class="btn btn--primary" data-mode="exam">Egzamin (40 pyt × 60 min)</button>
+          <button class="btn" data-mode="adaptive">Adaptywny (20 pyt)</button>
+          <button class="btn" data-mode="topic">Obszar tematyczny</button>
+          <button class="btn" data-mode="review">Powtórka błędów</button>
+        </div>
+      </section>`;
+    r.querySelectorAll('button[data-mode]').forEach(b => {
+      b.addEventListener('click', () => {
+        const m = b.dataset.mode;
+        if (m === 'topic') renderTopicPicker();
+        else INF02.quiz.start(m, {});
+      });
+    });
+  }
+
+  function renderTopicPicker() {
+    const r = root();
+    const buttons = AREA_CODES.map(c => `
+      <button class="picker-area-btn" data-area="${c}">
+        <span class="code">${escapeHtml(c)}</span>
+        <span class="label">${escapeHtml(AREA_LABELS[c] || '')}</span>
+      </button>`).join('');
+    r.innerHTML = `
+      <section class="picker-wrap">
+        <h2>Wybierz obszar</h2>
+        <div class="picker-grid picker-grid--areas">${buttons}</div>
+        <div class="nav-row" style="margin-top:var(--sp-md)">
+          <button class="btn btn--ghost" id="cancel-topic">← Wstecz</button>
+        </div>
+      </section>`;
+    r.querySelectorAll('button[data-area]').forEach(b => {
+      b.addEventListener('click', () => INF02.quiz.start('topic', { area: b.dataset.area, n: 10 }));
+    });
+    const back = document.getElementById('cancel-topic');
+    if (back) back.addEventListener('click', renderModePicker);
+  }
+
+  function renderQuiz() {
+    const r = root();
+    if (!RUN.session) { renderModePicker(); return; }
+    const total = RUN.queue.length;
+    const i = RUN.idx;
+    const q = RUN.queue[i];
+    if (!q) { renderModePicker(); return; }
+    const answered = RUN.given[q.id] != null;
+    const ans = RUN.session.answers.find(a => a.qid === q.id);
+    const hasFeedback = RUN.showInline && answered;
+    const areaCode = q.area || '?';
+    const isLast = i === total - 1;
+    const answeredCount = RUN.session.answers.length;
+
+    const showTimer = !!RUN.deadlineMs;
+
+    let optionsHtml = '';
+    if (q.type === 'mcq' && Array.isArray(q.options)) {
+      optionsHtml = `<ul class="options" role="radiogroup" aria-label="Opcje odpowiedzi">` +
+        q.options.map((opt, oi) => {
+          const sel = RUN.given[q.id] === oi;
+          let cls = 'option';
+          if (hasFeedback) {
+            if (oi === q.correct) cls += ' option--correct';
+            else if (sel) cls += ' option--wrong';
+          } else if (sel) {
+            cls += ' option--selected';
+          }
+          return `<li role="presentation"><button type="button" class="${cls}" role="radio" aria-checked="${sel}" data-opt-idx="${oi}" ${hasFeedback ? 'disabled' : ''}>
+            <span class="option-letter" aria-hidden="true">${OPT_LETTERS[oi]}</span>
+            <span class="option-text">${escapeHtml(opt)}</span>
+          </button></li>`;
+        }).join('') +
+        `</ul>`;
+    } else if (q.type === 'fill') {
+      const val = RUN.given[q.id] != null ? String(RUN.given[q.id]) : '';
+      let fb = '';
+      if (hasFeedback) {
+        const ok = ans && ans.correct;
+        const correctLabel = Array.isArray(q.correct) ? q.correct.join(' / ') : String(q.correct);
+        fb = `<div class="fill-feedback ${ok ? 'fill-feedback--ok' : 'fill-feedback--bad'}">
+          ${ok ? 'Dobrze!' : `Źle. Poprawna odpowiedź: <strong>${escapeHtml(correctLabel)}</strong>`}
+        </div>`;
+      }
+      optionsHtml = `<input class="fill-input" id="fill-input" type="text"
+        autocomplete="off" autocapitalize="off" spellcheck="false"
+        placeholder="Wpisz odpowiedź…"
+        value="${escapeHtml(val)}" ${hasFeedback ? 'disabled' : ''}>${fb}`;
+    } else {
+      optionsHtml = `<p>Nieobsługiwany typ pytania: ${escapeHtml(q.type)}</p>`;
+    }
+
+    const explanation = (hasFeedback && q.explanation)
+      ? `<div class="explanation"><strong>Wyjaśnienie:</strong> ${escapeHtml(q.explanation)}${q.ckeRef ? `<br><em>${escapeHtml(q.ckeRef)}</em>` : ''}</div>`
+      : '';
+
+    const navHtml = `
+      <div class="nav-row">
+        <button class="btn" id="btn-prev" ${i === 0 ? 'disabled' : ''}>← Poprzednie</button>
+        <button class="btn" id="btn-finish-early" type="button">Zakończ teraz</button>
+        ${isLast
+          ? `<button class="btn btn--success" id="btn-finish">✓ Zakończ i sprawdź</button>`
+          : `<button class="btn btn--primary" id="btn-next">Następne →</button>`
+        }
+      </div>`;
+
+    r.innerHTML = `
+      <header class="quiz-header">
+        <div class="quiz-meta">
+          <strong>Pytanie ${i + 1} / ${total}</strong>
+          <span class="area-chip" style="background:var(--area-${areaCode}-bg); color:var(--area-${areaCode}-fg)">
+            ${escapeHtml(areaCode)} · ${escapeHtml(AREA_LABELS[areaCode] || '')}
+          </span>
+          <span class="qid-tag">#${escapeHtml(q.id)}</span>
+        </div>
+        ${showTimer ? `<div class="timer" id="quiz-timer" role="timer" aria-label="Pozostały czas">--:--</div>` : ''}
+      </header>
+
+      <div class="progress-wrap">
+        <div class="progress-bar"><div class="progress-fill" style="width:${Math.round(answeredCount/total*100)}%"></div></div>
+        <div class="progress-label">Zaznaczone: ${answeredCount} / ${total}</div>
+      </div>
+
+      <section class="question-card" aria-labelledby="q-text">
+        <h1 class="q-text" id="q-text">${escapeHtml(q.q)}</h1>
+        ${q.mediaRef ? `<div class="q-media-hint">Diagram: ${escapeHtml(q.mediaRef)}</div>` : ''}
+        ${optionsHtml}
+        ${explanation}
+        ${navHtml}
+      </section>
+    `;
+
+    if (showTimer) {
+      const remaining = RUN.deadlineMs ? Math.ceil((RUN.deadlineMs - Date.now())/1000) : 0;
+      updateTimerUI(remaining);
+    }
+
+    // Event wiring
+    if (q.type === 'mcq') {
+      r.querySelectorAll('.option').forEach(btn => {
+        btn.addEventListener('click', () => onSelectMcq(parseInt(btn.dataset.optIdx, 10)));
+      });
+    } else if (q.type === 'fill') {
+      const inp = document.getElementById('fill-input');
+      if (inp) {
+        inp.addEventListener('input', (e) => { RUN.given[q.id] = e.target.value; });
+        inp.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') { e.preventDefault(); onAdvance(); }
+        });
+        if (!hasFeedback) inp.focus();
+      }
+    }
+    const btnPrev = document.getElementById('btn-prev');
+    const btnNext = document.getElementById('btn-next');
+    const btnFinish = document.getElementById('btn-finish');
+    const btnFinishEarly = document.getElementById('btn-finish-early');
+    if (btnPrev) btnPrev.addEventListener('click', onPrev);
+    if (btnNext) btnNext.addEventListener('click', onAdvance);
+    if (btnFinish) btnFinish.addEventListener('click', onAdvance);
+    if (btnFinishEarly) btnFinishEarly.addEventListener('click', () => {
+      if (confirm('Zakończyć quiz teraz? Niewypełnione odpowiedzi będą zaliczone jako błędne.')) {
+        endSession(RUN.session.sessionId);
+      }
+    });
+  }
+
+  function onSelectMcq(oi) {
+    if (RUN.isFinished) return;
+    const q = RUN.queue[RUN.idx];
+    if (!q) return;
+    if (RUN.showInline) {
+      // adaptive/topic/review: lock in answer, show feedback inline
+      submitAnswer(RUN.session.sessionId, q.id, oi);
+      announce((isAnswerCorrect(q, oi) ? 'Dobrze. ' : 'Źle. ') +
+        (q.explanation ? `Wyjaśnienie: ${q.explanation}` : ''));
+      renderQuiz();
+    } else {
+      // exam: just store selection, no inline feedback
+      submitAnswer(RUN.session.sessionId, q.id, oi);
+      renderQuiz();
+    }
+  }
+
+  function onPrev() {
+    if (RUN.idx > 0) {
+      RUN.idx -= 1;
+      const q = RUN.queue[RUN.idx];
+      if (q && !RUN.startTimes[q.id]) RUN.startTimes[q.id] = Date.now();
+      renderQuiz();
+    }
+  }
+
+  function onAdvance() {
+    const q = RUN.queue[RUN.idx];
+    if (!q) return;
+    // For fill, capture current value
+    if (q.type === 'fill') {
+      const inp = document.getElementById('fill-input');
+      if (inp) {
+        const val = inp.value;
+        if (val != null && val !== '') submitAnswer(RUN.session.sessionId, q.id, val);
+      }
+    }
+    // If last question -> end
+    if (RUN.idx >= RUN.queue.length - 1) {
+      endSession(RUN.session.sessionId);
+      return;
+    }
+    RUN.idx += 1;
+    const next = RUN.queue[RUN.idx];
+    if (next && !RUN.startTimes[next.id]) RUN.startTimes[next.id] = Date.now();
+    renderQuiz();
+  }
+
+  /* -------- Result screen with count-up animation -------- */
+  function renderResult(out) {
+    const { score, total, correctCount, durationActual } = out;
+    const pct = score * 100;
+    const passed = score >= ENGINE.examPassPct;
+    const verdictClass = passed ? 'exam-result--passed' : 'exam-result--failed';
+    const verdictText = passed ? 'Zaliczono' : 'Niezaliczono';
+    const r = root();
+
+    // wrong answers list
+    const wrongs = RUN.session.answers.filter(a => !a.correct);
+    const wrongHtml = wrongs.length
+      ? `<section class="wrong-list">
+          <h3>Błędne odpowiedzi (${wrongs.length})</h3>
+          ${wrongs.map(a => {
+            const q = RUN.questionsById[a.qid];
+            if (!q) return '';
+            let givenLabel = '—';
+            let correctLabel = '';
+            if (q.type === 'mcq') {
+              givenLabel = (typeof a.given === 'number' && a.given >= 0 && Array.isArray(q.options))
+                ? `${OPT_LETTERS[a.given]}. ${escapeHtml(q.options[a.given] || '')}`
+                : 'brak';
+              correctLabel = (Array.isArray(q.options))
+                ? `${OPT_LETTERS[q.correct]}. ${escapeHtml(q.options[q.correct] || '')}`
+                : '';
+            } else {
+              givenLabel = a.given == null || a.given === -1 ? 'brak' : escapeHtml(String(a.given));
+              correctLabel = Array.isArray(q.correct) ? q.correct.map(escapeHtml).join(' / ') : escapeHtml(String(q.correct));
+            }
+            return `<details class="wrong-item">
+              <summary><span class="qid-tag">#${escapeHtml(q.id)}</span> · ${escapeHtml(q.q.slice(0, 80))}${q.q.length > 80 ? '…' : ''}</summary>
+              <p>${escapeHtml(q.explanation || '')}</p>
+              <div class="ans-line"><span class="bad">Twoja: ${givenLabel}</span> · <span class="ok">Poprawna: ${correctLabel}</span></div>
+            </details>`;
+          }).join('')}
+        </section>`
+      : '';
+
+    r.innerHTML = `
+      <section class="result-card" aria-live="polite">
+        <p class="result-pct ${passed ? 'result-pct--passed' : 'result-pct--failed'}" id="result-pct">0%</p>
+        <span class="result-verdict ${verdictClass}">${verdictText} ${passed ? '✓' : '×'}</span>
+        <div class="result-stats">
+          <div><div class="num">${correctCount}/${total}</div><div class="lbl">poprawne</div></div>
+          <div><div class="num">${fmtMmSs(Math.round(durationActual/1000))}</div><div class="lbl">czas</div></div>
+          <div><div class="num">${labelForMode(RUN.mode)}</div><div class="lbl">tryb</div></div>
+        </div>
+        ${RUN.mode === 'exam' ? `<p style="color:var(--color-text-muted); font-size:var(--fs-xs)">Próg CKE pisemny: 50% (20/40 pkt)</p>` : ''}
+        ${wrongHtml}
+        <div class="nav-row" style="justify-content:center">
+          <button class="btn btn--primary" id="btn-new">Nowy quiz</button>
+          <button class="btn" id="btn-dash">Dashboard</button>
+        </div>
+      </section>`;
+
+    const newBtn = document.getElementById('btn-new');
+    const dashBtn = document.getElementById('btn-dash');
+    if (newBtn) newBtn.addEventListener('click', () => renderModePicker());
+    if (dashBtn) dashBtn.addEventListener('click', () => shellRoute('dashboard'));
+
+    // Count-up animation 0 → pct over 1.2s ease-out-cubic, respecting reduced motion
+    const target = document.getElementById('result-pct');
+    const reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) {
+      target.textContent = `${pct.toFixed(0)}%`;
+      return;
+    }
+    const dur = 1200;
+    const t0 = performance.now();
+    function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
+    function tick(now) {
+      const t = Math.min(1, (now - t0) / dur);
+      const v = pct * easeOutCubic(t);
+      target.textContent = `${v.toFixed(0)}%`;
+      if (t < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+
+  /* ============================================================
+     Keyboard shortcuts
+     ============================================================ */
+  function onKey(e) {
+    if (!RUN.session || RUN.isFinished) return;
+    const tag = (e.target && e.target.tagName) || '';
+    if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+    const q = RUN.queue[RUN.idx];
+    if (!q) return;
+    if (e.key === 'ArrowLeft') { e.preventDefault(); onPrev(); return; }
+    if (e.key === 'ArrowRight') { e.preventDefault(); onAdvance(); return; }
+    if (e.key === 'Enter') { e.preventDefault(); onAdvance(); return; }
+    if (q.type === 'mcq') {
+      const map = { a:0, A:0, b:1, B:1, c:2, C:2, d:3, D:3, '1':0, '2':1, '3':2, '4':3 };
+      if (map.hasOwnProperty(e.key)) {
+        e.preventDefault();
+        onSelectMcq(map[e.key]);
+      }
+    }
+  }
+  document.addEventListener('keydown', onKey);
+
+  /* ============================================================
+     Public registration
+     ============================================================ */
+  window.INF02 = window.INF02 || {};
+  window.INF02.quiz = {
+    // Spec API
+    start: (mode, params) => startSession(mode, params || {}),
+    resume,
+    abort,
+    // Architecture sec 1.2 contract
+    startSession: (opts) => startSession(opts && opts.mode, opts || {}),
+    submitAnswer,
+    endSession,
+    getActiveSession,
+    // Helpers exposed for tests
+    matchFillAnswer,
+    isAnswerCorrect,
+    selectAdaptive: (pool, n, knowledge) => selectAdaptive(pool, n, knowledge),
+    selectTopic,
+    selectExam,
+    selectReview
+  };
+
+  // Register view with shell
+  window.INF02.shell = window.INF02.shell || {};
+  window.INF02.shell.views = window.INF02.shell.views || {};
+  window.INF02.shell.views.quiz = function (params) {
+    params = params || {};
+    RUN.rootEl = document.getElementById('quiz-app');
+    if (params.mode) {
+      startSession(params.mode, params);
+    } else {
+      renderModePicker();
+    }
+  };
+
+  // Default view if loaded standalone
+  document.addEventListener('DOMContentLoaded', () => {
+    if (!getShell() || !getShell().route) {
+      RUN.rootEl = document.getElementById('quiz-app');
+      // Auto-render picker for standalone test
+      renderModePicker();
+    }
+  });
+})();
+</script>
+</body>
+</html>
