@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self'; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>404 — INF.02 Study Hub</title>
+  <style>
+    :root {
+      --bg: #0F1115; --surface: #1A1D24; --text: #F2F4F7;
+      --muted: #A8B0BD; --accent: #5EA9FF; --border: #2E3340;
+    }
+    *,*::before,*::after{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);
+      font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+      min-height:100vh;display:flex;align-items:center;justify-content:center}
+    main{max-width:560px;padding:32px;text-align:center}
+    h1{font-size:5rem;margin:0;color:var(--accent);font-weight:700;letter-spacing:-0.05em}
+    h2{font-size:1.5rem;margin:8px 0 16px;font-weight:600}
+    p{color:var(--muted);margin:0 0 24px}
+    .actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:24px}
+    .btn{display:inline-flex;align-items:center;gap:6px;padding:12px 24px;
+      background:var(--accent);color:#0F1115;text-decoration:none;border-radius:8px;
+      font-weight:600;min-height:44px;transition:transform 200ms cubic-bezier(0.16,1,0.3,1)}
+    .btn:hover{transform:translateY(-2px)}
+    .btn.ghost{background:transparent;color:var(--accent);border:1px solid var(--border)}
+    .countdown{margin-top:16px;font-size:.875rem;color:var(--muted)}
+    @media (prefers-reduced-motion: reduce){*{transition:none !important;animation:none !important}}
+  </style>
+</head>
+<body>
+<main role="main">
+  <h1>404</h1>
+  <h2>Strona nie znaleziona</h2>
+  <p>Wygląda na to, że link prowadzi w pustkę. Możesz wrócić do dashboardu.</p>
+  <div class="actions">
+    <a class="btn" href="./artifacts/shell.html">← Dashboard</a>
+    <a class="btn ghost" href="./artifacts/quiz.html">Quiz</a>
+    <a class="btn ghost" href="./artifacts/diagnostic.html">Diagnoza</a>
+  </div>
+  <p class="countdown" id="cd" aria-live="polite"></p>
+</main>
+<script>
+  // Auto-redirect to shell after 5s if user idle
+  (function(){
+    var sec = 5;
+    var el = document.getElementById('cd');
+    var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function tick(){
+      if (sec <= 0) {
+        location.replace('./artifacts/shell.html');
+        return;
+      }
+      el.textContent = 'Przekierowanie do dashboardu za ' + sec + 's…';
+      sec--;
+      setTimeout(tick, 1000);
+    }
+    if (!reduced) tick();
+  })();
+</script>
+</body>
+</html>

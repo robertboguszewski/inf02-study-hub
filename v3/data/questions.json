@@ -2,7 +2,7 @@
   {
     "id": "Q-0001",
     "area": "B",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "Jaki socket jest używany przez procesory AMD Ryzen serii 5000?",
     "options": [
@@ -23,7 +23,7 @@
   {
     "id": "Q-0002",
     "area": "B",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "Który socket jest stosowany w procesorach Intel 12. i 13. generacji (Alder Lake / Raptor Lake)?",
     "options": [
@@ -44,7 +44,7 @@
   {
     "id": "Q-0003",
     "area": "B",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Co oznacza skrót TDP w kontekście procesorów?",
     "options": [
@@ -65,7 +65,7 @@
   {
     "id": "Q-0004",
     "area": "B",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "Która pamięć podręczna procesora ma największą pojemność, ale najdłuższy czas dostępu?",
     "options": [
@@ -88,7 +88,7 @@
   {
     "id": "Q-0005",
     "area": "B",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Technologia Hyper-Threading firmy Intel pozwala jednemu rdzeniu fizycznemu CPU pracować jako ile rdzeni logicznych?",
     "options": [
@@ -110,7 +110,7 @@
   {
     "id": "Q-0006",
     "area": "B",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Jaka jest standardowa maksymalna częstotliwość dla pamięci DDR4 według specyfikacji JEDEC?",
     "options": [
@@ -132,7 +132,7 @@
   {
     "id": "Q-0007",
     "area": "B",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Od jakiej częstotliwości bazowej zaczyna się standard pamięci DDR5?",
     "options": [
@@ -153,7 +153,7 @@
   {
     "id": "Q-0008",
     "area": "B",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Jaką metodę korekcji błędów stosuje pamięć ECC?",
     "options": [
@@ -175,7 +175,7 @@
   {
     "id": "Q-0009",
     "area": "B",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "Jaki format modułów RAM jest stosowany w laptopach?",
     "options": [
@@ -196,7 +196,7 @@
   {
     "id": "Q-0010",
     "area": "B",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Jaka jest maksymalna prędkość odczytu sekwencyjnego typowego dysku NVMe PCIe 3.0?",
     "options": [
@@ -218,7 +218,7 @@
   {
     "id": "Q-0011",
     "area": "B",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "Jaka jest maksymalna przepustowość interfejsu SATA III stosowanego w dyskach SSD?",
     "options": [
@@ -240,7 +240,7 @@
   {
     "id": "Q-0012",
     "area": "B",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Dysk M.2 2280 – co oznaczają cyfry w tej nazwie?",
     "options": [
@@ -261,7 +261,7 @@
   {
     "id": "Q-0013",
     "area": "B",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Który klucz (key) złącza M.2 obsługuje wyłącznie urządzenia NVMe (PCIe), a nie SATA?",
     "options": [
@@ -283,7 +283,7 @@
   {
     "id": "Q-0014",
     "area": "B",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "Ile watów (W) gwarantuje certyfikat 80 PLUS Gold przy obciążeniu 50%?",
     "options": [
@@ -305,7 +305,7 @@
   {
     "id": "Q-0015",
     "area": "B",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Ile pinów ma standardowe złącze ATX zasilające płytę główną?",
     "options": [
@@ -327,7 +327,7 @@
   {
     "id": "Q-0016",
     "area": "B",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Jakie złącze zasilające jest dedykowane dla procesora (EPS) w nowoczesnych płytach głównych?",
     "options": [
@@ -349,7 +349,7 @@
   {
     "id": "Q-0017",
     "area": "B",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Jaka jest przepustowość magistrali PCIe 5.0 x16?",
     "options": [
@@ -370,7 +370,7 @@
   {
     "id": "Q-0018",
     "area": "B",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Karta graficzna PCIe 4.0 x16 jest zainstalowana w slocie PCIe 3.0 x16. Jak będzie działać?",
     "options": [
@@ -391,7 +391,7 @@
   {
     "id": "Q-0019",
     "area": "B",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "Jaka jest prędkość transferu danych standardu USB 3.0 (USB 3.1 Gen 1)?",
     "options": [
@@ -412,7 +412,7 @@
   {
     "id": "Q-0020",
     "area": "B",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Jaka jest maksymalna prędkość transferu USB4?",
     "options": [
@@ -434,7 +434,7 @@
   {
     "id": "Q-0021",
     "area": "B",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "Jakie są wymiary płyty głównej w standardzie ATX?",
     "options": [
@@ -456,7 +456,7 @@
   {
     "id": "Q-0022",
     "area": "B",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Która z wymienionych funkcji jest dostępna wyłącznie w UEFI, a NIE w tradycyjnym BIOS-ie?",
     "options": [
@@ -478,7 +478,7 @@
   {
     "id": "Q-0023",
     "area": "B",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "W konfiguracji RAID 5 z 4 dyskami po 2 TB każdy, jaka jest użyteczna pojemność macierzy?",
     "options": [
@@ -500,7 +500,7 @@
   {
     "id": "Q-0024",
     "area": "B",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Ile dysków minimalnie potrzeba do zbudowania macierzy RAID 10?",
     "options": [
@@ -522,7 +522,7 @@
   {
     "id": "Q-0025",
     "area": "B",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "Co zapewnia konfiguracja RAID 0 w porównaniu do pojedynczego dysku?",
     "options": [
@@ -544,7 +544,7 @@
   {
     "id": "Q-0026",
     "area": "B",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Gdzie w nowoczesnych procesorach (Intel Core, AMD Ryzen) znajduje się kontroler pamięci RAM (IMC)?",
     "options": [
@@ -566,7 +566,7 @@
   {
     "id": "Q-0027",
     "area": "B",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Procesor ma TDP 125W. Jaki minimalny TDP chłodzenia powinieneś wybrać?",
     "options": [
@@ -588,7 +588,7 @@
   {
     "id": "Q-0028",
     "area": "B",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Jaki socket jest używany przez procesory Intel Core Ultra (seria 200, Meteor Lake / Arrow Lake)?",
     "options": [
@@ -611,7 +611,7 @@
   {
     "id": "Q-0029",
     "area": "B",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Czy moduł DDR4 można zainstalować w slocie DDR5 na płycie głównej?",
     "options": [
@@ -633,7 +633,7 @@
   {
     "id": "Q-0030",
     "area": "B",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Co to jest CAS Latency (CL) w kontekście pamięci RAM?",
     "options": [
@@ -655,7 +655,7 @@
   {
     "id": "Q-0031",
     "area": "B",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "Jaki certyfikat 80 PLUS zapewnia najwyższą sprawność zasilacza?",
     "options": [
@@ -677,7 +677,7 @@
   {
     "id": "Q-0032",
     "area": "B",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Jaka jest maksymalna pojemność woluminu NTFS przy użyciu klastrów 64 KB?",
     "options": [
@@ -699,7 +699,7 @@
   {
     "id": "Q-0033",
     "area": "B",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Który standard USB zapewnia prędkość 10 Gbps?",
     "options": [
@@ -721,7 +721,7 @@
   {
     "id": "Q-0034",
     "area": "B",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "W trybie dual-channel RAM, procesor ma dwa moduły DDR4 4GB każdy. Jaka jest łączna przepustowość pamięci w porównaniu do single-channel?",
     "options": [
@@ -743,7 +743,7 @@
   {
     "id": "Q-0035",
     "area": "O",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "Ile GB RAM wymaga system Windows 11 jako minimum?",
     "options": [
@@ -765,7 +765,7 @@
   {
     "id": "Q-0036",
     "area": "O",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Które wymaganie sprzętowe jest NOWE i wymagane przez Windows 11, a nie przez Windows 10?",
     "options": [
@@ -787,7 +787,7 @@
   {
     "id": "Q-0037",
     "area": "O",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "Jakie jest minimalne wymaganie dotyczące miejsca na dysku dla instalacji Ubuntu 22.04?",
     "options": [
@@ -809,7 +809,7 @@
   {
     "id": "Q-0038",
     "area": "O",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Jakie jest maksymalne ograniczenie rozmiaru pliku w systemie plików FAT32?",
     "options": [
@@ -831,7 +831,7 @@
   {
     "id": "Q-0039",
     "area": "O",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Który system plików jest domyślny w Ubuntu/Debian dla partycji głównej?",
     "options": [
@@ -853,7 +853,7 @@
   {
     "id": "Q-0040",
     "area": "O",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Jakie jest maksymalne ograniczenie rozmiaru partycji w schemacie MBR?",
     "options": [
@@ -875,7 +875,7 @@
   {
     "id": "Q-0041",
     "area": "O",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Ile partycji podstawowych (primary) można maksymalnie utworzyć w schemacie MBR?",
     "options": [
@@ -897,7 +897,7 @@
   {
     "id": "Q-0042",
     "area": "O",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Ile partycji obsługuje standard GPT?",
     "options": [
@@ -919,7 +919,7 @@
   {
     "id": "Q-0043",
     "area": "O",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "Jakie polecenie Linux dodaje istniejącego użytkownika 'jan' do grupy 'sudo'?",
     "options": [
@@ -942,7 +942,7 @@
   {
     "id": "Q-0044",
     "area": "O",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Co oznacza polecenie 'useradd -m anna' w systemie Linux?",
     "options": [
@@ -964,7 +964,7 @@
   {
     "id": "Q-0045",
     "area": "O",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Jakie uprawnienia opisuje zapis chmod 755 dla pliku wykonywalnego?",
     "options": [
@@ -986,7 +986,7 @@
   {
     "id": "Q-0046",
     "area": "O",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Co oznacza wartość umask 022 w systemie Linux?",
     "options": [
@@ -1008,7 +1008,7 @@
   {
     "id": "Q-0047",
     "area": "O",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Które polecenie Windows sprawdza i naprawia błędy systemu plików na dysku C:?",
     "options": [
@@ -1030,7 +1030,7 @@
   {
     "id": "Q-0048",
     "area": "O",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Jakie polecenie PowerShell wyświetla wszystkich użytkowników Active Directory?",
     "options": [
@@ -1052,7 +1052,7 @@
   {
     "id": "Q-0049",
     "area": "O",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "Które polecenie Linux wyświetla użycie miejsca na dysku w czytelnym formacie (GB, MB)?",
     "options": [
@@ -1074,7 +1074,7 @@
   {
     "id": "Q-0050",
     "area": "O",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Jakie polecenie Linux wyszukuje rekurencyjnie wzorzec 'error' we wszystkich plikach .log w katalogu /var/log?",
     "options": [
@@ -1096,7 +1096,7 @@
   {
     "id": "Q-0051",
     "area": "O",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Co robi polecenie 'systemctl enable nginx' w systemie Linux z systemd?",
     "options": [
@@ -1119,7 +1119,7 @@
   {
     "id": "Q-0052",
     "area": "O",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "W którym pliku Linux przechowuje podstawowe informacje o kontach użytkowników (nazwa, UID, GID, shell)?",
     "options": [
@@ -1142,7 +1142,7 @@
   {
     "id": "Q-0053",
     "area": "O",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Jakie polecenie Windows wyświetla konfigurację startową systemu i umożliwia zarządzanie wpisami boot?",
     "options": [
@@ -1164,7 +1164,7 @@
   {
     "id": "Q-0054",
     "area": "O",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Który system plików Linux obsługuje Copy-on-Write (CoW) i snapshoty?",
     "options": [
@@ -1186,7 +1186,7 @@
   {
     "id": "Q-0055",
     "area": "O",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Co robi polecenie 'sfc /scannow' w systemie Windows?",
     "options": [
@@ -1208,7 +1208,7 @@
   {
     "id": "Q-0056",
     "area": "O",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Jaka jest składnia polecenia sed do zamiany WSZYSTKICH wystąpień 'foo' na 'bar' w pliku plik.txt?",
     "options": [
@@ -1230,7 +1230,7 @@
   {
     "id": "Q-0057",
     "area": "O",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "Jakie polecenie Windows wyświetla szczegółowe informacje o wszystkich interfejsach sieciowych, w tym adres MAC?",
     "options": [
@@ -1253,7 +1253,7 @@
   {
     "id": "Q-0058",
     "area": "O",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Które polecenie PowerShell zmienia politykę wykonywania skryptów, umożliwiając uruchamianie lokalnych skryptów?",
     "options": [
@@ -1275,9 +1275,9 @@
   {
     "id": "Q-0059",
     "area": "O",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
-    "q": "Jakie jest zastosowanie bitu SUID (Set User ID) na pliku wykonywalnym w Linux?",
+    "q": "Jakie jest zastosowanie bitu SUID (Set Użytkownik ID) na pliku wykonywalnym w Linux?",
     "options": [
       "Plik jest widoczny tylko dla właściciela",
       "Program uruchamia się z uprawnieniami właściciela pliku, nie uruchamiającego",
@@ -1297,7 +1297,7 @@
   {
     "id": "Q-0060",
     "area": "O",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Jakie polecenie Linux wyświetla informacje o grupach, do których należy użytkownik 'jan'?",
     "options": [
@@ -1319,7 +1319,7 @@
   {
     "id": "Q-0061",
     "area": "N",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "Która kategoria kabla UTP obsługuje prędkość 10 Gbps na odcinku do 100 metrów?",
     "options": [
@@ -1341,7 +1341,7 @@
   {
     "id": "Q-0062",
     "area": "N",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Jaka jest kolejność par w standardzie T568B dla złącza RJ-45?",
     "options": [
@@ -1363,7 +1363,7 @@
   {
     "id": "Q-0063",
     "area": "N",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Kiedy stosuje się kabel krosowany (crossover) w sieciach Ethernet?",
     "options": [
@@ -1385,7 +1385,7 @@
   {
     "id": "Q-0064",
     "area": "N",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "Jakie włókno optyczne jest używane do przesyłania danych na długie dystanse (kilometry)?",
     "options": [
@@ -1407,7 +1407,7 @@
   {
     "id": "Q-0065",
     "area": "N",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Sieć 192.168.1.0/26 — ile hostów można zaadresować w tej podsieci?",
     "options": [
@@ -1429,7 +1429,7 @@
   {
     "id": "Q-0066",
     "area": "N",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Jaki jest adres broadcast sieci 192.168.1.0/26?",
     "options": [
@@ -1451,7 +1451,7 @@
   {
     "id": "Q-0067",
     "area": "N",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Sieć 10.0.0.0/22 — ile hostów można zaadresować?",
     "options": [
@@ -1473,7 +1473,7 @@
   {
     "id": "Q-0068",
     "area": "N",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Jaka jest maska podsieci dla sieci 172.16.0.0/20?",
     "options": [
@@ -1495,7 +1495,7 @@
   {
     "id": "Q-0069",
     "area": "N",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Ile hostów obsługuje podsieć 192.168.5.0/28?",
     "options": [
@@ -1517,7 +1517,7 @@
   {
     "id": "Q-0070",
     "area": "N",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Potrzebujesz podsieci dla 50 hostów. Jaka jest najmniejsza maska podsieci, która spełni wymaganie?",
     "options": [
@@ -1540,7 +1540,7 @@
   {
     "id": "Q-0071",
     "area": "N",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "Który rekord DNS służy do zamiany nazwy domenowej na adres IPv4?",
     "options": [
@@ -1562,7 +1562,7 @@
   {
     "id": "Q-0072",
     "area": "N",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Co oznacza niższy numer priorytetu (np. 10 vs 20) w rekordzie MX w DNS?",
     "options": [
@@ -1584,7 +1584,7 @@
   {
     "id": "Q-0073",
     "area": "N",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Jaka jest pełna sekwencja DORA w protokole DHCP?",
     "options": [
@@ -1608,7 +1608,7 @@
   {
     "id": "Q-0074",
     "area": "N",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Który numer opcji DHCP przekazuje klientowi adres domyślnej bramy (default gateway)?",
     "options": [
@@ -1630,7 +1630,7 @@
   {
     "id": "Q-0075",
     "area": "N",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Co to jest VLAN i na jakiej warstwie modelu OSI działa?",
     "options": [
@@ -1652,7 +1652,7 @@
   {
     "id": "Q-0076",
     "area": "N",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Ile bitów zajmuje znacznik 802.1Q VLAN w ramce Ethernet i ile VLAN-ów można zdefiniować?",
     "options": [
@@ -1674,17 +1674,17 @@
   {
     "id": "Q-0077",
     "area": "N",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
-    "q": "Jaka jest różnica między portem trunk a portem access w konfiguracji VLAN?",
+    "q": "Jaka jest różnica między portem trunk a portem dostęp w konfiguracji VLAN?",
     "options": [
-      "Trunk obsługuje jeden VLAN bez tagowania, access wiele VLAN-ów z tagowaniem",
-      "Trunk przenosi wiele VLAN-ów (tagowane), access obsługuje jeden VLAN (nietagowany)",
+      "Trunk obsługuje jeden VLAN bez tagowania, dostęp wiele VLAN-ów z tagowaniem",
+      "Trunk przenosi wiele VLAN-ów (tagowane), dostęp obsługuje jeden VLAN (nietagowany)",
       "Nie ma różnicy — oba typy portów działają identycznie",
-      "Trunk łączy switch z routerem, access łączy switch z switchem"
+      "Trunk łączy switch z routerem, dostęp łączy switch z switchem"
     ],
     "correct": 1,
-    "explanation": "Port trunk przenosi ruch wielu VLAN-ów — ramki są tagowane znacznikiem 802.1Q. Port access należy do jednego VLAN-u — ruch jest nietagowany (tag jest dodawany/usuwany przez switch). VLAN natywny na trunk jest nietagowany.",
+    "explanation": "Port trunk przenosi ruch wielu VLAN-ów — ramki są tagowane znacznikiem 802.1Q. Port dostęp należy do jednego VLAN-u — ruch jest nietagowany (tag jest dodawany/usuwany przez switch). VLAN natywny na trunk jest nietagowany.",
     "ckeRef": "INF.02.5.4",
     "tags": [
       "vlan",
@@ -1696,7 +1696,7 @@
   {
     "id": "Q-0078",
     "area": "N",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "W protokole STP, jak wyznaczany jest root bridge?",
     "options": [
@@ -1718,7 +1718,7 @@
   {
     "id": "Q-0079",
     "area": "N",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Ile czasu zajmuje konwergencja STP w stanie blocking→forwarding (stany pośrednie)?",
     "options": [
@@ -1740,7 +1740,7 @@
   {
     "id": "Q-0080",
     "area": "N",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "Standard 802.11ac (Wi-Fi 5) działa na którym paśmie częstotliwości?",
     "options": [
@@ -1762,7 +1762,7 @@
   {
     "id": "Q-0081",
     "area": "N",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Który standard Wi-Fi osiąga maksymalną prędkość teoretyczną 600 Mbps?",
     "options": [
@@ -1784,7 +1784,7 @@
   {
     "id": "Q-0082",
     "area": "N",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Protokół WPA3 używa jakiego mechanizmu do uwierzytelniania i wymiany kluczy?",
     "options": [
@@ -1806,7 +1806,7 @@
   {
     "id": "Q-0083",
     "area": "N",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "Który zakres adresów IPv4 jest prywatny klasy C?",
     "options": [
@@ -1828,7 +1828,7 @@
   {
     "id": "Q-0084",
     "area": "N",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Co to jest APIPA i kiedy jest używany?",
     "options": [
@@ -1850,7 +1850,7 @@
   {
     "id": "Q-0085",
     "area": "N",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Jaki rekord DNS zawiera informacje o serwerze poczty dla domeny?",
     "options": [
@@ -1872,7 +1872,7 @@
   {
     "id": "Q-0086",
     "area": "N",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Jaki jest zakres prywatnych adresów IPv4 klasy B?",
     "options": [
@@ -1895,7 +1895,7 @@
   {
     "id": "Q-0087",
     "area": "N",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Jaka jest maksymalna prędkość kabla Cat 8?",
     "options": [
@@ -1917,7 +1917,7 @@
   {
     "id": "Q-0088",
     "area": "N",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "Jaki rekord DNS służy do odwrotnego wyszukiwania (z adresu IP na nazwę domenową)?",
     "options": [
@@ -1939,7 +1939,7 @@
   {
     "id": "Q-0089",
     "area": "N",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Co to jest CNAME w DNS?",
     "options": [
@@ -1961,7 +1961,7 @@
   {
     "id": "Q-0090",
     "area": "N",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "W standardzie 802.11a, jakie pasmo i maksymalna prędkość są używane?",
     "options": [
@@ -1983,7 +1983,7 @@
   {
     "id": "Q-0091",
     "area": "N",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Jakie są trzy prywatne zakresy adresów IPv4 (RFC 1918)?",
     "options": [
@@ -2005,7 +2005,7 @@
   {
     "id": "Q-0092",
     "area": "N",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Jaka jest różnica między switchem zarządzalnym a niezarządzalnym?",
     "options": [
@@ -2028,7 +2028,7 @@
   {
     "id": "Q-0093",
     "area": "N",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "Co to jest RSTP i jaką przewagę ma nad STP?",
     "options": [
@@ -2050,7 +2050,7 @@
   {
     "id": "Q-0094",
     "area": "N",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Komputer ma adres 10.0.1.50/22. Jaki jest adres sieci i broadcast?",
     "options": [
@@ -2072,7 +2072,7 @@
   {
     "id": "Q-0095",
     "area": "N",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Który standard 802.11 jako pierwszy wprowadził obsługę pasma 6 GHz (Wi-Fi 6E)?",
     "options": [
@@ -2094,7 +2094,7 @@
   {
     "id": "Q-0096",
     "area": "N",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Co to jest native VLAN na porcie trunk?",
     "options": [
@@ -2116,7 +2116,7 @@
   {
     "id": "Q-0097",
     "area": "N",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "Jaką prędkość obsługuje kabel Cat 5e?",
     "options": [
@@ -2138,7 +2138,7 @@
   {
     "id": "Q-0098",
     "area": "N",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Jaki rekord DNS zawiera informacje o autorytecie dla strefy DNS?",
     "options": [
@@ -2160,7 +2160,7 @@
   {
     "id": "Q-0099",
     "area": "N",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Jaka prędkość i na jakiej odległości obsługuje kabel Cat 6?",
     "options": [
@@ -2182,7 +2182,7 @@
   {
     "id": "Q-0100",
     "area": "N",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "W protokole STP, co to jest root port?",
     "options": [
@@ -2204,7 +2204,7 @@
   {
     "id": "Q-0101",
     "area": "N",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Co to jest rekord TXT w DNS i do czego jest używany?",
     "options": [
@@ -2227,7 +2227,7 @@
   {
     "id": "Q-0102",
     "area": "N",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Jaki standard 802.11 działa wyłącznie na paśmie 2.4 GHz z prędkością 11 Mbps?",
     "options": [
@@ -2249,7 +2249,7 @@
   {
     "id": "Q-0103",
     "area": "P",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "Jaka jest prawidłowa kolejność etapów procesu druku laserowego?",
     "options": [
@@ -2271,7 +2271,7 @@
   {
     "id": "Q-0104",
     "area": "P",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Który producent drukarek atramentowych stosuje technologię piezoelektryczną (piezo) zamiast termicznej?",
     "options": [
@@ -2293,7 +2293,7 @@
   {
     "id": "Q-0105",
     "area": "P",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "Jakie minimalne rozdzielczość DPI jest zalecana do skanowania dokumentów i OCR?",
     "options": [
@@ -2315,7 +2315,7 @@
   {
     "id": "Q-0106",
     "area": "P",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Jaki interfejs wyświetlacza obsługuje jednocześnie sygnał audio i wideo z przepustowością do 48 Gbps (HDMI 2.1)?",
     "options": [
@@ -2337,7 +2337,7 @@
   {
     "id": "Q-0107",
     "area": "P",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Jaki typ panelu monitora zapewnia najlepsze czasy reakcji (1 ms) i jest preferowany przez graczy?",
     "options": [
@@ -2360,7 +2360,7 @@
   {
     "id": "Q-0108",
     "area": "P",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Technologia DLP w projektorach wykorzystuje jakiś element do tworzenia obrazu?",
     "options": [
@@ -2382,7 +2382,7 @@
   {
     "id": "Q-0109",
     "area": "P",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "Ile lumenów minimalnie potrzebuje projektor do prezentacji w jasno oświetlonym pomieszczeniu?",
     "options": [
@@ -2404,7 +2404,7 @@
   {
     "id": "Q-0110",
     "area": "P",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Jaki standard umożliwia drukowanie z urządzeń Apple (iPhone, iPad, Mac) bez instalowania sterowników?",
     "options": [
@@ -2426,7 +2426,7 @@
   {
     "id": "Q-0111",
     "area": "P",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Jaki standard umożliwia bezprzewodowe drukowanie z urządzeń Android?",
     "options": [
@@ -2448,7 +2448,7 @@
   {
     "id": "Q-0112",
     "area": "P",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Jaki typ skanera jest najlepszy do masowego skanowania dokumentów wielostronicowych?",
     "options": [
@@ -2470,7 +2470,7 @@
   {
     "id": "Q-0113",
     "area": "P",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Jaki interfejs wyświetlacza obsługuje najwyższą przepustowość w standardzie DisplayPort 2.0?",
     "options": [
@@ -2492,7 +2492,7 @@
   {
     "id": "Q-0114",
     "area": "P",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "Który typ złącza wyświetlacza jest analogowy (nie cyfrowy)?",
     "options": [
@@ -2514,7 +2514,7 @@
   {
     "id": "Q-0115",
     "area": "P",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Co dzieje się na etapie 'fusing' (utrwalania) w drukarce laserowej?",
     "options": [
@@ -2536,7 +2536,7 @@
   {
     "id": "Q-0116",
     "area": "P",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Jaki typ panelu monitora zapewnia najlepszą reprodukcję kolorów i szerokie kąty widzenia?",
     "options": [
@@ -2558,7 +2558,7 @@
   {
     "id": "Q-0117",
     "area": "P",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Jakie napięcie jest stosowane do ładowania bębna fotoprzewodnikowego w drukarce laserowej?",
     "options": [
@@ -2580,7 +2580,7 @@
   {
     "id": "Q-0118",
     "area": "P",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Jakie złącze sieciowe RJ-45 jest stosowane do podłączenia drukarki do sieci Ethernet?",
     "options": [
@@ -2602,7 +2602,7 @@
   {
     "id": "Q-0119",
     "area": "D",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "Jakie narzędzie w systemie Windows służy do przeglądania szczegółowych logów systemowych według daty i priorytetu?",
     "options": [
@@ -2623,7 +2623,7 @@
   {
     "id": "Q-0120",
     "area": "D",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Komputer wydaje podczas POST ciągły sygnał dźwiękowy bez przerwy. Co to wskazuje według kodów AMI BIOS?",
     "options": [
@@ -2645,7 +2645,7 @@
   {
     "id": "Q-0121",
     "area": "D",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Dysk w CrystalDiskInfo ma wartość atrybutu C5 (Current Pending Sector Count) wynoszącą 47. Co należy zrobić?",
     "options": [
@@ -2667,7 +2667,7 @@
   {
     "id": "Q-0122",
     "area": "D",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "Do czego służy narzędzie CPU-Z?",
     "options": [
@@ -2688,7 +2688,7 @@
   {
     "id": "Q-0123",
     "area": "D",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "W AMI BIOS słyszysz sekwencję: 1 długi + 3 krótkie sygnały POST. Co to oznacza?",
     "options": [
@@ -2710,7 +2710,7 @@
   {
     "id": "Q-0124",
     "area": "D",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Jakie narzędzie systemu Linux wyświetla bufor komunikatów jądra systemu, w tym informacje o wykrytym sprzęcie podczas rozruchu?",
     "options": [
@@ -2732,7 +2732,7 @@
   {
     "id": "Q-0125",
     "area": "D",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "Do testowania stabilności pamięci RAM służy narzędzie:",
     "options": [
@@ -2753,7 +2753,7 @@
   {
     "id": "Q-0126",
     "area": "D",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Temperatura procesora pod pełnym obciążeniem wynosi 96°C. Jakie jest właściwe działanie?",
     "options": [
@@ -2775,7 +2775,7 @@
   {
     "id": "Q-0127",
     "area": "D",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Polecenie `smartctl -a /dev/sda` wyświetla atrybut C7 (Ultra DMA CRC Error Count) z wartością 134. Co to oznacza?",
     "options": [
@@ -2798,7 +2798,7 @@
   {
     "id": "Q-0128",
     "area": "D",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "Jakie polecenie Windows służy do śledzenia trasy pakietów sieciowych do celu?",
     "options": [
@@ -2820,7 +2820,7 @@
   {
     "id": "Q-0129",
     "area": "D",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Narzędzie Reliability Monitor (Monitor niezawodności) w Windows uruchamia się poleceniem:",
     "options": [
@@ -2841,7 +2841,7 @@
   {
     "id": "Q-0130",
     "area": "D",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Podczas pracy z podzespołami elektronicznymi należy używać opaski antyelektrostatycznej. Dlaczego?",
     "options": [
@@ -2863,7 +2863,7 @@
   {
     "id": "Q-0131",
     "area": "D",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Jakie polecenie Linux wyświetla aktywne połączenia sieciowe wraz z numerami portów i stanami?",
     "options": [
@@ -2885,7 +2885,7 @@
   {
     "id": "Q-0132",
     "area": "D",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "Jakie narzędzie Windows służy do monitorowania użycia zasobów (CPU, RAM, dysk, sieć) w czasie rzeczywistym?",
     "options": [
@@ -2906,7 +2906,7 @@
   {
     "id": "Q-0133",
     "area": "D",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Bezpieczna maksymalna temperatura dysku twardego HDD podczas pracy wynosi:",
     "options": [
@@ -2927,7 +2927,7 @@
   {
     "id": "Q-0134",
     "area": "D",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Podczas POST komputer nie wydaje żadnych sygnałów dźwiękowych i nie wyświetla niczego na ekranie. Co jest najbardziej prawdopodobną przyczyną?",
     "options": [
@@ -2949,7 +2949,7 @@
   {
     "id": "Q-0135",
     "area": "D",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Do testowania stabilności procesora pod długotrwałym obciążeniem (stress test) używa się narzędzia:",
     "options": [
@@ -2971,7 +2971,7 @@
   {
     "id": "Q-0136",
     "area": "D",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Polecenie `journalctl -xe` w systemie Linux służy do:",
     "options": [
@@ -2993,7 +2993,7 @@
   {
     "id": "Q-0137",
     "area": "L",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "Jaka jest zalecana minimalna odległość oczu od monitora komputerowego?",
     "options": [
@@ -3014,7 +3014,7 @@
   {
     "id": "Q-0138",
     "area": "L",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "Jakie minimalne natężenie oświetlenia jest wymagane na stanowisku pracy z komputerem według normy PN-EN 12464-1?",
     "options": [
@@ -3036,7 +3036,7 @@
   {
     "id": "Q-0139",
     "area": "L",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Jak powinno być ustawione górne krawędź monitora względem oczu operatora?",
     "options": [
@@ -3058,7 +3058,7 @@
   {
     "id": "Q-0140",
     "area": "L",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Dlaczego nie wolno otwierać obudowy monitora CRT (kineskopowego) bez odpowiedniego przeszkolenia?",
     "options": [
@@ -3080,7 +3080,7 @@
   {
     "id": "Q-0141",
     "area": "L",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "Jak powinno być ułożone przedramię podczas pracy z klawiaturą pod kątem ergonomii?",
     "options": [
@@ -3102,7 +3102,7 @@
   {
     "id": "Q-0142",
     "area": "L",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Jaki kolor ma przewód ochronny PE (uziemiający) w instalacjach elektrycznych?",
     "options": [
@@ -3124,7 +3124,7 @@
   {
     "id": "Q-0143",
     "area": "L",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Jak powinny być ustawione stopy operatora siedzącego przy komputerze?",
     "options": [
@@ -3145,7 +3145,7 @@
   {
     "id": "Q-0144",
     "area": "L",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Co oznacza skrót RSI w kontekście BHP stanowisk pracy z komputerem?",
     "options": [
@@ -3167,7 +3167,7 @@
   {
     "id": "Q-0145",
     "area": "L",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "Jakiego rodzaju gaśnicy należy użyć w przypadku pożaru sprzętu elektrycznego?",
     "options": [
@@ -3189,7 +3189,7 @@
   {
     "id": "Q-0146",
     "area": "L",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Jaka jest pierwsza czynność podczas ewakuacji w przypadku pożaru w serwerowni?",
     "options": [
@@ -3211,7 +3211,7 @@
   {
     "id": "Q-0147",
     "area": "L",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Do jakiej klasy pożarów zalicza się pożary cieczy palnych (np. oleju)?",
     "options": [
@@ -3232,7 +3232,7 @@
   {
     "id": "Q-0148",
     "area": "L",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Dlaczego podczas ewakuacji budynku nie wolno korzystać z windy?",
     "options": [
@@ -3254,7 +3254,7 @@
   {
     "id": "Q-0149",
     "area": "L",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "Jaka jest pierwsza czynność przy udzielaniu pomocy osobie porażonej prądem elektrycznym?",
     "options": [
@@ -3275,7 +3275,7 @@
   {
     "id": "Q-0150",
     "area": "L",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Jak długo należy przemywać wodą oparzenie chemiczne skóry?",
     "options": [
@@ -3296,7 +3296,7 @@
   {
     "id": "Q-0151",
     "area": "L",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Co należy zrobić w przypadku dostania się substancji chemicznej do oka?",
     "options": [
@@ -3318,7 +3318,7 @@
   {
     "id": "Q-0152",
     "area": "L",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "Jaki jest standardowy wymiar czasu pracy określony w Kodeksie Pracy (art. 129 KP)?",
     "options": [
@@ -3339,7 +3339,7 @@
   {
     "id": "Q-0153",
     "area": "L",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Jaki jest maksymalny roczny wymiar godzin nadliczbowych pracownika zgodnie z Kodeksem Pracy?",
     "options": [
@@ -3360,7 +3360,7 @@
   {
     "id": "Q-0154",
     "area": "L",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Jaki jest maksymalny okres trwania umowy o pracę na okres próbny?",
     "options": [
@@ -3381,7 +3381,7 @@
   {
     "id": "Q-0155",
     "area": "L",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Pracownik jest zatrudniony od 4 lat. Jaki jest okres wypowiedzenia umowy o pracę zawartej na czas nieokreślony?",
     "options": [
@@ -3402,7 +3402,7 @@
   {
     "id": "Q-0156",
     "area": "L",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Osoba wykonująca zlecenie na podstawie umowy zlecenia to:",
     "options": [
@@ -3423,7 +3423,7 @@
   {
     "id": "Q-0157",
     "area": "L",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "Co oznacza skrót RODO?",
     "options": [
@@ -3445,7 +3445,7 @@
   {
     "id": "Q-0158",
     "area": "L",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "W jakim czasie od wykrycia naruszenia ochrony danych osobowych administrator musi powiadomić organ nadzorczy (UODO)?",
     "options": [
@@ -3467,7 +3467,7 @@
   {
     "id": "Q-0159",
     "area": "L",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Które z poniższych danych zalicza się do szczególnych kategorii danych osobowych wymagających wyraźnej zgody (art. 9 RODO)?",
     "options": [
@@ -3488,7 +3488,7 @@
   {
     "id": "Q-0160",
     "area": "L",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Kiedy mianowanie Inspektora Ochrony Danych (IOD/DPO) jest obowiązkowe?",
     "options": [
@@ -3510,7 +3510,7 @@
   {
     "id": "Q-0161",
     "area": "L",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Prawo do usunięcia danych osobowych (prawo do bycia zapomnianym) jest określone w:",
     "options": [
@@ -3531,7 +3531,7 @@
   {
     "id": "Q-0162",
     "area": "L",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "Czym charakteryzuje się licencja OEM oprogramowania?",
     "options": [
@@ -3552,9 +3552,9 @@
   {
     "id": "Q-0163",
     "area": "L",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
-    "q": "Co to jest licencja CAL (Client Access License) w kontekście Windows Server?",
+    "q": "Co to jest licencja CAL (Client Dostęp License) w kontekście Windows Server?",
     "options": [
       "Licencja na instalację systemu Windows Server",
       "Licencja wymagana dla każdego użytkownika lub urządzenia uzyskującego dostęp do usług Windows Server",
@@ -3562,7 +3562,7 @@
       "Certyfikat szyfrowania dla klientów sieci"
     ],
     "correct": 1,
-    "explanation": "CAL (Client Access License) to licencja wymagana dla każdego użytkownika (User CAL) lub urządzenia (Device CAL) uzyskującego dostęp do usług Windows Server (np. pliki, druk, RDS). Sama licencja serwera nie obejmuje klientów.",
+    "explanation": "CAL (Client Dostęp License) to licencja wymagana dla każdego użytkownika (Użytkownik CAL) lub urządzenia (Device CAL) uzyskującego dostęp do usług Windows Server (np. pliki, druk, RDS). Sama licencja serwera nie obejmuje klientów.",
     "ckeRef": "INF.02.10.2",
     "tags": [
       "licencjonowanie",
@@ -3573,7 +3573,7 @@
   {
     "id": "Q-0164",
     "area": "L",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Licencja GPL (GNU General Public License) zobowiązuje do:",
     "options": [
@@ -3595,7 +3595,7 @@
   {
     "id": "Q-0165",
     "area": "L",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Firma chce użyć biblioteki open-source z licencją LGPL w komercyjnym oprogramowaniu. Co to oznacza?",
     "options": [
@@ -3616,17 +3616,17 @@
   {
     "id": "Q-0166",
     "area": "L",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
-    "q": "Czym różni się Device CAL od User CAL?",
+    "q": "Czym różni się Device CAL od Użytkownik CAL?",
     "options": [
-      "Device CAL jest droższy od User CAL",
-      "Device CAL upoważnia jedno urządzenie (wielu użytkowników), User CAL — jednego użytkownika (wiele urządzeń)",
+      "Device CAL jest droższy od Użytkownik CAL",
+      "Device CAL upoważnia jedno urządzenie (wielu użytkowników), Użytkownik CAL — jednego użytkownika (wiele urządzeń)",
       "Device CAL obejmuje licencję na oprogramowanie klienckie",
       "Nie ma różnicy funkcjonalnej"
     ],
     "correct": 1,
-    "explanation": "Device CAL licencjonuje jedno urządzenie, z którego może korzystać dowolna liczba użytkowników — opłacalny przy urządzeniach współdzielonych (np. kasy, kioski). User CAL licencjonuje jednego użytkownika, który może korzystać z wielu urządzeń.",
+    "explanation": "Device CAL licencjonuje jedno urządzenie, z którego może korzystać dowolna liczba użytkowników — opłacalny przy urządzeniach współdzielonych (np. kasy, kioski). Użytkownik CAL licencjonuje jednego użytkownika, który może korzystać z wielu urządzeń.",
     "ckeRef": "INF.02.10.2",
     "tags": [
       "licencjonowanie",
@@ -3638,7 +3638,7 @@
   {
     "id": "Q-0167",
     "area": "L",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "Co oznacza symbol przekreślonego pojemnika na kółkach (przekreśony kosz) na sprzęcie elektronicznym?",
     "options": [
@@ -3660,7 +3660,7 @@
   {
     "id": "Q-0168",
     "area": "L",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Dyrektywa WEEE (2012/19/UE) nakłada odpowiedzialność za właściwy recykling sprzętu elektronicznego na:",
     "options": [
@@ -3682,7 +3682,7 @@
   {
     "id": "Q-0169",
     "area": "L",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Firma chce zarejestrować jednoosobową działalność gospodarczą w Polsce. W jakim rejestrze to robi?",
     "options": [
@@ -3704,7 +3704,7 @@
   {
     "id": "Q-0170",
     "area": "L",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Technik serwisowy sporządził protokół serwisowy. Co powinien on zawierać?",
     "options": [
@@ -3725,7 +3725,7 @@
   {
     "id": "Q-0171",
     "area": "W",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "Jaka jest hierarchia struktury Active Directory od najszerszej do najwęższej?",
     "options": [
@@ -3747,7 +3747,7 @@
   {
     "id": "Q-0172",
     "area": "W",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Ile ról FSMO istnieje łącznie w lesie Active Directory i jak są rozmieszczone?",
     "options": [
@@ -3768,7 +3768,7 @@
   {
     "id": "Q-0173",
     "area": "W",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Jaka jest rola PDC Emulator w Active Directory?",
     "options": [
@@ -3790,7 +3790,7 @@
   {
     "id": "Q-0174",
     "area": "W",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "Czym różni się domena od grupy roboczej (Workgroup)?",
     "options": [
@@ -3812,7 +3812,7 @@
   {
     "id": "Q-0175",
     "area": "W",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Co to jest Global Catalog w Active Directory i kiedy jest wymagany?",
     "options": [
@@ -3834,7 +3834,7 @@
   {
     "id": "Q-0176",
     "area": "W",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Jaki jest przykład poprawnego FQDN (Fully Qualified Domain Name) kontrolera domeny?",
     "options": [
@@ -3856,7 +3856,7 @@
   {
     "id": "Q-0177",
     "area": "W",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Jakie są dwa typy grup w Active Directory pod względem przeznaczenia?",
     "options": [
@@ -3878,7 +3878,7 @@
   {
     "id": "Q-0178",
     "area": "W",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Który zasięg grupy AD jest widoczny i może być używany w całym lesie Active Directory?",
     "options": [
@@ -3900,7 +3900,7 @@
   {
     "id": "Q-0179",
     "area": "W",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Polecenie PowerShell do wyłączenia konta użytkownika w Active Directory to:",
     "options": [
@@ -3922,7 +3922,7 @@
   {
     "id": "Q-0180",
     "area": "W",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "Która domyślna grupa AD daje pełną kontrolę administracyjną nad całą domeną?",
     "options": [
@@ -3944,7 +3944,7 @@
   {
     "id": "Q-0181",
     "area": "W",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "W jakiej kolejności stosowane są zasady grupowe GPO (od najniższego priorytetu do najwyższego)?",
     "options": [
@@ -3966,7 +3966,7 @@
   {
     "id": "Q-0182",
     "area": "W",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "Jakie polecenie wymusza natychmiastowe zastosowanie zasad grupowych na stacji roboczej?",
     "options": [
@@ -3976,7 +3976,7 @@
       "rsop.msc"
     ],
     "correct": 2,
-    "explanation": "Polecenie gpupdate /force wymusza natychmiastowe pobranie i zastosowanie wszystkich zasad grupowych (User i Computer) bez oczekiwania na standardowy interwał odświeżania (domyślnie 90 minut ± 30 minut).",
+    "explanation": "Polecenie gpupdate /force wymusza natychmiastowe pobranie i zastosowanie wszystkich zasad grupowych (Użytkownik i Computer) bez oczekiwania na standardowy interwał odświeżania (domyślnie 90 minut ± 30 minut).",
     "ckeRef": "INF.02.7.2",
     "tags": [
       "gpo",
@@ -3988,7 +3988,7 @@
   {
     "id": "Q-0183",
     "area": "W",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Do czego służy narzędzie rsop.msc?",
     "options": [
@@ -4010,7 +4010,7 @@
   {
     "id": "Q-0184",
     "area": "W",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Co to jest Loopback Processing Mode w zasadach grupowych?",
     "options": [
@@ -4032,7 +4032,7 @@
   {
     "id": "Q-0185",
     "area": "W",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Polecenie `gpresult /r` służy do:",
     "options": [
@@ -4054,17 +4054,17 @@
   {
     "id": "Q-0186",
     "area": "W",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Administrator chce zablokować portom USB na wszystkich komputerach w dziale Finanse. Jak to zrobić przez GPO?",
     "options": [
       "Edytować rejestr na każdym komputerze osobno",
-      "Skonfigurować GPO: Computer Configuration > Administrative Templates > System > Removable Storage Access i powiązać z OU Finanse",
+      "Skonfigurować GPO: Computer Configuration > Administrative Templates > System > Removable Storage Dostęp i powiązać z OU Finanse",
       "Odinstalować sterowniki USB przez Center Update",
       "Użyć narzędzia BitLocker To Go"
     ],
     "correct": 1,
-    "explanation": "Blokadę USB przez GPO konfiguruje się w: Computer Configuration → Administrative Templates → System → Removable Storage Access. Można odmówić dostępu do odczytu i zapisu. GPO powiązane z OU Finanse zastosuje się do wszystkich komputerów w tym OU.",
+    "explanation": "Blokadę USB przez GPO konfiguruje się w: Computer Configuration → Administrative Templates → System → Removable Storage Dostęp. Można odmówić dostępu do odczytu i zapisu. GPO powiązane z OU Finanse zastosuje się do wszystkich komputerów w tym OU.",
     "ckeRef": "INF.02.7.2",
     "tags": [
       "gpo",
@@ -4076,7 +4076,7 @@
   {
     "id": "Q-0187",
     "area": "W",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "Jaki rekord DNS odpowiada za mapowanie nazwy hosta na adres IPv4?",
     "options": [
@@ -4097,7 +4097,7 @@
   {
     "id": "Q-0188",
     "area": "W",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Do czego służy strefa wyszukiwania wstecznego (Reverse Lookup Zone) w DNS?",
     "options": [
@@ -4119,7 +4119,7 @@
   {
     "id": "Q-0189",
     "area": "W",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Jaki rekord DNS jest wymagany przez Active Directory do lokalizowania usług (np. Kerberos, LDAP)?",
     "options": [
@@ -4141,7 +4141,7 @@
   {
     "id": "Q-0190",
     "area": "W",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Co to jest warunkowa usługa przekazywania (Conditional Forwarder) w DNS Windows Server?",
     "options": [
@@ -4162,7 +4162,7 @@
   {
     "id": "Q-0191",
     "area": "W",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Jaki rekord DNS wskazuje serwer poczty elektronicznej dla domeny?",
     "options": [
@@ -4184,7 +4184,7 @@
   {
     "id": "Q-0192",
     "area": "W",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "Jaka jest różnica między wykluczeniem (Exclusion) a rezerwacją (Reservation) w DHCP?",
     "options": [
@@ -4206,7 +4206,7 @@
   {
     "id": "Q-0193",
     "area": "W",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Jaka jest wartość opcji DHCP 003?",
     "options": [
@@ -4228,7 +4228,7 @@
   {
     "id": "Q-0194",
     "area": "W",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Co to jest DHCP Failover i jakie ma tryby pracy?",
     "options": [
@@ -4250,7 +4250,7 @@
   {
     "id": "Q-0195",
     "area": "W",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Dlaczego serwer DHCP w środowisku Active Directory musi być autoryzowany?",
     "options": [
@@ -4272,7 +4272,7 @@
   {
     "id": "Q-0196",
     "area": "W",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Co to jest DFS (Distributed File System) w Windows Server?",
     "options": [
@@ -4293,17 +4293,17 @@
   {
     "id": "Q-0197",
     "area": "W",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Jakie licencje CAL są wymagane dla użytkowników korzystających z Remote Desktop Services (RDS)?",
     "options": [
       "Tylko licencja Windows Server wystarczy",
-      "Windows Server CAL + RDS CAL (User lub Device) dla każdego użytkownika/urządzenia",
+      "Windows Server CAL + RDS CAL (Użytkownik lub Device) dla każdego użytkownika/urządzenia",
       "Tylko RDS CAL bez Windows Server CAL",
       "RDS jest objęty standardową licencją OEM Windows"
     ],
     "correct": 1,
-    "explanation": "Dostęp do Remote Desktop Services wymaga dwóch licencji: Windows Server CAL (uprawnienie dostępu do serwera) oraz RDS CAL (uprawnienie do sesji RDS). Oba typy RDS CAL: User CAL (na użytkownika) i Device CAL (na urządzenie).",
+    "explanation": "Dostęp do Remote Desktop Services wymaga dwóch licencji: Windows Server CAL (uprawnienie dostępu do serwera) oraz RDS CAL (uprawnienie do sesji RDS). Oba typy RDS CAL: Użytkownik CAL (na użytkownika) i Device CAL (na urządzenie).",
     "ckeRef": "INF.02.7.2",
     "tags": [
       "rds",
@@ -4315,7 +4315,7 @@
   {
     "id": "Q-0198",
     "area": "W",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Jakie typy przełączników wirtualnych oferuje Hyper-V?",
     "options": [
@@ -4337,7 +4337,7 @@
   {
     "id": "Q-0199",
     "area": "W",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "Jaką rolę pełni IIS (Internet Information Services) w Windows Server?",
     "options": [
@@ -4358,17 +4358,17 @@
   {
     "id": "Q-0200",
     "area": "W",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "Jakie polecenie Linux uruchamia usługę i ustawia ją do automatycznego startowania przy restarcie systemu?",
     "options": [
       "service apache2 start && chkconfig apache2 on",
-      "systemctl start apache2 && systemctl enable apache2",
+      "systemctl start apache2 && systemctl włącz apache2",
       "init.d apache2 start --boot",
-      "service enable apache2"
+      "service włącz apache2"
     ],
     "correct": 1,
-    "explanation": "W systemd: systemctl start apache2 uruchamia usługę natychmiast, a systemctl enable apache2 tworzy dowiązanie symboliczne, dzięki czemu usługa startuje automatycznie po restarcie systemu.",
+    "explanation": "W systemd: systemctl start apache2 uruchamia usługę natychmiast, a systemctl włącz apache2 tworzy dowiązanie symboliczne, dzięki czemu usługa startuje automatycznie po restarcie systemu.",
     "ckeRef": "INF.02.7.2",
     "tags": [
       "linux",
@@ -4380,7 +4380,7 @@
   {
     "id": "Q-0201",
     "area": "W",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Jakie polecenie Linux dodaje użytkownika 'jan' do grupy 'sudo'?",
     "options": [
@@ -4402,7 +4402,7 @@
   {
     "id": "Q-0202",
     "area": "W",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "W pliku /etc/ssh/sshd_config administrator zmienia 'PermitRootLogin yes' na 'PermitRootLogin no'. Jaki jest cel tej zmiany?",
     "options": [
@@ -4424,7 +4424,7 @@
   {
     "id": "Q-0203",
     "area": "W",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Co robi polecenie `chmod 755 /var/www/html`?",
     "options": [
@@ -4446,7 +4446,7 @@
   {
     "id": "Q-0204",
     "area": "W",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Samba na Linux służy do:",
     "options": [
@@ -4468,7 +4468,7 @@
   {
     "id": "Q-0205",
     "area": "6",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "Ile bitów ma adres IPv6?",
     "options": [
@@ -4489,7 +4489,7 @@
   {
     "id": "Q-0206",
     "area": "6",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "Jaki adres IPv6 jest odpowiednikiem adresu pętli zwrotnej 127.0.0.1 z IPv4?",
     "options": [
@@ -4510,7 +4510,7 @@
   {
     "id": "Q-0207",
     "area": "6",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Skróć poprawnie adres IPv6: 2001:0db8:0000:0000:0000:0000:0000:0001",
     "options": [
@@ -4531,7 +4531,7 @@
   {
     "id": "Q-0208",
     "area": "6",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Adresy Link-local w IPv6 zaczynają się od prefiksu:",
     "options": [
@@ -4552,7 +4552,7 @@
   {
     "id": "Q-0209",
     "area": "6",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Adresy Unique Local (ULA) w IPv6 są odpowiednikiem prywatnych adresów IPv4 (RFC 1918). Jaki mają prefiks?",
     "options": [
@@ -4574,7 +4574,7 @@
   {
     "id": "Q-0210",
     "area": "6",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Co to jest SLAAC (Stateless Address Autoconfiguration) w IPv6?",
     "options": [
@@ -4596,7 +4596,7 @@
   {
     "id": "Q-0211",
     "area": "6",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Adres MAC 00:1A:2B:3C:4D:5E. Jaki będzie identyfikator interfejsu EUI-64?",
     "options": [
@@ -4618,7 +4618,7 @@
   {
     "id": "Q-0212",
     "area": "6",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Jakie rozwiązanie w IPv6 zastępuje protokół ARP z IPv4?",
     "options": [
@@ -4640,7 +4640,7 @@
   {
     "id": "Q-0213",
     "area": "6",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "Jaki prefiks używają adresy multicast IPv6?",
     "options": [
@@ -4661,7 +4661,7 @@
   {
     "id": "Q-0214",
     "area": "6",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Protokół RIP ma ograniczenie maksymalnej liczby skoków (hops). Ile wynosi?",
     "options": [
@@ -4682,7 +4682,7 @@
   {
     "id": "Q-0215",
     "area": "6",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Protokół OSPF używa metryki opartej na koszcie (cost). Jaki koszt ma łącze 100 Mbps?",
     "options": [
@@ -4704,7 +4704,7 @@
   {
     "id": "Q-0216",
     "area": "6",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Czym różni się DHCPv6 stanowy (stateful) od bezstanowego (stateless)?",
     "options": [
@@ -4727,7 +4727,7 @@
   {
     "id": "Q-0217",
     "area": "6",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "Jakie polecenie Linux dodaje trasę statyczną IPv6 do sieci 2001:db8:2::/64 przez brame 2001:db8:1::1?",
     "options": [
@@ -4749,7 +4749,7 @@
   {
     "id": "Q-0218",
     "area": "6",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Protokół BGP (Border Gateway Protocol) używa numerów AS. Co oznacza AS?",
     "options": [
@@ -4771,7 +4771,7 @@
   {
     "id": "Q-0219",
     "area": "6",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Które adresy IPv6 są globalnie rutowalne (Global Unicast)?",
     "options": [
@@ -4793,7 +4793,7 @@
   {
     "id": "Q-0220",
     "area": "6",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Co to jest anycast w IPv6 i jak różni się od unicast i multicast?",
     "options": [
@@ -4815,7 +4815,7 @@
   {
     "id": "Q-0221",
     "area": "V",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "Czym różni się hypervisor Typu 1 od Typu 2?",
     "options": [
@@ -4837,7 +4837,7 @@
   {
     "id": "Q-0222",
     "area": "V",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Jaka jest maksymalna pojemność dysku wirtualnego VHDX w Hyper-V?",
     "options": [
@@ -4859,7 +4859,7 @@
   {
     "id": "Q-0223",
     "area": "V",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Jakie wymagania sprzętowe są niezbędne do uruchomienia Hyper-V?",
     "options": [
@@ -4881,7 +4881,7 @@
   {
     "id": "Q-0224",
     "area": "V",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "Czym jest Docker image (obraz Docker)?",
     "options": [
@@ -4903,7 +4903,7 @@
   {
     "id": "Q-0225",
     "area": "V",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Minimum ile dysków jest wymaganych dla RAID 5 i ile dysków może ulec awarii bez utraty danych?",
     "options": [
@@ -4925,7 +4925,7 @@
   {
     "id": "Q-0226",
     "area": "V",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Jaka jest zasada 3-2-1 tworzenia kopii zapasowych?",
     "options": [
@@ -4946,7 +4946,7 @@
   {
     "id": "Q-0227",
     "area": "V",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Która strategia backupu oferuje najszybsze tworzenie kopii, ale najwolniejsze odtwarzanie?",
     "options": [
@@ -4968,7 +4968,7 @@
   {
     "id": "Q-0228",
     "area": "V",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Co oznacza skrót RPO w kontekście ciągłości działania?",
     "options": [
@@ -4990,7 +4990,7 @@
   {
     "id": "Q-0229",
     "area": "V",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "RAID 0 (striping) oferuje następujące cechy:",
     "options": [
@@ -5012,7 +5012,7 @@
   {
     "id": "Q-0230",
     "area": "V",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Firma ma 4 dyski po 2 TB i potrzebuje maksymalnej odporności na awarie przy zachowaniu możliwości pracy. Jaki RAID wybrać?",
     "options": [
@@ -5034,7 +5034,7 @@
   {
     "id": "Q-0231",
     "area": "V",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Co to jest VSS (Volume Shadow Copy Service) w Windows?",
     "options": [
@@ -5056,7 +5056,7 @@
   {
     "id": "Q-0232",
     "area": "V",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Czym różni się checkpoint (migawka) Hyper-V produkcyjny od standardowego?",
     "options": [
@@ -5078,7 +5078,7 @@
   {
     "id": "Q-0233",
     "area": "V",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Rotacja kopii zapasowych GFS (Grandfather-Father-Son) polega na:",
     "options": [
@@ -5100,7 +5100,7 @@
   {
     "id": "Q-0234",
     "area": "Z",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "BitLocker wymaga do działania układu TPM. Jaka jest minimalna wersja TPM wymagana przez Windows 11?",
     "options": [
@@ -5122,7 +5122,7 @@
   {
     "id": "Q-0235",
     "area": "Z",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Jaka jest różnica między IDS a IPS w kontekście bezpieczeństwa sieci?",
     "options": [
@@ -5144,7 +5144,7 @@
   {
     "id": "Q-0236",
     "area": "Z",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Pracownik uzyskuje dostęp do zasobu sieciowego przez sieć. Jakie uprawnienia faktycznie obowiązują przy połączeniu przez udział sieciowy?",
     "options": [
@@ -5166,7 +5166,7 @@
   {
     "id": "Q-0237",
     "area": "Z",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "Zasada najmniejszych uprawnień (Principle of Least Privilege) mówi, że:",
     "options": [
@@ -5187,7 +5187,7 @@
   {
     "id": "Q-0238",
     "area": "Z",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "TOTP (Time-based One-Time Password) używany w Google Authenticator działa w oparciu o:",
     "options": [
@@ -5209,7 +5209,7 @@
   {
     "id": "Q-0239",
     "area": "Z",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Który profil zapory Windows Defender Firewall stosowany jest w sieciach publicznych (np. kawiarnia, lotnisko)?",
     "options": [
@@ -5231,7 +5231,7 @@
   {
     "id": "Q-0240",
     "area": "Z",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Jaki jest główny wektor ataku ransomware i skuteczna metoda ochrony?",
     "options": [
@@ -5253,7 +5253,7 @@
   {
     "id": "Q-0241",
     "area": "Z",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Co to jest IPsec Tunnel Mode i kiedy się go używa?",
     "options": [
@@ -5275,7 +5275,7 @@
   {
     "id": "Q-0242",
     "area": "Z",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Atakujący przechwytuje komunikację między klientem a serwerem podszywając się pod oba. Jak nazywa się ten typ ataku?",
     "options": [
@@ -5297,7 +5297,7 @@
   {
     "id": "Q-0243",
     "area": "Z",
-    "difficulty": "easy",
+    "difficulty": 1,
     "type": "mcq",
     "q": "EFS (Encrypting File System) w Windows szyfruje pliki przy użyciu:",
     "options": [
@@ -5319,7 +5319,7 @@
   {
     "id": "Q-0244",
     "area": "Z",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Standard 802.1X w bezpieczeństwie sieci służy do:",
     "options": [
@@ -5341,7 +5341,7 @@
   {
     "id": "Q-0245",
     "area": "Z",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Które rekomendacje NIST SP 800-63B dotyczące haseł są aktualne (2023)?",
     "options": [
@@ -5363,7 +5363,7 @@
   {
     "id": "Q-0246",
     "area": "Z",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Jaki jest najsłabszy element MFA (Multi-Factor Authentication) i dlaczego?",
     "options": [
@@ -5385,7 +5385,7 @@
   {
     "id": "Q-0247",
     "area": "R",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Firma wdraża 100 identycznych stacji Windows 11 z dostępem do Windows Server 2022 dla udostępniania plików. Jaką licencję CAL należy zakupić dla każdej stacji?",
     "options": [
@@ -5407,7 +5407,7 @@
   {
     "id": "Q-0248",
     "area": "R",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Sieć 10.10.0.0/21 — ile hostów można zaadresować (hosty użyteczne)?",
     "options": [
@@ -5429,7 +5429,7 @@
   {
     "id": "Q-0249",
     "area": "R",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Administrator wykrywa, że CPU serwera osiąga 95°C pod pełnym obciążeniem. Jakie jest właściwe pierwsze działanie?",
     "options": [
@@ -5451,7 +5451,7 @@
   {
     "id": "Q-0250",
     "area": "R",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Firma przechowuje numery PESEL klientów w CRM. Baza danych zostaje zhakowana. Co administrator musi zrobić zgodnie z RODO?",
     "options": [
@@ -5474,7 +5474,7 @@
   {
     "id": "Q-0251",
     "area": "R",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Użytkownik zgłasza brak dostępu do folderu sieciowego na serwerze. Jaka jest właściwa kolejność diagnostyki?",
     "options": [
@@ -5496,7 +5496,7 @@
   {
     "id": "Q-0252",
     "area": "R",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Firma potrzebuje podsieci dla 50 hostów. Który prefiks VLSM jest minimalnym wystarczającym?",
     "options": [
@@ -5518,7 +5518,7 @@
   {
     "id": "Q-0253",
     "area": "R",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Firma potrzebuje macierzy RAID zapewniającej zarówno wysoką wydajność jak i redundancję danych przy 4 dyskach. Które rozwiązanie jest optymalne?",
     "options": [
@@ -5540,7 +5540,7 @@
   {
     "id": "Q-0254",
     "area": "R",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Po dołączeniu komputera do domeny AD użytkownik nie może się zalogować domenowym kontem. Jakie jest najbardziej prawdopodobne pierwsze sprawdzenie?",
     "options": [
@@ -5562,7 +5562,7 @@
   {
     "id": "Q-0255",
     "area": "R",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Pracownik rozwiązuje stosunek pracy po 2 latach zatrudnienia. Ile wynosi jego okres wypowiedzenia?",
     "options": [
@@ -5583,7 +5583,7 @@
   {
     "id": "Q-0256",
     "area": "R",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Firma testuje nowe oprogramowanie i potrzebuje środowiska izolowanego od sieci produkcyjnej, ale z komunikacją między maszynami wirtualnymi. Jaki przełącznik Hyper-V należy wybrać?",
     "options": [
@@ -5606,7 +5606,7 @@
   {
     "id": "Q-0257",
     "area": "R",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Technik naprawia komputer klienta i wymienia dysk twardy. Jak poprawnie udokumentować tę naprawę?",
     "options": [
@@ -5627,7 +5627,7 @@
   {
     "id": "Q-0258",
     "area": "R",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Serwer DNS w domenie nie odpowiada. Jakie usługi Active Directory będą niesprawne?",
     "options": [
@@ -5649,7 +5649,7 @@
   {
     "id": "Q-0259",
     "area": "R",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Klient prosi o zainstalowanie pirackiej kopii systemu operacyjnego. Jakie jest prawidłowe postępowanie technika?",
     "options": [
@@ -5671,7 +5671,7 @@
   {
     "id": "Q-0260",
     "area": "R",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Administrator konfiguruje DHCP dla sieci 192.168.10.0/24. Routery i serwery mają statyczne IP 192.168.10.1–192.168.10.20. Jak prawidłowo skonfigurować pulę DHCP?",
     "options": [
@@ -5693,7 +5693,7 @@
   {
     "id": "Q-0261",
     "area": "R",
-    "difficulty": "medium",
+    "difficulty": 2,
     "type": "mcq",
     "q": "Zużyty komputer biurowy zawierający dysk z danymi osobowymi klientów musi zostać zutylizowany. Co należy zrobić?",
     "options": [
@@ -5716,7 +5716,7 @@
   {
     "id": "Q-0262",
     "area": "R",
-    "difficulty": "hard",
+    "difficulty": 3,
     "type": "mcq",
     "q": "Administrator chce zweryfikować, które zasady GPO są faktycznie stosowane na konkretnej stacji roboczej dla konkretnego użytkownika. Jakie narzędzie i polecenie jest najbardziej odpowiednie?",
     "options": [
@@ -5726,13 +5726,330 @@
       "Active Directory Users and Computers → właściwości użytkownika"
     ],
     "correct": 1,
-    "explanation": "gpresult /r (tryb tekstowy) lub gpresult /h raport.html (raport HTML) uruchomione bezpośrednio na stacji roboczej jako dany użytkownik pokazują które GPO są faktycznie zastosowane, z jakiego poziomu (Site/Domain/OU) i z jakim rezultatem. To najbardziej dokładna metoda weryfikacji GPO per user/per computer.",
+    "explanation": "gpresult /r (tryb tekstowy) lub gpresult /h raport.html (raport HTML) uruchomione bezpośrednio na stacji roboczej jako dany użytkownik pokazują które GPO są faktycznie zastosowane, z jakiego poziomu (Site/Domain/OU) i z jakim rezultatem. To najbardziej dokładna metoda weryfikacji GPO per użytkownik/per computer.",
     "ckeRef": "INF.02.11",
     "tags": [
       "gpo",
       "gpresult",
       "diagnostyka",
       "praktyka-cke"
+    ]
+  },
+  {
+    "id": "Q-0263",
+    "area": "6",
+    "difficulty": 2,
+    "type": "fill",
+    "q": "Skróć adres IPv6 do najkrótszej formy: 2001:0db8:0000:0000:0000:ff00:0042:8329 (sam adres, bez nawiasów)",
+    "options": [],
+    "correct": "2001:db8::ff00:42:8329",
+    "explanation": "Reguły skracania IPv6: pomijamy wiodące zera w każdym bloku oraz raz zastępujemy najdłuższy ciąg bloków zerowych dwukropkiem (::).",
+    "ckeRef": "INF.02.6.3",
+    "tags": [
+      "ipv6",
+      "skracanie",
+      "rfc5952"
+    ]
+  },
+  {
+    "id": "Q-0264",
+    "area": "N",
+    "difficulty": 2,
+    "type": "fill",
+    "q": "Podaj maskę dziesiętną dla prefiksu /27",
+    "options": [],
+    "correct": "255.255.255.224",
+    "explanation": "/27 = 24 + 3 jedynki = 11111111.11111111.11111111.11100000 = 255.255.255.224 (32 adresy w podsieci, 30 hostów).",
+    "ckeRef": "INF.02.4.3",
+    "tags": [
+      "maska",
+      "cidr",
+      "podsieci"
+    ]
+  },
+  {
+    "id": "Q-0265",
+    "area": "N",
+    "difficulty": 2,
+    "type": "fill",
+    "q": "Podaj maskę dziesiętną dla prefiksu /22",
+    "options": [],
+    "correct": "255.255.252.0",
+    "explanation": "/22 = pierwsze 22 bity = 1, reszta = 0. W trzecim oktecie: 11111100 = 252. Maska: 255.255.252.0.",
+    "ckeRef": "INF.02.4.3",
+    "tags": [
+      "maska",
+      "cidr"
+    ]
+  },
+  {
+    "id": "Q-0266",
+    "area": "N",
+    "difficulty": 2,
+    "type": "fill",
+    "q": "Sieć 192.168.10.0/24. Podaj adres rozgłoszeniowy (broadcast).",
+    "options": [],
+    "correct": "192.168.10.255",
+    "explanation": "Dla /24 broadcast to ostatni adres podsieci: ostatni oktet = 255. Wynik: 192.168.10.255.",
+    "ckeRef": "INF.02.4.3",
+    "tags": [
+      "broadcast",
+      "podsieci"
+    ]
+  },
+  {
+    "id": "Q-0267",
+    "area": "N",
+    "difficulty": 3,
+    "type": "fill",
+    "q": "Sieć 172.16.0.0/22. Podaj adres rozgłoszeniowy (broadcast).",
+    "options": [],
+    "correct": "172.16.3.255",
+    "explanation": "/22 = 4 adresy w trzecim oktecie. Sieć 172.16.0.0/22 obejmuje 172.16.0.0 - 172.16.3.255. Broadcast = 172.16.3.255.",
+    "ckeRef": "INF.02.4.3",
+    "tags": [
+      "broadcast",
+      "cidr",
+      "podsieci"
+    ]
+  },
+  {
+    "id": "Q-0268",
+    "area": "N",
+    "difficulty": 3,
+    "type": "fill",
+    "q": "Ile hostów można zaadresować w sieci /29? (sama liczba)",
+    "options": [],
+    "correct": "6",
+    "explanation": "/29 = 32 - 29 = 3 bity hosta = 2^3 = 8 adresów; minus adres sieci i broadcast = 6 hostów użytkowych.",
+    "ckeRef": "INF.02.4.3",
+    "tags": [
+      "hosty",
+      "cidr"
+    ]
+  },
+  {
+    "id": "Q-0269",
+    "area": "O",
+    "difficulty": 1,
+    "type": "fill",
+    "q": "Polecenie systemu Linux do listowania plików w bieżącym katalogu z uprawnieniami i datą modyfikacji (najpopularniejsza forma):",
+    "options": [],
+    "correct": "ls -l",
+    "explanation": "Polecenie 'ls -l' (long format) wyświetla pliki z uprawnieniami, właścicielem, rozmiarem i datą modyfikacji. Wariant '-la' uwzględnia także pliki ukryte.",
+    "ckeRef": "INF.02.3.1",
+    "tags": [
+      "linux",
+      "cli",
+      "ls"
+    ]
+  },
+  {
+    "id": "Q-0270",
+    "area": "O",
+    "difficulty": 1,
+    "type": "fill",
+    "q": "Polecenie Windows do wyświetlenia konfiguracji TCP/IP wszystkich kart sieciowych z dodatkowymi szczegółami (z opcją /all):",
+    "options": [],
+    "correct": "ipconfig /all",
+    "explanation": "'ipconfig /all' wyświetla pełną konfigurację (DHCP, DNS, WINS, MAC, dzierżawa) dla wszystkich interfejsów sieciowych.",
+    "ckeRef": "INF.02.3.1",
+    "tags": [
+      "windows",
+      "cli",
+      "ipconfig"
+    ]
+  },
+  {
+    "id": "Q-0271",
+    "area": "O",
+    "difficulty": 2,
+    "type": "fill",
+    "q": "Polecenie systemu Linux do nadania pełnych uprawnień (rwx) wyłącznie właścicielowi pliku 'plik.txt' (notacja oktalna):",
+    "options": [],
+    "correct": "chmod 700 plik.txt",
+    "explanation": "7 = rwx (4+2+1) dla właściciela, 0 = brak uprawnień dla grupy i innych. Polecenie: chmod 700 plik.txt.",
+    "ckeRef": "INF.02.3.2",
+    "tags": [
+      "linux",
+      "chmod",
+      "uprawnienia"
+    ]
+  },
+  {
+    "id": "Q-0272",
+    "area": "W",
+    "difficulty": 2,
+    "type": "fill",
+    "q": "Polecenie PowerShell do utworzenia nowego użytkownika domeny o nazwie 'jkowalski' (podaj nazwę cmdletu — sam cmdlet, bez parametrów):",
+    "options": [],
+    "correct": "New-ADUser",
+    "explanation": "Cmdlet 'New-ADUser' z modułu ActiveDirectory tworzy nowe konto użytkownika w usłudze AD DS.",
+    "ckeRef": "INF.02.5.1",
+    "tags": [
+      "powershell",
+      "ad",
+      "cmdlet"
+    ]
+  },
+  {
+    "id": "Q-0273",
+    "area": "W",
+    "difficulty": 2,
+    "type": "fill",
+    "q": "Po zmianie polityki GPO administrator chce wymusić natychmiastowe odświeżenie polityki na kliencie. Polecenie:",
+    "options": [],
+    "correct": "gpupdate /force",
+    "explanation": "'gpupdate /force' wymusza ponowne pobranie i zastosowanie wszystkich polityk grupy, ignorując mechanizm interwałów.",
+    "ckeRef": "INF.02.5.2",
+    "tags": [
+      "windows",
+      "gpo",
+      "gpupdate"
+    ]
+  },
+  {
+    "id": "Q-0274",
+    "area": "V",
+    "difficulty": 2,
+    "type": "fill",
+    "q": "Maksymalna pojemność pojedynczego dysku VHDX (w TB):",
+    "options": [],
+    "correct": "64",
+    "explanation": "Format VHDX (Hyper-V) obsługuje dyski wirtualne o pojemności do 64 TB. Format starszy VHD jest ograniczony do 2 TB.",
+    "ckeRef": "INF.02.10.2",
+    "tags": [
+      "hyperv",
+      "vhdx",
+      "wirtualizacja"
+    ]
+  },
+  {
+    "id": "Q-0275",
+    "area": "D",
+    "difficulty": 2,
+    "type": "fill",
+    "q": "Polecenie systemu Windows do sprawdzenia integralności i naprawy plików systemowych:",
+    "options": [],
+    "correct": "sfc /scannow",
+    "explanation": "'sfc /scannow' (System File Checker) skanuje wszystkie chronione pliki systemowe i naprawia je z lokalnego cache komponentów.",
+    "ckeRef": "INF.02.7.1",
+    "tags": [
+      "windows",
+      "sfc",
+      "diagnostyka"
+    ]
+  },
+  {
+    "id": "Q-0276",
+    "area": "D",
+    "difficulty": 2,
+    "type": "fill",
+    "q": "Polecenie systemu Windows do sprawdzenia i naprawy systemu plików dysku C: (z naprawą i wyszukaniem złych sektorów):",
+    "options": [],
+    "correct": "chkdsk c: /f /r",
+    "explanation": "'chkdsk' z parametrami '/f' (fix errors) i '/r' (locate bad sectors and recover info) sprawdza i naprawia system plików.",
+    "ckeRef": "INF.02.7.1",
+    "tags": [
+      "windows",
+      "chkdsk",
+      "diagnostyka"
+    ]
+  },
+  {
+    "id": "Q-0277",
+    "area": "Z",
+    "difficulty": 2,
+    "type": "fill",
+    "q": "Funkcja Windows umożliwiająca pełne szyfrowanie dysku (akronim):",
+    "options": [],
+    "correct": "BitLocker",
+    "explanation": "BitLocker to wbudowana w Windows (Pro/Enterprise) funkcja Full Disk Encryption (FDE), współpracująca z modułem TPM dla zabezpieczenia kluczy.",
+    "ckeRef": "INF.02.9.1",
+    "tags": [
+      "bezpieczenstwo",
+      "bitlocker",
+      "szyfrowanie"
+    ]
+  },
+  {
+    "id": "Q-0278",
+    "area": "L",
+    "difficulty": 1,
+    "type": "fill",
+    "q": "Norma określająca okablowanie strukturalne klas D/E/EA/F (PN-EN 50173-1) — minimalna kategoria okablowania dla sieci 1000BASE-T (np. Cat...):",
+    "options": [],
+    "correct": "Cat 5e",
+    "explanation": "1000BASE-T wymaga minimum okablowania kategorii 5e (klasa D wg PN-EN 50173). Cat 6 (klasa E) i wyższe są zalecane dla nowych instalacji.",
+    "ckeRef": "INF.02.11.1",
+    "tags": [
+      "normy",
+      "okablowanie",
+      "cat5e"
+    ]
+  },
+  {
+    "id": "Q-0279",
+    "area": "R",
+    "difficulty": 3,
+    "type": "fill",
+    "q": "RAID 5 z 4 dyskami po 2 TB każdy. Pojemność użyteczna w TB:",
+    "options": [],
+    "correct": "6",
+    "explanation": "RAID 5 = (N-1) × pojemność dysku. (4-1) × 2 TB = 6 TB użytkowe (1 dysk na parzystość rozproszoną).",
+    "ckeRef": "INF.02.10.1",
+    "tags": [
+      "raid",
+      "raid5",
+      "obliczenia"
+    ]
+  },
+  {
+    "id": "Q-0280",
+    "area": "R",
+    "difficulty": 3,
+    "type": "fill",
+    "q": "RAID 10 z 6 dyskami po 1 TB. Pojemność użyteczna w TB:",
+    "options": [],
+    "correct": "3",
+    "explanation": "RAID 10 = (N/2) × pojemność. (6/2) × 1 TB = 3 TB. Pozostała połowa to mirror (redundancja).",
+    "ckeRef": "INF.02.10.1",
+    "tags": [
+      "raid",
+      "raid10",
+      "obliczenia"
+    ]
+  },
+  {
+    "id": "Q-0281",
+    "area": "6",
+    "difficulty": 1,
+    "type": "fill",
+    "q": "Adres IPv6 link-local rozpoczyna się od prefiksu (sam prefiks z dwukropkami, np. xxxx::):",
+    "options": [],
+    "correct": "fe80::",
+    "explanation": "Prefiks fe80::/10 jest zarezerwowany dla adresów link-local. Każdy interfejs IPv6 automatycznie generuje swój link-local (SLAAC).",
+    "ckeRef": "INF.02.6.1",
+    "tags": [
+      "ipv6",
+      "link-local",
+      "fe80"
+    ]
+  },
+  {
+    "id": "Q-0282",
+    "area": "B",
+    "difficulty": 1,
+    "type": "fill",
+    "q": "Standardowy zasilacz ATX dostarcza ile linii napięciowych (główne — odpowiedź jako '+12V, +5V, +3.3V'):",
+    "options": [],
+    "correct": "+12V, +5V, +3.3V",
+    "explanation": "Standardowy ATX dostarcza trzy główne linie napięciowe: +12V (CPU, GPU, dyski), +5V (USB, SATA logic), +3.3V (RAM, chipset). Dodatkowo -12V i +5VSB.",
+    "ckeRef": "INF.02.2.5",
+    "tags": [
+      "zasilacz",
+      "atx",
+      "napiecia"
     ]
   }
 ]

@@ -1,8 +1,14 @@
 <!DOCTYPE html>
 <html lang="pl-PL">
 <head>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self'; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'">
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="apple-touch-icon" sizes="192x192" href="./icons/icon-192.png">
+  <link rel="apple-touch-icon" sizes="512x512" href="./icons/icon-512.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="INF.02">
 <title>INF.02 Study Hub — Diagnoza i Adaptive Engine</title>
 <meta name="description" content="Diagnoza wstępna 12 pytań + adaptive engine + dashboard wiedzy. Część INF.02 Study Hub v3." />
 <meta name="theme-color" content="#5EA9FF" />
@@ -15,7 +21,7 @@
   Storage: ALL via INF02.shell.setState / shell.storage. ZERO localStorage direct.
 -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.js"
-  integrity="sha384-OLBgp1GsljhM2TJ+sbHjaiH9txEUvgdDTAzHv2P24donTt6/529l+9Ua0vFImLlb"
+  integrity="sha384-iU8HYtnGQ8Cy4zl7gbNMOhsDTTKX02BTXptVP/vqAWIaTfM7isw76iyZCsjL2eVi"
   crossorigin="anonymous"
   onerror="window.__chartJsFailed=true"></script>
 <style>
@@ -83,7 +89,7 @@ body {
   line-height: 1.55;
   color: var(--color-text);
   background: var(--color-bg);
-  min-height: 100vh;
+  min-height: 100vh; min-height: 100svh; min-height: 100dvh;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -688,6 +694,8 @@ function mergeDeep(a, b) {
   if (b && typeof b === 'object') {
     const out = Object.assign({}, a || {});
     for (const k of Object.keys(b)) {
+      // SECURITY: prevent prototype pollution
+      if (k === '__proto__' || k === 'constructor' || k === 'prototype') continue;
       const av = out[k], bv = b[k];
       if (bv && typeof bv === 'object' && !Array.isArray(bv) && av && typeof av === 'object' && !Array.isArray(av)) {
         out[k] = mergeDeep(av, bv);

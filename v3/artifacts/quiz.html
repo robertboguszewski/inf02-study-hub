@@ -1,8 +1,14 @@
 <!DOCTYPE html>
 <html lang="pl-PL">
 <head>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self'; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="apple-touch-icon" sizes="192x192" href="./icons/icon-192.png">
+  <link rel="apple-touch-icon" sizes="512x512" href="./icons/icon-512.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="INF.02">
 <title>INF.02 Study Hub — Quiz</title>
 <style>
 /* ============================================================
@@ -57,7 +63,7 @@ body {
   font-family: var(--font-stack);
   font-size: var(--fs-sm);
   line-height: var(--lh-body);
-  min-height: 100vh;
+  min-height: 100vh; min-height: 100svh; min-height: 100dvh;
   -webkit-font-smoothing: antialiased;
 }
 :focus-visible {
@@ -497,7 +503,35 @@ input { font: inherit; }
     if (sh && typeof sh.setState === 'function') {
       try { return await sh.setState(patch); } catch (e) { console.warn('[quiz] setState failed', e); }
     }
-    return null;
+    // Standalone fallback: merge patch into localStorage state
+    try {
+      const raw = localStorage.getItem(STATE_KEY);
+      const cur = raw ? JSON.parse(raw) : { version: '3.0.0' };
+      const next = Object.assign({}, cur);
+      // Deep-merge for cards & knowledge.perArea, replace for arrays
+      for (const k of Object.keys(patch)) {
+        // SECURITY: prevent prototype pollution
+        if (k === '__proto__' || k === 'constructor' || k === 'prototype') continue;
+        const v = patch[k];
+        if (k === 'cards' && cur.cards && typeof v === 'object' && !Array.isArray(v)) {
+          next.cards = Object.assign({}, cur.cards, v);
+        } else if (k === 'knowledge' && cur.knowledge && typeof v === 'object' && !Array.isArray(v)) {
+          next.knowledge = Object.assign({}, cur.knowledge, v);
+          if (v.perArea && cur.knowledge.perArea) {
+            next.knowledge.perArea = Object.assign({}, cur.knowledge.perArea, v.perArea);
+          }
+        } else {
+          next[k] = v;
+        }
+      }
+      next.seq = (cur.seq || 0) + 1;
+      next.updatedAt = new Date().toISOString();
+      localStorage.setItem(STATE_KEY, JSON.stringify(next));
+      return next;
+    } catch (e) {
+      console.warn('[quiz] standalone setState failed', e);
+      return null;
+    }
   }
   function shellEmit(event, payload) {
     const sh = getShell();
@@ -507,8 +541,53 @@ input { font: inherit; }
   }
   function shellRoute(view, params) {
     const sh = getShell();
-    if (sh && typeof sh.route === 'function') sh.route(view, params);
-    else console.info('[quiz] route', view, params);
+    if (sh && typeof sh.navigate === 'function') return sh.navigate(view, params);
+    if (sh && typeof sh.route   === 'function') return sh.route(view, params);
+    // Standalone: navigate to actual page
+    const pageMap = { dashboard:'shell.html', settings:'shell.html#settings',
+                      achievements:'shell.html#achievements', srs:'srs.html',
+                      practical:'practical.html', diagnostic:'diagnostic.html' };
+    const dest = pageMap[view] || 'shell.html';
+    const qs = params && Object.keys(params).length
+      ? ('?' + new URLSearchParams(params).toString()) : '';
+    if (dest.includes('#')) {
+      const [base, hash] = dest.split('#');
+      location.href = base + qs + '#' + hash;
+    } else {
+      location.href = dest + qs;
+    }
+  }
+
+  /* -------- SRS card seed from wrong answers ----------------------- */
+  async function addWrongAnswersToSRS() {
+    if (!RUN.session) return 0;
+    const wrongs = RUN.session.answers.filter(a => !a.correct && a.qid && /^Q-\d{4}$/.test(a.qid));
+    if (!wrongs.length) return 0;
+    const nowIso = new Date().toISOString();
+    try {
+      const raw = localStorage.getItem(STATE_KEY);
+      const state = raw ? JSON.parse(raw) : {};
+      const cards = Object.assign({}, state.cards || {});
+      let added = 0;
+      for (const a of wrongs) {
+        if (!cards[a.qid]) {
+          cards[a.qid] = { qid: a.qid, ease: 2.5, interval: 0, reps: 0,
+                           lapses: 0, due: nowIso, learnStep: 0, successStreak: 0 };
+          added++;
+        } else {
+          // Already in deck — bump to due now so it surfaces immediately
+          cards[a.qid] = Object.assign({}, cards[a.qid], { due: nowIso });
+        }
+      }
+      const newState = Object.assign({}, state, { cards });
+      localStorage.setItem(STATE_KEY, JSON.stringify(newState));
+      // Also sync to shell if present
+      await shellSetState({ cards });
+      return added;
+    } catch(e) {
+      console.warn('[quiz] addWrongAnswersToSRS failed', e);
+      return 0;
+    }
   }
 
   /* -------- Embedded fallback question bank (≥ 40 q, all 11 areas) -------- */
@@ -853,22 +932,45 @@ input { font: inherit; }
     while (nextSessions.length > 50) nextSessions.shift();
 
     // Update knowledge mastery with EWMA (α=0.3) — ADR-005
+    // CRITICAL: must include all 4 fields per shell validateAppState (accuracy, attempts, lastSeen, mastery)
+    // Otherwise shell rejects state and RESETS user history.
+    const ALL_AREAS = ["B","O","N","P","D","L","W","6","V","Z","R"];
     const oldKnowledge = (state && state.knowledge) || {};
     const oldPerArea = (oldKnowledge && oldKnowledge.perArea) || {};
-    const newPerArea = Object.assign({}, oldPerArea);
+    // Initialize perArea with all 11 areas defaults — required by validateAppState
+    const newPerArea = {};
+    for (const a of ALL_AREAS) {
+      const existing = oldPerArea[a];
+      newPerArea[a] = existing && typeof existing === 'object'
+        ? {
+            accuracy: typeof existing.accuracy === 'number' ? existing.accuracy : 0,
+            attempts: Number.isInteger(existing.attempts) ? existing.attempts : 0,
+            lastSeen: typeof existing.lastSeen === 'string' || existing.lastSeen === null ? existing.lastSeen : null,
+            mastery: typeof existing.mastery === 'number' ? existing.mastery : 0.5
+          }
+        : { accuracy: 0, attempts: 0, lastSeen: null, mastery: 0.5 };
+    }
     const ALPHA = 0.3;
     for (const [areaCode, areaData] of Object.entries(perArea)) {
+      if (!newPerArea[areaCode]) continue; // skip unknown areas
+      const slot = newPerArea[areaCode];
       const sessionMastery = areaData.attempts > 0 ? areaData.correct / areaData.attempts : 0;
-      const prev = (newPerArea[areaCode] && typeof newPerArea[areaCode].mastery === 'number')
-        ? newPerArea[areaCode].mastery : sessionMastery;
-      const next = prev + ALPHA * (sessionMastery - prev);
-      newPerArea[areaCode] = Object.assign({}, newPerArea[areaCode], {
-        mastery: +next.toFixed(4),
-        attempts: ((newPerArea[areaCode] && newPerArea[areaCode].attempts) || 0) + areaData.attempts,
-        lastSeen: new Date().toISOString()
-      });
+      const prevM = slot.mastery;
+      const prevA = slot.accuracy;
+      slot.mastery = +(prevM + ALPHA * (sessionMastery - prevM)).toFixed(4);
+      slot.accuracy = +(prevA + ALPHA * (sessionMastery - prevA)).toFixed(4);
+      // clamp [0,1]
+      if (slot.mastery < 0) slot.mastery = 0; if (slot.mastery > 1) slot.mastery = 1;
+      if (slot.accuracy < 0) slot.accuracy = 0; if (slot.accuracy > 1) slot.accuracy = 1;
+      slot.attempts = (slot.attempts | 0) + areaData.attempts;
+      slot.lastSeen = new Date().toISOString();
     }
-    const nextKnowledge = Object.assign({}, oldKnowledge, { perArea: newPerArea, updatedAt: new Date().toISOString() });
+    const nextKnowledge = {
+      perArea: newPerArea,
+      weakest: (oldKnowledge && Array.isArray(oldKnowledge.weakest)) ? oldKnowledge.weakest : [],
+      strongest: (oldKnowledge && Array.isArray(oldKnowledge.strongest)) ? oldKnowledge.strongest : [],
+      readinessForExam: typeof (oldKnowledge && oldKnowledge.readinessForExam) === 'number' ? oldKnowledge.readinessForExam : 0
+    };
 
     // Also save directly to localStorage when shell is absent (standalone mode)
     const stateKey = 'inf02.v3.state';
@@ -1248,16 +1350,27 @@ input { font: inherit; }
         </div>
         ${RUN.mode === 'exam' ? `<p style="color:var(--color-text-muted); font-size:var(--fs-xs)">Próg CKE pisemny: 50% (20/40 pkt)</p>` : ''}
         ${wrongHtml}
-        <div class="nav-row" style="justify-content:center">
+        <div class="nav-row" style="justify-content:center;flex-wrap:wrap;gap:8px">
           <button class="btn btn--primary" id="btn-new">Nowy quiz</button>
-          <button class="btn" id="btn-dash">Dashboard</button>
+          ${wrongs.length ? `<button class="btn btn--srs" id="btn-srs" style="background:var(--color-warning,#FFB454);color:#0F1115">➕ Dodaj błędy do fiszek (${wrongs.length})</button>` : ''}
+          <button class="btn" id="btn-dash">← Dashboard</button>
         </div>
       </section>`;
 
     const newBtn = document.getElementById('btn-new');
     const dashBtn = document.getElementById('btn-dash');
+    const srsBtn  = document.getElementById('btn-srs');
     if (newBtn) newBtn.addEventListener('click', () => renderModePicker());
     if (dashBtn) dashBtn.addEventListener('click', () => shellRoute('dashboard'));
+    if (srsBtn) srsBtn.addEventListener('click', async () => {
+      srsBtn.disabled = true;
+      srsBtn.textContent = 'Dodawanie…';
+      const added = await addWrongAnswersToSRS();
+      srsBtn.textContent = added > 0
+        ? `✓ Dodano ${added} nowych fiszek do SRS`
+        : `✓ Fiszki zaktualizowane (due = teraz)`;
+      srsBtn.style.background = 'var(--color-success,#3DDC97)';
+    });
 
     // Count-up animation 0 → pct over 1.2s ease-out-cubic, respecting reduced motion
     const target = document.getElementById('result-pct');

@@ -10,7 +10,7 @@
  * NO direct localStorage usage in this file (constraint).
  */
 
-const CACHE_VERSION = 'inf02-v3.2.0';
+const CACHE_VERSION = 'inf02-v3.5.0-20260427-1249';
 
 const ASSETS = [
   './shell.html',

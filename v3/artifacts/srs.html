@@ -1,8 +1,14 @@
 <!DOCTYPE html>
 <html lang="pl-PL">
 <head>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self'; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'">
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="apple-touch-icon" sizes="192x192" href="./icons/icon-192.png">
+  <link rel="apple-touch-icon" sizes="512x512" href="./icons/icon-512.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="INF.02">
 <title>INF.02 Study Hub — SRS (Fiszki)</title>
 <style>
   /* ============================================================
@@ -44,7 +50,7 @@
     line-height: 1.55;
     color: var(--color-text);
     background: var(--color-bg);
-    min-height: 100vh;
+    min-height: 100vh; min-height: 100svh; min-height: 100dvh;
     -webkit-font-smoothing: antialiased;
   }
   *:focus-visible {
@@ -270,8 +276,17 @@
           <div class="l">Lapses łącznie</div>
         </div>
       </div>
+      <!-- Area filter chips -->
+      <div id="areaFilter" style="margin:var(--sp-md) 0 var(--sp-sm);">
+        <div style="font-size:var(--fs-xs);color:var(--color-text-muted);margin-bottom:var(--sp-xs);">Filtr obszaru:</div>
+        <div id="areaChips" style="display:flex;flex-wrap:wrap;gap:6px;"></div>
+      </div>
+
       <div id="dashboardCta">
         <button class="btn btn-primary" id="btnStartSession" type="button">Rozpocznij sesję</button>
+        <button class="btn" id="btnBulkSeed" type="button" style="margin-left:8px;background:var(--color-surface-2,#252932);border:1px solid var(--color-border)">
+          ➕ Dodaj wszystkie pytania
+        </button>
       </div>
       <div id="emptyState" class="empty-state hidden">
         <h2>Wszystko nadrobione!</h2>
@@ -739,6 +754,33 @@ function attachQuizListener() {
    UI rendering
    ============================================================ */
 let reviewSession = null;
+let selectedArea  = null; // null = wszystkie obszary
+
+/* -------- Bulk seed — dodaj wszystkie pytania Q-XXXX ---------- */
+async function bulkSeedCards() {
+  let questions = getQuestionBank();
+  if (!questions.length) {
+    try {
+      const r = await fetch('../data/questions.json', { cache: 'no-cache' });
+      if (r.ok) questions = await r.json();
+    } catch (e) { console.warn('[srs] fetch questions.json failed', e); }
+  }
+  if (!questions.length) { showToast('Nie udało się załadować pytań'); return 0; }
+
+  const state = INF02.shell.getState();
+  const cards  = Object.assign({}, state.cards || {});
+  const nowIso = new Date().toISOString();
+  let added = 0;
+  for (const q of questions) {
+    if (!q || !q.id || !/^Q-\d{4}$/.test(q.id)) continue;
+    if (cards[q.id]) continue; // idempotent
+    cards[q.id] = { qid: q.id, ease: 2.5, interval: 0, reps: 0,
+                    lapses: 0, due: nowIso, learnStep: 0, successStreak: 0 };
+    added++;
+  }
+  if (added > 0) await INF02.shell.setState({ cards });
+  return added;
+}
 
 function $(id) { return document.getElementById(id); }
 
@@ -780,10 +822,60 @@ function renderDashboard() {
   const allCards = Object.values(cards);
   const due = getDueCards(cards, now);
 
-  $("queueCount").textContent = String(due.length);
+  // Area-filtered due count
+  const dueFiltered = selectedArea
+    ? due.filter(c => { const q = findQuestion(c.qid); return q && q.area === selectedArea; })
+    : due;
+
+  $("queueCount").textContent = String(selectedArea ? dueFiltered.length + ' / ' + due.length : due.length);
   $("totalCards").textContent = String(allCards.length);
   $("streakCount").textContent = String((state.streak && state.streak.count) | 0);
   $("lapsesCount").textContent = String(allCards.reduce((s, c) => s + (c.lapses | 0), 0));
+
+  // Render area filter chips
+  const chipsEl = $("areaChips");
+  if (chipsEl) {
+    const allAreas = Object.keys(AREA_COLORS);
+    chipsEl.innerHTML = '';
+    // "Wszystkie" chip
+    const allChip = document.createElement('button');
+    allChip.type = 'button';
+    allChip.textContent = 'Wszystkie (' + due.length + ')';
+    allChip.style.cssText = 'padding:4px 10px;border-radius:20px;border:1px solid;font-size:var(--fs-xs);cursor:pointer;';
+    allChip.style.background = !selectedArea ? 'var(--color-accent)' : 'var(--color-surface-2)';
+    allChip.style.color = !selectedArea ? 'var(--color-accent-fg)' : 'var(--color-text)';
+    allChip.style.borderColor = !selectedArea ? 'var(--color-accent)' : 'var(--color-border)';
+    allChip.addEventListener('click', () => { selectedArea = null; renderDashboard(); });
+    chipsEl.appendChild(allChip);
+
+    for (const area of allAreas) {
+      const areaCards = due.filter(c => { const q = findQuestion(c.qid); return q && q.area === area; });
+      if (allCards.filter(c => { const q = findQuestion(c.qid); return q && q.area === area; }).length === 0) continue;
+      const ac = AREA_COLORS[area];
+      const chip = document.createElement('button');
+      chip.type = 'button';
+      chip.textContent = area + ' (' + areaCards.length + ')';
+      chip.title = ac.label;
+      const isSelected = selectedArea === area;
+      chip.style.cssText = 'padding:4px 10px;border-radius:20px;border:2px solid;font-size:var(--fs-xs);cursor:pointer;';
+      chip.style.background = isSelected ? ac.bg : 'transparent';
+      chip.style.color = ac.fg;
+      chip.style.borderColor = ac.bg;
+      chip.style.fontWeight = isSelected ? '700' : '400';
+      chip.addEventListener('click', () => { selectedArea = (selectedArea === area) ? null : area; renderDashboard(); });
+      chipsEl.appendChild(chip);
+    }
+  }
+
+  // Update start button label
+  const startBtn = $("btnStartSession");
+  if (startBtn) {
+    const cnt = dueFiltered.length;
+    startBtn.textContent = cnt > 0
+      ? `Rozpocznij sesję (${cnt} fiszek${selectedArea ? ' · ' + selectedArea : ''})`
+      : 'Brak fiszek do sesji';
+    startBtn.disabled = cnt === 0;
+  }
 
   // Empty state vs CTA
   const ctaWrap = $("dashboardCta");
@@ -871,9 +963,16 @@ function escapeHtml(s) {
 
 function startReviewSession() {
   const now = Date.now();
-  const queue = getDueQueue(now);
+  let queue = getDueQueue(now);
+  // Apply area filter if set
+  if (selectedArea) {
+    queue = queue.filter(qid => {
+      const q = findQuestion(qid);
+      return q && q.area === selectedArea;
+    });
+  }
   if (queue.length === 0) {
-    showToast("Brak fiszek do powtórzenia");
+    showToast(selectedArea ? `Brak fiszek do powtórzenia w obszarze ${selectedArea}` : "Brak fiszek do powtórzenia");
     return;
   }
   reviewSession = { queue, idx: 0, total: queue.length, revealed: false };
@@ -991,10 +1090,33 @@ function attachEvents() {
   $("btnBackToShell").addEventListener("click", () => {
     if (reviewSession) {
       finishReviewSession();
-    } else if (INF02.shell.route) {
+    } else if (INF02.shell && typeof INF02.shell.navigate === 'function') {
+      INF02.shell.navigate("dashboard");
+    } else if (INF02.shell && INF02.shell.route) {
       INF02.shell.route("dashboard");
+    } else {
+      location.href = 'shell.html';
     }
   });
+
+  const bulkBtn = $("btnBulkSeed");
+  if (bulkBtn) {
+    bulkBtn.addEventListener("click", async () => {
+      bulkBtn.disabled = true;
+      bulkBtn.textContent = 'Dodawanie…';
+      const added = await bulkSeedCards();
+      bulkBtn.textContent = added > 0
+        ? `✓ Dodano ${added} nowych fiszek`
+        : '✓ Wszystkie pytania już w talii';
+      bulkBtn.style.color = 'var(--color-success)';
+      setTimeout(() => {
+        bulkBtn.textContent = '➕ Dodaj wszystkie pytania';
+        bulkBtn.style.color = '';
+        bulkBtn.disabled = false;
+      }, 2500);
+      renderDashboard();
+    });
+  }
   // Re-render on global state change
   if (typeof INF02.shell.subscribe === "function") {
     INF02.shell.subscribe(() => {

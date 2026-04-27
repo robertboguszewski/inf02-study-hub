@@ -2,8 +2,15 @@
 <html lang="pl">
 <head>
 <meta charset="utf-8">
-<title>INF.02 Study Hub v3 — Shell</title>
+
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self'; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'">
+  <title>INF.02 Study Hub v3 — Shell</title>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <link rel="apple-touch-icon" sizes="192x192" href="./icons/icon-192.png">
+  <link rel="apple-touch-icon" sizes="512x512" href="./icons/icon-512.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="INF.02">
 <meta name="theme-color" content="#5EA9FF">
 <meta name="description" content="INF.02 Study Hub — przygotowanie do egzaminu zawodowego, offline-first PWA.">
 <link rel="manifest" href="./manifest.webmanifest">
@@ -55,7 +62,7 @@
 }
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;background:var(--color-bg);color:var(--color-text);font-family:var(--font-sans);font-size:16px;line-height:1.55}
-body{min-height:100vh;display:flex;flex-direction:column}
+body{min-height:100vh; min-height:100svh; min-height:100dvh;display:flex;flex-direction:column}
 button{font-family:inherit;font-size:inherit;color:inherit;cursor:pointer}
 *:focus-visible{outline:3px solid var(--color-focus);outline-offset:2px;border-radius:4px}
 a{color:var(--color-accent);text-decoration:none}
@@ -67,10 +74,10 @@ p{margin:0 0 var(--sp-sm) 0}
 .mono{font-family:var(--font-mono)}
 
 /* Layout */
-.app{display:flex;flex:1;min-height:100vh}
+.app{display:flex;flex:1;min-height:100vh; min-height:100svh; min-height:100dvh}
 .sidebar{
   width:240px;background:var(--color-surface);border-right:1px solid var(--color-border);
-  padding:var(--sp-md) 0;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto;
+  padding:var(--sp-md) 0;flex-shrink:0;position:sticky;top:0;height:100vh; height:100svh; height:100dvh;overflow-y:auto;
   display:flex;flex-direction:column;
 }
 .sidebar h1.brand{font-size:var(--fs-md);margin:0 var(--sp-md) var(--sp-md);color:var(--color-accent)}
@@ -361,7 +368,33 @@ label{display:block;margin-bottom:var(--sp-xs);font-size:var(--fs-xs);color:var(
         return {
           kind: "local",
           getItem: (k) => Promise.resolve(localStorage.getItem(k)),
-          setItem: (k, v) => Promise.resolve(localStorage.setItem(k, v)),
+          setItem: (k, v) => new Promise((resolve, reject) => {
+            try { localStorage.setItem(k, v); resolve(); }
+            catch (e) {
+              // SECURITY/RESILIENCE: handle quota exceeded (Safari private mode, full disk)
+              const isQuota = e && (e.code === 22 || e.code === 1014 ||
+                e.name === 'QuotaExceededError' || e.name === 'NS_ERROR_DOM_QUOTA_REACHED');
+              if (isQuota) {
+                console.warn('[storage] Quota exceeded — pruning sessions to last 10');
+                try {
+                  const raw = localStorage.getItem(k);
+                  if (raw) {
+                    const obj = JSON.parse(raw);
+                    if (Array.isArray(obj.sessions) && obj.sessions.length > 10) {
+                      obj.sessions = obj.sessions.slice(-10);
+                      localStorage.setItem(k, JSON.stringify(obj));
+                      localStorage.setItem(k, v);  // retry original
+                      resolve();
+                      return;
+                    }
+                  }
+                } catch (_) {}
+                if (typeof window !== 'undefined' && window.dispatchEvent)
+                  window.dispatchEvent(new CustomEvent('inf02:quota-exceeded'));
+              }
+              reject(e);
+            }
+          }),
           removeItem: (k) => Promise.resolve(localStorage.removeItem(k))
         };
       }
@@ -414,6 +447,8 @@ label{display:block;margin-bottom:var(--sp-xs);font-size:var(--fs-xs);color:var(
     if (!isObj(patch)) return patch === undefined ? target : patch;
     const out = isObj(target) ? Object.assign({}, target) : {};
     for (const k of Object.keys(patch)) {
+      // SECURITY: prevent prototype pollution (CVE-class)
+      if (k === '__proto__' || k === 'constructor' || k === 'prototype') continue;
       const pv = patch[k];
       const tv = out[k];
       if (isObj(pv) && isObj(tv)) {
@@ -474,6 +509,25 @@ label{display:block;margin-bottom:var(--sp-xs);font-size:var(--fs-xs);color:var(
     if (days < 30) return `${Math.floor(days/7)} tyg. temu`;
     return formatDate(iso);
   }
+
+  
+  /* Resilient fetch with exponential backoff for transient errors */
+  async function fetchWithRetry(url, opts = {}, maxRetries = 2) {
+    const retryable = new Set([0, 408, 425, 429, 500, 502, 503, 504]);
+    for (let attempt = 0; attempt <= maxRetries; attempt++) {
+      try {
+        const res = await fetch(url, opts);
+        if (res.ok) return res;
+        if (!retryable.has(res.status) || attempt === maxRetries) return res;
+      } catch (e) {
+        if (attempt === maxRetries) throw e;
+      }
+      // Exponential backoff with jitter: 200ms, 400ms, 800ms
+      const delay = Math.pow(2, attempt) * 200 + Math.random() * 100;
+      await new Promise(r => setTimeout(r, delay));
+    }
+  }
+  if (typeof window !== 'undefined') window.fetchWithRetry = fetchWithRetry;
 
   /* ---------- Default state ------------------------------------------ */
   function defaultPerArea() {

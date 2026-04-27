@@ -1,8 +1,14 @@
 <!DOCTYPE html>
 <html lang="pl-PL">
 <head>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self'; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'">
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="apple-touch-icon" sizes="192x192" href="./icons/icon-192.png">
+  <link rel="apple-touch-icon" sizes="512x512" href="./icons/icon-512.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="INF.02">
 <title>INF.02 — Symulator zadań praktycznych</title>
 <style>
   /* ================================================================
@@ -135,7 +141,7 @@
   }
   textarea { min-height: 88px; resize: vertical; font-family: var(--font-mono); }
 
-  .pp-app { min-height: 100vh; padding: var(--sp-md); }
+  .pp-app { min-height: 100vh; min-height: 100svh; min-height: 100dvh; padding: var(--sp-md); }
   @media (min-width: 768px) { .pp-app { padding: var(--sp-lg); } }
 
   .pp-header {
@@ -892,6 +898,18 @@
     return BUILTIN_SCENARIOS;
   }
 
+  
+  /* SECURITY: HTML escape helper for any user-derived content */
+  function escapeHtml(str) {
+    if (str == null) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
   /* ===========================================================
    * State (local module state — global state via shell setState)
    * =========================================================== */
@@ -1109,7 +1127,24 @@
       }
     }
 
-    // Also persist to localStorage directly as fallback (standalone mode)
+    // Also persist to UNIFIED inf02.v3.state.sessions (shell.html dashboard reads this)
+    try {
+      const STATE_KEY_UNIFIED = "inf02.v3.state";
+      const rawUni = localStorage.getItem(STATE_KEY_UNIFIED);
+      const curUni = rawUni ? JSON.parse(rawUni) : { version: "3.0.0" };
+      const sessUni = Array.isArray(curUni.sessions) ? curUni.sessions.slice() : [];
+      if (!sessUni.some(s => s.sessionId === record.sessionId)) sessUni.push(record);
+      const nextUni = Object.assign({}, curUni, {
+        sessions: sessUni.slice(-50),
+        activePractical: null,
+        seq: (curUni.seq || 0) + 1,
+        updatedAt: new Date().toISOString()
+      });
+      localStorage.setItem(STATE_KEY_UNIFIED, JSON.stringify(nextUni));
+    } catch (e) {
+      console.warn("[practical] unified state persist failed", e);
+    }
+    // Legacy key for backward compat
     try {
       const raw = localStorage.getItem(PRACTICAL_SESSIONS_KEY);
       const sessions = raw ? JSON.parse(raw) : [];
