@@ -280,6 +280,60 @@ input { font: inherit; }
 .picker-area-btn .code { font-family: var(--font-mono); font-weight: 700; font-size: var(--fs-md); }
 .picker-area-btn .label { display:block; color: var(--color-text-muted); font-size: var(--fs-xs); margin-top: 2px; }
 
+/* ----- Mode picker as cards (Brilliant lesson menu pattern) ----- */
+.picker-grid--modes {
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--sp-md);
+}
+.picker-mode-card {
+  display: flex; flex-direction: column;
+  gap: var(--sp-xs);
+  background: var(--color-surface-2);
+  border: 2px solid var(--color-border);
+  border-radius: 16px;
+  padding: var(--sp-lg);
+  text-align: left;
+  cursor: pointer;
+  min-height: 140px;
+  color: var(--color-text);
+  transition: transform var(--dur-fast) var(--ease-out),
+              border-color var(--dur-fast) var(--ease-out),
+              background var(--dur-fast) var(--ease-out);
+}
+.picker-mode-card:hover { transform: translateY(-3px); border-color: var(--color-accent); background: #2c313c; }
+.picker-mode-card:active { transform: translateY(-1px); }
+.picker-mode-card .icon  { font-size: var(--fs-xl); line-height: 1; }
+.picker-mode-card .title { font-size: var(--fs-md); font-weight: 700; margin-top: var(--sp-xs); }
+.picker-mode-card .desc  { font-size: var(--fs-xs); color: var(--color-text-muted); line-height: 1.4; }
+.picker-mode-card .meta  { font-size: var(--fs-xs); color: var(--color-accent); font-family: var(--font-mono); margin-top: auto; padding-top: var(--sp-sm); }
+.picker-mode-card.primary { border-color: var(--color-accent); background: rgba(94,169,255,0.08); }
+.picker-mode-card.primary .icon { color: var(--color-accent); }
+
+/* ----- Sticky in-quiz topbar (Duolingo lesson pattern) ----- */
+.quiz-stickybar {
+  position: sticky; top: 0; z-index: 10;
+  background: var(--color-bg);
+  margin: calc(-1 * var(--sp-md)) calc(-1 * var(--sp-md)) var(--sp-md);
+  padding: var(--sp-sm) var(--sp-md);
+  border-bottom: 1px solid var(--color-border);
+  display: flex; align-items: center; gap: var(--sp-md); flex-wrap: wrap;
+}
+.quiz-stickybar .progress-bar { flex: 1 1 200px; min-width: 160px; height: 8px; background: var(--color-surface-2); border-radius: 999px; overflow: hidden; }
+.quiz-stickybar .progress-fill { height: 100%; background: linear-gradient(90deg, var(--color-accent), var(--color-success)); border-radius: 999px; transition: width var(--dur-base) var(--ease-out); }
+.quiz-stickybar .timer { position: static; margin: 0; }
+.quiz-stickybar .meta-line { font-size: var(--fs-xs); color: var(--color-text-muted); }
+
+/* ----- Sticky bottom action bar (Brilliant/Duolingo pattern) ----- */
+.quiz-actionbar {
+  position: sticky; bottom: 0;
+  margin: var(--sp-lg) calc(-1 * var(--sp-md)) 0;
+  padding: var(--sp-sm) var(--sp-md) var(--sp-md);
+  background: linear-gradient(to top, var(--color-bg) 75%, rgba(15,17,21,0));
+  display: flex; gap: var(--sp-sm); justify-content: space-between; flex-wrap: wrap;
+  z-index: 5;
+}
+.quiz-actionbar .btn { flex: 1 1 auto; min-width: 120px; }
+
 /* ----- Result screen ----- */
 .result-card {
   background: var(--color-surface);
@@ -1088,11 +1142,31 @@ input { font: inherit; }
     r.innerHTML = `
       <section class="picker-wrap">
         <h2>Wybierz tryb quizu</h2>
-        <div class="picker-grid">
-          <button class="btn btn--primary" data-mode="exam">Egzamin (40 pyt × 60 min)</button>
-          <button class="btn" data-mode="adaptive">Adaptacyjny (20 pyt)</button>
-          <button class="btn" data-mode="topic">Obszar tematyczny</button>
-          <button class="btn" data-mode="review">Powtórka błędów</button>
+        <div class="picker-grid picker-grid--modes">
+          <button class="picker-mode-card primary" data-mode="exam" type="button">
+            <span class="icon" aria-hidden="true">🎓</span>
+            <span class="title">Egzamin</span>
+            <span class="desc">Pełny test pisemny w warunkach CKE.</span>
+            <span class="meta">40 pytań · 60 minut · próg 50%</span>
+          </button>
+          <button class="picker-mode-card" data-mode="adaptive" type="button">
+            <span class="icon" aria-hidden="true">🎯</span>
+            <span class="title">Adaptacyjny</span>
+            <span class="desc">Pytania dobierane do Twoich słabych obszarów.</span>
+            <span class="meta">20 pytań · bez limitu czasu</span>
+          </button>
+          <button class="picker-mode-card" data-mode="topic" type="button">
+            <span class="icon" aria-hidden="true">📚</span>
+            <span class="title">Obszar tematyczny</span>
+            <span class="desc">Quiz z jednego z 11 obszarów INF.02.</span>
+            <span class="meta">10 pytań · wybór obszaru</span>
+          </button>
+          <button class="picker-mode-card" data-mode="review" type="button">
+            <span class="icon" aria-hidden="true">🔁</span>
+            <span class="title">Powtórka błędów</span>
+            <span class="desc">Tylko pytania, w których popełniłeś błąd.</span>
+            <span class="meta">do 20 pytań · z historii</span>
+          </button>
         </div>
       </section>`;
     r.querySelectorAll('button[data-mode]').forEach(b => {

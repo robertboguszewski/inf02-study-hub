@@ -246,39 +246,64 @@
     color: var(--color-text-muted);
   }
 
-  /* ============== RUN VIEW ============== */
+  /* ============== RUN VIEW (redesigned: Brilliant/Duolingo pattern) ============== */
+  /* Sticky topbar (timer + progress + scenario) — full width, always visible */
   .pp-run {
     display: grid;
-    gap: var(--sp-md);
     grid-template-columns: 1fr;
     grid-template-areas:
       "topbar"
-      "main"
-      "sidebar";
+      "sidebar"
+      "main";
+    gap: 0;
   }
   @media (min-width: 1024px) {
     .pp-run {
-      grid-template-columns: 280px 1fr 220px;
+      grid-template-columns: 240px 1fr;
       grid-template-areas:
-        "sidebar main timer"
-        "sidebar main timer";
-      align-items: start;
+        "topbar topbar"
+        "sidebar main";
+      gap: 0;
     }
-    .pp-topbar { display: none; }
   }
 
   .pp-topbar {
     grid-area: topbar;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 50;
     background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: 10px;
-    padding: var(--sp-md);
+    border-bottom: 1px solid var(--color-border);
+    padding: var(--sp-sm) var(--sp-md);
+    margin: calc(-1 * var(--sp-md)) calc(-1 * var(--sp-md)) var(--sp-md);
+    display: flex;
+    align-items: center;
+    gap: var(--sp-md);
+    backdrop-filter: blur(8px);
     flex-wrap: wrap;
-    gap: var(--sp-sm);
   }
+  @media (min-width: 768px) {
+    .pp-topbar { padding: var(--sp-md) var(--sp-lg); margin-left: calc(-1 * var(--sp-lg)); margin-right: calc(-1 * var(--sp-lg)); }
+  }
+  .pp-topbar-title { flex: 1; min-width: 0; font-weight: 600; font-size: var(--fs-sm); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .pp-topbar-meta { color: var(--color-text-muted); font-size: var(--fs-xs); white-space: nowrap; }
+  .pp-topbar-progress {
+    flex: 1; min-width: 120px; max-width: 240px; height: 8px;
+    background: var(--color-surface-2); border-radius: 4px; overflow: hidden;
+    position: relative;
+  }
+  .pp-topbar-progress-bar {
+    height: 100%; background: linear-gradient(90deg, var(--color-accent), var(--color-success));
+    transition: width var(--dur-base) var(--ease-out);
+  }
+  .pp-topbar-timer {
+    font-family: var(--font-mono); font-size: var(--fs-md); font-weight: 700;
+    color: var(--color-accent); white-space: nowrap; font-variant-numeric: tabular-nums;
+    padding: 4px 12px; border-radius: 6px; background: var(--color-surface-2);
+  }
+  .pp-topbar-timer.warn { color: var(--color-warning); }
+  .pp-topbar-timer.crit { color: var(--color-danger); animation: ppPulse 1s infinite; }
+  @keyframes ppPulse { 50% { background: rgba(255,107,107,0.15); } }
 
   .pp-sidebar {
     grid-area: sidebar;
@@ -286,14 +311,25 @@
     border: 1px solid var(--color-border);
     border-radius: 10px;
     padding: var(--sp-md);
-    max-height: calc(100vh - 80px);
-    overflow-y: auto;
+    margin: 0 0 var(--sp-md);
   }
   @media (min-width: 1024px) {
     .pp-sidebar {
       position: sticky;
-      top: var(--sp-lg);
+      top: 80px;
+      margin: var(--sp-md) var(--sp-md) 0 0;
+      max-height: calc(100dvh - 100px);
+      overflow-y: auto;
     }
+  }
+  .pp-sidebar summary {
+    cursor: pointer; font-weight: 600; padding: var(--sp-xs) 0;
+    list-style: none; user-select: none;
+  }
+  .pp-sidebar summary::-webkit-details-marker { display: none; }
+  @media (min-width: 1024px) {
+    .pp-sidebar details { display: contents; }
+    .pp-sidebar summary { display: none; }
   }
   .pp-sidebar h3 { margin-top: 0; font-size: var(--fs-sm); color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
   .pp-step-list { list-style: none; margin: 0; padding: 0; }
@@ -336,6 +372,21 @@
     border-radius: 12px;
     padding: var(--sp-lg);
     min-height: 400px;
+    max-width: 800px;
+    width: 100%;
+    margin: var(--sp-md) auto;
+    padding-bottom: calc(var(--sp-lg) + 80px);  /* space for sticky bottom action bar */
+  }
+  @media (min-width: 1024px) {
+    .pp-main { margin: var(--sp-md) 0; }
+  }
+  .pp-main h2 {
+    font-size: var(--fs-xl);
+    margin: 0 0 var(--sp-sm);
+  }
+  .pp-step-instr {
+    font-size: var(--fs-md);
+    line-height: 1.7;
   }
   .pp-step-instr {
     background: var(--color-surface-2);
@@ -372,11 +423,25 @@
   .pp-mcq-option:hover { background: var(--color-surface-2); }
 
   .pp-actions {
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    right: 0;
     display: flex;
     justify-content: space-between;
     gap: var(--sp-sm);
-    margin-top: var(--sp-lg);
+    margin: var(--sp-lg) calc(-1 * var(--sp-lg)) calc(-1 * var(--sp-lg));
+    padding: var(--sp-md) var(--sp-lg);
+    background: linear-gradient(to top, var(--color-surface) 60%, transparent);
     flex-wrap: wrap;
+    z-index: 10;
+  }
+  .pp-actions::before {
+    content: '';
+    position: absolute;
+    top: -16px; left: 0; right: 0; height: 16px;
+    background: linear-gradient(to top, var(--color-surface), transparent);
+    pointer-events: none;
   }
   .pp-feedback {
     margin-top: var(--sp-md);
@@ -388,13 +453,9 @@
   .pp-feedback--ok { background: rgba(61, 220, 151, 0.1); border-color: var(--color-success); color: var(--color-success); }
   .pp-feedback--bad { background: rgba(255, 107, 107, 0.1); border-color: var(--color-danger); color: var(--color-danger); }
 
+  /* pp-timer LEGACY — hidden, timer info moved to .pp-topbar (cross-verification redesign) */
   .pp-timer {
-    grid-area: timer;
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: 12px;
-    padding: var(--sp-md);
-    text-align: center;
+    display: none !important;
   }
   @media (min-width: 1024px) {
     .pp-timer {
@@ -1163,12 +1224,17 @@
     STATE.timerHandle = setInterval(() => {
       STATE.elapsedSec += 1;
       const remaining = Math.max(0, (STATE.activeScenario.durationSec || 9000) - STATE.elapsedSec);
-      const el = document.getElementById("pp-timer-value");
-      if (el) {
-        el.textContent = formatHMS(remaining);
+      const tEl = document.getElementById("pp-timer-value");
+      if (tEl) {
+        tEl.textContent = formatHMS(remaining);
         const total = STATE.activeScenario.durationSec || 9000;
-        el.dataset.warn = (remaining <= total * 0.2 && remaining > total * 0.1) ? "true" : "false";
-        el.dataset.crit = (remaining <= total * 0.1) ? "true" : "false";
+        // Modern training pattern: warn/crit classes on .pp-topbar-timer
+        const isWarn = (remaining <= total * 0.2 && remaining > total * 0.1);
+        const isCrit = (remaining <= total * 0.1);
+        tEl.classList.toggle("warn", isWarn);
+        tEl.classList.toggle("crit", isCrit);
+        tEl.dataset.warn = isWarn ? "true" : "false";
+        tEl.dataset.crit = isCrit ? "true" : "false";
       }
       if (remaining <= 0) {
         // auto end
@@ -1310,20 +1376,38 @@
     const rubricPhase = session.currentStep === "rubric";
     const wrap = el("div", { class: "pp-run" });
 
-    // Topbar (mobile)
+    // Sticky topbar — modern training pattern (Brilliant/Duolingo)
+    // Includes: scenario title, progress bar, timer (live), abort button
+    const remainingSec = Math.max(0, sc.durationSec - STATE.elapsedSec);
+    const totalSteps = sc.steps.length;
+    const answeredSteps = Object.keys(session.answers).length;
+    const progressPct = totalSteps > 0 ? Math.round((answeredSteps / totalSteps) * 100) : 0;
+    const autoNow = computeAutoPointsByStep();
     wrap.appendChild(el("div", { class: "pp-topbar" }, [
-      el("div", null, [
+      el("div", { class: "pp-topbar-title", title: sc.title }, [
         el("strong", { text: sc.title }),
-        el("div", { class: "muted", style: { fontSize: "var(--fs-xs)" }, text: sc.scenarioId + " · " + (AREA_LABELS[sc.area] || sc.area) })
+        el("span", { class: "pp-topbar-meta", style: { marginLeft: "8px" } }, " · " + sc.scenarioId + " · " + (AREA_LABELS[sc.area] || sc.area))
       ]),
-      el("div", null, [
-        el("button", {
-          class: "btn-danger",
-          onclick: () => {
-            if (confirm("Przerwać scenariusz? Postęp zostanie utracony.")) abortScenario();
-          }
-        }, "Przerwij")
-      ])
+      el("div", { class: "pp-topbar-progress", role: "progressbar", "aria-valuenow": progressPct, "aria-valuemin": 0, "aria-valuemax": 100, "aria-label": "Postęp scenariusza" }, [
+        el("div", { class: "pp-topbar-progress-bar", style: { width: progressPct + "%" } })
+      ]),
+      el("div", { class: "pp-topbar-meta", style: { whiteSpace: "nowrap" } }, answeredSteps + "/" + totalSteps + " · " + autoNow.toFixed(1) + "/" + sc.totalPoints + " pkt"),
+      el("div", {
+        class: "pp-topbar-timer",
+        id: "pp-timer-value",
+        "data-warn": "false",
+        "data-crit": "false",
+        title: "Pozostały czas",
+        text: formatHMS(remainingSec)
+      }),
+      el("button", {
+        class: "btn",
+        style: { background: "transparent", border: "1px solid var(--color-danger)", color: "var(--color-danger)", padding: "6px 14px", minHeight: "36px" },
+        "aria-label": "Przerwij scenariusz",
+        onclick: () => {
+          if (confirm("Przerwać scenariusz? Postęp zostanie utracony.")) abortScenario();
+        }
+      }, "✕ Przerwij")
     ]));
 
     // Sidebar
@@ -1387,28 +1471,8 @@
     }
     wrap.appendChild(main);
 
-    // Timer
-    const remaining = Math.max(0, sc.durationSec - STATE.elapsedSec);
-    const timer = el("aside", { class: "pp-timer" });
-    timer.appendChild(el("div", { class: "pp-timer-label", text: "Pozostały czas" }));
-    timer.appendChild(el("div", {
-      class: "pp-timer-value",
-      id: "pp-timer-value",
-      "data-warn": "false",
-      "data-crit": "false",
-      text: formatHMS(remaining)
-    }));
-    const autoNow = computeAutoPointsByStep();
-    const totalMax = sc.totalPoints;
-    timer.appendChild(el("div", { class: "pp-score-line" }, [
-      el("div", { class: "muted", style: { fontSize: "var(--fs-xs)" }, text: "Punkty (auto)" }),
-      el("div", { class: "pp-score-num" }, autoNow.toFixed(1) + " / " + totalMax)
-    ]));
-    timer.appendChild(el("div", { style: { marginTop: "12px" } }, [
-      el("div", { class: "muted", style: { fontSize: "var(--fs-xs)" }, text: "Postęp" }),
-      el("div", { class: "pp-score-num" }, Object.keys(session.answers).length + " / " + sc.steps.length)
-    ]));
-    wrap.appendChild(timer);
+    // Timer aside — REMOVED in redesign (timer + score moved to sticky pp-topbar above)
+    // pp-timer-value ID is now on the topbar timer element for live updates compatibility
 
     return wrap;
   }

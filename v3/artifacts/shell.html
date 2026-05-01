@@ -93,7 +93,7 @@ p{margin:0 0 var(--sp-sm) 0}
 .sidebar .navbtn .ico{width:20px;text-align:center;font-size:16px}
 .sidebar .footer{padding:var(--sp-sm) var(--sp-md);border-top:1px solid var(--color-border);font-size:var(--fs-xs);color:var(--color-text-muted)}
 
-main{flex:1;padding:var(--sp-lg);max-width:1200px;width:100%;margin:0 auto;padding-bottom:96px}
+main{flex:1;padding:var(--sp-lg);max-width:1200px;width:100%;margin:0 auto}
 
 /* Cards */
 .card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:8px;padding:var(--sp-lg);margin-bottom:var(--sp-md);box-shadow:var(--shadow-1)}
@@ -274,30 +274,30 @@ label{display:block;margin-bottom:var(--sp-xs);font-size:var(--fs-xs);color:var(
 /* Hidden helper */
 [hidden]{display:none !important}
 
-/* Exam countdown */
-.exam-countdown { display:flex; flex-direction:column; align-items:center; padding:.5rem 1rem; border-radius:.5rem; font-weight:700; }
-.exam-countdown--danger { background:#fee2e2; color:#dc2626; }
-.exam-countdown--warning { background:#fef3c7; color:#d97706; }
-.exam-countdown--info { background:#dbeafe; color:#1d4ed8; }
-.exam-countdown__number { font-size:2.5rem; line-height:1; }
-.exam-countdown__label { font-size:.75rem; text-transform:uppercase; letter-spacing:.05em; }
+/* Exam countdown — unified to design tokens (UX P0 fix) */
+.exam-countdown { display:flex; flex-direction:column; align-items:center; padding:var(--sp-sm) var(--sp-md); border-radius:8px; font-weight:700; }
+.exam-countdown--danger  { background:rgba(255,107,107,0.12); color:var(--color-danger);  border:1px solid var(--color-danger); }
+.exam-countdown--warning { background:rgba(255,180,84,0.12);  color:var(--color-warning); border:1px solid var(--color-warning); }
+.exam-countdown--info    { background:rgba(94,169,255,0.12);  color:var(--color-accent);  border:1px solid var(--color-accent); }
+.exam-countdown__number  { font-size:var(--fs-2xl); line-height:1; }
+.exam-countdown__label   { font-size:var(--fs-xs); text-transform:uppercase; letter-spacing:.05em; }
 
-/* Daily goal progress */
-.daily-goal { margin:.5rem 0; }
-.daily-goal__label { font-size:.8rem; color:var(--color-text-muted); margin-bottom:.25rem; }
-.daily-goal__bar { height:.5rem; background:var(--color-surface-2); border-radius:9999px; overflow:hidden; }
-.daily-goal__fill { height:100%; background:var(--color-accent); border-radius:9999px; transition:width .3s; }
+/* Daily goal progress — unified */
+.daily-goal { margin:var(--sp-sm) 0; }
+.daily-goal__label { font-size:var(--fs-xs); color:var(--color-text-muted); margin-bottom:var(--sp-xs); }
+.daily-goal__bar   { height:8px; background:var(--color-surface-2); border-radius:99px; overflow:hidden; }
+.daily-goal__fill  { height:100%; background:var(--color-accent); border-radius:99px; transition:width var(--dur-slow) var(--ease-out); }
 
-/* Settings form */
-.settings-group { margin-bottom: 1.25rem; }
-.settings-label { display: block; font-size: .875rem; font-weight: 600; color: var(--color-text-muted); margin-bottom: .375rem; }
-.settings-input { width: 100%; padding: .5rem .75rem; background: var(--color-surface-2); border: 1px solid var(--color-border); border-radius: .375rem; color: var(--color-text); font-size: .9rem; min-height: 40px; }
-.settings-input:focus { outline: none; border-color: var(--color-accent); }
+/* Settings form — unified */
+.settings-group { margin-bottom: var(--sp-lg); }
+.settings-label { display:block; font-size:var(--fs-xs); font-weight:600; color:var(--color-text-muted); margin-bottom:var(--sp-xs); }
+.settings-input { width:100%; padding:10px var(--sp-sm); background:var(--color-surface-2); border:1px solid var(--color-border); border-radius:6px; color:var(--color-text); font-size:var(--fs-sm); min-height:44px; }
+.settings-input:focus { outline:none; border-color:var(--color-accent); }
 
-/* Achievement cards: locked state */
-.ach-card { display:flex; flex-direction:column; gap:.375rem; }
-.ach-card.locked { opacity:.4; filter:grayscale(1); }
-.ach-icon { font-size:1.75rem; line-height:1; }
+/* Achievement cards: locked state — unified */
+.ach-card { display:flex; flex-direction:column; gap:var(--sp-xs); }
+.ach-card.locked { opacity:.45; filter:grayscale(1); }
+.ach-icon { font-size:var(--fs-lg); line-height:1; }
 
 /* Light theme overrides */
 [data-theme="light"] {
