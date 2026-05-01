@@ -10,7 +10,7 @@
  * NO direct localStorage usage in this file (constraint).
  */
 
-const CACHE_VERSION = 'inf02-v4.2.0-20260501-1137';
+const CACHE_VERSION = 'inf02-v4.4.0-20260501-1835';
 
 const ASSETS = [
   './shell.html',
@@ -32,17 +32,17 @@ const ASSETS = [
 // install — pre-cache wszystkich assets z whitelist
 // ---------------------------------------------------------------------------
 self.addEventListener('install', (event) => {
+  // ATOMIC install (v4.3 P1 fix): cache.addAll() — partial install kończy się
+  // mieszanką starych+nowych assetów → offline crash przy schema mismatch.
+  // Jeśli którykolwiek asset zawiedzie → rollback całego CACHE_VERSION.
   event.waitUntil(
     caches.open(CACHE_VERSION).then((cache) => {
-      // addAll fails atomically; loguj błędy ale nie crash całego install
-      return Promise.all(
-        ASSETS.map((url) =>
-          cache.add(new Request(url, { cache: 'reload' })).catch((err) => {
-            // eslint-disable-next-line no-console
-            console.warn('[SW] install: skipped asset', url, err && err.message);
-          })
-        )
-      );
+      const reqs = ASSETS.map((url) => new Request(url, { cache: 'reload' }));
+      return cache.addAll(reqs).catch((err) => {
+        // eslint-disable-next-line no-console
+        console.error('[SW] install: atomic addAll failed, rolling back cache', err && err.message);
+        return caches.delete(CACHE_VERSION).then(() => Promise.reject(err));
+      });
     })
   );
   // Aktywuj nową wersję natychmiast (update flow steruje shell.html)

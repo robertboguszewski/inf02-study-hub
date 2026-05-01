@@ -2445,7 +2445,7 @@
     "area": "P",
     "difficulty": 2,
     "type": "mcq",
-    "q": "Jaki typ panelu monitora zapewnia najlepsze czasy reakcji (1 ms) i jest preferowany przez graczy?",
+    "q": "Jaki typ panelu monitora zapewnia najlepsze czasy reakcji (1 ms) i był preferowany przez graczy?",
     "options": [
       "IPS",
       "VA",

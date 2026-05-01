@@ -354,6 +354,27 @@ input { font: inherit; }
 .quiz-stickybar .timer { position: static; margin: 0; }
 .quiz-stickybar .meta-line { font-size: var(--fs-xs); color: var(--color-text-muted); }
 
+
+/* ============= Match-game (v4.4) ============= */
+.match-game {max-width:880px;margin:0 auto;padding:var(--sp-md)}
+.match-stats{display:flex;gap:var(--sp-md);justify-content:center;align-items:center;margin-bottom:var(--sp-md);font-size:var(--fs-sm);color:var(--color-text-muted);flex-wrap:wrap}
+.match-stats .timer{font-family:var(--font-mono);font-size:var(--fs-lg);font-weight:700;color:var(--color-accent);font-variant-numeric:tabular-nums}
+.match-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-sm);margin-bottom:var(--sp-md)}
+@media (min-width:600px){.match-grid{grid-template-columns:repeat(4,1fr)}}
+.match-card{background:var(--color-surface);border:2px solid var(--color-border);border-radius:10px;padding:var(--sp-sm);cursor:pointer;min-height:80px;display:flex;align-items:center;justify-content:center;font-size:var(--fs-xs);text-align:center;transition:transform var(--dur-fast) var(--ease-out),background var(--dur-base);overflow:hidden;line-height:1.3;word-break:break-word}
+.match-card:hover{transform:translateY(-2px);background:var(--color-surface-2)}
+.match-card[data-status="selected"]{border-color:var(--color-accent);background:rgba(94,169,255,0.15)}
+.match-card[data-status="matched"]{border-color:var(--color-success);background:rgba(61,220,151,0.15);opacity:0.4;cursor:default;pointer-events:none;animation:matchSuccess 0.4s var(--ease-out)}
+.match-card.shake{animation:matchShake 0.3s linear}
+@keyframes matchSuccess{0%{transform:scale(1)}50%{transform:scale(1.08)}100%{transform:scale(1)}}
+@keyframes matchShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.match-card[data-kind="q"]{font-weight:600;background:rgba(94,169,255,0.05)}
+.match-card[data-kind="a"]{font-style:italic;background:rgba(255,180,84,0.05)}
+.match-win{text-align:center;padding:var(--sp-xl);background:var(--color-surface);border-radius:16px;border:1px solid var(--color-border)}
+.match-win h2{color:var(--color-success);font-size:var(--fs-2xl);margin:0 0 var(--sp-sm)}
+.match-win .time{font-family:var(--font-mono);font-size:var(--fs-2xl);color:var(--color-accent);font-weight:700}
+.match-win .best{color:var(--color-text-muted);font-size:var(--fs-sm);margin-top:var(--sp-sm)}
+
 /* ----- Sticky bottom action bar (Brilliant/Duolingo pattern) ----- */
 .quiz-actionbar {
   position: sticky; bottom: 0;
@@ -1233,12 +1254,19 @@ input { font: inherit; }
             <span class="desc">Losowe pojedyncze pytanie — szybka praktyka.</span>
             <span class="meta">1 pytanie · bez limitu czasu</span>
           </button>
+          <button class="picker-mode-card" data-mode="match" type="button">
+            <span class="icon" aria-hidden="true">🎴</span>
+            <span class="title">Memory (Match)</span>
+            <span class="desc">Łącz pytania z odpowiedziami — gra na czas.</span>
+            <span class="meta">6 par · stopwatch · best time</span>
+          </button>
         </div>
       </section>`;
     r.querySelectorAll('button[data-mode]').forEach(b => {
       b.addEventListener('click', () => {
         const m = b.dataset.mode;
         if (m === 'topic') renderTopicPicker();
+        else if (m === 'match') startMatchGame();
         else INF02.quiz.start(m, {});
       });
     });
@@ -1634,7 +1662,194 @@ input { font: inherit; }
     }
   };
 
-  // Default view if loaded standalone
+
+  /* ============= Match-game (v4.4) ============= */
+  /**
+   * Generate N pairs of (question, correctAnswer) cards.
+   * Returns shuffled array of 2N cards: [{kind: 'q'|'a', pairId, content, qid}].
+   */
+  function generateMatchPairs(pool, n) {
+    if (!Array.isArray(pool) || pool.length < n) return [];
+    // Filter only mcq with valid correct answer text
+    const valid = pool.filter(q => q.type === 'mcq' && Array.isArray(q.options) && typeof q.correct === 'number' && q.options[q.correct]);
+    if (valid.length < n) return [];
+    // Random sample n
+    const sample = [...valid].sort(() => Math.random() - 0.5).slice(0, n);
+    const cards = [];
+    sample.forEach((q, i) => {
+      const pairId = 'p' + i;
+      cards.push({ kind: 'q', pairId, content: q.q.length > 80 ? q.q.slice(0, 77) + '…' : q.q, qid: q.id });
+      cards.push({ kind: 'a', pairId, content: q.options[q.correct], qid: q.id });
+    });
+    return cards.sort(() => Math.random() - 0.5);
+  }
+
+  let MATCH = null;
+
+  async function startMatchGame() {
+    const pool = await getQuestions();
+    if (!pool || pool.length < 6) {
+      root().innerHTML = '<div class="card empty">Brak pytań do gry Match (potrzeba ≥6).</div>';
+      return;
+    }
+    const cards = generateMatchPairs(pool, 6);
+    if (cards.length === 0) {
+      root().innerHTML = '<div class="card empty">Nie znaleziono 6 pytań mcq z poprawną odpowiedzią.</div>';
+      return;
+    }
+    MATCH = {
+      cards: cards,
+      selected: null,         // index of currently selected card
+      matchedPairs: 0,
+      startTime: Date.now(),
+      timerHandle: null
+    };
+    renderMatchGame();
+    // Start stopwatch
+    MATCH.timerHandle = setInterval(() => {
+      const el = document.getElementById('match-timer');
+      if (el && MATCH) {
+        const sec = Math.floor((Date.now() - MATCH.startTime) / 1000);
+        const m = Math.floor(sec/60), s = sec%60;
+        el.textContent = String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+      }
+    }, 1000);
+  }
+
+  function renderMatchGame() {
+    if (!MATCH) return;
+    const r = root();
+    r.innerHTML = `
+      <section class="match-game">
+        <div class="match-stats">
+          <span>Pary: <b>${MATCH.matchedPairs}/6</b></span>
+          <span class="timer" id="match-timer" aria-live="polite" role="timer">00:00</span>
+          <button class="btn" id="match-quit">✕ Wyjdź</button>
+        </div>
+        <div class="match-grid" role="grid" aria-label="Gra Match — łącz pary">
+          ${MATCH.cards.map((c, i) => 
+            `<button class="match-card" data-idx="${i}" data-kind="${c.kind}" data-status="${MATCH.selected === i ? 'selected' : 'idle'}" role="gridcell" aria-label="${c.kind === 'q' ? 'Pytanie' : 'Odpowiedź'}: ${escapeHtml(c.content.slice(0, 50))}">
+              ${escapeHtml(c.content)}
+            </button>`
+          ).join('')}
+        </div>
+      </section>
+    `;
+    // Wire up clicks
+    r.querySelectorAll('.match-card').forEach(btn => {
+      btn.addEventListener('click', () => onMatchClick(parseInt(btn.dataset.idx, 10)));
+      btn.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onMatchClick(parseInt(btn.dataset.idx, 10));
+        }
+      });
+    });
+    document.getElementById('match-quit').addEventListener('click', () => {
+      if (MATCH && MATCH.timerHandle) clearInterval(MATCH.timerHandle);
+      MATCH = null;
+      renderModePicker();
+    });
+  }
+
+  function onMatchClick(idx) {
+    if (!MATCH || idx < 0 || idx >= MATCH.cards.length) return;
+    const card = MATCH.cards[idx];
+    if (!card || card.matched) return;
+    
+    if (MATCH.selected === null) {
+      MATCH.selected = idx;
+      renderMatchGame();
+      return;
+    }
+    if (MATCH.selected === idx) {
+      MATCH.selected = null;
+      renderMatchGame();
+      return;
+    }
+    
+    const prevIdx = MATCH.selected;
+    const prev = MATCH.cards[prevIdx];
+    
+    // Check match: same pairId + different kind (q ↔ a)
+    if (prev.pairId === card.pairId && prev.kind !== card.kind) {
+      // Match!
+      prev.matched = true;
+      card.matched = true;
+      MATCH.matchedPairs++;
+      MATCH.selected = null;
+      // Mark as matched in DOM
+      const grid = document.querySelector('.match-grid');
+      if (grid) {
+        const els = grid.querySelectorAll('.match-card');
+        if (els[prevIdx]) els[prevIdx].dataset.status = 'matched';
+        if (els[idx]) els[idx].dataset.status = 'matched';
+      }
+      // Win check
+      if (MATCH.matchedPairs >= 6) {
+        setTimeout(() => endMatchGame(), 500);
+      } else {
+        setTimeout(() => renderMatchGame(), 600);
+      }
+    } else {
+      // Miss — shake both, deselect
+      const grid = document.querySelector('.match-grid');
+      if (grid) {
+        const els = grid.querySelectorAll('.match-card');
+        if (els[prevIdx]) els[prevIdx].classList.add('shake');
+        if (els[idx]) els[idx].classList.add('shake');
+      }
+      setTimeout(() => {
+        MATCH.selected = null;
+        renderMatchGame();
+      }, 350);
+    }
+  }
+
+  function endMatchGame() {
+    if (!MATCH) return;
+    if (MATCH.timerHandle) clearInterval(MATCH.timerHandle);
+    const totalSec = Math.floor((Date.now() - MATCH.startTime) / 1000);
+    const m = Math.floor(totalSec/60), s = totalSec%60;
+    const timeStr = String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+    
+    // Save best time via shell.setState
+    let bestSec = Infinity;
+    let isNewBest = false;
+    try {
+      const state = shellGetState ? shellGetState() : null;
+      if (state && state.matchBestSec) bestSec = state.matchBestSec;
+      if (totalSec < bestSec) {
+        isNewBest = true;
+        if (typeof shellSetState === 'function') shellSetState({ matchBestSec: totalSec });
+      }
+    } catch (_) {}
+    
+    const bestStr = bestSec === Infinity ? '—' : 
+      String(Math.floor(bestSec/60)).padStart(2,'0') + ':' + String(bestSec%60).padStart(2,'0');
+    
+    root().innerHTML = `
+      <section class="match-win">
+        <h2>🎉 Wygrana!</h2>
+        <div class="time">${timeStr}</div>
+        <div class="best">${isNewBest ? '🏆 Nowy rekord!' : 'Najlepszy czas: ' + bestStr}</div>
+        <div style="margin-top:var(--sp-lg);display:flex;gap:var(--sp-sm);justify-content:center;flex-wrap:wrap">
+          <button class="btn btn--primary" id="match-again">▶ Powtórz</button>
+          <button class="btn" id="match-back">← Tryby</button>
+        </div>
+      </section>
+    `;
+    document.getElementById('match-again').addEventListener('click', () => { MATCH = null; startMatchGame(); });
+    document.getElementById('match-back').addEventListener('click', () => { MATCH = null; renderModePicker(); });
+  }
+
+  // Expose for testing
+  if (typeof window !== 'undefined') {
+    window.INF02 = window.INF02 || {};
+    window.INF02.matchGame = { generateMatchPairs, start: startMatchGame };
+  }
+
+    // Default view if loaded standalone
   document.addEventListener('DOMContentLoaded', () => {
     if (!getShell() || !getShell().route) {
       RUN.rootEl = document.getElementById('quiz-app');

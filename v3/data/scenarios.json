@@ -355,8 +355,8 @@
         "n": 4,
         "instruction": "Ustaw uprawnienia do katalogu tak, aby wszyscy użytkownicy mogli zapisywać pliki.",
         "expectedAnswer": [
-          "chmod 777 /srv/samba/publiczny",
-          "chmod 0777 /srv/samba/publiczny",
+          "chmod 755 /srv/samba/publiczny",
+          "chmod 0755 /srv/samba/publiczny",
           "chmod a+rwx /srv/samba/publiczny"
         ],
         "pointsMax": 1,
@@ -1315,7 +1315,13 @@
         "n": 8,
         "kind": "fill",
         "instruction": "Format komórki z wartością brutto powinien wyświetlać 2 miejsca po przecinku z separatorem 'zł'. Format Excel/Calc: ",
-        "expectedAnswer": "# ##0,00 zł",
+        "expectedAnswer": [
+          "# ##0,00 zł",
+          "# ##0,00 \"zł\"",
+          "#,##0.00 zł",
+          "0,00 zł",
+          "[$ zł-415]# ##0,00"
+        ],
         "pointsMax": 10,
         "tolerantMatch": true
       },
@@ -1556,7 +1562,19 @@
         "n": 3,
         "kind": "fill",
         "instruction": "Aby sklonować dysk MBR z 500 GB na 1 TB i wykorzystać dodatkową przestrzeń, po klonowaniu należy: (jedno słowo, polecenie)",
-        "expectedAnswer": "rozszerzyć partycję",
+        "expectedAnswer": [
+          "rozszerzyć partycję",
+          "powiększyć partycję",
+          "zwiększyć partycję",
+          "resize",
+          "resize2fs",
+          "GParted",
+          "gparted",
+          "parted",
+          "rozszerzyć",
+          "powiększyć",
+          "extend partition"
+        ],
         "pointsMax": 15,
         "tolerantMatch": true
       },
@@ -1693,8 +1711,15 @@
       {
         "n": 3,
         "kind": "fill",
-        "instruction": "Adres IP drukarki sieciowej w sieci biurowej zgodnie z arkuszem CKE: 192.168.0.200. W jakiej kolejności konfigurować w Windows: Ustawienia → Bluetooth i urządzenia → Drukarki i skanery → ... (wpisz nazwę przycisku):",
-        "expectedAnswer": "Dodaj drukarkę",
+        "instruction": "Adres IP drukarki sieciowej w sieci biurowej zgodnie z arkuszem CKE: 192.168.0.200. W jakiej kolejności konfigurować w Windows: Ustawienia → Bluetooth i urządzenia → Drukarki i skanery → ... (wpisz nazwę przycisku): (Windows 11 22H2: \"Dodaj drukarkę\"; Windows 11 24H2+: \"Dodaj urządzenie\").",
+        "expectedAnswer": [
+          "Dodaj drukarkę",
+          "Dodaj urządzenie",
+          "Dodaj urządzenie lub drukarkę",
+          "Add printer",
+          "Add device",
+          "Dodaj"
+        ],
         "pointsMax": 10,
         "tolerantMatch": true
       },
