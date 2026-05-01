@@ -1249,7 +1249,6 @@
     "area": "R",
     "durationSec": 2700,
     "totalPoints": 100,
-    "passPct": 0.75,
     "steps": [
       {
         "n": 1,
@@ -1374,7 +1373,8 @@
           9
         ]
       }
-    ]
+    ],
+    "passThresholdPct": 0.75
   },
   {
     "scenarioId": "S-010",
@@ -1382,7 +1382,6 @@
     "area": "R",
     "durationSec": 1800,
     "totalPoints": 100,
-    "passPct": 0.75,
     "steps": [
       {
         "n": 1,
@@ -1520,7 +1519,8 @@
           9
         ]
       }
-    ]
+    ],
+    "passThresholdPct": 0.75
   },
   {
     "scenarioId": "S-011",
@@ -1528,7 +1528,6 @@
     "area": "D",
     "durationSec": 2400,
     "totalPoints": 100,
-    "passPct": 0.75,
     "steps": [
       {
         "n": 1,
@@ -1658,7 +1657,8 @@
           8
         ]
       }
-    ]
+    ],
+    "passThresholdPct": 0.75
   },
   {
     "scenarioId": "S-012",
@@ -1666,7 +1666,6 @@
     "area": "P",
     "durationSec": 1800,
     "totalPoints": 100,
-    "passPct": 0.75,
     "steps": [
       {
         "n": 1,
@@ -1811,6 +1810,7 @@
           9
         ]
       }
-    ]
+    ],
+    "passThresholdPct": 0.75
   }
 ]

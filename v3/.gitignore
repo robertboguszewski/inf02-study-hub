@@ -1,0 +1,53 @@
+# OS
+.DS_Store
+Thumbs.db
+.AppleDouble
+ehthumbs.db
+Desktop.ini
+
+# Editors / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.sublime-project
+*.sublime-workspace
+
+# Secrets
+.env
+.env.*
+*.key
+*.pem
+*.cert
+*.crt
+secrets/
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+.pnpm-debug.log*
+
+# Claude / Cowork
+.claude/projects/
+.claude/sessions/
+*.session.json
+.cowork/
+
+# Backup / temp
+*.bak
+*.tmp
+*.temp
+*.old
+*.orig
+
+# Local user data (eksport postępów)
+inf02-progress-export-*.json
+
+# Build output (na wszelki wypadek — projekt jest no-build)
+dist/
+build/
+.cache/

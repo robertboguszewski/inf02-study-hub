@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>INF.02 Study Hub — Egzamin zawodowy CKE 2026</title>
+  <meta name="description" content="Darmowa aplikacja webowa do nauki na egzamin INF.02 (Administracja i eksploatacja systemów komputerowych). 297 pytań, 12 scenariuszy praktycznych, adaptive engine, PWA.">
+
+  <!-- OpenGraph / social -->
+  <meta property="og:title" content="INF.02 Study Hub">
+  <meta property="og:description" content="Darmowa aplikacja do nauki na egzamin zawodowy INF.02. 297 pytań, 12 scenariuszy CKE 2026, działa offline.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://robertboguszewski.github.io/inf02-study-hub/">
+  <meta property="og:image" content="https://robertboguszewski.github.io/inf02-study-hub/docs/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <style>
+    :root {
+      --bg: #0f1419;
+      --bg-card: #1a2028;
+      --fg: #e8eef5;
+      --fg-muted: #9ba8b6;
+      --accent: #4a9eff;
+      --accent-hover: #66b0ff;
+      --border: #2a3340;
+      --success: #4caf50;
+      --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #f5f7fa;
+        --bg-card: #ffffff;
+        --fg: #1a2028;
+        --fg-muted: #5a6573;
+        --accent: #1976d2;
+        --accent-hover: #1565c0;
+        --border: #d8dee5;
+        --success: #2e7d32;
+        --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      }
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--fg);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    .container { max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem; }
+    header.hero { text-align: center; padding: 3rem 1rem 2rem; }
+    header.hero h1 { font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 0.75rem; }
+    header.hero .subtitle { color: var(--fg-muted); font-size: 1.15rem; margin-bottom: 2rem; max-width: 640px; margin-left: auto; margin-right: auto; }
+    .cta {
+      display: inline-block; background: var(--accent); color: white;
+      padding: 0.9rem 2rem; border-radius: 8px; text-decoration: none;
+      font-weight: 600; font-size: 1.1rem; transition: background 0.2s;
+      box-shadow: var(--shadow);
+    }
+    .cta:hover { background: var(--accent-hover); }
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; margin: 2.5rem 0; }
+    .card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 1.5rem; box-shadow: var(--shadow);
+      transition: transform 0.15s, border-color 0.15s;
+    }
+    .card:hover { transform: translateY(-2px); border-color: var(--accent); }
+    .card h3 { color: var(--accent); margin-bottom: 0.5rem; font-size: 1.2rem; }
+    .card p { color: var(--fg-muted); margin-bottom: 1rem; font-size: 0.95rem; }
+    .card a { color: var(--accent); text-decoration: none; font-weight: 600; }
+    .card a:hover { text-decoration: underline; }
+    table {
+      width: 100%; border-collapse: collapse; margin: 2rem 0;
+      background: var(--bg-card); border-radius: 8px; overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    th, td { padding: 0.85rem 1rem; text-align: left; border-bottom: 1px solid var(--border); }
+    th { background: rgba(74, 158, 255, 0.08); color: var(--accent); font-weight: 600; }
+    td:last-child { text-align: right; font-variant-numeric: tabular-nums; color: var(--success); font-weight: 600; }
+    tr:last-child td { border-bottom: none; }
+    h2 { margin: 2.5rem 0 1rem; font-size: 1.5rem; }
+    footer {
+      margin-top: 4rem; padding: 2rem 1.5rem; border-top: 1px solid var(--border);
+      color: var(--fg-muted); font-size: 0.9rem;
+    }
+    footer .disclaimer {
+      background: var(--bg-card); border-left: 3px solid var(--accent);
+      padding: 1rem 1.25rem; border-radius: 6px; margin-bottom: 1.25rem;
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+    .links { margin-top: 1rem; }
+    .links a { margin-right: 1.25rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <header class="hero">
+      <h1>INF.02 Study Hub</h1>
+      <p class="subtitle">
+        Darmowa aplikacja do przygotowania na egzamin zawodowy
+        <strong>INF.02 — Administracja i eksploatacja systemów komputerowych</strong>
+        w formule CKE 2026. Działa offline, bez kont, bez śledzenia.
+      </p>
+      <a class="cta" href="../v3/artifacts/shell.html">Rozpocznij naukę</a>
+    </header>
+
+    <section>
+      <h2>Trzy tryby nauki</h2>
+      <div class="cards">
+        <div class="card">
+          <h3>Quiz egzaminacyjny</h3>
+          <p>40 pytań × 60 minut — identyczna formuła jak prawdziwy egzamin CKE. Sprawdź swoje przygotowanie w realnych warunkach.</p>
+          <a href="../v3/artifacts/shell.html#quiz">Otwórz quiz →</a>
+        </div>
+        <div class="card">
+          <h3>Diagnoza adaptive</h3>
+          <p>12-pytaniowy test wstępny → silnik dobiera ścieżkę nauki dopasowaną do Twoich słabych stron w 11 obszarach.</p>
+          <a href="../v3/artifacts/shell.html#diagnoza">Zacznij diagnozę →</a>
+        </div>
+        <div class="card">
+          <h3>Symulator praktyczny</h3>
+          <p>12 scenariuszy części praktycznej w trybie 150-minutowym. Konfiguracja sieci, AD, serwerów, troubleshooting.</p>
+          <a href="../v3/artifacts/shell.html#symulator">Otwórz symulator →</a>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Co znajdziesz w aplikacji</h2>
+      <table>
+        <thead>
+          <tr><th>Element</th><th>Liczba</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Pytań INF.02</td><td>297</td></tr>
+          <tr><td>Scenariuszy praktycznych</td><td>12</td></tr>
+          <tr><td>Obszarów tematycznych</td><td>11</td></tr>
+          <tr><td>Zgodność WCAG</td><td>AA</td></tr>
+          <tr><td>PWA installable</td><td>tak</td></tr>
+          <tr><td>Offline po 1. wizycie</td><td>tak</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <footer>
+      <div class="disclaimer">
+        <strong>Disclaimer:</strong> Aplikacja edukacyjna do samodzielnej nauki. Treść oparta na publicznie dostępnych wymaganiach CKE i podstawie programowej MEN.
+        <strong>Aplikacja NIE GWARANTUJE zdania egzaminu zawodowego INF.02.</strong>
+        Pytania są autorskie, w stylu CKE — nie są kopiami oficjalnych arkuszy. Weryfikuj odpowiedzi z oficjalnymi materiałami CKE i podręcznikami.
+      </div>
+      <div class="links">
+        <a href="https://github.com/robertboguszewski/inf02-study-hub">GitHub repo</a>
+        <a href="https://github.com/robertboguszewski/inf02-study-hub/blob/main/v3/LICENSE">Licencja MIT</a>
+        <a href="https://github.com/robertboguszewski/inf02-study-hub/blob/main/v3/README.md">README</a>
+        <a href="https://github.com/robertboguszewski/inf02-study-hub/blob/main/v3/INSTALACJA.md">Instalacja</a>
+      </div>
+      <p style="margin-top: 1rem;">© 2026 Robert Boguszewski · v4.2.0 · CKE 2026</p>
+    </footer>
+
+  </div>
+</body>
+</html>

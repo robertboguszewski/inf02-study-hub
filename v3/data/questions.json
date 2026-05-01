@@ -19,7 +19,7 @@
       "socket",
       "amd"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0002",
@@ -41,7 +41,7 @@
       "socket",
       "intel"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0003",
@@ -63,7 +63,7 @@
       "tdp",
       "chłodzenie"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0004",
@@ -87,7 +87,7 @@
       "l2",
       "l3"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0005",
@@ -110,7 +110,7 @@
       "wątki",
       "rdzenie"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0006",
@@ -133,7 +133,7 @@
       "częstotliwość",
       "jedec"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0007",
@@ -155,7 +155,7 @@
       "ddr5",
       "częstotliwość"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0008",
@@ -178,7 +178,7 @@
       "hamming",
       "korekcja błędów"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0009",
@@ -200,7 +200,7 @@
       "so-dimm",
       "laptop"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0010",
@@ -223,7 +223,7 @@
       "pcie",
       "ssd"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0011",
@@ -246,7 +246,7 @@
       "ssd",
       "przepustowość"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0012",
@@ -314,7 +314,7 @@
       "gold",
       "sprawność"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0015",
@@ -360,7 +360,7 @@
       "cpu",
       "złącze"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0017",
@@ -426,7 +426,7 @@
       "prędkość",
       "3.0"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0020",
@@ -472,7 +472,7 @@
       "wymiary",
       "form-factor"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0022",
@@ -518,7 +518,7 @@
       "pojemność",
       "parzystość"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0024",
@@ -541,7 +541,7 @@
       "mirror",
       "stripe"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0025",
@@ -587,7 +587,7 @@
       "northbridge",
       "ram"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0027",
@@ -610,7 +610,7 @@
       "chłodzenie",
       "kompatybilność"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0028",
@@ -634,7 +634,7 @@
       "lga1851",
       "core-ultra"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0029",
@@ -657,7 +657,7 @@
       "ddr5",
       "kompatybilność"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0030",
@@ -680,7 +680,7 @@
       "opóźnienie",
       "timing"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0031",
@@ -703,7 +703,7 @@
       "titanium",
       "sprawność"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0032",
@@ -772,7 +772,7 @@
       "przepustowość",
       "magistrala"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0035",
@@ -795,7 +795,7 @@
       "ram",
       "instalacja"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0036",
@@ -841,7 +841,7 @@
       "dysk",
       "instalacja"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0038",
@@ -980,7 +980,7 @@
       "grupa",
       "użytkownik"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0044",
@@ -1118,7 +1118,7 @@
       "dysk",
       "miejsce"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0050",
@@ -1165,7 +1165,7 @@
       "enable",
       "autostart"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0052",
@@ -1189,7 +1189,7 @@
       "uid",
       "gid"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0053",
@@ -1397,7 +1397,7 @@
       "10gbps",
       "utp"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0062",
@@ -1466,7 +1466,7 @@
       "os2",
       "długodystansowy"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0065",
@@ -1489,7 +1489,7 @@
       "/26",
       "hosty"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0066",
@@ -1512,7 +1512,7 @@
       "/26",
       "ipv4"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0067",
@@ -1535,7 +1535,7 @@
       "/22",
       "hosty"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0068",
@@ -1558,7 +1558,7 @@
       "/20",
       "ipv4"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0069",
@@ -1581,7 +1581,7 @@
       "/28",
       "hosty"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0070",
@@ -1651,7 +1651,7 @@
       "priorytet",
       "poczta"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0073",
@@ -1676,7 +1676,7 @@
       "request",
       "acknowledge"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0074",
@@ -1699,7 +1699,7 @@
       "gateway",
       "003"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0075",
@@ -1837,7 +1837,7 @@
       "5ghz",
       "wifi5"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0081",
@@ -1906,7 +1906,7 @@
       "192.168",
       "rfc1918"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0084",
@@ -1929,7 +1929,7 @@
       "169.254",
       "automatyczny"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0085",
@@ -1952,7 +1952,7 @@
       "poczta",
       "smtp"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0086",
@@ -1976,7 +1976,7 @@
       "rfc1918",
       "klasa-b"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0087",
@@ -2045,7 +2045,7 @@
       "alias",
       "kanoniczny"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0090",
@@ -2091,7 +2091,7 @@
       "rfc1918",
       "zakres"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0092",
@@ -2138,7 +2138,7 @@
       "konwergencja",
       "szybki"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0094",
@@ -2161,7 +2161,7 @@
       "adres-sieci",
       "broadcast"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0095",
@@ -2230,7 +2230,7 @@
       "1gbps",
       "ethernet"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0098",
@@ -2253,7 +2253,7 @@
       "strefa",
       "autorytet"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0099",
@@ -2323,7 +2323,7 @@
       "dkim",
       "dmarc"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0102",
@@ -2369,7 +2369,7 @@
       "ładowanie",
       "utrwalanie"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0104",
@@ -2415,7 +2415,7 @@
       "ocr",
       "rozdzielczość"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0106",
@@ -2508,7 +2508,7 @@
       "jasność",
       "oświetlenie"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0110",
@@ -2623,7 +2623,7 @@
       "interfejs",
       "wyświetlacz"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0115",
@@ -2737,7 +2737,7 @@
       "event-viewer",
       "windows"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0120",
@@ -2760,7 +2760,7 @@
       "ram",
       "diagnostyka"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0121",
@@ -2798,14 +2798,14 @@
       "Analizy logów systemowych"
     ],
     "correct": 1,
-    "explanation": "CPU-Z to narzędzie diagnostyczne wyświetlające szczegółowe informacje o procesorze (model, taktowanie, cache), pamięci RAM (typ, częstotliwość, timingі) oraz płycie głównej.",
+    "explanation": "CPU-Z to narzędzie diagnostyczne wyświetlające szczegółowe informacje o procesorze (model, taktowanie, cache), pamięci RAM (typ, częstotliwość, timingi) oraz płycie głównej.",
     "ckeRef": "INF.02.4.1",
     "tags": [
       "cpu-z",
       "diagnostyka",
       "hardware"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0123",
@@ -2873,7 +2873,7 @@
       "ram",
       "diagnostyka"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0126",
@@ -2896,7 +2896,7 @@
       "cpu",
       "diagnostyka"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0127",
@@ -3033,7 +3033,7 @@
       "windows",
       "diagnostyka"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0133",
@@ -3101,7 +3101,7 @@
       "cpu",
       "diagnostyka"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0136",
@@ -3146,7 +3146,7 @@
       "ergonomia",
       "monitor"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0138",
@@ -3169,7 +3169,7 @@
       "ergonomia",
       "norma"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0139",
@@ -3238,7 +3238,7 @@
       "klawiatura",
       "nadgarstek"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0142",
@@ -3329,7 +3329,7 @@
       "gasnica",
       "co2"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0146",
@@ -3419,7 +3419,7 @@
       "porazenie-pradem",
       "bhp"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0150",
@@ -3486,7 +3486,7 @@
       "kodeks-pracy",
       "czas-pracy"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0153",
@@ -3597,7 +3597,7 @@
       "prawo",
       "dane-osobowe"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0158",
@@ -3709,7 +3709,7 @@
       "oem",
       "oprogramowanie"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0163",
@@ -3822,7 +3822,7 @@
       "ekologia",
       "recykling"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0168",
@@ -3913,7 +3913,7 @@
       "hierarchia",
       "windows-server"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0172",
@@ -3981,7 +3981,7 @@
       "domena",
       "windows-server"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0175",
@@ -4027,7 +4027,7 @@
       "dns",
       "windows-server"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0177",
@@ -4119,7 +4119,7 @@
       "grupy",
       "windows-server"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0181",
@@ -4142,7 +4142,7 @@
       "lsdou",
       "windows-server"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0182",
@@ -4188,7 +4188,7 @@
       "group-policy",
       "windows-server"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0184",
@@ -4211,7 +4211,7 @@
       "group-policy",
       "windows-server"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0185",
@@ -4234,7 +4234,7 @@
       "group-policy",
       "windows-server"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0186",
@@ -4257,7 +4257,7 @@
       "bezpieczenstwo",
       "windows-server"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0187",
@@ -4302,7 +4302,7 @@
       "reverse-lookup",
       "windows-server"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0189",
@@ -4325,7 +4325,7 @@
       "active-directory",
       "windows-server"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0190",
@@ -4347,7 +4347,7 @@
       "conditional-forwarder",
       "windows-server"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0191",
@@ -4370,7 +4370,7 @@
       "poczta",
       "windows-server"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0192",
@@ -4416,7 +4416,7 @@
       "brama",
       "windows-server"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0194",
@@ -4439,7 +4439,7 @@
       "ha",
       "windows-server"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0195",
@@ -4462,7 +4462,7 @@
       "active-directory",
       "windows-server"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0196",
@@ -4552,7 +4552,7 @@
       "web-server",
       "windows-server"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0200",
@@ -4598,7 +4598,7 @@
       "sudo",
       "zarzadzanie-uzytkownikami"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0202",
@@ -4689,7 +4689,7 @@
       "adresowanie",
       "siec"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0206",
@@ -4711,7 +4711,7 @@
       "loopback",
       "adresowanie"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0207",
@@ -4824,7 +4824,7 @@
       "mac",
       "identyfikator"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0212",
@@ -4847,7 +4847,7 @@
       "icmpv6",
       "arp"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0213",
@@ -4938,7 +4938,7 @@
       "stateless",
       "slaac"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0217",
@@ -5053,7 +5053,7 @@
       "typ1",
       "typ2"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0222",
@@ -5122,7 +5122,7 @@
       "kontener",
       "wirtualizacja"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0225",
@@ -5145,7 +5145,7 @@
       "parzystosc",
       "backup"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0226",
@@ -5259,7 +5259,7 @@
       "odpornosc",
       "wybor"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0231",
@@ -5351,7 +5351,7 @@
       "szyfrowanie",
       "windows"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0235",
@@ -5419,7 +5419,7 @@
       "zasada-minimalna",
       "uprawnienia"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0238",
@@ -5557,7 +5557,7 @@
       "certyfikat",
       "ntfs"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0244",
@@ -5672,7 +5672,7 @@
       "ipv4",
       "praktyka-cke"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0249",
@@ -5742,7 +5742,7 @@
       "uprawnienia",
       "praktyka-cke"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0252",
@@ -5764,7 +5764,7 @@
       "cidr",
       "obliczenia"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0253",
@@ -5787,7 +5787,7 @@
       "wydajnosc",
       "praktyka-cke"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0254",
@@ -5901,7 +5901,7 @@
       "diagnostyka",
       "praktyka-cke"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0259",
@@ -5947,7 +5947,7 @@
       "wykluczenie",
       "praktyka-cke"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0261",
@@ -5994,7 +5994,7 @@
       "diagnostyka",
       "praktyka-cke"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0263",
@@ -6022,13 +6022,13 @@
     "options": [],
     "correct": "255.255.255.224",
     "explanation": "/27 = 24 + 3 jedynki = 11111111.11111111.11111111.11100000 = 255.255.255.224 (32 adresy w podsieci, 30 hostów).",
-    "ckeRef": "INF.02.4.3",
+    "ckeRef": "INF.02.5.2",
     "tags": [
       "maska",
       "cidr",
       "podsieci"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0265",
@@ -6039,12 +6039,12 @@
     "options": [],
     "correct": "255.255.252.0",
     "explanation": "/22 = pierwsze 22 bity = 1, reszta = 0. W trzecim oktecie: 11111100 = 252. Maska: 255.255.252.0.",
-    "ckeRef": "INF.02.4.3",
+    "ckeRef": "INF.02.5.2",
     "tags": [
       "maska",
       "cidr"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0266",
@@ -6055,12 +6055,12 @@
     "options": [],
     "correct": "192.168.10.255",
     "explanation": "Dla /24 broadcast to ostatni adres podsieci: ostatni oktet = 255. Wynik: 192.168.10.255.",
-    "ckeRef": "INF.02.4.3",
+    "ckeRef": "INF.02.5.2",
     "tags": [
       "broadcast",
       "podsieci"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0267",
@@ -6071,13 +6071,13 @@
     "options": [],
     "correct": "172.16.3.255",
     "explanation": "/22 = 4 adresy w trzecim oktecie. Sieć 172.16.0.0/22 obejmuje 172.16.0.0 - 172.16.3.255. Broadcast = 172.16.3.255.",
-    "ckeRef": "INF.02.4.3",
+    "ckeRef": "INF.02.5.2",
     "tags": [
       "broadcast",
       "cidr",
       "podsieci"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0268",
@@ -6088,12 +6088,12 @@
     "options": [],
     "correct": "6",
     "explanation": "/29 = 32 - 29 = 3 bity hosta = 2^3 = 8 adresów; minus adres sieci i broadcast = 6 hostów użytkowych.",
-    "ckeRef": "INF.02.4.3",
+    "ckeRef": "INF.02.5.2",
     "tags": [
       "hosty",
       "cidr"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0269",
@@ -6178,7 +6178,7 @@
       "gpo",
       "gpupdate"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0274",
@@ -6263,7 +6263,7 @@
       "okablowanie",
       "cat5e"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0279",
@@ -6280,7 +6280,7 @@
       "raid5",
       "obliczenia"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0280",
@@ -6297,7 +6297,7 @@
       "raid10",
       "obliczenia"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0281",
@@ -6308,13 +6308,13 @@
     "options": [],
     "correct": "fe80::",
     "explanation": "Prefiks fe80::/10 jest zarezerwowany dla adresów link-local. Każdy interfejs IPv6 automatycznie generuje swój link-local (SLAAC).",
-    "ckeRef": "INF.02.6.1",
+    "ckeRef": "INF.02.5.3",
     "tags": [
       "ipv6",
       "link-local",
       "fe80"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0282",
@@ -6331,7 +6331,7 @@
       "atx",
       "napiecia"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0283",
@@ -6397,7 +6397,7 @@
       "cli",
       "ps"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0286",
@@ -6463,7 +6463,7 @@
       "windows",
       "reguly"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0289",
@@ -6501,14 +6501,14 @@
     ],
     "correct": 2,
     "explanation": "6 podsieci wymaga 3 dodatkowych bitów (2^3 = 8 ≥ 6). /24 + 3 = /27. Maska /27 daje 8 podsieci po 32 adresy (30 hostów). Mniej bitów (/26) da tylko 4 podsieci.",
-    "ckeRef": "INF.02.4.3",
+    "ckeRef": "INF.02.5.2",
     "tags": [
       "subnet",
       "cidr",
       "obliczenia",
       "podsieci"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0291",
@@ -6524,13 +6524,13 @@
     ],
     "correct": 0,
     "explanation": "Maska 255.255.252.0 = /22 daje bloki po 4 w trzecim oktecie. 50/4 = 12 reszta 2 → 12*4 = 48. Podsieć: 172.16.48.0/22 (zakres 172.16.48.0 - 172.16.51.255).",
-    "ckeRef": "INF.02.4.3",
+    "ckeRef": "INF.02.5.2",
     "tags": [
       "subnet",
       "cidr",
       "obliczenia"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0292",
@@ -6546,13 +6546,13 @@
     ],
     "correct": 1,
     "explanation": "/etc/passwd zawiera definicje kont użytkowników (login, UID, GID, gecos, katalog domowy, powłoka). Zaszyfrowane hasła są w /etc/shadow.",
-    "ckeRef": "INF.02.3.2",
+    "ckeRef": "INF.02.3.3",
     "tags": [
       "linux",
       "passwd",
       "konta"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0293",
@@ -6590,13 +6590,13 @@
     ],
     "correct": 1,
     "explanation": "Drukarka laserowa nakłada toner (sproszkowany barwnik) na papier i utrwala go w zespole utrwalającym (fuserze) za pomocą wysokiej temperatury (~180°C) i nacisku.",
-    "ckeRef": "INF.02.8.2",
+    "ckeRef": "INF.02.6.1",
     "tags": [
       "drukarka",
       "laserowa",
       "toner"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   },
   {
     "id": "Q-0295",
@@ -6663,6 +6663,6 @@
       "transport",
       "osi"
     ],
-    "frequency": "high"
+    "frequency": "medium"
   }
 ]
