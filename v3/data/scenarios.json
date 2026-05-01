@@ -8,7 +8,10 @@
       {
         "n": 1,
         "instruction": "Jaką maskę podsieci zastosować dla Laboratorium A wymagającego 60 hostów?",
-        "expectedAnswer": ["255.255.255.128", "/25"],
+        "expectedAnswer": [
+          "255.255.255.128",
+          "/25"
+        ],
         "pointsMax": 2,
         "kind": "fill",
         "hint": "2^n - 2 >= 60, sprawdź /25"
@@ -30,7 +33,10 @@
       {
         "n": 4,
         "instruction": "Jaka jest maska podsieci dla działu Administracja (30 hostów)?",
-        "expectedAnswer": ["255.255.255.224", "/27"],
+        "expectedAnswer": [
+          "255.255.255.224",
+          "/27"
+        ],
         "pointsMax": 2,
         "kind": "fill",
         "hint": "2^5 - 2 = 30 hostów, /27"
@@ -52,7 +58,10 @@
       {
         "n": 7,
         "instruction": "Jaka maska jest odpowiednia dla serwerowni (6 hostów)?",
-        "expectedAnswer": ["255.255.255.248", "/29"],
+        "expectedAnswer": [
+          "255.255.255.248",
+          "/29"
+        ],
         "pointsMax": 2,
         "kind": "fill",
         "hint": "2^3 - 2 = 6 hostów, /29"
@@ -70,27 +79,75 @@
         "expectedAnswer": "Cat 6A",
         "pointsMax": 1,
         "kind": "choose",
-        "options": ["Cat 5", "Cat 5e", "Cat 6A", "Cat 3"]
+        "options": [
+          "Cat 5",
+          "Cat 5e",
+          "Cat 6A",
+          "Cat 3"
+        ]
       },
       {
         "n": 10,
         "instruction": "Ile adresów hostów jest dostępnych w sieci /27?",
-        "expectedAnswer": ["30", "30 hostów"],
+        "expectedAnswer": [
+          "30",
+          "30 hostów"
+        ],
         "pointsMax": 1,
         "kind": "fill"
       }
     ],
     "rubric": [
-      {"criterion": "Poprawna maska dla Lab A (/25)", "points": 2, "autograde": true},
-      {"criterion": "Poprawny adres sieci Lab A", "points": 1, "autograde": true},
-      {"criterion": "Poprawny broadcast Lab A", "points": 1, "autograde": true},
-      {"criterion": "Poprawna maska dla Administracji (/27)", "points": 2, "autograde": true},
-      {"criterion": "Poprawny adres sieci Administracji", "points": 1, "autograde": true},
-      {"criterion": "Poprawny broadcast Administracji", "points": 1, "autograde": true},
-      {"criterion": "Poprawna maska dla Serwerowni (/29)", "points": 2, "autograde": true},
-      {"criterion": "Kompletna dokumentacja schematu sieci", "points": 2, "autograde": false},
-      {"criterion": "Wybór właściwego kabla (Cat 6A)", "points": 1, "autograde": true},
-      {"criterion": "Poprawna liczba hostów w /27", "points": 1, "autograde": true}
+      {
+        "criterion": "Poprawna maska dla Lab A (/25)",
+        "points": 2,
+        "autograde": true
+      },
+      {
+        "criterion": "Poprawny adres sieci Lab A",
+        "points": 1,
+        "autograde": true
+      },
+      {
+        "criterion": "Poprawny broadcast Lab A",
+        "points": 1,
+        "autograde": true
+      },
+      {
+        "criterion": "Poprawna maska dla Administracji (/27)",
+        "points": 2,
+        "autograde": true
+      },
+      {
+        "criterion": "Poprawny adres sieci Administracji",
+        "points": 1,
+        "autograde": true
+      },
+      {
+        "criterion": "Poprawny broadcast Administracji",
+        "points": 1,
+        "autograde": true
+      },
+      {
+        "criterion": "Poprawna maska dla Serwerowni (/29)",
+        "points": 2,
+        "autograde": true
+      },
+      {
+        "criterion": "Kompletna dokumentacja schematu sieci",
+        "points": 2,
+        "autograde": false
+      },
+      {
+        "criterion": "Wybór właściwego kabla (Cat 6A)",
+        "points": 1,
+        "autograde": true
+      },
+      {
+        "criterion": "Poprawna liczba hostów w /27",
+        "points": 1,
+        "autograde": true
+      }
     ],
     "totalPoints": 14,
     "passThresholdPct": 0.75,
@@ -112,7 +169,10 @@
       {
         "n": 2,
         "instruction": "Ustaw statyczny adres IP 192.168.1.1, maskę 255.255.255.0, bramę 192.168.1.254 za pomocą PowerShell.",
-        "expectedAnswer": ["New-NetIPAddress", "netsh interface ip set address"],
+        "expectedAnswer": [
+          "New-NetIPAddress",
+          "netsh interface ip set address"
+        ],
         "pointsMax": 2,
         "kind": "command",
         "hint": "Użyj New-NetIPAddress lub netsh"
@@ -120,21 +180,30 @@
       {
         "n": 3,
         "instruction": "Zmień nazwę komputera na DC01 za pomocą PowerShell.",
-        "expectedAnswer": ["Rename-Computer -NewName DC01", "Rename-Computer -NewName \"DC01\""],
+        "expectedAnswer": [
+          "Rename-Computer -NewName DC01",
+          "Rename-Computer -NewName \"DC01\""
+        ],
         "pointsMax": 1,
         "kind": "command"
       },
       {
         "n": 4,
         "instruction": "Zainstaluj rolę AD DS wraz z narzędziami zarządzania.",
-        "expectedAnswer": ["Install-WindowsFeature AD-Domain-Services -IncludeManagementTools", "Install-WindowsFeature -Name AD-Domain-Services"],
+        "expectedAnswer": [
+          "Install-WindowsFeature AD-Domain-Services -IncludeManagementTools",
+          "Install-WindowsFeature -Name AD-Domain-Services"
+        ],
         "pointsMax": 2,
         "kind": "command"
       },
       {
         "n": 5,
         "instruction": "Wypromuj serwer do roli kontrolera domeny dla nowej domeny szkola.local.",
-        "expectedAnswer": ["Install-ADDSForest -DomainName", "Install-ADDSForest"],
+        "expectedAnswer": [
+          "Install-ADDSForest -DomainName",
+          "Install-ADDSForest"
+        ],
         "pointsMax": 2,
         "kind": "command",
         "hint": "Użyj Install-ADDSForest z parametrem -DomainName"
@@ -142,21 +211,30 @@
       {
         "n": 6,
         "instruction": "Utwórz jednostkę organizacyjną (OU) o nazwie 'Uczniowie' w domenie szkola.local.",
-        "expectedAnswer": ["New-ADOrganizationalUnit -Name", "New-ADOrganizationalUnit"],
+        "expectedAnswer": [
+          "New-ADOrganizationalUnit -Name",
+          "New-ADOrganizationalUnit"
+        ],
         "pointsMax": 1,
         "kind": "command"
       },
       {
         "n": 7,
         "instruction": "Utwórz konto użytkownika dla Jana Kowalskiego (login: jkowalski) w OU Uczniowie.",
-        "expectedAnswer": ["New-ADUser -Name", "New-ADUser"],
+        "expectedAnswer": [
+          "New-ADUser -Name",
+          "New-ADUser"
+        ],
         "pointsMax": 2,
         "kind": "command"
       },
       {
         "n": 8,
         "instruction": "Dodaj użytkownika jkowalski do grupy Domain Users.",
-        "expectedAnswer": ["Add-ADGroupMember", "Add-ADGroupMember -Identity"],
+        "expectedAnswer": [
+          "Add-ADGroupMember",
+          "Add-ADGroupMember -Identity"
+        ],
         "pointsMax": 1,
         "kind": "command"
       },
@@ -170,23 +248,66 @@
       {
         "n": 10,
         "instruction": "Wymuś natychmiastowe zastosowanie zasad grupy.",
-        "expectedAnswer": ["gpupdate /force", "gpupdate"],
+        "expectedAnswer": [
+          "gpupdate /force",
+          "gpupdate"
+        ],
         "pointsMax": 1,
         "kind": "command",
         "hint": "Polecenie gpupdate z parametrem /force"
       }
     ],
     "rubric": [
-      {"criterion": "Serwer zainstalowany poprawnie", "points": 1, "autograde": false},
-      {"criterion": "Poprawna konfiguracja IP", "points": 2, "autograde": true},
-      {"criterion": "Nazwa komputera DC01", "points": 1, "autograde": true},
-      {"criterion": "Rola AD DS zainstalowana", "points": 2, "autograde": true},
-      {"criterion": "Serwer wypromowany do roli DC", "points": 2, "autograde": true},
-      {"criterion": "OU Uczniowie utworzona", "points": 1, "autograde": true},
-      {"criterion": "Konto jkowalski utworzone", "points": 2, "autograde": true},
-      {"criterion": "Użytkownik dodany do grupy", "points": 1, "autograde": true},
-      {"criterion": "GPO skonfigurowane poprawnie", "points": 2, "autograde": false},
-      {"criterion": "gpupdate /force wykonany", "points": 1, "autograde": true}
+      {
+        "criterion": "Serwer zainstalowany poprawnie",
+        "points": 1,
+        "autograde": false
+      },
+      {
+        "criterion": "Poprawna konfiguracja IP",
+        "points": 2,
+        "autograde": true
+      },
+      {
+        "criterion": "Nazwa komputera DC01",
+        "points": 1,
+        "autograde": true
+      },
+      {
+        "criterion": "Rola AD DS zainstalowana",
+        "points": 2,
+        "autograde": true
+      },
+      {
+        "criterion": "Serwer wypromowany do roli DC",
+        "points": 2,
+        "autograde": true
+      },
+      {
+        "criterion": "OU Uczniowie utworzona",
+        "points": 1,
+        "autograde": true
+      },
+      {
+        "criterion": "Konto jkowalski utworzone",
+        "points": 2,
+        "autograde": true
+      },
+      {
+        "criterion": "Użytkownik dodany do grupy",
+        "points": 1,
+        "autograde": true
+      },
+      {
+        "criterion": "GPO skonfigurowane poprawnie",
+        "points": 2,
+        "autograde": false
+      },
+      {
+        "criterion": "gpupdate /force wykonany",
+        "points": 1,
+        "autograde": true
+      }
     ],
     "totalPoints": 15,
     "passThresholdPct": 0.75,
@@ -201,35 +322,53 @@
       {
         "n": 1,
         "instruction": "Zaktualizuj listę pakietów systemu.",
-        "expectedAnswer": ["apt update", "sudo apt update", "apt-get update"],
+        "expectedAnswer": [
+          "apt update",
+          "sudo apt update",
+          "apt-get update"
+        ],
         "pointsMax": 1,
         "kind": "command"
       },
       {
         "n": 2,
         "instruction": "Zainstaluj pakiet Samba.",
-        "expectedAnswer": ["apt install samba", "sudo apt install samba", "apt-get install samba"],
+        "expectedAnswer": [
+          "apt install samba",
+          "sudo apt install samba",
+          "apt-get install samba"
+        ],
         "pointsMax": 1,
         "kind": "command"
       },
       {
         "n": 3,
         "instruction": "Utwórz katalog /srv/samba/publiczny do udostępnienia.",
-        "expectedAnswer": ["mkdir -p /srv/samba/publiczny", "mkdir /srv/samba/publiczny"],
+        "expectedAnswer": [
+          "mkdir -p /srv/samba/publiczny",
+          "mkdir /srv/samba/publiczny"
+        ],
         "pointsMax": 1,
         "kind": "command"
       },
       {
         "n": 4,
         "instruction": "Ustaw uprawnienia do katalogu tak, aby wszyscy użytkownicy mogli zapisywać pliki.",
-        "expectedAnswer": ["chmod 777 /srv/samba/publiczny", "chmod 0777 /srv/samba/publiczny", "chmod a+rwx /srv/samba/publiczny"],
+        "expectedAnswer": [
+          "chmod 777 /srv/samba/publiczny",
+          "chmod 0777 /srv/samba/publiczny",
+          "chmod a+rwx /srv/samba/publiczny"
+        ],
         "pointsMax": 1,
         "kind": "command"
       },
       {
         "n": 5,
         "instruction": "Jak nazywa się główny plik konfiguracyjny usługi Samba?",
-        "expectedAnswer": ["/etc/samba/smb.conf", "smb.conf"],
+        "expectedAnswer": [
+          "/etc/samba/smb.conf",
+          "smb.conf"
+        ],
         "pointsMax": 1,
         "kind": "fill"
       },
@@ -243,43 +382,96 @@
       {
         "n": 7,
         "instruction": "Utwórz użytkownika Linux o nazwie 'pracownik'.",
-        "expectedAnswer": ["useradd -m pracownik", "adduser pracownik"],
+        "expectedAnswer": [
+          "useradd -m pracownik",
+          "adduser pracownik"
+        ],
         "pointsMax": 1,
         "kind": "command"
       },
       {
         "n": 8,
         "instruction": "Ustaw hasło Samba dla użytkownika pracownik.",
-        "expectedAnswer": ["smbpasswd -a pracownik", "sudo smbpasswd -a pracownik"],
+        "expectedAnswer": [
+          "smbpasswd -a pracownik",
+          "sudo smbpasswd -a pracownik"
+        ],
         "pointsMax": 1,
         "kind": "command"
       },
       {
         "n": 9,
         "instruction": "Uruchom ponownie usługę Samba.",
-        "expectedAnswer": ["systemctl restart smbd", "systemctl restart smbd nmbd", "service smbd restart"],
+        "expectedAnswer": [
+          "systemctl restart smbd",
+          "systemctl restart smbd nmbd",
+          "service smbd restart"
+        ],
         "pointsMax": 1,
         "kind": "command"
       },
       {
         "n": 10,
         "instruction": "Sprawdź status usługi smbd.",
-        "expectedAnswer": ["systemctl status smbd", "systemctl is-active smbd"],
+        "expectedAnswer": [
+          "systemctl status smbd",
+          "systemctl is-active smbd"
+        ],
         "pointsMax": 1,
         "kind": "command"
       }
     ],
     "rubric": [
-      {"criterion": "Aktualizacja listy pakietów", "points": 1, "autograde": true},
-      {"criterion": "Samba zainstalowana", "points": 1, "autograde": true},
-      {"criterion": "Katalog /srv/samba/publiczny utworzony", "points": 1, "autograde": true},
-      {"criterion": "Uprawnienia 777 ustawione", "points": 1, "autograde": true},
-      {"criterion": "Znajomość nazwy pliku konfiguracyjnego", "points": 1, "autograde": true},
-      {"criterion": "Konfiguracja smb.conf poprawna", "points": 2, "autograde": false},
-      {"criterion": "Użytkownik pracownik utworzony", "points": 1, "autograde": true},
-      {"criterion": "Hasło Samba ustawione", "points": 1, "autograde": true},
-      {"criterion": "Usługa Samba uruchomiona i działa", "points": 1, "autograde": false},
-      {"criterion": "Status usługi smbd zweryfikowany", "points": 1, "autograde": true}
+      {
+        "criterion": "Aktualizacja listy pakietów",
+        "points": 1,
+        "autograde": true
+      },
+      {
+        "criterion": "Samba zainstalowana",
+        "points": 1,
+        "autograde": true
+      },
+      {
+        "criterion": "Katalog /srv/samba/publiczny utworzony",
+        "points": 1,
+        "autograde": true
+      },
+      {
+        "criterion": "Uprawnienia 777 ustawione",
+        "points": 1,
+        "autograde": true
+      },
+      {
+        "criterion": "Znajomość nazwy pliku konfiguracyjnego",
+        "points": 1,
+        "autograde": true
+      },
+      {
+        "criterion": "Konfiguracja smb.conf poprawna",
+        "points": 2,
+        "autograde": false
+      },
+      {
+        "criterion": "Użytkownik pracownik utworzony",
+        "points": 1,
+        "autograde": true
+      },
+      {
+        "criterion": "Hasło Samba ustawione",
+        "points": 1,
+        "autograde": true
+      },
+      {
+        "criterion": "Usługa Samba uruchomiona i działa",
+        "points": 1,
+        "autograde": false
+      },
+      {
+        "criterion": "Status usługi smbd zweryfikowany",
+        "points": 1,
+        "autograde": true
+      }
     ],
     "totalPoints": 11,
     "passThresholdPct": 0.75,
@@ -301,7 +493,12 @@
       {
         "n": 2,
         "instruction": "Komputer nie wydaje żadnych dźwięków POST. Co może być przyczyną braku jakiegokolwiek sygnału dźwiękowego i obrazu?",
-        "expectedAnswer": ["PSU", "zasilacz", "płyta główna", "PSU lub płyta główna"],
+        "expectedAnswer": [
+          "PSU",
+          "zasilacz",
+          "płyta główna",
+          "PSU lub płyta główna"
+        ],
         "pointsMax": 2,
         "kind": "fill",
         "hint": "Brak sygnału POST wskazuje na brak zasilania lub awarię płyty"
@@ -323,7 +520,13 @@
       {
         "n": 5,
         "instruction": "Jak zresetować ustawienia BIOS do wartości domyślnych bez dostępu do menu BIOS?",
-        "expectedAnswer": ["jumper", "zworkę", "wyciągnij baterię CMOS", "baterię CMOS", "clear CMOS"],
+        "expectedAnswer": [
+          "jumper",
+          "zworkę",
+          "wyciągnij baterię CMOS",
+          "baterię CMOS",
+          "clear CMOS"
+        ],
         "pointsMax": 2,
         "kind": "fill",
         "hint": "Szukaj zworki CLRTC na płycie lub baterii CR2032"
@@ -331,7 +534,12 @@
       {
         "n": 6,
         "instruction": "Komputer teraz uruchamia POST i wydaje 1 długi + 3 krótkie sygnały dźwiękowe (BIOS AMI). Co oznacza ten kod?",
-        "expectedAnswer": ["karta graficzna", "GPU", "brak karty graficznej", "video error"],
+        "expectedAnswer": [
+          "karta graficzna",
+          "GPU",
+          "brak karty graficznej",
+          "video error"
+        ],
         "pointsMax": 2,
         "kind": "fill"
       },
@@ -345,7 +553,10 @@
       {
         "n": 8,
         "instruction": "System uruchamia się, ale Windows zgłasza błąd bootowania. Jakie polecenie uruchomić z Recovery Console, aby naprawić Master Boot Record?",
-        "expectedAnswer": ["bootrec /fixmbr", "bootrec.exe /fixmbr"],
+        "expectedAnswer": [
+          "bootrec /fixmbr",
+          "bootrec.exe /fixmbr"
+        ],
         "pointsMax": 2,
         "kind": "command",
         "hint": "bootrec /fixmbr naprawia MBR bez nadpisywania tablicy partycji"
@@ -353,7 +564,10 @@
       {
         "n": 9,
         "instruction": "Sprawdź stan SMART dysku twardego za pomocą wbudowanego narzędzia Windows.",
-        "expectedAnswer": ["wmic diskdrive get status", "wmic diskdrive get model,status"],
+        "expectedAnswer": [
+          "wmic diskdrive get status",
+          "wmic diskdrive get model,status"
+        ],
         "pointsMax": 1,
         "kind": "command"
       },
@@ -366,16 +580,56 @@
       }
     ],
     "rubric": [
-      {"criterion": "Sprawdzenie zasilania", "points": 1, "autograde": false},
-      {"criterion": "Identyfikacja przyczyny braku POST", "points": 2, "autograde": true},
-      {"criterion": "Testowanie RAM", "points": 1, "autograde": false},
-      {"criterion": "Minimalna konfiguracja testowa", "points": 1, "autograde": false},
-      {"criterion": "Reset BIOS (jumper/bateria CMOS)", "points": 2, "autograde": true},
-      {"criterion": "Interpretacja kodu błędu POST (GPU)", "points": 2, "autograde": true},
-      {"criterion": "Reinstalacja karty graficznej", "points": 1, "autograde": false},
-      {"criterion": "Naprawa MBR (bootrec /fixmbr)", "points": 2, "autograde": true},
-      {"criterion": "Diagnostyka SMART", "points": 1, "autograde": true},
-      {"criterion": "Protokół serwisowy", "points": 2, "autograde": false}
+      {
+        "criterion": "Sprawdzenie zasilania",
+        "points": 1,
+        "autograde": false
+      },
+      {
+        "criterion": "Identyfikacja przyczyny braku POST",
+        "points": 2,
+        "autograde": true
+      },
+      {
+        "criterion": "Testowanie RAM",
+        "points": 1,
+        "autograde": false
+      },
+      {
+        "criterion": "Minimalna konfiguracja testowa",
+        "points": 1,
+        "autograde": false
+      },
+      {
+        "criterion": "Reset BIOS (jumper/bateria CMOS)",
+        "points": 2,
+        "autograde": true
+      },
+      {
+        "criterion": "Interpretacja kodu błędu POST (GPU)",
+        "points": 2,
+        "autograde": true
+      },
+      {
+        "criterion": "Reinstalacja karty graficznej",
+        "points": 1,
+        "autograde": false
+      },
+      {
+        "criterion": "Naprawa MBR (bootrec /fixmbr)",
+        "points": 2,
+        "autograde": true
+      },
+      {
+        "criterion": "Diagnostyka SMART",
+        "points": 1,
+        "autograde": true
+      },
+      {
+        "criterion": "Protokół serwisowy",
+        "points": 2,
+        "autograde": false
+      }
     ],
     "totalPoints": 15,
     "passThresholdPct": 0.75,
@@ -397,7 +651,12 @@
       {
         "n": 2,
         "instruction": "Jaki protokół jest używany do drukowania sieciowego na port 9100 TCP?",
-        "expectedAnswer": ["RAW", "Raw printing", "TCP/IP RAW", "port 9100"],
+        "expectedAnswer": [
+          "RAW",
+          "Raw printing",
+          "TCP/IP RAW",
+          "port 9100"
+        ],
         "pointsMax": 1,
         "kind": "fill",
         "hint": "Port 9100 to standardowy port druku RAW"
@@ -405,7 +664,11 @@
       {
         "n": 3,
         "instruction": "Dodaj drukarkę sieciową w Windows używając PowerShell. Drukarka ma adres 192.168.1.200.",
-        "expectedAnswer": ["Add-Printer", "Add-PrinterPort", "Add-Printer -ConnectionName"],
+        "expectedAnswer": [
+          "Add-Printer",
+          "Add-PrinterPort",
+          "Add-Printer -ConnectionName"
+        ],
         "pointsMax": 2,
         "kind": "command",
         "hint": "Użyj Add-PrinterPort a następnie Add-Printer"
@@ -427,7 +690,11 @@
       {
         "n": 6,
         "instruction": "Jaką minimalną rozdzielczość (DPI) zaleca się do skanowania dokumentów przeznaczonych do OCR?",
-        "expectedAnswer": ["300", "300 DPI", "300 dpi"],
+        "expectedAnswer": [
+          "300",
+          "300 DPI",
+          "300 dpi"
+        ],
         "pointsMax": 1,
         "kind": "fill"
       },
@@ -441,21 +708,60 @@
       {
         "n": 8,
         "instruction": "Jakie jest rozszerzenie pliku dla kompresji bezstratnej przy skanowaniu dokumentów?",
-        "expectedAnswer": ["PDF", ".pdf", "TIFF", ".tiff", "PNG", ".png"],
+        "expectedAnswer": [
+          "PDF",
+          ".pdf",
+          "TIFF",
+          ".tiff",
+          "PNG",
+          ".png"
+        ],
         "pointsMax": 1,
         "kind": "fill",
         "hint": "PDF lub TIFF są preferowane dla dokumentów"
       }
     ],
     "rubric": [
-      {"criterion": "Drukarka podłączona do sieci", "points": 1, "autograde": false},
-      {"criterion": "Znajomość protokołu RAW (port 9100)", "points": 1, "autograde": true},
-      {"criterion": "Dodanie drukarki przez PowerShell", "points": 2, "autograde": true},
-      {"criterion": "Instalacja sterownika i test wydruku", "points": 1, "autograde": false},
-      {"criterion": "Udostępnienie drukarki", "points": 1, "autograde": false},
-      {"criterion": "Znajomość minimalnego DPI do OCR (300)", "points": 1, "autograde": true},
-      {"criterion": "Instalacja skanera i test", "points": 1, "autograde": false},
-      {"criterion": "Znajomość formatu bezstratnego", "points": 1, "autograde": true}
+      {
+        "criterion": "Drukarka podłączona do sieci",
+        "points": 1,
+        "autograde": false
+      },
+      {
+        "criterion": "Znajomość protokołu RAW (port 9100)",
+        "points": 1,
+        "autograde": true
+      },
+      {
+        "criterion": "Dodanie drukarki przez PowerShell",
+        "points": 2,
+        "autograde": true
+      },
+      {
+        "criterion": "Instalacja sterownika i test wydruku",
+        "points": 1,
+        "autograde": false
+      },
+      {
+        "criterion": "Udostępnienie drukarki",
+        "points": 1,
+        "autograde": false
+      },
+      {
+        "criterion": "Znajomość minimalnego DPI do OCR (300)",
+        "points": 1,
+        "autograde": true
+      },
+      {
+        "criterion": "Instalacja skanera i test",
+        "points": 1,
+        "autograde": false
+      },
+      {
+        "criterion": "Znajomość formatu bezstratnego",
+        "points": 1,
+        "autograde": true
+      }
     ],
     "totalPoints": 9,
     "passThresholdPct": 0.75,
@@ -470,7 +776,9 @@
       {
         "n": 1,
         "instruction": "Skompresuj adres IPv6: 2001:0db8:0000:0000:0000:0000:0000:0001",
-        "expectedAnswer": ["2001:db8::1"],
+        "expectedAnswer": [
+          "2001:db8::1"
+        ],
         "pointsMax": 2,
         "kind": "fill",
         "hint": "Skróć wiodące zera i zastąp ciągłe zera ::"
@@ -478,35 +786,53 @@
       {
         "n": 2,
         "instruction": "Jakiego rodzaju jest adres FE80::1?",
-        "expectedAnswer": ["link-local", "adres lokalny łącza", "FE80::/10"],
+        "expectedAnswer": [
+          "link-local",
+          "adres lokalny łącza",
+          "FE80::/10"
+        ],
         "pointsMax": 1,
         "kind": "fill"
       },
       {
         "n": 3,
         "instruction": "Jakiego rodzaju jest adres ::1?",
-        "expectedAnswer": ["loopback", "pętla zwrotna", "::1/128"],
+        "expectedAnswer": [
+          "loopback",
+          "pętla zwrotna",
+          "::1/128"
+        ],
         "pointsMax": 1,
         "kind": "fill"
       },
       {
         "n": 4,
         "instruction": "Wyświetl konfigurację interfejsów sieciowych w Windows, aby zobaczyć adresy IPv6.",
-        "expectedAnswer": ["ipconfig /all", "ipconfig"],
+        "expectedAnswer": [
+          "ipconfig /all",
+          "ipconfig"
+        ],
         "pointsMax": 1,
         "kind": "command"
       },
       {
         "n": 5,
         "instruction": "Dodaj statyczny adres IPv6 2001:db8:1::10/64 do interfejsu 'Ethernet' w Windows.",
-        "expectedAnswer": ["netsh interface ipv6 add address", "New-NetIPAddress -IPAddress 2001:db8:1::10"],
+        "expectedAnswer": [
+          "netsh interface ipv6 add address",
+          "New-NetIPAddress -IPAddress 2001:db8:1::10"
+        ],
         "pointsMax": 2,
         "kind": "command"
       },
       {
         "n": 6,
         "instruction": "Adres MAC to 00:1A:2B:3C:4D:5E. Jaki będzie adres link-local EUI-64?",
-        "expectedAnswer": ["FE80::021A:2BFF:FE3C:4D5E", "FE80::21A:2BFF:FE3C:4D5E", "fe80::21a:2bff:fe3c:4d5e"],
+        "expectedAnswer": [
+          "FE80::021A:2BFF:FE3C:4D5E",
+          "FE80::21A:2BFF:FE3C:4D5E",
+          "fe80::21a:2bff:fe3c:4d5e"
+        ],
         "pointsMax": 2,
         "kind": "fill",
         "hint": "Wstaw FF:FE w środek adresu MAC i odwróć bit U/L (7. bit)"
@@ -514,27 +840,66 @@
       {
         "n": 7,
         "instruction": "Zweryfikuj łączność IPv6 pingując adres loopback.",
-        "expectedAnswer": ["ping ::1", "ping -6 ::1"],
+        "expectedAnswer": [
+          "ping ::1",
+          "ping -6 ::1"
+        ],
         "pointsMax": 1,
         "kind": "command"
       },
       {
         "n": 8,
         "instruction": "Jaki mechanizm pozwala hostowi IPv6 skonfigurować adres bez serwera DHCPv6?",
-        "expectedAnswer": ["SLAAC", "Stateless Address Autoconfiguration", "bezstanowa autokonfiguracja"],
+        "expectedAnswer": [
+          "SLAAC",
+          "Stateless Address Autoconfiguration",
+          "bezstanowa autokonfiguracja"
+        ],
         "pointsMax": 1,
         "kind": "fill"
       }
     ],
     "rubric": [
-      {"criterion": "Poprawna kompresja IPv6", "points": 2, "autograde": true},
-      {"criterion": "Identyfikacja link-local", "points": 1, "autograde": true},
-      {"criterion": "Identyfikacja loopback", "points": 1, "autograde": true},
-      {"criterion": "Wyświetlenie konfiguracji IP", "points": 1, "autograde": true},
-      {"criterion": "Dodanie statycznego adresu IPv6", "points": 2, "autograde": true},
-      {"criterion": "Obliczenie EUI-64", "points": 2, "autograde": true},
-      {"criterion": "Ping loopback IPv6", "points": 1, "autograde": true},
-      {"criterion": "Znajomość SLAAC", "points": 1, "autograde": true}
+      {
+        "criterion": "Poprawna kompresja IPv6",
+        "points": 2,
+        "autograde": true
+      },
+      {
+        "criterion": "Identyfikacja link-local",
+        "points": 1,
+        "autograde": true
+      },
+      {
+        "criterion": "Identyfikacja loopback",
+        "points": 1,
+        "autograde": true
+      },
+      {
+        "criterion": "Wyświetlenie konfiguracji IP",
+        "points": 1,
+        "autograde": true
+      },
+      {
+        "criterion": "Dodanie statycznego adresu IPv6",
+        "points": 2,
+        "autograde": true
+      },
+      {
+        "criterion": "Obliczenie EUI-64",
+        "points": 2,
+        "autograde": true
+      },
+      {
+        "criterion": "Ping loopback IPv6",
+        "points": 1,
+        "autograde": true
+      },
+      {
+        "criterion": "Znajomość SLAAC",
+        "points": 1,
+        "autograde": true
+      }
     ],
     "totalPoints": 11,
     "passThresholdPct": 0.75,
@@ -556,7 +921,10 @@
       {
         "n": 2,
         "instruction": "Zainstaluj rolę serwera DHCP z narzędziami zarządzania.",
-        "expectedAnswer": ["Install-WindowsFeature DHCP -IncludeManagementTools", "Install-WindowsFeature -Name DHCP"],
+        "expectedAnswer": [
+          "Install-WindowsFeature DHCP -IncludeManagementTools",
+          "Install-WindowsFeature -Name DHCP"
+        ],
         "pointsMax": 1,
         "kind": "command"
       },
@@ -570,21 +938,30 @@
       {
         "n": 4,
         "instruction": "Ustaw opcję 003 (brama domyślna) na 192.168.10.1 dla zakresu 192.168.10.0.",
-        "expectedAnswer": ["Set-DhcpServerv4OptionValue -ScopeId 192.168.10.0 -Router 192.168.10.1", "Set-DhcpServerv4OptionValue"],
+        "expectedAnswer": [
+          "Set-DhcpServerv4OptionValue -ScopeId 192.168.10.0 -Router 192.168.10.1",
+          "Set-DhcpServerv4OptionValue"
+        ],
         "pointsMax": 2,
         "kind": "command"
       },
       {
         "n": 5,
         "instruction": "Autoryzuj serwer DHCP w Active Directory.",
-        "expectedAnswer": ["Add-DhcpServerInDC", "Add-DhcpServerInDC -DnsName"],
+        "expectedAnswer": [
+          "Add-DhcpServerInDC",
+          "Add-DhcpServerInDC -DnsName"
+        ],
         "pointsMax": 1,
         "kind": "command"
       },
       {
         "n": 6,
         "instruction": "Zainstaluj rolę serwera DNS.",
-        "expectedAnswer": ["Install-WindowsFeature DNS -IncludeManagementTools", "Install-WindowsFeature -Name DNS"],
+        "expectedAnswer": [
+          "Install-WindowsFeature DNS -IncludeManagementTools",
+          "Install-WindowsFeature -Name DNS"
+        ],
         "pointsMax": 1,
         "kind": "command"
       },
@@ -598,21 +975,32 @@
       {
         "n": 8,
         "instruction": "Dodaj rekord A dla hosta 'www' wskazujący na 192.168.10.50 w strefie biuro.local.",
-        "expectedAnswer": ["Add-DnsServerResourceRecordA -ZoneName biuro.local -Name www -IPv4Address 192.168.10.50", "Add-DnsServerResourceRecordA"],
+        "expectedAnswer": [
+          "Add-DnsServerResourceRecordA -ZoneName biuro.local -Name www -IPv4Address 192.168.10.50",
+          "Add-DnsServerResourceRecordA"
+        ],
         "pointsMax": 2,
         "kind": "command"
       },
       {
         "n": 9,
         "instruction": "Zweryfikuj rozwiązanie nazwy www.biuro.local.",
-        "expectedAnswer": ["Resolve-DnsName www.biuro.local", "nslookup www.biuro.local"],
+        "expectedAnswer": [
+          "Resolve-DnsName www.biuro.local",
+          "nslookup www.biuro.local"
+        ],
         "pointsMax": 1,
         "kind": "command"
       },
       {
         "n": 10,
         "instruction": "Jaki numer opcji DHCP konfiguruje serwer DNS dla klientów?",
-        "expectedAnswer": ["006", "6", "opcja 006", "opcja 6"],
+        "expectedAnswer": [
+          "006",
+          "6",
+          "opcja 006",
+          "opcja 6"
+        ],
         "pointsMax": 1,
         "kind": "fill"
       },
@@ -632,18 +1020,66 @@
       }
     ],
     "rubric": [
-      {"criterion": "Znajomość adresu broadcast /24", "points": 1, "autograde": true},
-      {"criterion": "Rola DHCP zainstalowana", "points": 1, "autograde": true},
-      {"criterion": "Zakres DHCP skonfigurowany", "points": 2, "autograde": false},
-      {"criterion": "Opcja bramy domyślnej ustawiona", "points": 2, "autograde": true},
-      {"criterion": "DHCP autoryzowany w AD", "points": 1, "autograde": true},
-      {"criterion": "Rola DNS zainstalowana", "points": 1, "autograde": true},
-      {"criterion": "Strefa DNS biuro.local utworzona", "points": 1, "autograde": false},
-      {"criterion": "Rekord A www dodany", "points": 2, "autograde": true},
-      {"criterion": "Weryfikacja rozwiązywania nazw", "points": 1, "autograde": true},
-      {"criterion": "Znajomość opcji DHCP 006", "points": 1, "autograde": true},
-      {"criterion": "Klient otrzymał adres DHCP", "points": 1, "autograde": false},
-      {"criterion": "Dokumentacja konfiguracji", "points": 2, "autograde": false}
+      {
+        "criterion": "Znajomość adresu broadcast /24",
+        "points": 1,
+        "autograde": true
+      },
+      {
+        "criterion": "Rola DHCP zainstalowana",
+        "points": 1,
+        "autograde": true
+      },
+      {
+        "criterion": "Zakres DHCP skonfigurowany",
+        "points": 2,
+        "autograde": false
+      },
+      {
+        "criterion": "Opcja bramy domyślnej ustawiona",
+        "points": 2,
+        "autograde": true
+      },
+      {
+        "criterion": "DHCP autoryzowany w AD",
+        "points": 1,
+        "autograde": true
+      },
+      {
+        "criterion": "Rola DNS zainstalowana",
+        "points": 1,
+        "autograde": true
+      },
+      {
+        "criterion": "Strefa DNS biuro.local utworzona",
+        "points": 1,
+        "autograde": false
+      },
+      {
+        "criterion": "Rekord A www dodany",
+        "points": 2,
+        "autograde": true
+      },
+      {
+        "criterion": "Weryfikacja rozwiązywania nazw",
+        "points": 1,
+        "autograde": true
+      },
+      {
+        "criterion": "Znajomość opcji DHCP 006",
+        "points": 1,
+        "autograde": true
+      },
+      {
+        "criterion": "Klient otrzymał adres DHCP",
+        "points": 1,
+        "autograde": false
+      },
+      {
+        "criterion": "Dokumentacja konfiguracji",
+        "points": 2,
+        "autograde": false
+      }
     ],
     "totalPoints": 16,
     "passThresholdPct": 0.75,
@@ -665,28 +1101,40 @@
       {
         "n": 2,
         "instruction": "Włącz szyfrowanie BitLocker na dysku C: i zapisz klucz odzyskiwania.",
-        "expectedAnswer": ["manage-bde -on C:", "Enable-BitLocker -MountPoint C:"],
+        "expectedAnswer": [
+          "manage-bde -on C:",
+          "Enable-BitLocker -MountPoint C:"
+        ],
         "pointsMax": 2,
         "kind": "command"
       },
       {
         "n": 3,
         "instruction": "Wyświetl klucz odzyskiwania BitLocker dla dysku C:.",
-        "expectedAnswer": ["manage-bde -protectors -get C:", "manage-bde -status C:"],
+        "expectedAnswer": [
+          "manage-bde -protectors -get C:",
+          "manage-bde -status C:"
+        ],
         "pointsMax": 1,
         "kind": "command"
       },
       {
         "n": 4,
         "instruction": "Jakiego protokołu używa port 23 (Telnet)?",
-        "expectedAnswer": ["TCP", "TCP/IP"],
+        "expectedAnswer": [
+          "TCP",
+          "TCP/IP"
+        ],
         "pointsMax": 1,
         "kind": "fill"
       },
       {
         "n": 5,
         "instruction": "Zablokuj ruch przychodzący na port 23 (Telnet) używając netsh.",
-        "expectedAnswer": ["netsh advfirewall firewall add rule", "netsh advfirewall firewall add rule name=\"Block Telnet\" dir=in"],
+        "expectedAnswer": [
+          "netsh advfirewall firewall add rule",
+          "netsh advfirewall firewall add rule name=\"Block Telnet\" dir=in"
+        ],
         "pointsMax": 2,
         "kind": "command",
         "hint": "netsh advfirewall firewall add rule name=... dir=in action=block protocol=TCP localport=23"
@@ -694,28 +1142,40 @@
       {
         "n": 6,
         "instruction": "Włącz ochronę w czasie rzeczywistym Windows Defender za pomocą PowerShell.",
-        "expectedAnswer": ["Set-MpPreference -DisableRealtimeMonitoring $false", "Set-MpPreference -DisableRealTimeMonitoring $false"],
+        "expectedAnswer": [
+          "Set-MpPreference -DisableRealtimeMonitoring $false",
+          "Set-MpPreference -DisableRealTimeMonitoring $false"
+        ],
         "pointsMax": 1,
         "kind": "command"
       },
       {
         "n": 7,
         "instruction": "Uruchom pełne skanowanie antywirusowe za pomocą PowerShell.",
-        "expectedAnswer": ["Start-MpScan -ScanType FullScan", "Start-MpScan -ScanType 2"],
+        "expectedAnswer": [
+          "Start-MpScan -ScanType FullScan",
+          "Start-MpScan -ScanType 2"
+        ],
         "pointsMax": 1,
         "kind": "command"
       },
       {
         "n": 8,
         "instruction": "Sprawdź dziennik zdarzeń Security w poszukiwaniu nieudanych logowań (Event ID 4625), ostatnie 10 wpisów.",
-        "expectedAnswer": ["Get-EventLog -LogName Security -InstanceId 4625", "Get-WinEvent -LogName Security"],
+        "expectedAnswer": [
+          "Get-EventLog -LogName Security -InstanceId 4625",
+          "Get-WinEvent -LogName Security"
+        ],
         "pointsMax": 2,
         "kind": "command"
       },
       {
         "n": 9,
         "instruction": "Wyświetl wszystkie aktywne połączenia sieciowe i porty nasłuchujące.",
-        "expectedAnswer": ["netstat -an", "netstat -ano"],
+        "expectedAnswer": [
+          "netstat -an",
+          "netstat -ano"
+        ],
         "pointsMax": 1,
         "kind": "command"
       },
@@ -728,19 +1188,629 @@
       }
     ],
     "rubric": [
-      {"criterion": "GPO polityki haseł skonfigurowane", "points": 2, "autograde": false},
-      {"criterion": "BitLocker włączony", "points": 2, "autograde": true},
-      {"criterion": "Klucz odzyskiwania wyświetlony", "points": 1, "autograde": true},
-      {"criterion": "Identyfikacja protokołu Telnet (TCP)", "points": 1, "autograde": true},
-      {"criterion": "Reguła firewall blokująca port 23", "points": 2, "autograde": true},
-      {"criterion": "Windows Defender aktywny", "points": 1, "autograde": true},
-      {"criterion": "Pełne skanowanie uruchomione", "points": 1, "autograde": true},
-      {"criterion": "Analiza dziennika nieudanych logowań", "points": 2, "autograde": true},
-      {"criterion": "Wyświetlenie aktywnych połączeń", "points": 1, "autograde": true},
-      {"criterion": "Raport audytu sporządzony", "points": 2, "autograde": false}
+      {
+        "criterion": "GPO polityki haseł skonfigurowane",
+        "points": 2,
+        "autograde": false
+      },
+      {
+        "criterion": "BitLocker włączony",
+        "points": 2,
+        "autograde": true
+      },
+      {
+        "criterion": "Klucz odzyskiwania wyświetlony",
+        "points": 1,
+        "autograde": true
+      },
+      {
+        "criterion": "Identyfikacja protokołu Telnet (TCP)",
+        "points": 1,
+        "autograde": true
+      },
+      {
+        "criterion": "Reguła firewall blokująca port 23",
+        "points": 2,
+        "autograde": true
+      },
+      {
+        "criterion": "Windows Defender aktywny",
+        "points": 1,
+        "autograde": true
+      },
+      {
+        "criterion": "Pełne skanowanie uruchomione",
+        "points": 1,
+        "autograde": true
+      },
+      {
+        "criterion": "Analiza dziennika nieudanych logowań",
+        "points": 2,
+        "autograde": true
+      },
+      {
+        "criterion": "Wyświetlenie aktywnych połączeń",
+        "points": 1,
+        "autograde": true
+      },
+      {
+        "criterion": "Raport audytu sporządzony",
+        "points": 2,
+        "autograde": false
+      }
     ],
     "totalPoints": 15,
     "passThresholdPct": 0.75,
     "ckeRef": "INF.02.9.1"
+  },
+  {
+    "scenarioId": "S-009",
+    "title": "Kosztorys modernizacji sieci LAN — arkusz kalkulacyjny z VAT 23%",
+    "area": "R",
+    "durationSec": 2700,
+    "totalPoints": 100,
+    "passPct": 0.75,
+    "steps": [
+      {
+        "n": 1,
+        "kind": "fill",
+        "instruction": "Cena netto switcha 24-portowego: 1200 zł. Oblicz wartość brutto przy stawce VAT 23% (sama liczba w zł, dwa miejsca po przecinku, kropka dziesiętna).",
+        "expectedAnswer": "1476.00",
+        "pointsMax": 10,
+        "tolerantMatch": true
+      },
+      {
+        "n": 2,
+        "kind": "fill",
+        "instruction": "5 patchcordów po 18 zł netto każdy. Wartość netto razem (bez VAT, w zł): ",
+        "expectedAnswer": "90",
+        "pointsMax": 10,
+        "tolerantMatch": true
+      },
+      {
+        "n": 3,
+        "kind": "fill",
+        "instruction": "Robocizna: 8h × 75 zł/h. Wartość robocizny netto (zł): ",
+        "expectedAnswer": "600",
+        "pointsMax": 10,
+        "tolerantMatch": true
+      },
+      {
+        "n": 4,
+        "kind": "choose",
+        "instruction": "Funkcja Excel/Calc do automatycznego sumowania wartości w kolumnie B2:B10:",
+        "expectedAnswer": [
+          "B"
+        ],
+        "pointsMax": 10,
+        "options": [
+          "A",
+          "B",
+          "C",
+          "D"
+        ]
+      },
+      {
+        "n": 5,
+        "kind": "fill",
+        "instruction": "Suma netto wszystkich pozycji = 1200+90+600 = X zł. Wartość brutto razem (×1.23): ",
+        "expectedAnswer": "2324.70",
+        "pointsMax": 15,
+        "tolerantMatch": true
+      },
+      {
+        "n": 6,
+        "kind": "checkbox",
+        "instruction": "W kosztorysie CKE musi się znaleźć: nagłówek z datą, lp., nazwa pozycji, jm., ilość, cena netto jednostkowa, wartość netto, stawka VAT, wartość brutto, suma końcowa.",
+        "expectedAnswer": true,
+        "pointsMax": 15
+      },
+      {
+        "n": 7,
+        "kind": "checkbox",
+        "instruction": "Stawka VAT na sprzęt komputerowy w Polsce wynosi 23%. Wszystkie obliczenia brutto = netto × 1.23. Suma brutto wyliczona z funkcji SUMA() lub bezpośredniego mnożenia.",
+        "expectedAnswer": true,
+        "pointsMax": 10
+      },
+      {
+        "n": 8,
+        "kind": "fill",
+        "instruction": "Format komórki z wartością brutto powinien wyświetlać 2 miejsca po przecinku z separatorem 'zł'. Format Excel/Calc: ",
+        "expectedAnswer": "# ##0,00 zł",
+        "pointsMax": 10,
+        "tolerantMatch": true
+      },
+      {
+        "n": 9,
+        "kind": "checkbox",
+        "instruction": "Walidacja: wszystkie obliczenia używają formuł (nie hardcoded values), kosztorys ma pieczątkę firmy/datę, sumy brutto i netto są spójne.",
+        "expectedAnswer": true,
+        "pointsMax": 10
+      }
+    ],
+    "rubric": [
+      {
+        "label": "Wszystkie pozycje netto poprawnie obliczone",
+        "points": 25,
+        "autograde": true,
+        "stepRef": [
+          1,
+          2,
+          3
+        ]
+      },
+      {
+        "label": "Stawka VAT 23% poprawnie zastosowana, brutto = netto × 1.23",
+        "points": 25,
+        "autograde": true,
+        "stepRef": [
+          1,
+          5
+        ]
+      },
+      {
+        "label": "Funkcje SUMA / SUM użyte zamiast hardcoded values",
+        "points": 20,
+        "autograde": false,
+        "stepRef": [
+          4,
+          7
+        ]
+      },
+      {
+        "label": "Format komórek (waluta zł, 2 dec) poprawny",
+        "points": 15,
+        "autograde": false,
+        "stepRef": [
+          8
+        ]
+      },
+      {
+        "label": "Kosztorys zawiera wymagane pola (lp., nazwa, jm., ilość, cena, VAT, brutto)",
+        "points": 15,
+        "autograde": false,
+        "stepRef": [
+          6,
+          9
+        ]
+      }
+    ]
+  },
+  {
+    "scenarioId": "S-010",
+    "title": "Okablowanie strukturalne — zarobienie kabla UTP T568B + test ciągłości",
+    "area": "R",
+    "durationSec": 1800,
+    "totalPoints": 100,
+    "passPct": 0.75,
+    "steps": [
+      {
+        "n": 1,
+        "kind": "fill",
+        "instruction": "Standard kolorów w T568B — kolejność pinów 1-8 (pin 1 = pierwszy kolor). Pin 1 to kolor: ",
+        "expectedAnswer": "biało-pomarańczowy",
+        "pointsMax": 10,
+        "tolerantMatch": true
+      },
+      {
+        "n": 2,
+        "kind": "fill",
+        "instruction": "T568B pin 4: ",
+        "expectedAnswer": "niebieski",
+        "pointsMax": 10,
+        "tolerantMatch": true
+      },
+      {
+        "n": 3,
+        "kind": "fill",
+        "instruction": "T568B pin 7: ",
+        "expectedAnswer": "biało-brązowy",
+        "pointsMax": 10,
+        "tolerantMatch": true
+      },
+      {
+        "n": 4,
+        "kind": "choose",
+        "instruction": "Maksymalna długość kabla skrętki UTP w segmencie Ethernet (1000BASE-T):",
+        "expectedAnswer": [
+          "B"
+        ],
+        "pointsMax": 10,
+        "options": [
+          "50 m",
+          "100 m",
+          "150 m",
+          "200 m"
+        ]
+      },
+      {
+        "n": 5,
+        "kind": "choose",
+        "instruction": "Kabel patch-cord (połączenie urządzenia ↔ gniazdo) zarabiany w schemacie:",
+        "expectedAnswer": [
+          "A"
+        ],
+        "pointsMax": 10,
+        "options": [
+          "T568B na obu końcach (straight-through)",
+          "T568A na jednym, T568B na drugim (crossover)",
+          "Tylko T568A na obu końcach",
+          "Dowolnym dwóch standardach"
+        ]
+      },
+      {
+        "n": 6,
+        "kind": "command",
+        "instruction": "Polecenie Windows do testu połączenia z bramą domyślną (192.168.1.1) — 4 pakiety:",
+        "expectedAnswer": "ping 192.168.1.1",
+        "pointsMax": 10,
+        "tolerantMatch": true
+      },
+      {
+        "n": 7,
+        "kind": "checkbox",
+        "instruction": "Po zarobieniu wtyczki RJ-45 wykonano test testerem kabli sieciowych — wszystkie 8 par przewodzą ciągłość, brak split pair, kolejność T568B zgodna na obu końcach.",
+        "expectedAnswer": true,
+        "pointsMax": 15
+      },
+      {
+        "n": 8,
+        "kind": "checkbox",
+        "instruction": "Norma okablowania strukturalnego dla budynków biurowych w Polsce: PN-EN 50173-1. Klasa okablowania D (Cat 5e), E (Cat 6), EA (Cat 6A), F (Cat 7), FA (Cat 7A).",
+        "expectedAnswer": true,
+        "pointsMax": 10
+      },
+      {
+        "n": 9,
+        "kind": "checkbox",
+        "instruction": "Dokumentacja powykonawcza zawiera: schemat ułożenia kabli, oznaczenia gniazd, wyniki testów ciągłości i tłumienia, nazwiska wykonawców, datę odbioru.",
+        "expectedAnswer": true,
+        "pointsMax": 15
+      }
+    ],
+    "rubric": [
+      {
+        "label": "Standard T568B poprawnie zarobiony (kolejność kolorów)",
+        "points": 30,
+        "autograde": true,
+        "stepRef": [
+          1,
+          2,
+          3
+        ]
+      },
+      {
+        "label": "Test ciągłości testerem przeszedł pomyślnie",
+        "points": 25,
+        "autograde": false,
+        "stepRef": [
+          7
+        ]
+      },
+      {
+        "label": "Patch-cord straight-through vs crossover rozróżnione",
+        "points": 15,
+        "autograde": true,
+        "stepRef": [
+          5
+        ]
+      },
+      {
+        "label": "Limit 100m UTP rozumiany",
+        "points": 10,
+        "autograde": true,
+        "stepRef": [
+          4
+        ]
+      },
+      {
+        "label": "Polecenie diagnostyki (ping) zna i używa",
+        "points": 10,
+        "autograde": true,
+        "stepRef": [
+          6
+        ]
+      },
+      {
+        "label": "Norma PN-EN 50173 + dokumentacja powykonawcza opanowane",
+        "points": 10,
+        "autograde": false,
+        "stepRef": [
+          8,
+          9
+        ]
+      }
+    ]
+  },
+  {
+    "scenarioId": "S-011",
+    "title": "Klonowanie dysku — sektor po sektorze (Clonezilla / dd / Acronis)",
+    "area": "D",
+    "durationSec": 2400,
+    "totalPoints": 100,
+    "passPct": 0.75,
+    "steps": [
+      {
+        "n": 1,
+        "kind": "command",
+        "instruction": "Polecenie Linux do skopiowania całego dysku /dev/sda na /dev/sdb (sektor po sektorze, blok 4MB, progres):",
+        "expectedAnswer": "dd if=/dev/sda of=/dev/sdb bs=4M status=progress",
+        "pointsMax": 20,
+        "tolerantMatch": true
+      },
+      {
+        "n": 2,
+        "kind": "choose",
+        "instruction": "Co to jest 'image' dysku w Clonezilla?",
+        "expectedAnswer": [
+          "B"
+        ],
+        "pointsMax": 10,
+        "options": [
+          "Plik graficzny dysku",
+          "Skompresowana kopia danych dysku w plikach .img/.gz",
+          "Wirtualny dysk RAM",
+          "Backup tylko Master Boot Record"
+        ]
+      },
+      {
+        "n": 3,
+        "kind": "fill",
+        "instruction": "Aby sklonować dysk MBR z 500 GB na 1 TB i wykorzystać dodatkową przestrzeń, po klonowaniu należy: (jedno słowo, polecenie)",
+        "expectedAnswer": "rozszerzyć partycję",
+        "pointsMax": 15,
+        "tolerantMatch": true
+      },
+      {
+        "n": 4,
+        "kind": "checkbox",
+        "instruction": "Przed klonowaniem zawsze: (a) odmontuj/wyłącz partycje źródłowe, (b) sprawdź SMART źródłowego dysku, (c) potwierdź pojemność dysku docelowego ≥ źródłowego, (d) wykonaj backup ważnych danych na zewnętrznym nośniku.",
+        "expectedAnswer": true,
+        "pointsMax": 15
+      },
+      {
+        "n": 5,
+        "kind": "choose",
+        "instruction": "Który tryb Clonezilla używamy dla pełnego klonowania dysku 1:1?",
+        "expectedAnswer": [
+          "A"
+        ],
+        "pointsMax": 10,
+        "options": [
+          "device-device",
+          "device-image",
+          "image-device",
+          "image-image"
+        ]
+      },
+      {
+        "n": 6,
+        "kind": "command",
+        "instruction": "Po klonowaniu w Linux — narzędzie do rozszerzenia partycji ext4:",
+        "expectedAnswer": "resize2fs",
+        "pointsMax": 10,
+        "tolerantMatch": true
+      },
+      {
+        "n": 7,
+        "kind": "checkbox",
+        "instruction": "Po klonowaniu sprawdź: bootloader (GRUB/Windows BCD) działa, nazwa hosta zaktualizowana (jeśli klonujemy do osobnej maszyny), klucze SSH/host regenerowane, MAC adres karty sieciowej zaktualizowany.",
+        "expectedAnswer": true,
+        "pointsMax": 10
+      },
+      {
+        "n": 8,
+        "kind": "fill",
+        "instruction": "Dla dysków >2 TB schemat partycjonowania to: ",
+        "expectedAnswer": "GPT",
+        "pointsMax": 10,
+        "tolerantMatch": true
+      }
+    ],
+    "rubric": [
+      {
+        "label": "Polecenie 'dd' poprawnie skonstruowane (if/of/bs/status)",
+        "points": 25,
+        "autograde": true,
+        "stepRef": [
+          1
+        ]
+      },
+      {
+        "label": "Tryb Clonezilla rozróżnia (device-device, device-image)",
+        "points": 15,
+        "autograde": true,
+        "stepRef": [
+          2,
+          5
+        ]
+      },
+      {
+        "label": "Po klonie rozszerza partycję (resize2fs / GParted)",
+        "points": 20,
+        "autograde": true,
+        "stepRef": [
+          3,
+          6
+        ]
+      },
+      {
+        "label": "Procedura przedklonowania (backup + sprawdzenie SMART)",
+        "points": 15,
+        "autograde": false,
+        "stepRef": [
+          4
+        ]
+      },
+      {
+        "label": "Procedura postklonowania (bootloader, SSH, MAC)",
+        "points": 15,
+        "autograde": false,
+        "stepRef": [
+          7
+        ]
+      },
+      {
+        "label": "GPT vs MBR (limit 2 TB MBR)",
+        "points": 10,
+        "autograde": true,
+        "stepRef": [
+          8
+        ]
+      }
+    ]
+  },
+  {
+    "scenarioId": "S-012",
+    "title": "Konfiguracja drukarki sieciowej TCP/IP RAW port 9100",
+    "area": "P",
+    "durationSec": 1800,
+    "totalPoints": 100,
+    "passPct": 0.75,
+    "steps": [
+      {
+        "n": 1,
+        "kind": "fill",
+        "instruction": "Standardowy port TCP dla drukowania RAW (HP Jetdirect): ",
+        "expectedAnswer": "9100",
+        "pointsMax": 15,
+        "tolerantMatch": true
+      },
+      {
+        "n": 2,
+        "kind": "choose",
+        "instruction": "Protokół drukowania używany przy konfiguracji 'TCP/IP Port' w Windows dla drukarki sieciowej:",
+        "expectedAnswer": [
+          "B"
+        ],
+        "pointsMax": 10,
+        "options": [
+          "LPR (Line Printer Remote)",
+          "RAW",
+          "IPP (Internet Printing Protocol)",
+          "SNMP"
+        ]
+      },
+      {
+        "n": 3,
+        "kind": "fill",
+        "instruction": "Adres IP drukarki sieciowej w sieci biurowej zgodnie z arkuszem CKE: 192.168.0.200. W jakiej kolejności konfigurować w Windows: Ustawienia → Bluetooth i urządzenia → Drukarki i skanery → ... (wpisz nazwę przycisku):",
+        "expectedAnswer": "Dodaj drukarkę",
+        "pointsMax": 10,
+        "tolerantMatch": true
+      },
+      {
+        "n": 4,
+        "kind": "checkbox",
+        "instruction": "Aby udostępnić drukarkę w sieci dla innych użytkowników: prawym przyciskiem → Właściwości drukarki → zakładka Udostępnianie → 'Udostępnij tę drukarkę', podaj nazwę udziału (np. HP_LJ_Mag2).",
+        "expectedAnswer": true,
+        "pointsMax": 15
+      },
+      {
+        "n": 5,
+        "kind": "command",
+        "instruction": "Polecenie Linux/CUPS do dodania drukarki sieciowej z adresem 192.168.0.200 i portem 9100 (lpadmin):",
+        "expectedAnswer": "lpadmin -p HP_LJ -E -v socket://192.168.0.200:9100",
+        "pointsMax": 10,
+        "tolerantMatch": true
+      },
+      {
+        "n": 6,
+        "kind": "choose",
+        "instruction": "W Linux CUPS protokół do drukarki RAW na port 9100 ma URI:",
+        "expectedAnswer": [
+          "A"
+        ],
+        "pointsMax": 10,
+        "options": [
+          "socket://",
+          "http://",
+          "ipp://",
+          "lpd://"
+        ]
+      },
+      {
+        "n": 7,
+        "kind": "checkbox",
+        "instruction": "Po skonfigurowaniu drukarki: drukuj stronę testową z Windows + Linux, sprawdź czy oba systemy generują PDL (PostScript/PCL), sprawdź czy strona kończy się resetem drukarki.",
+        "expectedAnswer": true,
+        "pointsMax": 15
+      },
+      {
+        "n": 8,
+        "kind": "command",
+        "instruction": "Polecenie Windows do listowania zainstalowanych drukarek (PowerShell):",
+        "expectedAnswer": "Get-Printer",
+        "pointsMax": 10,
+        "tolerantMatch": true
+      },
+      {
+        "n": 9,
+        "kind": "checkbox",
+        "instruction": "Domyślne ustawienia drukowania (preferowany papier A4, druk dwustronny, druk czarno-biały) skonfigurowane na poziomie sterownika dla wszystkich użytkowników (Devices → Printer → Printing Defaults).",
+        "expectedAnswer": true,
+        "pointsMax": 5
+      }
+    ],
+    "rubric": [
+      {
+        "label": "Port 9100 RAW znany i skonfigurowany",
+        "points": 25,
+        "autograde": true,
+        "stepRef": [
+          1,
+          2
+        ]
+      },
+      {
+        "label": "Procedura dodania drukarki w Windows opanowana",
+        "points": 15,
+        "autograde": false,
+        "stepRef": [
+          3
+        ]
+      },
+      {
+        "label": "Udostępnianie drukarki w sieci (Windows Sharing)",
+        "points": 15,
+        "autograde": false,
+        "stepRef": [
+          4
+        ]
+      },
+      {
+        "label": "CUPS lpadmin + URI socket:// poprawnie",
+        "points": 20,
+        "autograde": true,
+        "stepRef": [
+          5,
+          6
+        ]
+      },
+      {
+        "label": "PowerShell Get-Printer + diagnostyka",
+        "points": 10,
+        "autograde": true,
+        "stepRef": [
+          8
+        ]
+      },
+      {
+        "label": "Strona testowa wydrukowana z obu systemów",
+        "points": 10,
+        "autograde": false,
+        "stepRef": [
+          7
+        ]
+      },
+      {
+        "label": "Domyślne ustawienia drukowania skonfigurowane",
+        "points": 5,
+        "autograde": false,
+        "stepRef": [
+          9
+        ]
+      }
+    ]
   }
 ]

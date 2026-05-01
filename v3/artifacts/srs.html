@@ -281,8 +281,13 @@
   </header>
 
   <div id="viewDashboard">
-    <section class="card-panel" aria-labelledby="todayHdr">
-      <h2 id="todayHdr" style="margin-top:0">Kolejka na dziś</h2>
+    <!-- Hero: X fiszek na dziś (Anki/Quizlet pattern) -->
+    <section class="srs-hero" aria-labelledby="todayHdr">
+      <div class="num queue-count" id="queueHeroCount" aria-live="polite">0</div>
+      <div class="lbl" id="todayHdr">fiszek do powtórzenia dziś</div>
+    </section>
+
+    <section class="card-panel" aria-label="Statystyki SR">
       <div class="stats-grid" role="list">
         <div class="stat-tile" role="listitem">
           <div class="v queue-count" id="queueCount">0</div>
@@ -880,6 +885,9 @@ function renderDashboard() {
     : due;
 
   $("queueCount").textContent = String(selectedArea ? dueFiltered.length + ' / ' + due.length : due.length);
+  // Update hero too (if present)
+  const heroEl = document.getElementById("queueHeroCount");
+  if (heroEl) heroEl.textContent = String(selectedArea ? dueFiltered.length : due.length);
   $("totalCards").textContent = String(allCards.length);
   $("streakCount").textContent = String((state.streak && state.streak.count) | 0);
   $("lapsesCount").textContent = String(allCards.reduce((s, c) => s + (c.lapses | 0), 0));

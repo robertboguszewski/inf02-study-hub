@@ -1257,7 +1257,7 @@ input { font: inherit; }
       : '';
 
     const navHtml = `
-      <div class="nav-row">
+      <div class="nav-row quiz-actionbar" role="navigation" aria-label="Nawigacja quizu">
         <button class="btn" id="btn-prev" ${i === 0 ? 'disabled' : ''}>← Poprzednie</button>
         <button class="btn" id="btn-finish-early" type="button">Zakończ teraz</button>
         ${isLast
@@ -1267,18 +1267,20 @@ input { font: inherit; }
       </div>`;
 
     r.innerHTML = `
-      <header class="quiz-header">
-        <div class="quiz-meta">
-          <strong>Pytanie ${i + 1} / ${total}</strong>
-          <span class="area-chip" style="background:var(--area-${areaCode}-bg); color:var(--area-${areaCode}-fg)">
-            ${escapeHtml(areaCode)} · ${escapeHtml(AREA_LABELS[areaCode] || '')}
-          </span>
-          <span class="qid-tag">#${escapeHtml(q.id)}</span>
-        </div>
+      <header class="quiz-stickybar" role="banner">
+        <span class="meta-line"><strong>Pytanie ${i + 1} / ${total}</strong></span>
+        <div class="progress-bar" role="progressbar"
+             aria-valuenow="${Math.round(answeredCount/total*100)}"
+             aria-valuemin="0" aria-valuemax="100"
+             aria-label="Postęp quizu"><div class="progress-fill" style="width:${Math.round(answeredCount/total*100)}%"></div></div>
         ${showTimer ? `<div class="timer" id="quiz-timer" role="timer" aria-label="Pozostały czas">--:--</div>` : ''}
+        <span class="area-chip" style="background:var(--area-${areaCode}-bg); color:var(--area-${areaCode}-fg)">
+          ${escapeHtml(areaCode)} · ${escapeHtml(AREA_LABELS[areaCode] || '')}
+        </span>
+        <span class="qid-tag">#${escapeHtml(q.id)}</span>
       </header>
 
-      <div class="progress-wrap">
+      <div class="progress-wrap" hidden>
         <div class="progress-bar"><div class="progress-fill" style="width:${Math.round(answeredCount/total*100)}%"></div></div>
         <div class="progress-label">Zaznaczone: ${answeredCount} / ${total}</div>
       </div>

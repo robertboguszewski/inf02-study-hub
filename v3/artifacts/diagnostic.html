@@ -1568,6 +1568,24 @@ const Dashboard = {
 
       ${returnVisitHtml}
 
+      ${onboarded && (cur.knowledge && (cur.knowledge.perArea || {})[AREAS[0]] && (cur.knowledge.perArea[AREAS[0]].attempts || 0) > 0) ? `
+      <!-- Hero: Readiness for exam (Khan Mastery pattern) -->
+      <section class="card readiness-hero" aria-label="Gotowość do egzaminu">
+        <div>
+          <div class="pct" aria-live="polite">${(report.readinessForExam*100).toFixed(0)}%</div>
+          <div class="lbl">próg CKE pisemny: 50% · próg praktyczny: 75%</div>
+        </div>
+        <div>
+          <h2>Gotowość do egzaminu</h2>
+          <p class="muted" style="margin:0">Mediana wiedzy z 11 obszarów (60% średnia + 40% najsłabszy)</p>
+          <div class="actions">
+            <button class="primary" type="button" id="cta-hero-adaptive">🎯 Naucz się słabych</button>
+            <button class="ghost" type="button" id="cta-hero-full">Pełny quiz egzaminacyjny</button>
+          </div>
+        </div>
+      </section>
+      ` : ''}
+
       ${(cur.knowledge && (cur.knowledge.perArea || {})[AREAS[0]] && (cur.knowledge.perArea[AREAS[0]].attempts || 0) > 0)
         ? recommendBanner : ''}
 
@@ -1616,8 +1634,10 @@ const Dashboard = {
     const onFullQuiz = () => ShellBridge.navigate('quiz', { mode: 'exam', n: 40 });
     document.getElementById('cta-adaptive')?.addEventListener('click', onAdaptive);
     document.getElementById('cta-adaptive-2')?.addEventListener('click', onAdaptive);
+    document.getElementById('cta-hero-adaptive')?.addEventListener('click', onAdaptive);
     document.getElementById('cta-full-quiz')?.addEventListener('click', onFullQuiz);
     document.getElementById('cta-full-quiz-2')?.addEventListener('click', onFullQuiz);
+    document.getElementById('cta-hero-full')?.addEventListener('click', onFullQuiz);
     document.getElementById('start-onboarding')?.addEventListener('click', () => Onboarding.open());
     document.getElementById('btn-start-diag')?.addEventListener('click', () => Router.navigate('diagnostic-quiz'));
     document.getElementById('btn-rediagnose')?.addEventListener('click', async () => {
