@@ -564,6 +564,7 @@ label{display:block;margin-bottom:var(--sp-xs);font-size:var(--fs-xs);color:var(
       sessions: [],
       settings: { theme: "auto", reducedMotion: false, locale: "pl-PL", soundEnabled: false },
       hardCollection: [],
+      notes: {},
       seq: 0
     };
   }
@@ -606,6 +607,7 @@ label{display:block;margin-bottom:var(--sp-xs);font-size:var(--fs-xs);color:var(
     if (!Array.isArray(s.achievements)) errors.push('achievements not array');
     if (!Array.isArray(s.sessions)) errors.push('sessions not array');
     if (s.hardCollection !== undefined && !Array.isArray(s.hardCollection)) errors.push('hardCollection not array');
+    if (s.notes !== undefined && (typeof s.notes !== 'object' || Array.isArray(s.notes) || s.notes === null)) errors.push('notes not object');
     if (!isObj(s.settings)) errors.push('Brak settings');
     else {
       if (s.settings.locale !== 'pl-PL') errors.push('locale != pl-PL');
@@ -994,6 +996,65 @@ label{display:block;margin-bottom:var(--sp-xs);font-size:var(--fs-xs);color:var(
     ]);
     wrap.appendChild(legend);
     container.appendChild(wrap);
+  }
+
+
+  /* ============= F1: Stats per question (TDD post-v4.0) ============= */
+  /**
+   * Aggregate per-question stats from sessions.
+   * @param {AppState} state
+   * @returns {Object<qid, {attempts, correct, accuracy, lastCorrect}>}
+   */
+  function aggregateQuestionStats(state) {
+    const stats = {};
+    const sessions = (state && state.sessions) || [];
+    for (const s of sessions) {
+      for (const a of (s.answers || [])) {
+        if (!a || !a.qid) continue;
+        if (!stats[a.qid]) stats[a.qid] = { attempts: 0, correct: 0, accuracy: 0, lastCorrect: null };
+        stats[a.qid].attempts++;
+        if (a.correct === true) stats[a.qid].correct++;
+        stats[a.qid].lastCorrect = !!a.correct;
+      }
+    }
+    for (const qid of Object.keys(stats)) {
+      stats[qid].accuracy = stats[qid].attempts > 0 
+        ? +(stats[qid].correct / stats[qid].attempts).toFixed(3) 
+        : 0;
+    }
+    return stats;
+  }
+  if (typeof window !== 'undefined') {
+    window.INF02 = window.INF02 || {};
+    window.INF02.aggregateQuestionStats = aggregateQuestionStats;
+  }
+
+
+  /* ============= F2: User notes (TDD post-v4.0) ============= */
+  /**
+   * Save/update note for question. Empty string removes it. Trims + 500 char limit.
+   * @param {string} qid
+   * @param {string} text
+   */
+  async function saveNote(qid, text) {
+    if (typeof qid !== 'string' || !qid.match(/^Q-\d{4}$/)) return false;
+    const cur = getState();
+    const notes = Object.assign({}, cur.notes || {});
+    const trimmed = String(text || '').trim().slice(0, 500);
+    if (!trimmed) {
+      delete notes[qid];
+    } else {
+      notes[qid] = trimmed;
+    }
+    await setState({ notes });
+    return true;
+  }
+  function getNote(qid) {
+    return (getState().notes || {})[qid] || '';
+  }
+  if (typeof window !== 'undefined') {
+    window.INF02 = window.INF02 || {};
+    window.INF02.notes = { save: saveNote, get: getNote };
   }
 
   function navigate(view, params) {
@@ -1666,6 +1727,7 @@ label{display:block;margin-bottom:var(--sp-xs);font-size:var(--fs-xs);color:var(
     const cur = (await _loadAllQuestions()) || [];
     const state = getState();
     const hardSet = new Set(state.hardCollection || []);
+    const qStats = aggregateQuestionStats(state);
     const params = _currentParams || {};
     const query = (params.q || '').toLowerCase();
     const areaFilter = params.area || '';
@@ -1720,7 +1782,9 @@ label{display:block;margin-bottom:var(--sp-xs);font-size:var(--fs-xs);color:var(
                 <span style="font-family:var(--font-mono);font-size:var(--fs-xs);color:var(--color-text-muted)">${escapeHtml(q.id)}</span>
                 <span class="chip" data-area="${escapeHtml(q.area)}" style="font-size:var(--fs-xs)">${escapeHtml(q.area)}</span>
                 ${q.frequency==='high' ? '<span style="font-size:var(--fs-xs);color:var(--color-warning)">🔥</span>' : ''}
+                ${(() => { const s = qStats[q.id]; if (!s || s.attempts === 0) return '<span class="q-stats-display" style="font-size:var(--fs-xs);color:var(--color-text-muted)">Nie próbowano</span>'; const pct = Math.round(s.accuracy * 100); const color = pct >= 70 ? 'var(--color-success)' : pct >= 50 ? 'var(--color-warning)' : 'var(--color-danger)'; return `<span class="q-stats-display q-stats" style="font-size:var(--fs-xs);color:${color}" title="${s.correct}/${s.attempts} poprawnie · ostatnio: ${s.lastCorrect ? '✓' : '✗'}">📊 ${pct}% (${s.attempts} prób)</span>`; })()}
                 <p style="margin:var(--sp-xs) 0;font-size:var(--fs-sm)">${escapeHtml(q.q.slice(0, 200))}${q.q.length > 200 ? '…' : ''}</p>
+                ${(() => { const note = (state.notes || {})[q.id]; return note ? `<details class="q-note-display"><summary style="cursor:pointer;font-size:var(--fs-xs);color:var(--color-accent)">✏ Twoja notatka</summary><p style="font-size:var(--fs-xs);color:var(--color-text-muted);margin:var(--sp-xs) 0 0;white-space:pre-wrap">${escapeHtml(note)}</p></details>` : ''; })()}
               </div>
               <button class="btn-hard" data-qid="${escapeHtml(q.id)}" 
                 style="background:transparent;border:1px solid var(--color-border);color:${hardSet.has(q.id)?'var(--color-warning)':'var(--color-text-muted)'};padding:var(--sp-xs) var(--sp-sm);border-radius:var(--radius);cursor:pointer;min-height:44px;font-size:var(--fs-sm)" 

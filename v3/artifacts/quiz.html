@@ -864,6 +864,28 @@ input { font: inherit; }
     isDiagnostic: false
   };
 
+
+  /* ============= F3: Image support (TDD post-v4.0) ============= */
+  /**
+   * Whitelist: relative './', 'images/', or 'data:image/' URLs only.
+   * Returns null for unsafe URLs (XSS prevention).
+   */
+  function safeImageUrl(url) {
+    if (typeof url !== 'string' || !url) return null;
+    if (url.match(/^(\.\/|images\/)/) ) return url;
+    if (url.match(/^data:image\/(png|jpe?g|gif|webp|svg\+xml);base64,/)) return url;
+    console.warn('[quiz] Unsafe imageUrl blocked:', url.slice(0, 50));
+    return null;
+  }
+  function renderQuestionImage(q) {
+    if (!q || !q.imageUrl) return '';
+    const safe = safeImageUrl(q.imageUrl);
+    if (!safe) return '';
+    const alt = (typeof q.imageAlt === 'string' && q.imageAlt) ? q.imageAlt : '';
+    if (!alt) console.warn('[quiz] Question', q.id, 'has imageUrl without imageAlt');
+    return `<figure class="q-image" style="margin:var(--sp-md) 0;text-align:center"><img src="${safe}" alt="${alt.replace(/"/g, '&quot;')}" loading="lazy" style="max-width:100%;height:auto;border-radius:8px;border:1px solid var(--color-border)" onerror="this.style.display='none';this.nextElementSibling&&(this.nextElementSibling.style.display='block')"><div class="image-broken-placeholder" style="display:none;padding:var(--sp-md);background:var(--color-surface-2);border-radius:8px;color:var(--color-text-muted);font-size:var(--fs-xs)">⚠ Obraz nie został załadowany</div></figure>`;
+  }
+
   function paramsForMode(mode, params) {
     params = params || {};
     if (mode === 'exam') {
@@ -1330,7 +1352,9 @@ input { font: inherit; }
 
       <section class="question-card" aria-labelledby="q-text">
         <h1 class="q-text" id="q-text">${escapeHtml(q.q)}</h1>
+        ${renderQuestionImage(q)}
         ${q.mediaRef ? `<div class="q-media-hint">Diagram: ${escapeHtml(q.mediaRef)}</div>` : ''}
+        ${(() => { const note = ((window.INF02 && window.INF02.notes && window.INF02.notes.get) ? window.INF02.notes.get(q.id) : ''); return note ? `<aside class="user-note" style="margin:var(--sp-sm) 0;padding:var(--sp-sm) var(--sp-md);background:rgba(255,180,84,0.10);border-left:3px solid var(--color-warning);border-radius:6px;font-size:var(--fs-sm)">✏ <strong>Twoja notatka:</strong> ${escapeHtml(note)}</aside>` : ''; })()}
         ${optionsHtml}
         ${explanation}
         ${navHtml}
