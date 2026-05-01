@@ -689,11 +689,38 @@ async function removeFromDeck(qid) {
 }
 
 /* ============================================================
+   FEATURE: undo stack (last 5 ratings) — cross-verification add
+   ============================================================ */
+let _undoStack = [];
+function pushUndo(snapshot) {
+  _undoStack.push(snapshot);
+  if (_undoStack.length > 5) _undoStack.shift();
+}
+async function undoLast() {
+  if (_undoStack.length === 0) return false;
+  const snap = _undoStack.pop();
+  if (snap && INF02.shell && INF02.shell.setState) {
+    await INF02.shell.setState({ cards: snap.cards, knowledge: snap.knowledge });
+    return true;
+  }
+  return false;
+}
+window.INF02 = window.INF02 || {};
+window.INF02.srs = window.INF02.srs || {};
+window.INF02.srs.undoLast = undoLast;
+window.INF02.srs.canUndo = () => _undoStack.length > 0;
+
+/* ============================================================
    recordRating — wrapper persisting przez shell + emit srs:rated
    ============================================================ */
 async function recordRating(qid, rating, area, now) {
   if (typeof now !== "number") now = Date.now();
   const state = INF02.shell.getState();
+  // Snapshot for undo (before mutation)
+  pushUndo({
+    cards: JSON.parse(JSON.stringify(state.cards || {})),
+    knowledge: JSON.parse(JSON.stringify(state.knowledge || {}))
+  });
   const cards = Object.assign({}, state.cards || {});
   const prev = cards[qid] || defaultCard(qid, now);
   const next = rateCard(prev, rating, area, now);

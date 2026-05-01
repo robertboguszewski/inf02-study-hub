@@ -552,6 +552,7 @@ label{display:block;margin-bottom:var(--sp-xs);font-size:var(--fs-xs);color:var(
       achievements: [],
       sessions: [],
       settings: { theme: "auto", reducedMotion: false, locale: "pl-PL", soundEnabled: false },
+      hardCollection: [],
       seq: 0
     };
   }
@@ -593,6 +594,7 @@ label{display:block;margin-bottom:var(--sp-xs);font-size:var(--fs-xs);color:var(
     if (!isObj(s.streak)) errors.push('Brak streak');
     if (!Array.isArray(s.achievements)) errors.push('achievements not array');
     if (!Array.isArray(s.sessions)) errors.push('sessions not array');
+    if (s.hardCollection !== undefined && !Array.isArray(s.hardCollection)) errors.push('hardCollection not array');
     if (!isObj(s.settings)) errors.push('Brak settings');
     else {
       if (s.settings.locale !== 'pl-PL') errors.push('locale != pl-PL');
@@ -896,17 +898,17 @@ label{display:block;margin-bottom:var(--sp-xs);font-size:var(--fs-xs);color:var(
   }
 
   /* ---------- Routing ------------------------------------------------ */
-  const VIEWS = ['dashboard','diagnostic','quiz','practical','srs','review','achievements','settings'];
+  const VIEWS = ['dashboard','diagnostic','quiz','practical','srs','review','achievements','search','settings'];
   const VIEW_LABEL = {
     dashboard:'Dashboard', diagnostic:'Diagnoza', quiz:'Quiz',
     practical:'Praktyczny', srs:'Powtórki', review:'Przegląd',
-    achievements:'Osiągnięcia', settings:'Ustawienia'
+    achievements:'Osiągnięcia', search:'Pytania', settings:'Ustawienia'
   };
   const VIEW_ICON = {
     dashboard:'◧', diagnostic:'◎', quiz:'?', practical:'⚙',
-    srs:'↻', review:'☑', achievements:'★', settings:'⚙'
+    srs:'↻', review:'☑', achievements:'★', search:'🔍', settings:'⚙'
   };
-  const PRIMARY_NAV = ['dashboard','diagnostic','quiz','practical','srs','review','achievements'];
+  const PRIMARY_NAV = ['dashboard','diagnostic','quiz','practical','srs','review','search','achievements'];
 
   let _currentView = 'dashboard';
   let _currentParams = {};
@@ -1577,7 +1579,118 @@ label{display:block;margin-bottom:var(--sp-xs);font-size:var(--fs-xs);color:var(
     root.appendChild(grid);
   }
 
-  /* ---------- View: Review (recent sessions full) -------------------- */
+
+  /* ===== VIEW: Question search/browser (cross-verification add) ===== */
+  let _allQuestions = null;
+  async function _loadAllQuestions() {
+    if (_allQuestions) return _allQuestions;
+    try {
+      const res = await (window.fetchWithRetry ? window.fetchWithRetry('../data/questions.json') : fetch('../data/questions.json'));
+      if (res.ok) {
+        const data = await res.json();
+        _allQuestions = Array.isArray(data) ? data : (data.questions || []);
+      } else { _allQuestions = []; }
+    } catch (e) { _allQuestions = []; console.warn('[shell] questions load failed', e); }
+    return _allQuestions;
+  }
+
+  async function renderSearch(root) {
+    const cur = (await _loadAllQuestions()) || [];
+    const state = getState();
+    const hardSet = new Set(state.hardCollection || []);
+    const params = _currentParams || {};
+    const query = (params.q || '').toLowerCase();
+    const areaFilter = params.area || '';
+    const freqFilter = params.freq || '';
+    const onlyHard = params.hard === '1';
+
+    let filtered = cur;
+    if (areaFilter) filtered = filtered.filter(q => q.area === areaFilter);
+    if (freqFilter) filtered = filtered.filter(q => q.frequency === freqFilter);
+    if (onlyHard) filtered = filtered.filter(q => hardSet.has(q.id));
+    if (query) {
+      filtered = filtered.filter(q => 
+        (q.q || '').toLowerCase().includes(query) ||
+        (q.explanation || '').toLowerCase().includes(query) ||
+        (q.tags || []).some(t => t.toLowerCase().includes(query))
+      );
+    }
+
+    function escapeHtml(s) {
+      return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+
+    const html = `
+      <h1 style="font-size:var(--fs-xl);margin:0 0 var(--sp-md)">🔍 Przeglądaj pytania</h1>
+      <div class="card" style="margin-bottom:var(--sp-md)">
+        <input type="search" id="q-search" placeholder="Szukaj w treści pytań i wyjaśnień..." 
+          value="${escapeHtml(query)}" 
+          style="width:100%;padding:var(--sp-sm);background:var(--color-surface);color:var(--color-text);border:1px solid var(--color-border);border-radius:var(--radius);font:inherit;min-height:44px"
+          aria-label="Wyszukaj pytania">
+        <div style="display:flex;gap:var(--sp-sm);flex-wrap:wrap;margin-top:var(--sp-sm)">
+          <select id="q-area" aria-label="Filtruj po obszarze" style="padding:var(--sp-sm);min-height:44px;background:var(--color-surface);color:var(--color-text);border:1px solid var(--color-border);border-radius:var(--radius)">
+            <option value="">Wszystkie obszary</option>
+            ${['B','O','N','P','D','L','W','6','V','Z','R'].map(a => `<option value="${a}"${a===areaFilter?' selected':''}>${a}</option>`).join('')}
+          </select>
+          <select id="q-freq" aria-label="Filtruj po częstotliwości" style="padding:var(--sp-sm);min-height:44px;background:var(--color-surface);color:var(--color-text);border:1px solid var(--color-border);border-radius:var(--radius)">
+            <option value="">Każda częstotliwość</option>
+            <option value="high"${freqFilter==='high'?' selected':''}>🔥 Wysoka (Pareto top)</option>
+            <option value="medium"${freqFilter==='medium'?' selected':''}>Średnia</option>
+            <option value="low"${freqFilter==='low'?' selected':''}>Niska</option>
+          </select>
+          <label style="display:flex;align-items:center;gap:var(--sp-xs);cursor:pointer;min-height:44px">
+            <input type="checkbox" id="q-hard"${onlyHard?' checked':''}> Tylko trudne (${hardSet.size})
+          </label>
+        </div>
+      </div>
+      <p style="color:var(--color-text-muted);font-size:var(--fs-sm)">Znaleziono: <b>${filtered.length}</b> pytań</p>
+      <ul style="list-style:none;padding:0">
+        ${filtered.slice(0,50).map(q => `
+          <li class="card" style="margin-bottom:var(--sp-sm);padding:var(--sp-md)">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:var(--sp-sm);flex-wrap:wrap">
+              <div style="flex:1;min-width:0">
+                <span style="font-family:var(--font-mono);font-size:var(--fs-xs);color:var(--color-text-muted)">${escapeHtml(q.id)}</span>
+                <span class="chip" data-area="${escapeHtml(q.area)}" style="font-size:var(--fs-xs)">${escapeHtml(q.area)}</span>
+                ${q.frequency==='high' ? '<span style="font-size:var(--fs-xs);color:var(--color-warning)">🔥</span>' : ''}
+                <p style="margin:var(--sp-xs) 0;font-size:var(--fs-sm)">${escapeHtml(q.q.slice(0, 200))}${q.q.length > 200 ? '…' : ''}</p>
+              </div>
+              <button class="btn-hard" data-qid="${escapeHtml(q.id)}" 
+                style="background:transparent;border:1px solid var(--color-border);color:${hardSet.has(q.id)?'var(--color-warning)':'var(--color-text-muted)'};padding:var(--sp-xs) var(--sp-sm);border-radius:var(--radius);cursor:pointer;min-height:44px;font-size:var(--fs-sm)" 
+                aria-label="${hardSet.has(q.id)?'Usuń z':'Dodaj do'} kolekcji trudnych" 
+                title="${hardSet.has(q.id)?'Usuń z':'Dodaj do'} kolekcji trudnych">
+                ${hardSet.has(q.id) ? '★ Trudne' : '☆ Oznacz'}
+              </button>
+            </div>
+          </li>
+        `).join('')}
+      </ul>
+      ${filtered.length > 50 ? `<p style="text-align:center;color:var(--color-text-muted);font-size:var(--fs-sm)">Pokazano 50 z ${filtered.length} — uściślij filtry</p>` : ''}
+      ${filtered.length === 0 ? '<p style="text-align:center;color:var(--color-text-muted);padding:var(--sp-xl)">Brak wyników. Spróbuj innego zapytania lub usuń filtry.</p>' : ''}
+    `;
+    root.innerHTML = html;
+
+    // Wire up filters
+    const debouncedSearch = (() => {
+      let t;
+      return (v) => { clearTimeout(t); t = setTimeout(() => navigate('search', { q: v, area: areaFilter, freq: freqFilter, hard: onlyHard ? '1' : '' }), 300); };
+    })();
+    root.querySelector('#q-search').addEventListener('input', e => debouncedSearch(e.target.value));
+    root.querySelector('#q-area').addEventListener('change', e => navigate('search', { q: query, area: e.target.value, freq: freqFilter, hard: onlyHard ? '1' : '' }));
+    root.querySelector('#q-freq').addEventListener('change', e => navigate('search', { q: query, area: areaFilter, freq: e.target.value, hard: onlyHard ? '1' : '' }));
+    root.querySelector('#q-hard').addEventListener('change', e => navigate('search', { q: query, area: areaFilter, freq: freqFilter, hard: e.target.checked ? '1' : '' }));
+    root.querySelectorAll('.btn-hard').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const qid = btn.dataset.qid;
+        const cur = (getState().hardCollection || []).slice();
+        const idx = cur.indexOf(qid);
+        if (idx >= 0) cur.splice(idx, 1); else cur.push(qid);
+        await setState({ hardCollection: cur });
+        renderSearch(root);  // re-render
+      });
+    });
+  }
+
+    /* ---------- View: Review (recent sessions full) -------------------- */
   function renderReview(root) {
     const s = _state;
     root.appendChild(el('div', { class:'card' }, [
@@ -1624,6 +1737,7 @@ label{display:block;margin-bottom:var(--sp-xs);font-size:var(--fs-xs);color:var(
     }
 
     // Default views (Shell-owned)
+    if (_currentView === 'search') return renderSearch(main);
     if (_currentView === 'dashboard') return renderDashboard(main);
     if (_currentView === 'settings')  return renderSettings(main);
     if (_currentView === 'achievements') return renderAchievements(main);

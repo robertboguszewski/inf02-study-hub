@@ -1352,6 +1352,7 @@ input { font: inherit; }
         ${wrongHtml}
         <div class="nav-row" style="justify-content:center;flex-wrap:wrap;gap:8px">
           <button class="btn btn--primary" id="btn-new">Nowy quiz</button>
+          <button class="btn" id="btn-report" style="background:transparent;color:var(--color-text-muted);border:1px solid var(--color-border)">⚠ Zgłoś błąd</button>
           ${wrongs.length ? `<button class="btn btn--srs" id="btn-srs" style="background:var(--color-warning,#FFB454);color:#0F1115">➕ Dodaj błędy do fiszek (${wrongs.length})</button>` : ''}
           <button class="btn" id="btn-dash">← Dashboard</button>
         </div>
@@ -1362,6 +1363,46 @@ input { font: inherit; }
     const srsBtn  = document.getElementById('btn-srs');
     if (newBtn) newBtn.addEventListener('click', () => renderModePicker());
     if (dashBtn) dashBtn.addEventListener('click', () => shellRoute('dashboard'));
+    const reportBtn = document.getElementById('btn-report');
+    if (reportBtn) reportBtn.addEventListener('click', () => {
+      const session = RUN.session;
+      if (!session) return;
+      const wrongs = session.answers.filter(a => !a.correct);
+      const report = {
+        sessionId: session.sessionId,
+        timestamp: new Date().toISOString(),
+        mode: RUN.mode,
+        score: session.score,
+        wrongQuestions: wrongs.map(a => {
+          const q = RUN.questionsById[a.qid];
+          return { id: a.qid, area: q ? q.area : '?', q: q ? q.q.slice(0, 100) : '?', given: a.given, correct: q ? q.correct : null };
+        })
+      };
+      const json = JSON.stringify(report, null, 2);
+      // Show modal with copy
+      const modal = document.createElement('div');
+      modal.id = 'report-modal';
+      modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;z-index:9999;padding:var(--sp-md)';
+      modal.innerHTML = `
+        <div style="background:var(--color-surface);padding:var(--sp-lg);border-radius:var(--radius);max-width:600px;width:100%;max-height:80vh;overflow:auto" role="dialog" aria-modal="true" aria-labelledby="report-title">
+          <h2 id="report-title" style="margin:0 0 var(--sp-sm)">⚠ Zgłoś błąd w pytaniach</h2>
+          <p style="color:var(--color-text-muted);font-size:var(--fs-sm)">Skopiuj poniższy JSON i wyślij na issue tracker GitHub lub e-mail. Pomoże nam to poprawić bank pytań.</p>
+          <textarea readonly style="width:100%;height:200px;background:var(--color-bg);color:var(--color-text);border:1px solid var(--color-border);padding:var(--sp-sm);font-family:var(--font-mono);font-size:var(--fs-xs);border-radius:var(--radius)">${json.replace(/</g,'&lt;')}</textarea>
+          <div style="display:flex;gap:var(--sp-sm);margin-top:var(--sp-sm);justify-content:flex-end">
+            <button class="btn" id="report-copy" style="min-height:44px">📋 Kopiuj</button>
+            <button class="btn btn--primary" id="report-close" style="min-height:44px">Zamknij</button>
+          </div>
+        </div>`;
+      document.body.appendChild(modal);
+      document.getElementById('report-copy').addEventListener('click', () => {
+        const ta = modal.querySelector('textarea');
+        ta.select();
+        try { navigator.clipboard.writeText(ta.value); document.getElementById('report-copy').textContent = '✓ Skopiowano'; }
+        catch(_) { try { document.execCommand('copy'); } catch(__) {} }
+      });
+      document.getElementById('report-close').addEventListener('click', () => modal.remove());
+      modal.addEventListener('click', e => { if (e.target === modal) modal.remove(); });
+    });
     if (srsBtn) srsBtn.addEventListener('click', async () => {
       srsBtn.disabled = true;
       srsBtn.textContent = 'Dodawanie…';
