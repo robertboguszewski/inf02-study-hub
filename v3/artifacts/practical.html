@@ -70,6 +70,37 @@
     --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
     --font-mono: ui-monospace, "SF Mono", "Cascadia Mono", "Roboto Mono", Consolas, monospace;
   }
+  /* ============== LIGHT THEME (cross-artifact v4.0) ============== */
+  [data-theme="light"] {
+    --color-bg:        #FFFFFF;
+    --color-surface:   #F7F8FA;
+    --color-surface-2: #EEF0F4;
+    --color-text:      #0F1115;
+    --color-text-muted:#5A6473;
+    --color-border:    #D1D5DB;
+    --color-accent:    #1E66E0;
+    --color-accent-fg: #FFFFFF;
+    --color-success:   #146C43;
+    --color-warning:   #B45309;
+    --color-danger:    #B91C1C;
+    --color-focus:     #B45309;
+  }
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+      --color-bg:        #FFFFFF;
+      --color-surface:   #F7F8FA;
+      --color-surface-2: #EEF0F4;
+      --color-text:      #0F1115;
+      --color-text-muted:#5A6473;
+      --color-border:    #D1D5DB;
+      --color-accent:    #1E66E0;
+      --color-accent-fg: #FFFFFF;
+      --color-success:   #146C43;
+      --color-warning:   #B45309;
+      --color-danger:    #B91C1C;
+    }
+  }
+
 
   *, *::before, *::after { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }

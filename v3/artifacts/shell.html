@@ -147,6 +147,17 @@ main{flex:1;padding:var(--sp-lg);max-width:1200px;width:100%;margin:0 auto}
 
 /* Week plan */
 .weekplan{display:grid;grid-template-columns:repeat(6,1fr);gap:var(--sp-sm);margin-top:var(--sp-sm)}
+
+.activity-heatmap{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;max-width:280px;margin-top:var(--sp-sm)}
+.activity-heatmap .day{aspect-ratio:1;border-radius:3px;background:var(--color-surface-2);position:relative;cursor:default}
+.activity-heatmap .day[data-level="1"]{background:rgba(94,169,255,0.20)}
+.activity-heatmap .day[data-level="2"]{background:rgba(94,169,255,0.45)}
+.activity-heatmap .day[data-level="3"]{background:rgba(94,169,255,0.70)}
+.activity-heatmap .day[data-level="4"]{background:var(--color-accent)}
+.activity-heatmap .day:hover{outline:2px solid var(--color-focus);outline-offset:1px}
+.activity-heatmap-legend{display:flex;gap:var(--sp-xs);align-items:center;font-size:var(--fs-xs);color:var(--color-text-muted);margin-top:var(--sp-xs)}
+.activity-heatmap-legend .swatch{width:12px;height:12px;border-radius:2px}
+
 .weekplan .w{background:var(--color-surface-2);border:1px solid var(--color-border);border-radius:6px;padding:10px;font-size:var(--fs-xs);text-align:center}
 .weekplan .w.now{background:var(--color-bg);border-color:var(--color-accent)}
 .weekplan .w b{display:block;color:var(--color-accent);font-size:var(--fs-xs);margin-bottom:4px}
@@ -926,6 +937,63 @@ label{display:block;margin-bottom:var(--sp-xs);font-size:var(--fs-xs);color:var(
       }
     }
     return { view: VIEWS.includes(view) ? view : 'dashboard', params };
+  }
+
+
+  /* Activity heatmap — last 30 days from sessions[] (v4.0) */
+  function buildActivityHeatmap() {
+    const state = getState();
+    const sessions = state.sessions || [];
+    // Build map: date string (yyyy-mm-dd) -> count of activities
+    const activity = new Map();
+    for (const s of sessions) {
+      if (!s.endedAt && !s.startedAt) continue;
+      const ts = s.endedAt || s.startedAt;
+      const d = new Date(ts);
+      if (isNaN(d)) continue;
+      const key = d.toISOString().slice(0, 10);
+      activity.set(key, (activity.get(key) || 0) + 1);
+    }
+    // Last 30 days (today inclusive)
+    const days = [];
+    const today = new Date();
+    today.setHours(0,0,0,0);
+    for (let i = 29; i >= 0; i--) {
+      const d = new Date(today);
+      d.setDate(d.getDate() - i);
+      const key = d.toISOString().slice(0, 10);
+      const count = activity.get(key) || 0;
+      const level = count === 0 ? 0 : count <= 1 ? 1 : count <= 3 ? 2 : count <= 5 ? 3 : 4;
+      days.push({ key, count, level, date: d });
+    }
+    return days;
+  }
+  function renderActivityHeatmap(container) {
+    const days = buildActivityHeatmap();
+    const wrap = el('div');
+    const grid = el('div', { class: 'activity-heatmap', role: 'list', 'aria-label': 'Aktywność z ostatnich 30 dni' });
+    for (const d of days) {
+      const dayEl = el('div', {
+        class: 'day',
+        'data-level': String(d.level),
+        role: 'listitem',
+        title: d.key + ': ' + d.count + ' sesji',
+        'aria-label': d.key + ': ' + d.count + ' sesji'
+      });
+      grid.appendChild(dayEl);
+    }
+    wrap.appendChild(grid);
+    const legend = el('div', { class: 'activity-heatmap-legend' }, [
+      el('span', null, 'mniej'),
+      el('span', { class: 'swatch', 'data-level': '0', style: 'background:var(--color-surface-2)' }),
+      el('span', { class: 'swatch', style: 'background:rgba(94,169,255,0.20)' }),
+      el('span', { class: 'swatch', style: 'background:rgba(94,169,255,0.45)' }),
+      el('span', { class: 'swatch', style: 'background:rgba(94,169,255,0.70)' }),
+      el('span', { class: 'swatch', style: 'background:var(--color-accent)' }),
+      el('span', null, 'więcej')
+    ]);
+    wrap.appendChild(legend);
+    container.appendChild(wrap);
   }
 
   function navigate(view, params) {
@@ -1839,8 +1907,10 @@ label{display:block;margin-bottom:var(--sp-xs);font-size:var(--fs-xs);color:var(
         const banner = document.createElement('div');
         banner.setAttribute('role', 'alert');
         banner.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:9999;background:#fef3c7;color:#92400e;padding:.75rem 1rem;text-align:center;font-size:.875rem;';
-        banner.innerHTML = '⚠️ Tryb prywatny — Twoje postępy <strong>nie będą zapisane</strong> po zamknięciu karty. <button onclick="this.parentElement.remove()" style="margin-left:1rem;padding:.25rem .5rem;border:1px solid #92400e;border-radius:.25rem;background:transparent;cursor:pointer;">Rozumiem</button>';
+        banner.innerHTML = '⚠️ Tryb prywatny — Twoje postępy <strong>nie będą zapisane</strong> po zamknięciu karty. <button id="memBannerClose" style="margin-left:1rem;padding:.25rem .5rem;border:1px solid #92400e;border-radius:.25rem;background:transparent;cursor:pointer;min-height:32px;">Rozumiem</button>';
         document.body.prepend(banner);
+        // CSP-safe: addEventListener replaces inline onclick
+        document.getElementById('memBannerClose')?.addEventListener('click', () => banner.remove());
       }, 1000);
     }
 

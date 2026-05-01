@@ -73,6 +73,37 @@
   --shadow-2: 0 4px 12px rgba(0,0,0,0.5);
   --shadow-3: 0 12px 32px rgba(0,0,0,0.6);
 }
+  /* ============== LIGHT THEME (cross-artifact v4.0) ============== */
+  [data-theme="light"] {
+    --color-bg:        #FFFFFF;
+    --color-surface:   #F7F8FA;
+    --color-surface-2: #EEF0F4;
+    --color-text:      #0F1115;
+    --color-text-muted:#5A6473;
+    --color-border:    #D1D5DB;
+    --color-accent:    #1E66E0;
+    --color-accent-fg: #FFFFFF;
+    --color-success:   #146C43;
+    --color-warning:   #B45309;
+    --color-danger:    #B91C1C;
+    --color-focus:     #B45309;
+  }
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+      --color-bg:        #FFFFFF;
+      --color-surface:   #F7F8FA;
+      --color-surface-2: #EEF0F4;
+      --color-text:      #0F1115;
+      --color-text-muted:#5A6473;
+      --color-border:    #D1D5DB;
+      --color-accent:    #1E66E0;
+      --color-accent-fg: #FFFFFF;
+      --color-success:   #146C43;
+      --color-warning:   #B45309;
+      --color-danger:    #B91C1C;
+    }
+  }
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0ms !important;
